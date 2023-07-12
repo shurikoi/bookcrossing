@@ -1,7 +1,4 @@
-"use client";
-
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import TextSlider from "@/components/ui/textSlider";
 
 export default function Header() {
     const heroText: string[] = [
@@ -13,31 +10,6 @@ export default function Header() {
         "Przyjaźniaj się",
     ];
 
-    const [selectedHeroText, setSelectedHeroText] = useState<number>(0);
-    const [isEnd, setIsEnd] = useState<boolean>(false);
-
-    useEffect(() => {
-        setInterval(() => {
-            setSelectedHeroText((currentIndex: number) => {
-                console.log(currentIndex, heroText.length)
-                if (currentIndex == heroText.length) {
-                    setIsEnd(true)
-                    return 0;
-                };
-
-                return currentIndex + 1;
-            });
-        }, 1000);
-    }, []);
-
-    useEffect(() => {
-        if (isEnd) {
-            setTimeout(() => {
-                setIsEnd(false);
-            }, 300);
-        }
-    }, [isEnd]);
-
     return (
         <header className="bg-[black] flex flex-col gap-[210px] pt-9 px-10 pb-4 relative box-border bg-no-repeat bg-cover bg-center bg-[url(http://localhost:3000/images/header.png)]">
             <div className="flex justify-between items-center">
@@ -48,21 +20,7 @@ export default function Header() {
                     </div>
                 </div>
             </div>
-            <div className="text-white text-3xl text-center h-[36px] overflow-hidden">
-                <div
-                    style={{
-                        transform: `translateY(${-36 * selectedHeroText}px)`,
-                        transition: isEnd? "0ms" : "300ms",
-                    }}
-                >
-                    {heroText.map((text) => (
-                        <div key={text} className="">
-                            {text}
-                        </div>
-                    ))}
-                    <div className="">{heroText[0]}</div>
-                </div>
-            </div>
+            <TextSlider text={heroText} duration={2000}></TextSlider>
             <div className="flex">
                 <div className="ml-auto flex gap-1">
                     <span className="text-white/40">zdjęcie</span>
