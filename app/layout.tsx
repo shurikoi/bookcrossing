@@ -1,31 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-
-const eUkraine = localFont({
-    src: [
-        {
-            path: "../public/fonts/e-UkraineHead-Regular.otf",
-            weight: "600",
-        },
-        {
-            path: "../public/fonts/e-Ukraine-Regular.otf",
-            weight: "500",
-        },
-        {
-            path: "../public/fonts/e-UkraineHead-Light.otf",
-            weight: "400",
-        },
-        {
-            path: "../public/fonts/e-Ukraine-Light.otf",
-            weight: "300",
-        },
-        {
-            path: "../public/fonts/e-Ukraine-Thin.otf",
-            weight: "200",
-        },
-    ],
-});
+import { eUkraine } from "@/components/ui/fonts";
 
 export const metadata: Metadata = {
     title: "Bookcrossing",
@@ -39,7 +14,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body className={eUkraine.className}>{children}</body>
+            <body className={`${eUkraine.className} bg-white`}>{children}</body>
         </html>
     );
 }
