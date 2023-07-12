@@ -1,8 +1,14 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 
-export default function TextSlider({ text, duration }: { text: string[], duration: number }) {
+type textSlider = {
+    text: string[];
+    duration: number;
+    height?: number;
+};
+
+export default function TextSlider({ text, duration, height = 36 }: textSlider) {
     const [selectedText, setSelectedText] = useState<number>(0);
     const [isEnd, setIsEnd] = useState<boolean>(false);
 
@@ -31,10 +37,13 @@ export default function TextSlider({ text, duration }: { text: string[], duratio
     }, [isEnd]);
 
     return (
-        <div className="text-white text-3xl text-center h-[36px] overflow-hidden">
+        <div
+            style={{ fontSize: `${height}px`, height: `${height * 1.25}px` }}
+            className={`text-white leading-tight text-center overflow-hidden`}
+        >
             <div
                 style={{
-                    transform: `translateY(${-36 * selectedText}px)`,
+                    transform: `translateY(${-height * 1.25 * selectedText}px)`,
                     transition: isEnd ? "0ms" : "300ms",
                 }}
             >
