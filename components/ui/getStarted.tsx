@@ -5,9 +5,9 @@ export default function GetStarted() {
     return (
             <div className="flex flex-col items-center gap-[110px] px-[70px] 2md:px-[230px] py-[75px] font-medium text-2xl">
                 <div className="text-center">Zobacz jak zacząć</div>
-                <div className="inline-grid grid-cols-1 gap-12 gap-x-24 mt-[110px] 2md:grid-cols-[auto_auto] 2md:text-left text-center">
+                <div className="inline-grid grid-cols-1 mt-[110px] 2md:text-left text-center">
                     
-                    <div className="max-w-[600px] flex  flex-col justify-center gap-4 flex-1 items-center 2md:items-start">
+                    <div className="max-w-[600px] flex  flex-col justify-center gap-4 flex-1 items-center text-center">
                         <div>
                             <Image width={90} height={90} src="/images/image 359.png" alt=""></Image>
                         </div>
