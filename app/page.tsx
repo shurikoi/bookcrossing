@@ -23,7 +23,6 @@ export default function Home() {
                 height={0}
             ></Image>
 
-            <div className="text-center text-[25px] font-medium">Zobacz jak zacząć</div>
             <GetStarted></GetStarted>
         </>
     );
