@@ -7,12 +7,12 @@ export default function Home() {
     return (
         <>
             <Header></Header>
-            <div className="flex items-center justify-center border-b-2 border-black py-8">
-                <div className="text-center text-[25px] font-medium">
+            {/* <div className="flex items-center justify-center border-b border-black py-8">
+                <div className="text-center text-[20px] font-light">
                     BookCrossing — to społeczność, gdzie wymieniają się <br />
                     książkami nawzajem.
                 </div>
-            </div>
+            </div> */}
             <Advantages></Advantages>
 
             <Image

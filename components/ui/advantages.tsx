@@ -13,8 +13,8 @@ export default function Advantages() {
                     <div>
                         <Image width={90} height={90} src="/images/image 1553.png" alt=""></Image>
                     </div>
-                    <div className={`font-medium ${eUkraine.className}`}>Zrównoważony styl życia</div>
-                    <div className="text-[15px] w-fit">
+                    <div className={`${eUkraine.className}`}>Zrównoważony styl życia</div>
+                    <div className="font-light text-[15px]">
                         Tutaj skorzystając z już istniejących książek i dzieląc się nimi z innymi, przyczyniasz się do
                         redukcji marnotractwa i zrównoważonego stylu życia.
                     </div>
@@ -24,8 +24,8 @@ export default function Advantages() {
                     <div>
                         <Image width={90} height={90} src="/images/image 359.png" alt=""></Image>
                     </div>
-                    <div className={`font-medium ${eUkraine.className}`}>Wymiana</div>
-                    <div className="text-[15px]">
+                    <div className={`${eUkraine.className}`}>Wymiana</div>
+                    <div className="font-light text-[15px]">
                         To doskonały sposób na pozbycie się niechcianych książek i zdobycie nowych, bez konieczności
                         kupowania.
                     </div>
@@ -36,7 +36,7 @@ export default function Advantages() {
                         <Image width={90} height={90} src="/images/image 294.png" alt=""></Image>
                     </div>
                     <div className={`font-medium ${eUkraine.className}`}>Odkrywanie nowych książek</div>
-                    <div className="text-[15px]">
+                    <div className="font-light text-[15px]">
                         Umożliwiamy odkrywanie nowych tytułów i autorów, których wcześniej nie znałeś.
                     </div>
                 </div>
@@ -46,7 +46,7 @@ export default function Advantages() {
                         <Image width={90} height={90} src="/images/image 1016.png" alt=""></Image>
                     </div>
                     <div className={`font-medium ${eUkraine.className}`}>Za darmo</div>
-                    <div className="text-[15px]">
+                    <div className="font-light text-[15px]">
                         BookCrossing oferuje możliwość czytania i odkrywania nowych książek bez żadnych kosztów.
                     </div>
                 </div>
