@@ -4,7 +4,7 @@ import { eUkraine } from "./fonts";
 export default function Advantages() {
     return (
         <div className="flex flex-col items-center px-[70px] 2md:px-[230px] py-[75px] font-medium text-[20px]">
-            <div className="text-center text-[25px]">
+            <div className="text-center text-[25px] font-medium">
                 Wierzymy, że korzystanie z serwisu może dostarczyć <br /> wiele radości i wzbogacić Twoje doświadczenie
                 czytelnicze.
             </div>
@@ -13,7 +13,7 @@ export default function Advantages() {
                     <div>
                         <Image width={90} height={90} src="/images/image 1553.png" alt=""></Image>
                     </div>
-                    <div className={`font-semibold ${eUkraine.className}`}>Zrównoważony styl życia</div>
+                    <div className={`font-medium ${eUkraine.className}`}>Zrównoważony styl życia</div>
                     <div className="text-[15px] w-fit">
                         Tutaj skorzystając z już istniejących książek i dzieląc się nimi z innymi, przyczyniasz się do
                         redukcji marnotractwa i zrównoważonego stylu życia.
@@ -24,7 +24,7 @@ export default function Advantages() {
                     <div>
                         <Image width={90} height={90} src="/images/image 359.png" alt=""></Image>
                     </div>
-                    <div className={`font-semibold ${eUkraine.className}`}>Wymiana</div>
+                    <div className={`font-medium ${eUkraine.className}`}>Wymiana</div>
                     <div className="text-[15px]">
                         To doskonały sposób na pozbycie się niechcianych książek i zdobycie nowych, bez konieczności
                         kupowania.
@@ -35,7 +35,7 @@ export default function Advantages() {
                     <div>
                         <Image width={90} height={90} src="/images/image 294.png" alt=""></Image>
                     </div>
-                    <div className={`font-semibold ${eUkraine.className}`}>Odkrywanie nowych książek</div>
+                    <div className={`font-medium ${eUkraine.className}`}>Odkrywanie nowych książek</div>
                     <div className="text-[15px]">
                         Umożliwiamy odkrywanie nowych tytułów i autorów, których wcześniej nie znałeś.
                     </div>
@@ -45,7 +45,7 @@ export default function Advantages() {
                     <div>
                         <Image width={90} height={90} src="/images/image 1016.png" alt=""></Image>
                     </div>
-                    <div className={`font-semibold ${eUkraine.className}`}>Za darmo</div>
+                    <div className={`font-medium ${eUkraine.className}`}>Za darmo</div>
                     <div className="text-[15px]">
                         BookCrossing oferuje możliwość czytania i odkrywania nowych książek bez żadnych kosztów.
                     </div>
