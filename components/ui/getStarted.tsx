@@ -9,7 +9,7 @@ export default function GetStarted() {
             <div className="inline-grid grid-cols-1 2md:text-left text-center">
                 <div className="max-w-[600px] flex  flex-col justify-center gap-4 flex-1 items-center text-center">
                     <div>
-                        <Image width={90} height={90} src="/images/image 359.png" alt=""></Image>
+                        <Image width={60} height={60} src="/images/image 359.png" alt=""></Image>
                     </div>
                     <div className={`${eUkraine.className}`}>Oddajesz i dostajesz</div>
                     <div className="font-light text-[15px]">
