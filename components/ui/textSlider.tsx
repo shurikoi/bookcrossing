@@ -6,6 +6,7 @@ type textSlider = {
     text: string[];
     duration: number;
     height?: number;
+    stop?: boolean;
 };
 
 export default function TextSlider({ text, duration, height = 36 }: textSlider) {
@@ -13,7 +14,7 @@ export default function TextSlider({ text, duration, height = 36 }: textSlider) 
     const [isEnd, setIsEnd] = useState<boolean>(false);
 
     useEffect(() => {
-        setInterval(() => {
+        const interval = setInterval(() => {
             setSelectedText((selectedText: number) => {
                 if (selectedText == text.length) {
                     setIsEnd(true);
@@ -39,7 +40,7 @@ export default function TextSlider({ text, duration, height = 36 }: textSlider) 
     return (
         <div
             style={{ fontSize: `${height}px`, height: `${height * 1.25}px` }}
-            className={`text-white leading-tight text-center overflow-hidden`}
+            className={`text-white leading-tight text-center overflow-hidden select-none`}
         >
             <div
                 style={{

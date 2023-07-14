@@ -1,4 +1,5 @@
 import Image from "next/image";
+import GetStartedBtn from "./GetStartedBtn";
 import { eUkraine } from "./fonts";
 
 export default function GetStarted() {
@@ -20,11 +21,7 @@ export default function GetStarted() {
                     </div>
                 </div>
             </div>
-            <div className="group">
-                <div className="bg-[#00FF0A] w-fit rounded-2xl px-7 py-2.5 font-semibold transition duration-200 group-hover:translate-y-[-3px] cursor-pointer">
-                    Get Started
-                </div>
-            </div>
+            <GetStartedBtn></GetStartedBtn>
         </div>
     );
 }

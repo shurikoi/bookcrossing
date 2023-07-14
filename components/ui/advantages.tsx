@@ -8,7 +8,7 @@ export default function Advantages() {
                 Wierzymy, że korzystanie z serwisu może dostarczyć <br /> wiele radości i wzbogacić Twoje doświadczenie
                 czytelnicze.
             </div>
-            <div className="inline-grid grid-cols-1 gap-12 gap-x-24 mt-[110px] 2md:grid-cols-[auto_auto] 2md:text-left text-center">
+            <div className="inline-grid grid-cols-1 gap-12 mt-[110px] 2md:grid-cols-[auto_auto] 2md:text-left text-center">
                 <div className="max-w-[600px] flex flex-col justify-center gap-4 flex-1 items-center 2md:items-start">
                     <div>
                         <Image width={60} height={60} src="/images/image 1553.png" alt=""></Image>
