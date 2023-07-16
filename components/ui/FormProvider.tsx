@@ -1,4 +1,4 @@
-import { SetStateAction, createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
 const FormContext = createContext<any>(null);
 

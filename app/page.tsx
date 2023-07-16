@@ -3,7 +3,7 @@
 import Header from "@/components/ui/Header";
 import Advantages from "@/components/ui/Advantages";
 import GetStarted from "@/components/ui/GetStarted";
-import SignInForm from "@/components/ui/SignInForm";
+import AuthForm from "@/components/ui/AuthForm";
 import { FormProvider } from "@/components/ui/FormProvider";
 import Image from "next/image";
 
@@ -25,7 +25,7 @@ export default function Home() {
                 ></Image>
 
                 <GetStarted></GetStarted>
-                <SignInForm></SignInForm>
+                <AuthForm></AuthForm>
             </FormProvider>
         </>
     );

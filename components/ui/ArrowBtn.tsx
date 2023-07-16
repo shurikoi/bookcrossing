@@ -1,7 +1,30 @@
-export default function arrowBtn({ className = "" } : {className? : string}) {
+import { MouseEventHandler } from "react";
+
+interface arrowBtn {
+    wrapperClassName?: string;
+    arrowClassName?: string;
+    isError?: boolean;
+    onClick?: MouseEventHandler;
+}
+
+export default function arrowBtn({
+    wrapperClassName = "bg-transparent",
+    arrowClassName = "bg-white",
+    onClick,
+    isError,
+}: arrowBtn) {
+    const errorColor = "bg-[#8a2a2a]";
+
     return (
-        <div className={`cursor-pointer rounded-full bg-[#95ED8E] w-7 h-7 ${className}`}>
-            <div className=" relative w-full h-full before:w-0.5 before:h-[10px] before:bg-white before:absolute before:top-[50%] before:left-[50%] before:rotate-45 before:translate-x-[-50%] before:translate-y-[calc(-50%+3px)] after:w-0.5 after:h-[10px] after:bg-white after:absolute after:top-[50%] after:left-[50%] after:rotate-[135deg] after:translate-x-[-50%] after:translate-y-[calc(-50%-3px)] "></div>
+        <div className={`cursor-pointer rounded-full w-7 h-7 ${wrapperClassName} ${isError && errorColor} duration-300`} onClick={onClick}>
+            <div className={`relative w-full h-full`}>
+                <div
+                    className={`w-0.5 h-[10px] absolute top-[50%] left-[50%] rotate-45 translate-x-[-50%] translate-y-[calc(-50%+3px)]  ${arrowClassName}`}
+                ></div>
+                <div
+                    className={` w-0.5 h-[10px] absolute top-[50%] left-[50%] rotate-[135deg] translate-x-[-50%] translate-y-[calc(-50%-3px)] ${arrowClassName}`}
+                ></div>
+            </div>
         </div>
     );
 }
