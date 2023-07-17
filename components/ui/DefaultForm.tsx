@@ -4,7 +4,7 @@ import { currentState } from "./AuthForm";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import isEmailValid from "@/lib/isEmailValid";
 
-interface DefaultForm {
+type DefaultForm = {
     setEmail: Dispatch<SetStateAction<string>>;
     setCurrentState: Dispatch<SetStateAction<currentState>>;
     email: string;

@@ -3,15 +3,15 @@ import { Dispatch, SetStateAction, useState } from "react";
 import ShowPasswordBtn from "./ShowPasswordBtn";
 import { currentState } from "./AuthForm";
 
-interface SignInForm {
+type SignInForm = {
     email: string;
     className?: string;
     setCurrentState: Dispatch<SetStateAction<currentState>>;
-}
+};
 
 export default function SignInForm({ email, className, setCurrentState }: SignInForm) {
-    const [password, setPassword] = useState("");
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+    const [password, setPassword] = useState("");
 
     return (
         <>
@@ -27,6 +27,7 @@ export default function SignInForm({ email, className, setCurrentState }: SignIn
             <div className="border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px] flex justify-between">
                 <input
                     type={isPasswordVisible ? "text" : "password"}
+                    name="password"
                     placeholder="Wprowadź hasło"
                     className="outline-none"
                     value={password}
@@ -37,7 +38,7 @@ export default function SignInForm({ email, className, setCurrentState }: SignIn
                     isPasswordVisible={isPasswordVisible}
                 ></ShowPasswordBtn>
             </div>
-            <div className="cursor-pointer font-light text-[15px] text-[#61C558] select-none">Zaloguj</div>
+            <button className="cursor-pointer font-light text-[15px] text-[#61C558] select-none">Zaloguj</button>
         </>
     );
 }

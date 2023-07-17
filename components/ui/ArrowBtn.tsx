@@ -1,6 +1,6 @@
 import { MouseEventHandler } from "react";
 
-interface arrowBtn {
+type arrowBtn = {
     wrapperClassName?: string;
     arrowClassName?: string;
     isError?: boolean;

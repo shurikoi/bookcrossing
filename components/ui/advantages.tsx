@@ -5,7 +5,7 @@ export default function Advantages() {
     return (
         <div className="flex flex-col items-center px-[70px] 2md:px-[230px] py-[75px] font-medium text-[20px]">
             <div className="text-center text-[25px] font-medium">
-                Wierzymy, że korzystanie z serwisu może dostarczyć <br /> wiele radości i wzbogacić Twoje doświadczenie
+                Wierzymy, że korzystanie z serwisu może dostarczyć wiele radości i wzbogacić Twoje doświadczenie
                 czytelnicze.
             </div>
             <div className="inline-grid grid-cols-1 gap-12 mt-[110px] 2md:grid-cols-[auto_auto] 2md:text-left text-center">
