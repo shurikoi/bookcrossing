@@ -1,7 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { eUkraine } from "@/components/ui/fonts";
-
 export const metadata: Metadata = {
     title: "Bookcrossing",
     description: "",

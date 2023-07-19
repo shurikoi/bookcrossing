@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import ArrowBtn from "@/components/ui/ArrowBtn";
 import ShowPasswordBtn from "./ShowPasswordBtn";
 import { currentState } from "./AuthForm";
+import { signIn } from "next-auth/react";
 
 type SignInForm = {
     className?: string;
@@ -11,10 +12,21 @@ type SignInForm = {
 
 export default function SignUpForm({ className, email, setCurrentState }: SignInForm) {
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
-    const [password, setPassword] = useState<string>("");
-    const [cpassword, setCpassword] = useState<string>("");
     const [name, setName] = useState<string>("");
     const [surname, setSurname] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [cpassword, setCpassword] = useState<string>("");
+
+    function handleClick() {
+        fetch("/api/checkUser", {
+            method: "POST",
+            body: JSON.stringify({ email }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (!data.isExist) signIn("credentials", { authType: "signup", name, surname, email, password });
+            });
+    }
 
     return (
         <>
@@ -32,8 +44,8 @@ export default function SignUpForm({ className, email, setCurrentState }: SignIn
                     type="text"
                     name="name"
                     placeholder="Imię"
-                    value = {name}
-                    onInput = {(e) => setName((e.target as HTMLInputElement).value)}
+                    value={name}
+                    onInput={(e) => setName((e.target as HTMLInputElement).value)}
                     className="w-full outline-none border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px]"
                 />
 
@@ -41,8 +53,8 @@ export default function SignUpForm({ className, email, setCurrentState }: SignIn
                     type="text"
                     name="surname"
                     placeholder="Nazwisko"
-                    value = {surname}
-                    onInput = {(e) => setSurname((e.target as HTMLInputElement).value)}
+                    value={surname}
+                    onInput={(e) => setSurname((e.target as HTMLInputElement).value)}
                     className="w-full outline-none border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px]"
                 />
             </div>
@@ -74,7 +86,9 @@ export default function SignUpForm({ className, email, setCurrentState }: SignIn
                     isPasswordVisible={isPasswordVisible}
                 ></ShowPasswordBtn>
             </div>
-            <button className="cursor-pointer font-light text-[15px] text-[#61C558] select-none">Zaloguj</button>
+            <button className="cursor-pointer font-light text-[15px] text-[#61C558] select-none" onClick={handleClick}>
+                Zaloguj
+            </button>
         </>
     );
 }

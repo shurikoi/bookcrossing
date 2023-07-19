@@ -1,23 +1,32 @@
 import Image from "next/image";
 import ArrowBtn from "@/components/ui/ArrowBtn";
 import { currentState } from "./AuthForm";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import isEmailValid from "@/lib/isEmailValid";
+import { signIn } from "next-auth/react";
 
 type DefaultForm = {
     setEmail: Dispatch<SetStateAction<string>>;
     setCurrentState: Dispatch<SetStateAction<currentState>>;
     email: string;
     className?: string;
-}
+};
 
 export default function DefaultForm({ setEmail, className, setCurrentState, email }: DefaultForm) {
     const [error, setError] = useState<boolean>(false);
 
-    function handleClick() {
+    async function handleClick() {
         if (isEmailValid(email)) {
             setError(false);
-            setCurrentState("signin");
+            const response = await fetch("/api/checkUser", {
+                method: "POST",
+                body: JSON.stringify({ email }),
+            });
+
+            const data: { isExist: boolean } = await response.json();
+
+            if (data.isExist) setCurrentState("signin");
+            else setCurrentState("signup");
         } else {
             setError(true);
         }
@@ -41,16 +50,15 @@ export default function DefaultForm({ setEmail, className, setCurrentState, emai
                     value={email}
                     onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
                 />
-                <ArrowBtn
-                    wrapperClassName="bg-[#95ED8E]"
-                    onClick={handleClick}
-                    isError={error}
-                ></ArrowBtn>
+                <ArrowBtn wrapperClassName="bg-[#95ED8E]" onClick={handleClick} isError={error}></ArrowBtn>
             </div>
             <div className="font-medium text-[15px]">Lub</div>
-            <div className="flex gap-6 px-5 py-3 items-center bg-[#EFEFEF] rounded-lg">
+            <div
+                className="flex gap-6 px-5 py-3 items-center bg-[#EFEFEF] rounded-lg cursor-pointer"
+                onClick={() => signIn("google")}
+            >
                 <Image alt="" src="/images/google.png" width={25} height={25}></Image>
-                <div className="font-extralight cursor-pointer">Kontynuuj przez Google</div>
+                <div className="font-extralight">Kontynuuj przez Google</div>
             </div>
         </>
     );

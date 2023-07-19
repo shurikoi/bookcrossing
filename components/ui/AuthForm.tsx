@@ -5,12 +5,15 @@ import Image from "next/image";
 import DefaultForm from "./DefaultForm";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
+import { useSession } from "next-auth/react";
 
 export type currentState = "default" | "signin" | "signup";
 
 export default function AuthForm() {
+    const {data : session, status} = useSession();
+    
     const { formActive, setFormActive } = useContext(FormContext);
-    const [currentState, setCurrentState] = useState<currentState>("signup");
+    const [currentState, setCurrentState] = useState<currentState>("default");
     const [email, setEmail] = useState("");
 
     const states = {
@@ -37,12 +40,12 @@ export default function AuthForm() {
         };
     }, [formActive, formRef]);
 
-    function handleSubmit(e: FormEvent){
-        e.preventDefault()
-        let target = e.target as HTMLFormElement
+    function handleSubmit(e: FormEvent) {
+        e.preventDefault();
+        let target = e.target as HTMLFormElement;
 
-        let form = new FormData(target)
-        console.log(form, target)
+        let form = new FormData(target);
+        console.log(form, target);
     }
 
     return (

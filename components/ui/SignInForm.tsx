@@ -1,7 +1,8 @@
 import ArrowBtn from "@/components/ui/ArrowBtn";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, MouseEventHandler, SetStateAction, useState } from "react";
 import ShowPasswordBtn from "./ShowPasswordBtn";
 import { currentState } from "./AuthForm";
+import { signIn } from "next-auth/react";
 
 type SignInForm = {
     email: string;
@@ -12,6 +13,17 @@ type SignInForm = {
 export default function SignInForm({ email, className, setCurrentState }: SignInForm) {
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
     const [password, setPassword] = useState("");
+
+    function handleClick() {
+        fetch("/api/checkPassword", {
+            method: "POST",
+            body: JSON.stringify({ email, password }),
+        })
+            .then((response) => response.json())
+            .then(async (data) => {
+                if (data.isValid) signIn("credentials", { authType: "signin", email, password });
+            });
+    }
 
     return (
         <>
@@ -38,7 +50,9 @@ export default function SignInForm({ email, className, setCurrentState }: SignIn
                     isPasswordVisible={isPasswordVisible}
                 ></ShowPasswordBtn>
             </div>
-            <button className="cursor-pointer font-light text-[15px] text-[#61C558] select-none">Zaloguj</button>
+            <button className="cursor-pointer font-light text-[15px] text-[#61C558] select-none" onClick={handleClick}>
+                Zaloguj
+            </button>
         </>
     );
 }

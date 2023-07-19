@@ -2,8 +2,6 @@ import TextSlider from "@/components/ui/TextSlider";
 import GetStartedBtn from "./GetStartedBtn";
 
 export default function Header() {
-
-
     const heroText: string[] = ["Czytaj", "Odkrywaj", "Doświadczaj", "Opiniuj", "Wymieniaj się", "Przyjaźniaj się"];
 
     return (
