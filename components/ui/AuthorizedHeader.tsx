@@ -1,9 +1,12 @@
 import { signOut, useSession } from "next-auth/react";
 import Bell from "./Bell";
 import Stars from "./Stars";
+import UserMenu from "./UserMenu";
+import { useState } from "react";
 
 export default function Header() {
     const { data: session, status } = useSession();
+    const [menuActive, setMenuActive] = useState<boolean>(false);
 
     return (
         <header className="bg-[black] flex items-center py-12 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(http://localhost:3000/images/header.png)]">
@@ -18,12 +21,12 @@ export default function Header() {
                     <Stars></Stars>
                     <div className="text-xl font-medium">{session?.user.points}</div>
                 </div>
-                <div>
+                <div className="relative">
                     <div
-                        className="flex gap-2 items-center text-white text-2xl font-medium cursor-pointer
-"
+                        className="flex gap-2 items-center text-white text-2xl font-medium cursor-pointer"
+                        onClick={() => setMenuActive((menuActive) => !menuActive)}
                     >
-                        <div className="">{session?.user.name}</div>
+                        <div className="select-none">{session?.user.name}</div>
                         <svg
                             className=" mt-1"
                             width="15"
@@ -35,9 +38,7 @@ export default function Header() {
                             <path d="M7.5 12.125L0 0.875H15L7.5 12.125Z" fill="white" />
                         </svg>
                     </div>
-                    <div>
-                        <div onClick={() => signOut()}>sign out</div>
-                    </div>
+                    <UserMenu menuActive={menuActive} />
                 </div>
             </div>
         </header>

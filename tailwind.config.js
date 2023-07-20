@@ -10,6 +10,16 @@ module.exports = {
       '2md': '960px'
     },
     extend: {
+      keyframes: {
+        scaling: {
+          '0%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(2)' },
+        },
+      },
+      animation: {
+        scaling: 'scaling 2s linear infinite',
+        'scaling-1s': "scaling 2s linear infinite 1s"
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
