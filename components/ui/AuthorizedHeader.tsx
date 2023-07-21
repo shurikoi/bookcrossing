@@ -14,10 +14,10 @@ export default function Header() {
     return (
         <header
             className="bg-black
-        flex items-center py-8 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(http://localhost:3000/images/header.png)]"
+        flex items-center py-4 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(http://localhost:3000/images/header.png)]"
         >
             <div className="flex items-center justify-between mr-auto">
-                <div className="text-3xl text-white">BookCrossing</div>
+                <div className="text-2xl text-white">BookCrossing</div>
             </div>
             <div className="flex items-center gap-6">
                 <div className="rounded-full bg-white shadow-md shadow-black/30 p-3">
@@ -30,7 +30,7 @@ export default function Header() {
                 <CheckClickOutside isActive={menuActive} setIsActive={setMenuActive} elRef={menuRef}>
                     <div className="relative" ref={menuRef}>
                         <div
-                            className="flex gap-2 items-center text-white text-2xl font-medium cursor-pointer"
+                            className="flex gap-2 items-center text-white text-xl font-medium cursor-pointer"
                             onClick={() => setMenuActive((menuActive) => !menuActive)}
                         >
                             <div className="select-none">{session?.user.name}</div>
