@@ -30,7 +30,7 @@ export default function Header() {
                 <CheckClickOutside isActive={menuActive} setIsActive={setMenuActive} elRef={menuRef}>
                     <div className="relative" ref={menuRef}>
                         <div
-                            className="flex gap-2 items-center text-white text-xl font-medium cursor-pointer"
+                            className="flex gap-2 items-center text-white text-xl ml-4 font-medium cursor-pointer"
                             onClick={() => setMenuActive((menuActive) => !menuActive)}
                         >
                             <div className="select-none">{session?.user.name}</div>
