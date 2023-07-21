@@ -20,10 +20,10 @@ export default function Header() {
                 <div className="text-2xl text-white">BookCrossing</div>
             </div>
             <div className="flex items-center gap-6">
-                <div className="rounded-full bg-white shadow-md shadow-black/30 p-3">
+                <div className="rounded-full bg-white shadow-md shadow-black/30 p-2">
                     <Bell></Bell>
                 </div>
-                <div className="flex items-center gap-6 bg-white border-[#DFDFE0] border-[3px] rounded-full px-3 py-1.5">
+                <div className="flex items-center gap-6 bg-white border-[#DFDFE0] border-[3px] rounded-full px-3 py-1">
                     <Image src="/images/image 1359.png" alt="" width={20} height={20}></Image>
                     <div className="text-lg font-medium">{session?.user.points}</div>
                 </div>
