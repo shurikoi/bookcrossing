@@ -1,7 +1,7 @@
 import { signOut, useSession } from "next-auth/react";
 
-export default function UserMenu({ menuActive }: { menuActive: boolean }) {
-    console.log(menuActive);
+
+export default function UserMenu({menuActive} : {menuActive: boolean}) {
     const { data: session, status } = useSession();
 
     return (

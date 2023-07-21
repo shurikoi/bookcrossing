@@ -1,12 +1,14 @@
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Bell from "./Bell";
 import Stars from "./Stars";
 import UserMenu from "./UserMenu";
-import { useState } from "react";
-
+import { useState, useRef } from "react";
+import CheckClickOutside from "./checkClickOutside";
 export default function Header() {
     const { data: session, status } = useSession();
     const [menuActive, setMenuActive] = useState<boolean>(false);
+
+    const menuRef = useRef<HTMLDivElement>(null);
 
     return (
         <header
@@ -24,25 +26,27 @@ export default function Header() {
                     <Stars></Stars>
                     <div className="text-md font-medium">{session?.user.points}</div>
                 </div>
-                <div className="relative">
-                    <div
-                        className="flex gap-2 items-center text-white text-2xl font-medium cursor-pointer"
-                        onClick={() => setMenuActive((menuActive) => !menuActive)}
-                    >
-                        <div className="select-none">{session?.user.name}</div>
-                        <svg
-                            className=" mt-1"
-                            width="15"
-                            height="13"
-                            viewBox="0 0 15 13"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
+                <CheckClickOutside isActive={menuActive} setIsActive={setMenuActive} elRef={menuRef}>
+                    <div className="relative" ref={menuRef}>
+                        <div
+                            className="flex gap-2 items-center text-white text-2xl font-medium cursor-pointer"
+                            onClick={() => setMenuActive((menuActive) => !menuActive)}
                         >
-                            <path d="M7.5 12.125L0 0.875H15L7.5 12.125Z" fill="white" />
-                        </svg>
+                            <div className="select-none">{session?.user.name}</div>
+                            <svg
+                                className=" mt-1"
+                                width="15"
+                                height="13"
+                                viewBox="0 0 15 13"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path d="M7.5 12.125L0 0.875H15L7.5 12.125Z" fill="white" />
+                            </svg>
+                        </div>
+                        <UserMenu menuActive={menuActive} />
                     </div>
-                    <UserMenu menuActive={menuActive} />
-                </div>
+                </CheckClickOutside>
             </div>
         </header>
     );
