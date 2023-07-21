@@ -9,17 +9,20 @@ export default function Header() {
     const [menuActive, setMenuActive] = useState<boolean>(false);
 
     return (
-        <header className="bg-[black] flex items-center py-12 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(http://localhost:3000/images/header.png)]">
+        <header
+            className="bg-black
+        flex items-center py-12 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(http://localhost:3000/images/header.png)]"
+        >
             <div className="flex items-center justify-between mr-auto">
                 <div className="text-3xl text-white">BookCrossing</div>
             </div>
             <div className="flex items-center gap-6">
-                <div className="rounded-full bg-white shadow-md p-4">
+                <div className="rounded-full bg-white shadow-md shadow-black/30 p-2">
                     <Bell></Bell>
                 </div>
-                <div className="flex items-center gap-6 bg-white border-[#DFDFE0] border-[5px] rounded-full px-3 py-1">
+                <div className="flex items-center gap-6 bg-white border-[#DFDFE0] border-[3px] rounded-full px-3 py-1">
                     <Stars></Stars>
-                    <div className="text-xl font-medium">{session?.user.points}</div>
+                    <div className="text-md font-medium">{session?.user.points}</div>
                 </div>
                 <div className="relative">
                     <div
