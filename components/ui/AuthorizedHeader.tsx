@@ -4,6 +4,7 @@ import Stars from "./Stars";
 import UserMenu from "./UserMenu";
 import { useState, useRef } from "react";
 import CheckClickOutside from "./checkClickOutside";
+import Image from "next/image";
 export default function Header() {
     const { data: session, status } = useSession();
     const [menuActive, setMenuActive] = useState<boolean>(false);
@@ -13,18 +14,18 @@ export default function Header() {
     return (
         <header
             className="bg-black
-        flex items-center py-12 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(http://localhost:3000/images/header.png)]"
+        flex items-center py-8 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(http://localhost:3000/images/header.png)]"
         >
             <div className="flex items-center justify-between mr-auto">
                 <div className="text-3xl text-white">BookCrossing</div>
             </div>
             <div className="flex items-center gap-6">
-                <div className="rounded-full bg-white shadow-md shadow-black/30 p-2">
+                <div className="rounded-full bg-white shadow-md shadow-black/30 p-3">
                     <Bell></Bell>
                 </div>
-                <div className="flex items-center gap-6 bg-white border-[#DFDFE0] border-[3px] rounded-full px-3 py-1">
-                    <Stars></Stars>
-                    <div className="text-md font-medium">{session?.user.points}</div>
+                <div className="flex items-center gap-6 bg-white border-[#DFDFE0] border-[3px] rounded-full px-3 py-1.5">
+                    <Image src="/images/image 1359.png" alt="" width={20} height={20}></Image>
+                    <div className="text-lg font-medium">{session?.user.points}</div>
                 </div>
                 <CheckClickOutside isActive={menuActive} setIsActive={setMenuActive} elRef={menuRef}>
                     <div className="relative" ref={menuRef}>
