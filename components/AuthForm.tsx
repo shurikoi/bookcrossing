@@ -5,7 +5,7 @@ import DefaultForm from "./DefaultForm";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 import { useSession } from "next-auth/react";
-import CheckClickOutside from "@/components/ui/checkClickOutside";
+import CheckClickOutside from "@/components/checkClickOutside";
 
 export type currentState = "default" | "signin" | "signup";
 

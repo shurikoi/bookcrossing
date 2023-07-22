@@ -1,6 +1,6 @@
 import ArrowBtn from "@/components/ui/ArrowBtn";
 import { Dispatch, MouseEventHandler, SetStateAction, useState } from "react";
-import ShowPasswordBtn from "./ShowPasswordBtn";
+import ShowPasswordBtn from "./ui/ShowPasswordBtn";
 import { currentState } from "./AuthForm";
 import { signIn } from "next-auth/react";
 

@@ -1,7 +1,7 @@
 "use client";
 
-import MainLayout from "@/components/ui/MainLayout";
-import SessionProvider from "@/components/ui/SessionProvider";
+import MainLayout from "@/components/MainLayout";
+import SessionProvider from "@/components/SessionProvider";
 
 export default function Home() {
     return (

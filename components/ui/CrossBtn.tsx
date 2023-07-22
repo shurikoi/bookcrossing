@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { FormContext } from "./FormProvider";
+import { FormContext } from "@/components/FormProvider";
 
 export default function crossBtn() {
     const { setFormActive } = useContext(FormContext);

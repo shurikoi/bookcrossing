@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
-import Bell from "./Bell";
-import UserMenu from "./UserMenu";
+import Bell from "./ui/Bell";
+import UserMenu from "./ui/UserMenu";
 import { useState, useRef } from "react";
 import CheckClickOutside from "./checkClickOutside";
 import Image from "next/image";
@@ -17,25 +17,25 @@ export default function Header() {
         flex items-center py-4 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(/images/header.png)]"
         >
             <div className="flex items-center justify-between mr-auto">
-                <div className="text-2xl text-white">BookCrossing</div>
+                <div className="text-2xl text-white font-head">BookCrossing</div>
             </div>
             <div className="flex items-center gap-[30px]">
-                <div className="rounded-full bg-white shadow-md shadow-black/30 p-2">
+                <div className="p-2 bg-white rounded-full shadow-md shadow-black/30">
                     <Bell></Bell>
                 </div>
                 <div className="flex items-center gap-6 bg-white border-[#DFDFE0] border-[3px] rounded-full px-3 py-1">
                     <Image src="/images/image 1359.png" alt="" width={20} height={20}></Image>
-                    <div className="text-lg font-medium">{session?.user.points}</div>
+                    <div className="text-lg font-normal">{session?.user.points}</div>
                 </div>
                 <CheckClickOutside isActive={menuActive} setIsActive={setMenuActive} elRef={menuRef}>
                     <div className="relative" ref={menuRef}>
                         <div
-                            className="flex gap-2 items-center text-white text-xl font-medium cursor-pointer"
+                            className="flex items-center gap-2 text-xl font-normal text-white cursor-pointer"
                             onClick={() => setMenuActive((menuActive) => !menuActive)}
                         >
                             <div className="select-none">{session?.user.name}</div>
                             <svg
-                                className=" mt-1"
+                                className="mt-1 "
                                 width="15"
                                 height="13"
                                 viewBox="0 0 15 13"

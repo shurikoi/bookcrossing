@@ -10,7 +10,6 @@ type checkClickOutside = {
 
 export default function checkClickOutside({elRef, setIsActive, isActive, children} : checkClickOutside) {
     useEffect(() => {
-        console.log(elRef, isActive, setIsActive, children)
         if (!isActive) return;
 
         function checkClickOutside(e: MouseEvent) {

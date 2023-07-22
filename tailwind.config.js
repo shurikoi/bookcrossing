@@ -10,6 +10,9 @@ module.exports = {
       '2md': '960px'
     },
     extend: {
+      fontFamily: {
+        head: ['var(--font-head)']
+      },
       keyframes: {
         scaling: {
           '0%': { transform: 'scale(1)' },

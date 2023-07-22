@@ -52,7 +52,7 @@ export default function DefaultForm({ setEmail, className, setCurrentState, emai
                 />
                 <ArrowBtn wrapperClassName="bg-[#95ED8E]" onClick={handleClick} isError={error}></ArrowBtn>
             </div>
-            <div className="font-medium text-[15px]">Lub</div>
+            <div className="font-normal text-[15px]">Lub</div>
             <div
                 className="flex gap-6 px-5 py-3 items-center bg-[#EFEFEF] rounded-lg cursor-pointer"
                 onClick={() => signIn("google")}
