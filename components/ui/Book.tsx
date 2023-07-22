@@ -8,7 +8,7 @@ const inter = Inter({
 
 export default function Book() {
     return (
-        <div className={`relative flex flex-col justify-between p-5 bg-black w-80 h-96 rounded-2xl bg-[url(/images/book.png)] bg-cover bg-no-repeat bg-center ${inter.className}`}>
+        <div className={`relative flex flex-col justify-between p-5 bg-black w-60 h-72 rounded-2xl bg-[url(/images/book.png)] bg-cover bg-no-repeat bg-center ${inter.className}`}>
             <div className="text-[#CDCDCD] text-lg font-normal">Dzisiaj</div>
             <div>
                 <div className='font-medium text-2xl text-white'>Big Mac</div>
