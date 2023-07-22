@@ -1,10 +1,10 @@
 import { useSession } from "next-auth/react";
 import Bell from "./Bell";
-import Stars from "./Stars";
 import UserMenu from "./UserMenu";
 import { useState, useRef } from "react";
 import CheckClickOutside from "./checkClickOutside";
 import Image from "next/image";
+
 export default function Header() {
     const { data: session, status } = useSession();
     const [menuActive, setMenuActive] = useState<boolean>(false);
@@ -14,12 +14,12 @@ export default function Header() {
     return (
         <header
             className="bg-black
-        flex items-center py-4 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(http://localhost:3000/images/header.png)]"
+        flex items-center py-4 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(/images/header.png)]"
         >
             <div className="flex items-center justify-between mr-auto">
                 <div className="text-2xl text-white">BookCrossing</div>
             </div>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-[30px]">
                 <div className="rounded-full bg-white shadow-md shadow-black/30 p-2">
                     <Bell></Bell>
                 </div>
@@ -30,7 +30,7 @@ export default function Header() {
                 <CheckClickOutside isActive={menuActive} setIsActive={setMenuActive} elRef={menuRef}>
                     <div className="relative" ref={menuRef}>
                         <div
-                            className="flex gap-2 items-center text-white text-xl ml-4 font-medium cursor-pointer"
+                            className="flex gap-2 items-center text-white text-xl font-medium cursor-pointer"
                             onClick={() => setMenuActive((menuActive) => !menuActive)}
                         >
                             <div className="select-none">{session?.user.name}</div>

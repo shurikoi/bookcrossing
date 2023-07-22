@@ -1,7 +1,11 @@
-import AuthorizedHeader from "@/components/ui/AuthorizedHeader"
+import AuthorizedHeader from "@/components/ui/AuthorizedHeader";
+import Book from "./Book";
 
-export default function StartPage(){
+export default function StartPage() {
     return (
-        <AuthorizedHeader></AuthorizedHeader>
-    )
+        <>
+            <AuthorizedHeader></AuthorizedHeader>
+            <Book></Book>
+        </>
+    );
 }

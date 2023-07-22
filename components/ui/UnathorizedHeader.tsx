@@ -5,7 +5,7 @@ export default function Header() {
     const heroText: string[] = ["Czytaj", "Odkrywaj", "Doświadczaj", "Opiniuj", "Wymieniaj się", "Przyjaźniaj się"];
 
     return (
-        <header className="bg-[black] flex flex-col gap-[210px] pt-9 px-10 pb-4 relative box-border bg-no-repeat bg-cover bg-center bg-[url(http://localhost:3000/images/header.png)]">
+        <header className="bg-[black] flex flex-col gap-[210px] pt-9 px-10 pb-4 relative box-border bg-no-repeat bg-cover bg-center bg-[url(/images/header.png)]">
             <div className="flex items-center justify-between">
                 <div className="text-3xl text-white">BookCrossing</div>
                 <GetStartedBtn></GetStartedBtn>
