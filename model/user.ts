@@ -12,6 +12,6 @@ const user = new Schema(
     { versionKey: false }
 );
 
-const users = models?.users || model("users", user);
+const users = models.users || model("users", user);
 
 export default users;

@@ -1,3 +1,4 @@
+import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 
 export const eUkraine = localFont({
@@ -30,3 +31,9 @@ export const eUkraineHead = localFont({
     ],
     variable: "--font-head"
 });
+
+export const inter = Inter({
+    subsets: ["latin"],
+    weight: ["500", "400", "300"],
+    variable: "--font-inter"
+})

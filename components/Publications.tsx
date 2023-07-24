@@ -1,29 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddBookBtn from "./ui/AddBookBtn";
 import Book from "./ui/Book";
+import ModalMenu from "./ui/ModalMenu";
+import PublicationForm from "./PublicationForm";
 
 type data = {
-    title: string
-}
+    title: string;
+    image: string
+};
 
 export default function Publications() {
-    const [data, setData] = useState<data[]>() 
-    getBooks()
-    async function getBooks(){
-        const books = await fetch("https://jsonplaceholder.typicode.com/posts").then(data => data.json())
+    const [modalActive, setModalActive] = useState<boolean>(true);
+    const [data, setData] = useState<data[]>();
 
-        setData(books)
-    }
+    useEffect(() => {
+        getPublications();
 
-    if (!data)
-        return <div>no data</div>
+        async function getPublications() {
+            const books = await fetch("/api/getPublications", {
+                method: "POST",
+            }).then((data) => data.json());
+            
+            setData(books);
+        }
+    }, []);
 
     return (
         <div className="px-28 py-16">
             <div className="flex gap-6 flex-wrap justify-center">
-                {data.map(data => <Book title={data.title} author={"nikita"} date={"dzisiaj"}/>)}
+                {data && data.map((data) => (
+                    <Book title={data.title} image={data.image} author={"nikita"} date={"dzisiaj"} />
+                ))}
             </div>
-            <AddBookBtn />
+            <AddBookBtn onClick={() => setModalActive(true)} />
+            <ModalMenu modalActive={modalActive} setModalActive={setModalActive} padding="25px">
+                <PublicationForm></PublicationForm>
+            </ModalMenu>
         </div>
     );
 }

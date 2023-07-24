@@ -8,7 +8,7 @@ type checkClickOutside = {
     children: React.ReactNode
 };
 
-export default function checkClickOutside({elRef, setIsActive, isActive, children} : checkClickOutside) {
+export default function CheckClickOutside({elRef, setIsActive, isActive, children} : checkClickOutside) {
     useEffect(() => {
         if (!isActive) return;
 

@@ -6,12 +6,14 @@ module.exports = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    screens: {
-      '2md': '960px'
-    },
+    
     extend: {
+      screens: {
+        '2md': '960px'
+      },
       fontFamily: {
-        head: ['var(--font-head)']
+        head: 'var(--font-head)',
+        inter: 'var(--font-inter)'
       },
       keyframes: {
         scaling: {

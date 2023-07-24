@@ -1,24 +1,21 @@
-import Image from "next/image";
-import {Inter} from "next/font/google"
-
-const inter = Inter({
-    subsets: ["latin"],
-    weight: ["500", "400"]
-})
+import { CSSProperties } from "react";
 
 type Book = {
-    title: string,
-    author: string,
-    date: string
-}
+    title: string;
+    author: string;
+    image: string;
+    date: string;
+};
 
-export default function Book({title, author, date} : Book) {
+export default function Book({ title, author, date, image}: Book) {
     return (
-        <div className={`relative flex flex-col justify-between p-5 bg-black w-60 h-72 rounded-2xl bg-[url(/images/book.png)] bg-cover bg-no-repeat bg-center ${inter.className}`}>
-            <div className="text-[#CDCDCD] text-lg font-normal">{date}</div>
+        <div
+            className={`relative flex flex-col justify-between p-5 w-60 h-72 bg-black rounded-2xl bg-cover bg-no-repeat bg-center font-inter shadow-md shadow-black/50`} style={{backgroundImage: `url(${image})`}}
+        >
+            <div className="text-[#CDCDCD] text-[17px] font-normal">{date}</div>
             <div>
-                <div className='font-medium text-2xl text-white'>{title}</div>
-                <div className="text-[#CDCDCD] text-lg font-normal">{author}</div>
+                <div className="font-medium text-[21px] text-white overflow-hidden text-ellipsis">{title}</div>
+                <div className="text-[#CDCDCD] text-[18px] font-normal overflow-hidden text-ellipsis">{author}</div>
             </div>
         </div>
     );

@@ -1,8 +1,8 @@
 import { useSession } from "next-auth/react";
-import Bell from "./ui/Bell";
+import Bell from "./ui/BellIcon";
 import UserMenu from "./ui/UserMenu";
 import { useState, useRef } from "react";
-import CheckClickOutside from "./checkClickOutside";
+import CheckClickOutside from "./CheckClickOutside";
 import Image from "next/image";
 
 export default function Header() {

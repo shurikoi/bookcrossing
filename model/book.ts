@@ -3,6 +3,7 @@ import { Schema, models, model } from "mongoose";
 const book = new Schema(
     {
         name: String,
+        owner: String,
         author: String,
         description: String,
         date: Date,
@@ -10,6 +11,6 @@ const book = new Schema(
     { versionKey: false }
 );
 
-const books = models?.books || model("users", book);
+const books = models.books || model("books", book);
 
 export default books;

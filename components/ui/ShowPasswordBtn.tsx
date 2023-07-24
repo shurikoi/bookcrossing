@@ -1,6 +1,6 @@
 import { MouseEventHandler, useState } from "react";
-import OpenedEye from "./OpenedEye";
-import ClosedEye from "./ClosedEye";
+import OpenedEye from "./OpenedEyeIcon";
+import ClosedEye from "./ClosedEyeIcon";
 
 interface ShowPasswordBtn {
     isPasswordVisible: boolean;
