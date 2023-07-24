@@ -14,8 +14,8 @@ export default function Book({ title, author, date, image}: Book) {
         >
             <div className="text-[#CDCDCD] text-[17px] font-normal">{date}</div>
             <div>
-                <div className="font-medium text-[21px] text-white overflow-hidden text-ellipsis">{title}</div>
-                <div className="text-[#CDCDCD] text-[18px] font-normal overflow-hidden text-ellipsis">{author}</div>
+                <div className="font-medium text-[21px] text-white overflow-hidden text-ellipsis" title={title}>{title}</div>
+                <div className="text-[#CDCDCD] text-[18px] font-normal overflow-hidden text-ellipsis" title={author}>{author}</div>
             </div>
         </div>
     );
