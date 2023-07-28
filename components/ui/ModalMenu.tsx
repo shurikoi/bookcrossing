@@ -1,15 +1,15 @@
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import CrossBtn from "./CrossBtn";
 import CheckClickOutside from "../CheckClickOutside";
 
-type ModalMenu = {
+interface ModalMenu extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
     modalActive: boolean;
     setModalActive: Dispatch<SetStateAction<boolean>>;
     padding?: string;
-};
+} ;
 
-export default function ModalMenu({ children, modalActive, setModalActive, padding = "0" }: ModalMenu) {
+export default function ModalMenu({ children, modalActive, setModalActive, ...props }: ModalMenu) {
     const menuRef = useRef<HTMLDivElement>(null);
 
     return (
@@ -17,6 +17,7 @@ export default function ModalMenu({ children, modalActive, setModalActive, paddi
             className={`fixed left-0 top-0 w-screen h-screen flex items-center justify-center  duration-300 transition-opacity ${
                 modalActive ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
             }`}
+            
         >
             <div
                 className={`absolute top-0 left-0 w-screen h-screen bg-black/50  duration-300 transition-opacity  `}
@@ -25,7 +26,7 @@ export default function ModalMenu({ children, modalActive, setModalActive, paddi
                 <div
                     ref={menuRef}
                     className={`relative bg-white shadow-sm rounded-lg duration-300 transition-opacity `}
-                    style={{ padding }}
+                    {...props}
                 >
                     <CrossBtn setMenuActive={setModalActive}></CrossBtn>
                     {children}

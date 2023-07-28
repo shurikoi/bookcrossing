@@ -36,8 +36,8 @@ export const authOptions: NextAuthOptions = {
 
                 await connection();
                 const user = await users.findOne({ email });
-                const avatar = ""
-                
+                const avatar = "";
+
                 if (authType == "signin") {
                     if (user && user.password == password) {
                         const { name, surname, points } = user;
@@ -72,9 +72,9 @@ export const authOptions: NextAuthOptions = {
 
             const user = await users.findOne({ email });
 
-            const { name, surname, avatar, points } = user;
+            const { _id, name, surname, avatar, points } = user;
 
-            session.user = { name, surname, email, avatar, points } as user;
+            session.user = { _id, name, surname, email, avatar, points } as user;
 
             return session;
         },

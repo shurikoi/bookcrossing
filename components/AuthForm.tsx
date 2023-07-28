@@ -24,7 +24,7 @@ export default function AuthForm() {
     const formRef = useRef<HTMLFormElement>(null);
 
     return (
-        <ModalMenu modalActive={formActive} setModalActive={setFormActive} padding="56px 40px">
+        <ModalMenu modalActive={formActive} setModalActive={setFormActive} style={{padding: "56px 40px"}}>
             <form action="" className="text-center flex items-center flex-col gap-8 w-[460px] ">
                 {states[currentState]}
             </form>
