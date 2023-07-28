@@ -5,7 +5,7 @@ import LinkIcon from "./ui/LinkIcon";
 import Book from "./ui/Book";
 import CategoriesMenu from "./CategoriesMenu";
 import { useSession } from "next-auth/react";
-import { data } from "./Publications";
+import ContentLoader from "./ContentLoader";
 
 const categories = [
     "Powieść historyczna",
@@ -20,15 +20,41 @@ const categories = [
     "Biografia",
 ];
 
+export type publicationData = {
+    title: string;
+    author: string;
+    category: string;
+    description: string;
+    image: {
+        name: string;
+        url: string;
+        file?: File;
+    };
+};
+
+type errors = {
+    title: boolean;
+    author: boolean;
+    category: boolean;
+    image: boolean;
+    hasErrors: boolean;
+};
+
 export default function PublicationForm() {
     const { data: session, status } = useSession();
 
-    const [description, setDescription] = useState<string>("");
-    const [author, setAuthor] = useState<string>("Autor");
-    const [title, setTitle] = useState<string>("Tytuł");
+    const [data, setData] = useState<publicationData>({
+        description: "",
+        author: "",
+        title: "",
+        category: "",
+        image: {
+            name: "wybierz...",
+            url: "",
+        },
+    });
 
     const [categoryValue, setCategoryValue] = useState<string>("");
-    const [category, setCategory] = useState<string>("");
     const [categoriesMenuActive, setCategoriesMenuActive] = useState<boolean>(false);
 
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
@@ -36,26 +62,54 @@ export default function PublicationForm() {
 
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState<boolean>(false);
 
-    const [image, setImage] = useState<{ name: string; url: string; file?: File }>({
-        name: "wybierz...",
-        url: "",
-    });
-
     const imageRef = useRef<HTMLInputElement>(null);
+
+    const [errors, setErrors] = useState<errors>({
+        title: false,
+        author: false,
+        category: false,
+        image: false,
+        hasErrors: false,
+    });
 
     function handleInputFile(e: FormEvent<HTMLInputElement>) {
         const files = (e.target as HTMLInputElement).files;
 
         if (files && files[0]) {
-            setImage({
-                name: files[0].name,
-                url: URL.createObjectURL(files[0]),
-                file: files[0],
+            setData({
+                ...data,
+                image: {
+                    name: files[0].name,
+                    url: URL.createObjectURL(files[0]),
+                    file: files[0],
+                },
             });
         }
     }
 
-    function validateData(data: data) {}
+    function validateData(data: publicationData) {
+        const { title, author, category, image } = data;
+        const errors = {
+            title: false,
+            author: false,
+            image: false,
+            category: false,
+            hasErrors: false,
+        };
+        console.log(image)
+        if (title.length == 0) errors.title = true;
+        if (author.length == 0) errors.author = true;
+        if (category.trim() == "") errors.category = true;
+        if (!image.file) errors.image = true;
+
+        setErrors(errors);
+
+        for (let [key, value] of Object.entries(errors)) {
+            if (value) setErrors({ ...errors, hasErrors: true });
+            return { hasErrors: true };
+        }
+        return {hasErrors: false}
+    }
 
     useEffect(() => {
         if (selectedCategory > filteredCategories.length - 1) setSelectedCategory(0);
@@ -63,17 +117,17 @@ export default function PublicationForm() {
     }, [selectedCategory]);
 
     useEffect(() => {
-        const newCategories: string[] = categories.filter((category) =>
-            category.toLowerCase().includes(categoryValue.toLowerCase()) && category != categoryValue
+        const newCategories: string[] = categories.filter(
+            (category) => category.toLowerCase().includes(categoryValue.toLowerCase()) && category != categoryValue
         );
 
         if (filteredCategories != newCategories) setSelectedCategory(0);
-        
+
         setFilteredCategories(newCategories);
 
         categories.forEach((category) => {
             if (category.toLowerCase() == categoryValue.toLowerCase()) {
-                setCategory(categoryValue);
+                setData({ ...data, category: categoryValue });
                 setCategoryValue(category);
             }
         });
@@ -84,7 +138,7 @@ export default function PublicationForm() {
         else if (e.key == "ArrowUp") setSelectedCategory((selectedCategory) => selectedCategory - 1);
         else if (e.key == "Enter") {
             setCategoryValue(categories[selectedCategory]);
-            setCategory(categories[selectedCategory]);
+            setData({ ...data, category: categories[selectedCategory] });
         }
     }
 
@@ -93,10 +147,12 @@ export default function PublicationForm() {
             <div className="flex gap-16">
                 <div className="flex flex-col gap-5">
                     <input
-                        className="w-full font-head font-normal placeholder:text-[#9A9A9A] text-lg border-b border-b-black/40"
+                        className={`w-full font-head font-normal placeholder:text-[#9A9A9A] duration-200 text-lg border-b  ${
+                            errors.title ? "border-b-red-400" : "border-b-black/40"
+                        }`}
                         type="text"
-                        value={title}
-                        onInput={(e) => setTitle((e.target as HTMLInputElement).value)}
+                        value={data.title}
+                        onInput={(e) => setData({ ...data, title: (e.target as HTMLInputElement).value })}
                         placeholder="Bez tytułu"
                     />
                     <div className="flex gap-12 font-extralight text-[14px]">
@@ -117,6 +173,9 @@ export default function PublicationForm() {
                         <div className="flex flex-col gap-5">
                             <div className="relative">
                                 <input
+                                    className={`${
+                                        errors.title ? "placeholder:text-red-400" : ""
+                                    }`}
                                     type="text"
                                     placeholder="wybierz..."
                                     value={categoryValue}
@@ -132,22 +191,24 @@ export default function PublicationForm() {
                                     setCategoryValue={setCategoryValue}
                                     setSelectedCategory={setSelectedCategory}
                                     menuActive={categoriesMenuActive}
-                                    setCategory={setCategory}
+                                    setData={setData}
                                     selectedCategory={selectedCategory}
                                 />
                             </div>
                             <input
-                                className="placeholder:text-[#9A9A9A] border-b border-b-black/40"
+                                className={`placeholder:text-[#9A9A9A] border-b ${
+                                    errors.title ? "border-b-red-400" : "border-b-black/40"
+                                }`}
                                 type="text"
-                                value={author}
-                                onInput={(e) => setAuthor((e.target as HTMLInputElement).value)}
+                                value={data.author}
+                                onInput={(e) => setData({ ...data, author: (e.target as HTMLInputElement).value })}
                                 placeholder="wprowadź tutaj..."
                             />
                             <div
-                                className={`${image.name == "wybierz..." && "text-[#9A9A9A]"} cursor-pointer`}
+                                className={`${data.image.name == "wybierz..." && errors.image ? "text-red-400" : "text-[#9A9A9A]"} cursor-pointer`}
                                 onClick={() => imageRef.current?.click()}
                             >
-                                {image.name}
+                                {data.image.name}
                             </div>
                             <input
                                 ref={imageRef}
@@ -163,43 +224,56 @@ export default function PublicationForm() {
                         Tutaj możesz także dodać dodatkowe informacje.
                     </div>
                 </div>
-                <Book author={author} title={title} date="Dzisiaj" image={image.url} />
+                <Book author={data.author} title={data.title} date="Dzisiaj" image={data.image.url} />
             </div>
 
             <textarea
-                value={description}
-                onInput={(e) => setDescription((e.target as HTMLTextAreaElement).value)}
+                value={data.description}
+                onInput={(e) => setData({ ...data, description: (e.target as HTMLTextAreaElement).value })}
                 className="font-inter text-sm resize-none w-full h-36 cursor-auto "
                 placeholder="Zacznij pisać"
             ></textarea>
-            <div
-                className={`${
-                    isSubmitButtonDisabled ? "text-gray-400" : "text-black"
-                } duration-200 cursor-pointer w-fit`}
-                onClick={() => {
-                    if (isSubmitButtonDisabled) return;
-                    setIsSubmitButtonDisabled(true);
-                    
-                    const form = new FormData();
+            {isSubmitButtonDisabled ? (
+                <ContentLoader />
+            ) : (
+                <div
+                    className={`${
+                        isSubmitButtonDisabled ? "text-gray-400" : "text-black"
+                    } duration-200 cursor-pointer w-fit`}
+                    onClick={() => {
+                        if (isSubmitButtonDisabled) return;
+                        setIsSubmitButtonDisabled(true);
 
-                    form.append("image", image.file!);
-                    form.append("imageName", image.file!.name || "");
-                    form.append("author", author);
-                    form.append("owner", session!.user._id!);
-                    form.append("title", title);
-                    form.append("description", description);
-                    form.append("category", category);
+                        const { hasErrors } = validateData(data);
 
-                    fetch("/api/createPublication", {
-                        method: "POST",
-                        body: form,
-                    })
-                        .then((res) => res.json())
-                        .then(() => window.location.reload());
-                }}
-            >
-                Potwierdź
-            </div>
+                        if (hasErrors) {
+                            setTimeout(() => {
+                                setIsSubmitButtonDisabled(false)
+                            }, 250)
+                            return
+                        };
+
+                        const form = new FormData();
+
+                        form.append("image", data.image.file!);
+                        form.append("imageName", data.image.file!.name);
+                        form.append("author", data.author);
+                        form.append("owner", session!.user._id!);
+                        form.append("title", data.title);
+                        form.append("description", data.description);
+                        form.append("category", data.category);
+
+                        fetch("/api/createPublication", {
+                            method: "POST",
+                            body: form,
+                        })
+                            .then((res) => res.json())
+                            .then(() => window.location.reload());
+                    }}
+                >
+                    Potwierdź
+                </div>
+            )}
         </div>
     );
 }

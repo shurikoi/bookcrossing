@@ -16,12 +16,17 @@ module.exports = {
         inter: 'var(--font-inter)'
       },
       keyframes: {
+        rotation: {
+          '0%': {transform: 'rotate(0deg)'},
+          '100%': {transform: 'rotate(360deg)'}
+        },
         scaling: {
-          '0%': { transform: 'scale(1)' },
+          '0%, 100%': { transform: 'scale(1)' },
           '50%': { transform: 'scale(2)' },
         },
       },
       animation: {
+        rotation: 'rotation 750ms ease-in-out infinite',
         scaling: 'scaling 2s ease-in-out infinite',
         'scaling-1s': "scaling 2s ease-in-out infinite 1s"
       },

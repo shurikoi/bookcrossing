@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import { publicationData } from "./PublicationForm";
 
 type CategoriesMenu = {
     categories: string[];
@@ -8,7 +9,7 @@ type CategoriesMenu = {
     selectedCategory: number;
     setSelectedCategory: Dispatch<SetStateAction<number>>;
     setCategoryValue: Dispatch<SetStateAction<string>>;
-    setCategory: Dispatch<SetStateAction<string>>;
+    setData: Dispatch<SetStateAction<publicationData>>;
 };
 
 export default function CategoriesMenu({
@@ -17,7 +18,7 @@ export default function CategoriesMenu({
     setCategoryValue,
     menuActive,
     filteredCategories,
-    setCategory,
+    setData,
     selectedCategory,
     setSelectedCategory,
 }: CategoriesMenu) {
@@ -33,22 +34,26 @@ export default function CategoriesMenu({
                     onMouseOver={() => setSelectedCategory(index)}
                     onMouseDown={() => {
                         setCategoryValue(category);
-                        setCategory(category);
+                        setData((data) => {
+                            return { ...data, category };
+                        });
                     }}
                 >
                     <span className="p-1.5 bg-[#F2F9F0]">{category}</span>
                 </div>
             ))}
             {!categories.includes(categoryValue) && categoryValue.trim().length != 0 && (
-                    <div
-                        className="cursor-pointer transition-colors duration-200 hover:bg-[#F2F9F0] p-2.5"
-                        onMouseDown={() => {
-                            setCategoryValue(categoryValue);
-                            setCategory(categoryValue);
-                        }}
-                    >
-                        Stworzyć <span className="p-1.5 bg-[#F2F9F0]">{categoryValue}</span>
-                    </div>
+                <div
+                    className="cursor-pointer transition-colors duration-200 hover:bg-[#F2F9F0] p-2.5"
+                    onMouseDown={() => {
+                        setCategoryValue(categoryValue);
+                        setData((data) => {
+                            return { ...data, categoryValue };
+                        });
+                    }}
+                >
+                    Stworzyć <span className="p-1.5 bg-[#F2F9F0]">{categoryValue}</span>
+                </div>
             )}
         </div>
     );

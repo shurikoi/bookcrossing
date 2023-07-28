@@ -3,11 +3,10 @@ import AddBookBtn from "./ui/AddBookBtn";
 import Book from "./ui/Book";
 import ModalMenu from "./ui/ModalMenu";
 import PublicationForm from "./PublicationForm";
-import { Date } from "mongoose";
-import Loader from "./Loader";
+import Loader from "./ContentLoader";
 import BookMenu from "./BookMenu";
 
-export type data = {
+type data = {
     title: string;
     owner: string;
     author: string;
@@ -57,8 +56,8 @@ export default function Publications() {
                         <Book
                             key={index}
                             onClick={() => {
-                                setCurrentBook(data)
-                                setIsBookModalActive(true)
+                                setCurrentBook(data);
+                                setIsBookModalActive(true);
                             }}
                             title={data.title}
                             image={data.image}
