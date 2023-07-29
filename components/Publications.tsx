@@ -3,10 +3,10 @@ import AddBookBtn from "./ui/AddBookBtn";
 import Book from "./ui/Book";
 import ModalMenu from "./ui/ModalMenu";
 import PublicationForm from "./PublicationForm";
-import Loader from "./ContentLoader";
+import ContentLoader from "./ContentLoader";
 import BookMenu from "./BookMenu";
 
-type data = {
+export type data = {
     title: string;
     owner: string;
     author: string;
@@ -19,8 +19,10 @@ type data = {
 export default function Publications() {
     const [isPublicationModalActive, setIsPublicationModalActive] = useState<boolean>(false);
     const [isBookModalActive, setIsBookModalActive] = useState<boolean>(false);
+
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [data, setData] = useState<data[]>();
+
     const [currentBook, setCurrentBook] = useState<data>({
         author: "",
         category: "",
@@ -30,6 +32,7 @@ export default function Publications() {
         owner: "",
         title: "",
     });
+
     useEffect(() => {
         getPublications();
 
@@ -37,11 +40,11 @@ export default function Publications() {
             const books = (await fetch("/api/getPublications", {
                 method: "POST",
             }).then((data) => {
-                setIsLoading(false);
                 return data.json();
             })) as data[];
 
             setData(books);
+            setIsLoading(false);
         }
     }, []);
 
@@ -49,7 +52,7 @@ export default function Publications() {
         <div className="px-28 py-16">
             <div className="flex gap-6 flex-wrap justify-center">
                 {isLoading ? (
-                    <Loader></Loader>
+                    <ContentLoader></ContentLoader>
                 ) : (
                     data &&
                     data.map((data, index) => (
@@ -57,6 +60,7 @@ export default function Publications() {
                             key={index}
                             onClick={() => {
                                 setCurrentBook(data);
+
                                 setIsBookModalActive(true);
                             }}
                             title={data.title}
@@ -67,6 +71,7 @@ export default function Publications() {
                     ))
                 )}
             </div>
+
             <AddBookBtn onClick={() => setIsPublicationModalActive(true)} />
             <ModalMenu
                 modalActive={isPublicationModalActive}
