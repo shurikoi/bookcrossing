@@ -51,7 +51,7 @@ export default function CategoriesMenu({
                     onMouseDown={() => {
                         setCategoryValue(categoryValue);
                         setBookData((bookData) => {
-                            return { ...bookData, categoryValue };
+                            return { ...bookData, category: categoryValue };
                         });
                     }}
                 >

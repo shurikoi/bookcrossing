@@ -42,29 +42,37 @@ export default function Categories({ categories, setBookData, error }: categorie
     }, [categoryValue]);
 
     function handleKeyDown(e: KeyboardEvent) {
-        const elementYPos = selectedCategory * 41;
-        /// нужно найти область видимости (подсказка : 5 * 41 + scrollTop)
         if (e.key == "ArrowDown") {
             setSelectedCategory((selectedCategory) => {
                 const newSelectedCategory = validateSelectedCategory(selectedCategory + 1);
+                const selectedYPost = newSelectedCategory * 41;
 
-                console.log(newSelectedCategory);
-                menuRef.current?.scrollTo({
-                    top: (newSelectedCategory - 4) * 41,
-                    behavior: "smooth",
-                });
+                if (
+                    menuRef.current &&
+                    (selectedYPost < menuRef.current.scrollTop ||
+                        selectedYPost >= menuRef.current.scrollHeight - 5 * 41 + menuRef.current.scrollTop)
+                )
+                    menuRef.current?.scrollTo({
+                        top: (newSelectedCategory - 4) * 41,
+                        behavior: "smooth",
+                    });
 
                 return newSelectedCategory;
             });
         } else if (e.key == "ArrowUp") {
             setSelectedCategory((selectedCategory) => {
                 const newSelectedCategory = validateSelectedCategory(selectedCategory - 1);
+                const selectedYPost = newSelectedCategory * 41;
 
-                console.log(newSelectedCategory);
-                menuRef.current?.scrollTo({
-                    top: (newSelectedCategory - 4) * 41,
-                    behavior: "smooth",
-                });
+                if (
+                    menuRef.current &&
+                    (selectedYPost < menuRef.current.scrollTop ||
+                        selectedYPost >= menuRef.current.scrollHeight - 5 * 41 + menuRef.current.scrollTop)
+                )
+                    menuRef.current?.scrollTo({
+                        top: newSelectedCategory * 41,
+                        behavior: "smooth",
+                    });
 
                 return newSelectedCategory;
             });

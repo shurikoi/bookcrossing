@@ -15,8 +15,8 @@ export default function Book({ title, author, date, image, onClick}: Book) {
         >
             <div className="text-[#CDCDCD] text-[17px] font-normal cursor-text w-fit">{date}</div>
             <div>
-                <div className="font-medium text-[21px] text-white overflow-hidden text-ellipsis cursor-text w-fit" title={title}>{title}</div>
-                <div className="text-[#CDCDCD] text-[18px] font-normal overflow-hidden text-ellipsis cursor-text w-fit" title={author}>{author}</div>
+                <div className="font-medium text-[21px] text-white overflow-hidden text-ellipsis cursor-text w-fit max-w-full" title={title}>{title}</div>
+                <div className="text-[#CDCDCD] text-[18px] font-normal overflow-hidden text-ellipsis cursor-text w-fit max-w-full" title={author}>{author}</div>
             </div>
         </div>
     );

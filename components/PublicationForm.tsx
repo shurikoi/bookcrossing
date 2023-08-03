@@ -93,19 +93,22 @@ export default function PublicationForm() {
             category: false,
             hasErrors: false,
         };
-        console.log(image);
         if (title.length == 0) errors.title = true;
         if (author.length == 0) errors.author = true;
         if (category.trim() == "") errors.category = true;
         if (!image.file) errors.image = true;
 
         setErrors(errors);
-
+        console.log(bookData)
         for (let [key, value] of Object.entries(errors)) {
-            if (value) setErrors({ ...errors, hasErrors: true });
-            return { hasErrors: true };
+            console.log(key, value)
+            if (value) {
+                setErrors({ ...errors, hasErrors: true });
+                errors.hasErrors = true
+            }
+
         }
-        return { hasErrors: false };
+        return errors;
     }
 
     
@@ -194,7 +197,7 @@ export default function PublicationForm() {
                         setIsSubmitButtonDisabled(true);
 
                         const { hasErrors } = validateData(bookData);
-
+                        console.log(hasErrors, validateData(bookData))
                         if (hasErrors) {
                             setTimeout(() => {
                                 setIsSubmitButtonDisabled(false);
