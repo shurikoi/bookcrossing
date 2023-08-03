@@ -14,7 +14,7 @@ export default function Header() {
     return (
         <header
             className="bg-black
-        flex items-center py-4 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(/images/header.png)] z-10"
+        flex items-center py-4 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(/images/header.png)]"
         >
             <div className="flex items-center justify-between mr-auto">
                 <div className="text-2xl text-white font-head">BookCrossing</div>

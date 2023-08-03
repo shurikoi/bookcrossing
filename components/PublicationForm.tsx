@@ -6,6 +6,7 @@ import Book from "./ui/Book";
 import CategoriesMenu from "./CategoriesMenu";
 import { useSession } from "next-auth/react";
 import ContentLoader from "./ContentLoader";
+import Categories from "./Categories";
 
 const categories = [
     "Powieść historyczna",
@@ -43,7 +44,7 @@ type errors = {
 export default function PublicationForm() {
     const { data: session, status } = useSession();
 
-    const [data, setData] = useState<publicationData>({
+    const [bookData, setBookData] = useState<publicationData>({
         description: "",
         author: "",
         title: "",
@@ -54,11 +55,7 @@ export default function PublicationForm() {
         },
     });
 
-    const [categoryValue, setCategoryValue] = useState<string>("");
-    const [categoriesMenuActive, setCategoriesMenuActive] = useState<boolean>(false);
 
-    const [selectedCategory, setSelectedCategory] = useState<number>(0);
-    const [filteredCategories, setFilteredCategories] = useState<string[]>(categories);
 
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState<boolean>(false);
 
@@ -76,8 +73,8 @@ export default function PublicationForm() {
         const files = (e.target as HTMLInputElement).files;
 
         if (files && files[0]) {
-            setData({
-                ...data,
+            setBookData({
+                ...bookData,
                 image: {
                     name: files[0].name,
                     url: URL.createObjectURL(files[0]),
@@ -96,7 +93,7 @@ export default function PublicationForm() {
             category: false,
             hasErrors: false,
         };
-        console.log(image)
+        console.log(image);
         if (title.length == 0) errors.title = true;
         if (author.length == 0) errors.author = true;
         if (category.trim() == "") errors.category = true;
@@ -108,39 +105,10 @@ export default function PublicationForm() {
             if (value) setErrors({ ...errors, hasErrors: true });
             return { hasErrors: true };
         }
-        return {hasErrors: false}
+        return { hasErrors: false };
     }
 
-    useEffect(() => {
-        if (selectedCategory > filteredCategories.length - 1) setSelectedCategory(0);
-        else if (selectedCategory < 0) setSelectedCategory(filteredCategories.length - 1);
-    }, [selectedCategory]);
-
-    useEffect(() => {
-        const newCategories: string[] = categories.filter(
-            (category) => category.toLowerCase().includes(categoryValue.toLowerCase()) && category != categoryValue
-        );
-
-        if (filteredCategories != newCategories) setSelectedCategory(0);
-
-        setFilteredCategories(newCategories);
-
-        categories.forEach((category) => {
-            if (category.toLowerCase() == categoryValue.toLowerCase()) {
-                setData({ ...data, category: categoryValue });
-                setCategoryValue(category);
-            }
-        });
-    }, [categoryValue]);
-
-    function handleKeyDown(e: KeyboardEvent) {
-        if (e.key == "ArrowDown") setSelectedCategory((selectedCategory) => selectedCategory + 1);
-        else if (e.key == "ArrowUp") setSelectedCategory((selectedCategory) => selectedCategory - 1);
-        else if (e.key == "Enter") {
-            setCategoryValue(categories[selectedCategory]);
-            setData({ ...data, category: categories[selectedCategory] });
-        }
-    }
+    
 
     return (
         <div className="flex flex-col gap-5">
@@ -151,64 +119,45 @@ export default function PublicationForm() {
                             errors.title ? "border-b-red-400" : "border-b-black/40"
                         }`}
                         type="text"
-                        value={data.title}
-                        onInput={(e) => setData({ ...data, title: (e.target as HTMLInputElement).value })}
+                        value={bookData.title}
+                        onInput={(e) => setBookData({ ...bookData, title: (e.target as HTMLInputElement).value })}
                         placeholder="Bez tytułu"
                     />
                     <div className="flex gap-12 font-extralight text-[14px]">
                         <div className="text-left flex flex-col gap-5">
                             <div className="flex gap-3 items-center">
-                                <TagIcon></TagIcon>
+                                <TagIcon/>
                                 <div>Kategoria</div>
                             </div>
                             <div className="flex gap-3 items-center">
-                                <ProfileIcon></ProfileIcon>
+                                <ProfileIcon/>
                                 <div>Autor</div>
                             </div>
                             <div className="flex gap-3 items-center">
-                                <LinkIcon></LinkIcon>
+                                <LinkIcon/>
                                 <div>Zdjęcie</div>
                             </div>
                         </div>
                         <div className="flex flex-col gap-5">
                             <div className="relative">
-                                <input
-                                    className={`${
-                                        errors.title ? "placeholder:text-red-400" : ""
-                                    }`}
-                                    type="text"
-                                    placeholder="wybierz..."
-                                    value={categoryValue}
-                                    onKeyDown={handleKeyDown}
-                                    onInput={(e) => setCategoryValue((e.target as HTMLInputElement).value)}
-                                    onFocus={() => setCategoriesMenuActive(true)}
-                                    onBlur={() => setCategoriesMenuActive(false)}
-                                ></input>
-                                <CategoriesMenu
-                                    categories={categories}
-                                    filteredCategories={filteredCategories}
-                                    categoryValue={categoryValue}
-                                    setCategoryValue={setCategoryValue}
-                                    setSelectedCategory={setSelectedCategory}
-                                    menuActive={categoriesMenuActive}
-                                    setData={setData}
-                                    selectedCategory={selectedCategory}
-                                />
+                                <Categories categories={categories} setBookData={setBookData} error={errors.title}/>
                             </div>
                             <input
                                 className={`placeholder:text-[#9A9A9A] border-b ${
                                     errors.title ? "border-b-red-400" : "border-b-black/40"
                                 }`}
                                 type="text"
-                                value={data.author}
-                                onInput={(e) => setData({ ...data, author: (e.target as HTMLInputElement).value })}
+                                value={bookData.author}
+                                onInput={(e) => setBookData({ ...bookData, author: (e.target as HTMLInputElement).value })}
                                 placeholder="wprowadź tutaj..."
                             />
                             <div
-                                className={`${data.image.name == "wybierz..." && errors.image ? "text-red-400" : "text-[#9A9A9A]"} cursor-pointer`}
+                                className={`${
+                                    bookData.image.name == "wybierz..." && errors.image ? "text-red-400" : "text-[#9A9A9A]"
+                                } cursor-pointer`}
                                 onClick={() => imageRef.current?.click()}
                             >
-                                {data.image.name}
+                                {bookData.image.name}
                             </div>
                             <input
                                 ref={imageRef}
@@ -224,12 +173,12 @@ export default function PublicationForm() {
                         Tutaj możesz także dodać dodatkowe informacje.
                     </div>
                 </div>
-                <Book author={data.author} title={data.title} date="Dzisiaj" image={data.image.url} />
+                <Book author={bookData.author} title={bookData.title} date="Dzisiaj" image={bookData.image.url} />
             </div>
 
             <textarea
-                value={data.description}
-                onInput={(e) => setData({ ...data, description: (e.target as HTMLTextAreaElement).value })}
+                value={bookData.description}
+                onInput={(e) => setBookData({ ...bookData, description: (e.target as HTMLTextAreaElement).value })}
                 className="font-inter text-sm resize-none w-full h-36 cursor-auto "
                 placeholder="Zacznij pisać"
             ></textarea>
@@ -244,24 +193,24 @@ export default function PublicationForm() {
                         if (isSubmitButtonDisabled) return;
                         setIsSubmitButtonDisabled(true);
 
-                        const { hasErrors } = validateData(data);
+                        const { hasErrors } = validateData(bookData);
 
                         if (hasErrors) {
                             setTimeout(() => {
-                                setIsSubmitButtonDisabled(false)
-                            }, 250)
-                            return
-                        };
+                                setIsSubmitButtonDisabled(false);
+                            }, 250);
+                            return;
+                        }
 
                         const form = new FormData();
 
-                        form.append("image", data.image.file!);
-                        form.append("imageName", data.image.file!.name);
-                        form.append("author", data.author);
+                        form.append("image", bookData.image.file!);
+                        form.append("imageName", bookData.image.file!.name);
+                        form.append("author", bookData.author);
                         form.append("owner", session!.user._id!);
-                        form.append("title", data.title);
-                        form.append("description", data.description);
-                        form.append("category", data.category);
+                        form.append("title", bookData.title);
+                        form.append("description", bookData.description);
+                        form.append("category", bookData.category);
 
                         fetch("/api/createPublication", {
                             method: "POST",

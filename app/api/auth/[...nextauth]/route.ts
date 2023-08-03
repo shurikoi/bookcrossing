@@ -13,7 +13,7 @@ type credentials = {
     avatar?: string;
 };
 
-export type user = {
+type user = {
     name?: string;
     surname?: string;
     email?: string;
@@ -21,7 +21,7 @@ export type user = {
     points?: number;
 };
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
     session: {
         strategy: "jwt",
     },
