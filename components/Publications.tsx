@@ -23,15 +23,7 @@ export default function Publications() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [data, setData] = useState<data[]>();
 
-    const [currentBook, setCurrentBook] = useState<data>({
-        author: "",
-        category: "",
-        date: 0,
-        description: "",
-        image: "",
-        owner: "",
-        title: "",
-    });
+    const [currentBook, setCurrentBook] = useState<data>();
 
     useEffect(() => {
         getPublications();
@@ -44,6 +36,7 @@ export default function Publications() {
             })) as data[];
 
             setData(books);
+            setCurrentBook(books[0]);
             setIsLoading(false);
         }
     }, []);
@@ -81,13 +74,15 @@ export default function Publications() {
                 <PublicationForm />
             </ModalMenu>
 
-            <ModalMenu
-                modalActive={isBookModalActive}
-                setModalActive={setIsBookModalActive}
-                style={{ padding: "25px" }}
-            >
-                <BookMenu data={currentBook}></BookMenu>
-            </ModalMenu>
+            {currentBook && (
+                <ModalMenu
+                    modalActive={isBookModalActive}
+                    setModalActive={setIsBookModalActive}
+                    style={{ padding: "25px" }}
+                >
+                    <BookMenu data={currentBook}></BookMenu>
+                </ModalMenu>
+            )}
         </div>
     );
 }

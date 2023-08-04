@@ -1,12 +1,11 @@
-import { FormEvent, FormEventHandler, KeyboardEvent, useEffect, useRef, useState } from "react";
-import TagIcon from "./ui/TagIcon";
-import ProfileIcon from "./ui/ProfileIcon";
-import LinkIcon from "./ui/LinkIcon";
-import Book from "./ui/Book";
-import CategoriesMenu from "./CategoriesMenu";
+import { FormEvent, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-import ContentLoader from "./ContentLoader";
+import Book from "./ui/Book";
+import TagIcon from "./ui/TagIcon";
+import LinkIcon from "./ui/LinkIcon";
 import Categories from "./Categories";
+import ProfileIcon from "./ui/ProfileIcon";
+import ContentLoader from "./ContentLoader";
 
 const categories = [
     "Powieść historyczna",
@@ -42,7 +41,7 @@ type errors = {
 };
 
 export default function PublicationForm() {
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
 
     const [bookData, setBookData] = useState<publicationData>({
         description: "",
@@ -54,8 +53,6 @@ export default function PublicationForm() {
             url: "",
         },
     });
-
-
 
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState<boolean>(false);
 
@@ -84,35 +81,6 @@ export default function PublicationForm() {
         }
     }
 
-    function validateData(data: publicationData) {
-        const { title, author, category, image } = data;
-        const errors = {
-            title: false,
-            author: false,
-            image: false,
-            category: false,
-            hasErrors: false,
-        };
-        if (title.length == 0) errors.title = true;
-        if (author.length == 0) errors.author = true;
-        if (category.trim() == "") errors.category = true;
-        if (!image.file) errors.image = true;
-
-        setErrors(errors);
-        console.log(bookData)
-        for (let [key, value] of Object.entries(errors)) {
-            console.log(key, value)
-            if (value) {
-                setErrors({ ...errors, hasErrors: true });
-                errors.hasErrors = true
-            }
-
-        }
-        return errors;
-    }
-
-    
-
     return (
         <div className="flex flex-col gap-5">
             <div className="flex gap-16">
@@ -129,21 +97,21 @@ export default function PublicationForm() {
                     <div className="flex gap-12 font-extralight text-[14px]">
                         <div className="text-left flex flex-col gap-5">
                             <div className="flex gap-3 items-center">
-                                <TagIcon/>
+                                <TagIcon />
                                 <div>Kategoria</div>
                             </div>
                             <div className="flex gap-3 items-center">
-                                <ProfileIcon/>
+                                <ProfileIcon />
                                 <div>Autor</div>
                             </div>
                             <div className="flex gap-3 items-center">
-                                <LinkIcon/>
+                                <LinkIcon />
                                 <div>Zdjęcie</div>
                             </div>
                         </div>
                         <div className="flex flex-col gap-5">
                             <div className="relative">
-                                <Categories categories={categories} setBookData={setBookData} error={errors.title}/>
+                                <Categories categories={categories} setBookData={setBookData} error={errors.title} />
                             </div>
                             <input
                                 className={`placeholder:text-[#9A9A9A] border-b ${
@@ -151,12 +119,16 @@ export default function PublicationForm() {
                                 }`}
                                 type="text"
                                 value={bookData.author}
-                                onInput={(e) => setBookData({ ...bookData, author: (e.target as HTMLInputElement).value })}
+                                onInput={(e) =>
+                                    setBookData({ ...bookData, author: (e.target as HTMLInputElement).value })
+                                }
                                 placeholder="wprowadź tutaj..."
                             />
                             <div
                                 className={`${
-                                    bookData.image.name == "wybierz..." && errors.image ? "text-red-400" : "text-[#9A9A9A]"
+                                    bookData.image.name == "wybierz..." && errors.image
+                                        ? "text-red-400"
+                                        : "text-[#9A9A9A]"
                                 } cursor-pointer`}
                                 onClick={() => imageRef.current?.click()}
                             >
@@ -196,19 +168,26 @@ export default function PublicationForm() {
                         if (isSubmitButtonDisabled) return;
                         setIsSubmitButtonDisabled(true);
 
-                        const { hasErrors } = validateData(bookData);
-                        console.log(hasErrors, validateData(bookData))
-                        if (hasErrors) {
-                            setTimeout(() => {
-                                setIsSubmitButtonDisabled(false);
-                            }, 250);
-                            return;
-                        }
+                        // const errors = isDataValid(bookData);
+
+                        // setErrors(errors);
+
+                        // if (errors.hasErrors) {
+                        //     setTimeout(() => {
+                        //         setIsSubmitButtonDisabled(false);
+                        //     }, 250);
+                        //     return;
+                        // }
 
                         const form = new FormData();
 
-                        form.append("image", bookData.image.file!);
-                        form.append("imageName", bookData.image.file!.name);
+                        form.append(
+                            "image",
+                            JSON.stringify({
+                                file: bookData.image.file!,
+                                name: bookData.image.name,
+                            })
+                        );
                         form.append("author", bookData.author);
                         form.append("owner", session!.user._id!);
                         form.append("title", bookData.title);
@@ -220,7 +199,14 @@ export default function PublicationForm() {
                             body: form,
                         })
                             .then((res) => res.json())
-                            .then(() => window.location.reload());
+                            .then((data) => {
+                                if (data.hasErrors) {
+                                    setErrors(data);
+                                    setTimeout(() => {
+                                        setIsSubmitButtonDisabled(false);
+                                    }, 250);
+                                } else window.location.reload();
+                            });
                     }}
                 >
                     Potwierdź

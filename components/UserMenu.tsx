@@ -6,7 +6,7 @@ export default function UserMenu({menuActive} : {menuActive: boolean}) {
 
     return (
         <div
-            className="absolute right-0 bottom-[-16px] translate-y-[100%] shadow-lg rounded-lg flex flex-col gap-4 bg-white py-6 px-4 duration-200"
+            className="absolute right-0 bottom-[-16px] translate-y-[100%] shadow-lg rounded-lg flex flex-col gap-4 bg-white py-6 px-4 duration-200 z-10 "
             style={menuActive ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }}
         >
             <div className="flex flex-col px-3">

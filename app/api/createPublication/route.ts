@@ -1,28 +1,35 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import books from "@/model/book";
+import isDataValid from "@/lib/isDataValid";
 
 export async function POST(req: Request) {
     const body = await req.formData();
-
+    
     const data: any = {};
-
+    
     for (const [key, value] of body) {
         data[key] = value;
     }
+    
+    const errors = isDataValid(data)
 
-    const img = data.image;
+    if (errors.hasErrors) 
+    return NextResponse.json(errors)
 
-    const name = data.imageName;
+    const image = data.image;
 
-    const parts = name.split(".");
 
-    const imgName = parts.slice(0, -1).join("");
-    const imgExtension = parts.slice(-1);
+    const parts = image.name.split(".");
 
-    const buffer = Buffer.from(await img.arrayBuffer());
+    const imageName = parts.slice(0, -1).join("");
+    const imageExtension = parts.slice(-1);
+
+    const buffer = Buffer.from(await image.file.arrayBuffer());
+
     const date = new Date().getTime()
-    const imagePath = `/books/${date}_${imgName}.${imgExtension}`;
+
+    const imagePath = `/books/${date}_${imageName}.${imageExtension}`;
 
     fs.writeFile("./public" + imagePath, buffer, () => {});
 

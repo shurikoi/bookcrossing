@@ -5,7 +5,6 @@ import TagIcon from "./ui/TagIcon";
 
 export default function ModalBookMenu({ data }: { data: data }) {
     const { title, author, category, date, description, image, owner } = data;
-    console.log(data)
     return (
         <div className="flex flex-col gap-5 max-w-[652px]">
             <div className="flex gap-16">
@@ -36,7 +35,7 @@ export default function ModalBookMenu({ data }: { data: data }) {
                 </div>
                 <Book author={author} title={title} date="Dzisiaj" image={image} />
             </div>
-            <div className="font-inter text-sm resize-none w-full h-36 cursor-auto">{description}</div>
+            <div className="font-inter text-sm resize-none w-full h-36 cursor-auto whitespace-pre-wrap break-words overflow-y-auto">{description}</div>
         </div>
     );
 }
