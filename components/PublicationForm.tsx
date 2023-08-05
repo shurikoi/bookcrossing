@@ -129,7 +129,7 @@ export default function PublicationForm() {
                                     bookData.image.name == "wybierz..." && errors.image
                                         ? "text-red-400"
                                         : "text-[#9A9A9A]"
-                                } cursor-pointer`}
+                                } cursor-pointer overflow-ellipsis overflow-hidden w-[240px]`}
                                 onClick={() => imageRef.current?.click()}
                             >
                                 {bookData.image.name}
@@ -143,20 +143,23 @@ export default function PublicationForm() {
                             />
                         </div>
                     </div>
-                    <div className="mt-auto font-inter text-xs font-light">
+                    <hr className="border-black/40" />
+                    <div className="font-inter text-xs font-light">
                         Napisz jak się z Tobą skontaktować. <br />
                         Tutaj możesz także dodać dodatkowe informacje.
                     </div>
+                    <textarea
+                        value={bookData.description}
+                        onInput={(e) =>
+                            setBookData({ ...bookData, description: (e.target as HTMLTextAreaElement).value })
+                        }
+                        className="font-inter text-sm resize-none w-full h-36 cursor-auto"
+                        placeholder="Zacznij pisać"
+                    ></textarea>
                 </div>
                 <Book author={bookData.author} title={bookData.title} date="Dzisiaj" image={bookData.image.url} />
             </div>
 
-            <textarea
-                value={bookData.description}
-                onInput={(e) => setBookData({ ...bookData, description: (e.target as HTMLTextAreaElement).value })}
-                className="font-inter text-sm resize-none w-full h-36 cursor-auto "
-                placeholder="Zacznij pisać"
-            ></textarea>
             {isSubmitButtonDisabled ? (
                 <ContentLoader />
             ) : (
