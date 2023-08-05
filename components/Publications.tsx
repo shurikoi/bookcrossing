@@ -13,7 +13,7 @@ export type data = {
     description: string;
     category: string;
     image: string;
-    date: number;
+    date: string;
 };
 
 export default function Publications() {
@@ -41,6 +41,16 @@ export default function Publications() {
         }
     }, []);
 
+    function handleDate(date: string): string {
+        let month: string | number = new Date(date).getMonth() + 1;
+        let day: string | number = new Date(date).getDate();
+
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+
+        return `${month}-${day}`;
+    }
+
     return (
         <div className="px-28 py-16">
             <div className="flex gap-6 flex-wrap justify-center">
@@ -59,7 +69,7 @@ export default function Publications() {
                             title={data.title}
                             image={data.image}
                             author={data.author}
-                            date={"dzisiaj"}
+                            date={handleDate(data.date)}
                         />
                     ))
                 )}
