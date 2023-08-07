@@ -76,13 +76,15 @@ export default function Publications() {
             </div>
 
             <AddBookBtn onClick={() => setIsPublicationModalActive(true)} />
-            <ModalMenu
-                modalActive={isPublicationModalActive}
-                setModalActive={setIsPublicationModalActive}
-                style={{ padding: "25px" }}
-            >
-                <PublicationForm />
-            </ModalMenu>
+            {isPublicationModalActive && (
+                <ModalMenu
+                    modalActive={isPublicationModalActive}
+                    setModalActive={setIsPublicationModalActive}
+                    style={{ padding: "25px" }}
+                >
+                    <PublicationForm />
+                </ModalMenu>
+            )}
 
             {currentBook && (
                 <ModalMenu

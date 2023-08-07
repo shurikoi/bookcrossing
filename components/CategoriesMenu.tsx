@@ -10,7 +10,7 @@ type CategoriesMenu = {
     selectedCategory: number;
     setSelectedCategory: Dispatch<SetStateAction<number>>;
     setCategoryValue: Dispatch<SetStateAction<string>>;
-    setBookData: Dispatch<SetStateAction<publicationData>>;
+    setCategory: Dispatch<SetStateAction<string>>;
 };
 
 export default function CategoriesMenu({
@@ -20,7 +20,7 @@ export default function CategoriesMenu({
     setCategoryValue,
     menuActive,
     filteredCategories,
-    setBookData,
+    setCategory,
     selectedCategory,
     setSelectedCategory,
 }: CategoriesMenu) {
@@ -37,9 +37,7 @@ export default function CategoriesMenu({
                     onMouseOver={() => setSelectedCategory(index)}
                     onMouseDown={() => {
                         setCategoryValue(category);
-                        setBookData((bookData) => {
-                            return { ...bookData, category };
-                        });
+                        setCategory(category);
                     }}
                 >
                     <span className="p-1.5 bg-[#F2F9F0]">{category}</span>
@@ -50,9 +48,7 @@ export default function CategoriesMenu({
                     className="cursor-pointer transition-colors duration-200 hover:bg-[#F2F9F0] p-2.5"
                     onMouseDown={() => {
                         setCategoryValue(categoryValue);
-                        setBookData((bookData) => {
-                            return { ...bookData, category: categoryValue };
-                        });
+                        setCategory(categoryValue);
                     }}
                 >
                     Stworzyć <span className="p-1.5 bg-[#F2F9F0]">{categoryValue}</span>

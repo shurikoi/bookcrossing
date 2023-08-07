@@ -4,11 +4,11 @@ import CategoriesMenu from "./CategoriesMenu";
 
 type categories = {
     categories: string[];
-    setBookData: Dispatch<SetStateAction<publicationData>>;
+    setCategory: Dispatch<SetStateAction<string>>;
     error: boolean;
 };
 
-export default function Categories({ categories, setBookData, error }: categories) {
+export default function Categories({ categories, setCategory, error }: categories) {
     const [categoriesMenuActive, setCategoriesMenuActive] = useState<boolean>(false);
     const [categoryValue, setCategoryValue] = useState<string>(""); // input value
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
@@ -33,9 +33,7 @@ export default function Categories({ categories, setBookData, error }: categorie
 
         categories.forEach((category) => {
             if (category.toLowerCase() == categoryValue.toLowerCase()) {
-                setBookData((bookData) => {
-                    return { ...bookData, category: categoryValue };
-                });
+                setCategory(categoryValue);
                 setCategoryValue(category);
             }
         });
@@ -78,16 +76,14 @@ export default function Categories({ categories, setBookData, error }: categorie
             });
         } else if (e.key == "Enter") {
             setCategoryValue(categories[selectedCategory]);
-            setBookData((bookData) => {
-                return { ...bookData, category: categories[selectedCategory] };
-            });
+            setCategory(categories[selectedCategory]);
         }
     }
 
     return (
         <>
             <input
-                className={`${error ? "placeholder:text-red-400" : ""}`}
+                className={`${error ? "placeholder:text-red-400 text-red-400" : ""}`}
                 type="text"
                 placeholder="wybierz..."
                 value={categoryValue}
@@ -107,7 +103,7 @@ export default function Categories({ categories, setBookData, error }: categorie
                 setCategoryValue={setCategoryValue}
                 setSelectedCategory={setSelectedCategory}
                 menuActive={categoriesMenuActive}
-                setBookData={setBookData}
+                setCategory={setCategory}
                 selectedCategory={selectedCategory}
             />
         </>

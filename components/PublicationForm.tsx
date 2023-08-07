@@ -25,12 +25,15 @@ export type publicationData = {
     author: string;
     category: string;
     description: string;
-    image: {
-        name: string;
-        url: string;
-        file?: File;
-    };
+    owner: string;
+    imageName: string;
+    image: File;
 };
+
+interface image {
+    url: string;
+    file: File | undefined;
+}
 
 type errors = {
     title: boolean;
@@ -43,16 +46,24 @@ type errors = {
 export default function PublicationForm() {
     const { data: session } = useSession();
 
-    const [bookData, setBookData] = useState<publicationData>({
-        description: "",
-        author: "",
-        title: "",
-        category: "",
-        image: {
-            name: "wybierz...",
-            url: "",
-        },
+    const [author, setAuthor] = useState("");
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [category, setCategory] = useState("");
+    const [image, setImage] = useState<image>({
+        url: "",
+        file: undefined,
     });
+    // const [bookData, setBookData] = useState<publicationData>({
+    //     description: "",
+    //     author: "",
+    //     title: "",
+    //     category: "",
+    //     image: {
+    //         name: "wybierz...",
+    //         url: "",
+    //     },
+    // });
 
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState<boolean>(false);
 
@@ -70,13 +81,9 @@ export default function PublicationForm() {
         const files = (e.target as HTMLInputElement).files;
 
         if (files && files[0]) {
-            setBookData({
-                ...bookData,
-                image: {
-                    name: files[0].name,
-                    url: URL.createObjectURL(files[0]),
-                    file: files[0],
-                },
+            setImage({
+                url: URL.createObjectURL(files[0]),
+                file: files[0],
             });
         }
     }
@@ -90,8 +97,8 @@ export default function PublicationForm() {
                             errors.title ? "border-b-red-400" : "border-b-black/40"
                         }`}
                         type="text"
-                        value={bookData.title}
-                        onInput={(e) => setBookData({ ...bookData, title: (e.target as HTMLInputElement).value })}
+                        value={title}
+                        onInput={(e) => setTitle((e.target as HTMLInputElement).value)}
                         placeholder="Bez tytułu"
                     />
                     <div className="flex gap-12 font-extralight text-[14px]">
@@ -111,28 +118,24 @@ export default function PublicationForm() {
                         </div>
                         <div className="flex flex-col gap-5">
                             <div className="relative">
-                                <Categories categories={categories} setBookData={setBookData} error={errors.title} />
+                                <Categories categories={categories} setCategory={setCategory} error={errors.category} />
                             </div>
                             <input
                                 className={`placeholder:text-[#9A9A9A] border-b ${
                                     errors.title ? "border-b-red-400" : "border-b-black/40"
                                 }`}
                                 type="text"
-                                value={bookData.author}
-                                onInput={(e) =>
-                                    setBookData({ ...bookData, author: (e.target as HTMLInputElement).value })
-                                }
+                                value={author}
+                                onInput={(e) => setAuthor((e.target as HTMLInputElement).value)}
                                 placeholder="wprowadź tutaj..."
                             />
                             <div
                                 className={`${
-                                    bookData.image.name == "wybierz..." && errors.image
-                                        ? "text-red-400"
-                                        : "text-[#9A9A9A]"
+                                    errors.image ? "text-red-400" : "text-[#9A9A9A]"
                                 } cursor-pointer overflow-ellipsis overflow-hidden w-[240px]`}
                                 onClick={() => imageRef.current?.click()}
                             >
-                                {bookData.image.name}
+                                {image.file ? image.file.name : "wybierz..."}
                             </div>
                             <input
                                 ref={imageRef}
@@ -149,18 +152,16 @@ export default function PublicationForm() {
                         Tutaj możesz także dodać dodatkowe informacje.
                     </div>
                     <textarea
-                        value={bookData.description}
-                        onInput={(e) =>
-                            setBookData({ ...bookData, description: (e.target as HTMLTextAreaElement).value })
-                        }
+                        value={description}
+                        onInput={(e) => setDescription((e.target as HTMLTextAreaElement).value)}
                         className="font-inter text-sm resize-none w-full h-36 cursor-auto"
                         placeholder="Zacznij pisać"
                     ></textarea>
                 </div>
-                <Book author={bookData.author} title={bookData.title} date="Dzisiaj" image={bookData.image.url} />
+                <Book author={author} title={title} date="Dzisiaj" image={image.url} />
             </div>
 
-            {isSubmitButtonDisabled ? (
+            {false ? (
                 <ContentLoader />
             ) : (
                 <div
@@ -184,18 +185,14 @@ export default function PublicationForm() {
 
                         const form = new FormData();
 
-                        form.append(
-                            "image",
-                            JSON.stringify({
-                                file: bookData.image.file!,
-                                name: bookData.image.name,
-                            })
-                        );
-                        form.append("author", bookData.author);
+                        console.log(image.file);
+                        form.append("image", image.file!);
+                        form.append("imageName", image.file?.name!)
+                        form.append("author", author);
                         form.append("owner", session!.user._id!);
-                        form.append("title", bookData.title);
-                        form.append("description", bookData.description);
-                        form.append("category", bookData.category);
+                        form.append("title", title);
+                        form.append("description", description);
+                        form.append("category", category);
 
                         fetch("/api/createPublication", {
                             method: "POST",
