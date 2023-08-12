@@ -83,7 +83,6 @@ export default function Categories({ categories, setCategory, error }: categorie
     return (
         <>
             <input
-                className={`${error ? "placeholder:text-red-400 text-red-400" : ""}`}
                 type="text"
                 placeholder="wybierz..."
                 value={categoryValue}

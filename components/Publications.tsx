@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AddBookBtn from "./ui/AddBookBtn";
 import Book from "./ui/Book";
 import ModalMenu from "./ui/ModalMenu";
 import PublicationForm from "./PublicationForm";
 import ContentLoader from "./ContentLoader";
 import BookMenu from "./BookMenu";
+import convertDate from "@/lib/convertDate";
 
 export type data = {
     title: string;
@@ -29,11 +30,11 @@ export default function Publications() {
         getPublications();
 
         async function getPublications() {
-            const books = (await fetch("/api/getPublications", {
+            const response = await fetch("/api/getPublications", {
                 method: "POST",
-            }).then((data) => {
-                return data.json();
-            })) as data[];
+            });
+
+            const books: data[] = await response.json();
 
             setData(books);
             setCurrentBook(books[0]);
@@ -41,15 +42,38 @@ export default function Publications() {
         }
     }, []);
 
-    function handleDate(date: string): string {
-        let month: string | number = new Date(date).getMonth() + 1;
-        let day: string | number = new Date(date).getDate();
+    const publicationFormMenu = useMemo(
+        () => (
+            <ModalMenu
+                modalActive={isPublicationModalActive}
+                setModalActive={setIsPublicationModalActive}
+                style={{ padding: "25px" }}
+            >
+                <PublicationForm />{" "}
+            </ModalMenu>
+        ),
+        [isPublicationModalActive]
+    );
+    const bookMenu = useMemo(() => (
+            currentBook && <ModalMenu
+                modalActive={isBookModalActive}
+                setModalActive={setIsBookModalActive}
+                style={{ padding: "25px" }}
+            >
+                <BookMenu data={currentBook!} />{" "}
+            </ModalMenu>
+        )
+    , [currentBook, isBookModalActive]);
 
-        if (month < 10) month = "0" + month;
-        if (day < 10) day = "0" + day;
+    // function handleDate(date: string): string {
+    //     let month: string | number = new Date(date).getMonth() + 1;
+    //     let day: string | number = new Date(date).getDate();
 
-        return `${month}-${day}`;
-    }
+    //     if (month < 10) month = "0" + month;
+    //     if (day < 10) day = "0" + day;
+
+    //     return `${month}-${day}`;
+    // }
 
     return (
         <div className="px-28 py-16">
@@ -69,32 +93,17 @@ export default function Publications() {
                             title={data.title}
                             image={data.image}
                             author={data.author}
-                            date={handleDate(data.date)}
+                            date={convertDate(data.date)}
                         />
                     ))
                 )}
             </div>
 
             <AddBookBtn onClick={() => setIsPublicationModalActive(true)} />
-            {isPublicationModalActive && (
-                <ModalMenu
-                    modalActive={isPublicationModalActive}
-                    setModalActive={setIsPublicationModalActive}
-                    style={{ padding: "25px" }}
-                >
-                    <PublicationForm />
-                </ModalMenu>
-            )}
 
-            {currentBook && (
-                <ModalMenu
-                    modalActive={isBookModalActive}
-                    setModalActive={setIsBookModalActive}
-                    style={{ padding: "25px" }}
-                >
-                    <BookMenu data={currentBook}></BookMenu>
-                </ModalMenu>
-            )}
+            {publicationFormMenu}
+
+            {bookMenu}
         </div>
     );
 }

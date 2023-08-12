@@ -6,6 +6,7 @@ import LinkIcon from "./ui/LinkIcon";
 import Categories from "./Categories";
 import ProfileIcon from "./ui/ProfileIcon";
 import ContentLoader from "./ContentLoader";
+import WarningIcon from "./ui/WarningIcon";
 
 const categories = [
     "Powieść historyczna",
@@ -54,16 +55,6 @@ export default function PublicationForm() {
         url: "",
         file: undefined,
     });
-    // const [bookData, setBookData] = useState<publicationData>({
-    //     description: "",
-    //     author: "",
-    //     title: "",
-    //     category: "",
-    //     image: {
-    //         name: "wybierz...",
-    //         url: "",
-    //     },
-    // });
 
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState<boolean>(false);
 
@@ -88,28 +79,70 @@ export default function PublicationForm() {
         }
     }
 
+    function handleSubmit() {
+        if (isSubmitButtonDisabled) return;
+        setIsSubmitButtonDisabled(true);
+
+        const form = new FormData();
+
+        form.append("image", image.file!);
+        form.append("imageName", image.file?.name!);
+        form.append("author", author);
+        form.append("owner", session!.user._id!);
+        form.append("title", title);
+        form.append("description", description);
+        form.append("category", category);
+
+        fetch("/api/createPublication", {
+            method: "POST",
+            body: form,
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.hasErrors) {
+                    setErrors(data);
+                    setTimeout(() => {
+                        setIsSubmitButtonDisabled(false);
+                    }, 250);
+                } else window.location.reload();
+            });
+    }
+
     return (
         <div className="flex flex-col gap-5">
             <div className="flex gap-16">
                 <div className="flex flex-col gap-5">
-                    <input
-                        className={`w-full font-head font-normal placeholder:text-[#9A9A9A] duration-200 text-lg border-b  ${
-                            errors.title ? "border-b-red-400" : "border-b-black/40"
-                        }`}
-                        type="text"
-                        value={title}
-                        onInput={(e) => setTitle((e.target as HTMLInputElement).value)}
-                        placeholder="Bez tytułu"
-                    />
+                    <div className="flex flex-col">
+                        <input
+                            className={`w-full font-head font-normal placeholder:text-[#9A9A9A] duration-200 text-lg`}
+                            type="text"
+                            value={title}
+                            onInput={(e) => setTitle((e.target as HTMLInputElement).value)}
+                            placeholder="Bez tytułu"
+                        />
+                        {errors.title && (
+                            <div className="flex items-center gap-1">
+                                <>
+                                    <WarningIcon />
+                                    <div className=" text-[#DD0000] font-inter font-normal text-[13px] leading-none">
+                                        Niestety, tytuł musi się składać z 2-55 znaków
+                                    </div>
+                                </>
+                            </div>
+                        )}
+                    </div>
                     <div className="flex gap-12 font-extralight text-[14px]">
                         <div className="text-left flex flex-col gap-5">
                             <div className="flex gap-3 items-center">
                                 <TagIcon />
                                 <div>Kategoria</div>
                             </div>
-                            <div className="flex gap-3 items-center">
-                                <ProfileIcon />
-                                <div>Autor</div>
+                            <div className="flex flex-col gap-1">
+                                <div className="flex gap-3 items-center">
+                                    <ProfileIcon />
+                                    <div>Autor</div>
+                                </div>
+                                {errors.author && <div className="h-[1em]"></div>}
                             </div>
                             <div className="flex gap-3 items-center">
                                 <LinkIcon />
@@ -120,22 +153,30 @@ export default function PublicationForm() {
                             <div className="relative">
                                 <Categories categories={categories} setCategory={setCategory} error={errors.category} />
                             </div>
-                            <input
-                                className={`placeholder:text-[#9A9A9A] border-b ${
-                                    errors.title ? "border-b-red-400" : "border-b-black/40"
-                                }`}
-                                type="text"
-                                value={author}
-                                onInput={(e) => setAuthor((e.target as HTMLInputElement).value)}
-                                placeholder="wprowadź tutaj..."
-                            />
+                            <div className="flex flex-col gap-1">
+                                <input
+                                    className={`placeholder:text-[#9A9A9A]`}
+                                    type="text"
+                                    value={author}
+                                    onInput={(e) => setAuthor((e.target as HTMLInputElement).value)}
+                                    placeholder="wprowadź tutaj..."
+                                />
+                                {errors.author && (
+                                    <div className="flex items-center gap-1">
+                                        <>
+                                            <WarningIcon />
+                                            <div className=" text-[#DD0000] font-inter font-normal text-[13px] leading-none">
+                                                Niestety, tytuł musi się składać z 2-55 znaków
+                                            </div>
+                                        </>
+                                    </div>
+                                )}
+                            </div>
                             <div
-                                className={`${
-                                    errors.image ? "text-red-400" : "text-[#9A9A9A]"
-                                } cursor-pointer overflow-ellipsis overflow-hidden w-[240px]`}
+                                className={`cursor-pointer overflow-ellipsis overflow-hidden w-[240px]`}
                                 onClick={() => imageRef.current?.click()}
                             >
-                                {image.file ? image.file.name : "wybierz..."}
+                                {image.file ? image.file.name : "wybierz plik do 10 MB"}
                             </div>
                             <input
                                 ref={imageRef}
@@ -168,46 +209,7 @@ export default function PublicationForm() {
                     className={`${
                         isSubmitButtonDisabled ? "text-gray-400" : "text-black"
                     } duration-200 cursor-pointer w-fit`}
-                    onClick={() => {
-                        if (isSubmitButtonDisabled) return;
-                        setIsSubmitButtonDisabled(true);
-
-                        // const errors = isDataValid(bookData);
-
-                        // setErrors(errors);
-
-                        // if (errors.hasErrors) {
-                        //     setTimeout(() => {
-                        //         setIsSubmitButtonDisabled(false);
-                        //     }, 250);
-                        //     return;
-                        // }
-
-                        const form = new FormData();
-
-                        console.log(image.file);
-                        form.append("image", image.file!);
-                        form.append("imageName", image.file?.name!)
-                        form.append("author", author);
-                        form.append("owner", session!.user._id!);
-                        form.append("title", title);
-                        form.append("description", description);
-                        form.append("category", category);
-
-                        fetch("/api/createPublication", {
-                            method: "POST",
-                            body: form,
-                        })
-                            .then((res) => res.json())
-                            .then((data) => {
-                                if (data.hasErrors) {
-                                    setErrors(data);
-                                    setTimeout(() => {
-                                        setIsSubmitButtonDisabled(false);
-                                    }, 250);
-                                } else window.location.reload();
-                            });
-                    }}
+                    onClick={handleSubmit}
                 >
                     Potwierdź
                 </div>

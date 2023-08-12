@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     const errors = isDataValid(data);
 
     if (errors.hasErrors) return NextResponse.json(errors);
-    console.log(data.image)
+
     const parts = data.imageName.split(".");
 
     const imageName = parts.slice(0, -1).join("");

@@ -12,8 +12,8 @@ export default function isDataValid(data: publicationData) {
         hasErrors: false,
     };
 
-    if (title.length == 0 || title.length > 55) errors.title = true;
-    if (author.length == 0 || author.length > 55) errors.author = true;
+    if (title.length < 2 || title.length > 55) errors.title = true;
+    if (author.length < 2 || author.length > 55) errors.author = true;
     if (description.length == 0) errors.description = true;
     if (!image.size || (image.size / (1024 * 1024)) > 10) errors.image = true;
     if (category.trim() == "") errors.category = true;

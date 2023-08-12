@@ -9,7 +9,7 @@ export default function ModalBookMenu({ data }: { data: data }) {
         <div className="flex flex-col gap-5 max-w-[652px]">
             <div className="flex gap-16">
                 <div className="flex flex-col gap-5 w-full">
-                    <div className="w-full font-head font-normal placeholder:text-[#9A9A9A] text-lg border-b border-b-black/40">
+                    <div className="w-full font-head font-normal text-lg">
                         {title}
                     </div>
                     <div className="flex gap-12 font-extralight text-[14px]">

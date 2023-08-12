@@ -1,5 +1,4 @@
 import React, { Dispatch, RefObject, SetStateAction } from "react";
-import { publicationData } from "./PublicationForm";
 
 type CategoriesMenu = {
     menuRef: RefObject<HTMLDivElement>;
