@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import AddBookBtn from "./ui/AddBookBtn";
 import Book from "./ui/Book";
 import ModalMenu from "./ui/ModalMenu";
@@ -24,7 +24,15 @@ export default function Publications() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [data, setData] = useState<data[]>();
 
-    const [currentBook, setCurrentBook] = useState<data>();
+    const [currentBook, setCurrentBook] = useState<data>({
+        title: "",
+        owner: "",
+        author: "",
+        description: "",
+        category: "",
+        image: "",
+        date: "",
+    });
 
     useEffect(() => {
         getPublications();
@@ -42,38 +50,35 @@ export default function Publications() {
         }
     }, []);
 
-    const publicationFormMenu = useMemo(
-        () => (
-            <ModalMenu
-                modalActive={isPublicationModalActive}
-                setModalActive={setIsPublicationModalActive}
-                style={{ padding: "25px" }}
-            >
-                <PublicationForm />{" "}
-            </ModalMenu>
-        ),
-        [isPublicationModalActive]
-    );
-    const bookMenu = useMemo(() => (
-            currentBook && <ModalMenu
-                modalActive={isBookModalActive}
-                setModalActive={setIsBookModalActive}
-                style={{ padding: "25px" }}
-            >
-                <BookMenu data={currentBook!} />{" "}
-            </ModalMenu>
-        )
-    , [currentBook, isBookModalActive]);
+    // const publicationFormMenu = useMemo(
+    //     () => (
+    //         <ModalMenu
+    //             modalActive={isPublicationModalActive}
+    //             setModalActive={setIsPublicationModalActive}
+    //             style={{ padding: "25px" }}
+    //         >
+    //             <PublicationForm />{" "}
+    //         </ModalMenu>
+    //     ),
+    //     [isPublicationModalActive]
+    // );
+    // const bookMenu = useMemo(
+    //     () =>
+    //         currentBook && (
+    //             <ModalMenu
+    //                 modalActive={isBookModalActive}
+    //                 setModalActive={setIsBookModalActive}
+    //                 style={{ padding: "25px" }}
+    //             >
+    //                 <BookMenu data={currentBook} />{" "}
+    //             </ModalMenu>
+    //         ),
+    //     [currentBook, isBookModalActive]
+    // );
 
-    // function handleDate(date: string): string {
-    //     let month: string | number = new Date(date).getMonth() + 1;
-    //     let day: string | number = new Date(date).getDate();
-
-    //     if (month < 10) month = "0" + month;
-    //     if (day < 10) day = "0" + day;
-
-    //     return `${month}-${day}`;
-    // }
+    function handleAddBookClick() {
+        setIsPublicationModalActive(true);
+    }
 
     return (
         <div className="px-28 py-16">
@@ -85,25 +90,31 @@ export default function Publications() {
                     data.map((data, index) => (
                         <Book
                             key={index}
-                            onClick={() => {
-                                setCurrentBook(data);
-
-                                setIsBookModalActive(true);
-                            }}
-                            title={data.title}
-                            image={data.image}
-                            author={data.author}
-                            date={convertDate(data.date)}
+                            data={data}
+                            setCurrentBook={setCurrentBook}
+                            setIsBookModalActive={setIsBookModalActive}
                         />
                     ))
                 )}
             </div>
 
-            <AddBookBtn onClick={() => setIsPublicationModalActive(true)} />
+            <AddBookBtn onClick={handleAddBookClick} />
 
-            {publicationFormMenu}
+            <ModalMenu
+                modalActive={isPublicationModalActive}
+                setModalActive={setIsPublicationModalActive}
+                style={{ padding: "25px" }}
+            >
+                <PublicationForm />{" "}
+            </ModalMenu>
 
-            {bookMenu}
+            <ModalMenu
+                modalActive={isBookModalActive}
+                setModalActive={setIsBookModalActive}
+                style={{ padding: "25px" }}
+            >
+                <BookMenu data={currentBook} />{" "}
+            </ModalMenu>
         </div>
     );
 }

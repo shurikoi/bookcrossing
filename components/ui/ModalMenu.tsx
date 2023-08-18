@@ -9,7 +9,7 @@ interface ModalMenu extends React.HTMLAttributes<HTMLDivElement> {
     padding?: string;
 }
 
-export default function ModalMenu({ children, modalActive, setModalActive, ...props }: ModalMenu) {
+const ModalMenu = ({ children, modalActive, setModalActive, ...props }: ModalMenu) => {
     const menuRef = useRef<HTMLDivElement>(null);
 
     const style: React.CSSProperties = modalActive
@@ -43,3 +43,5 @@ export default function ModalMenu({ children, modalActive, setModalActive, ...pr
         </div>
     );
 }
+
+export default ModalMenu

@@ -3,6 +3,7 @@ import users from "@/model/user";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import { signOut } from "next-auth/react";
 
 type credentials = {
     authType: "signin" | "signup";
@@ -10,18 +11,17 @@ type credentials = {
     surname?: string;
     email: string;
     password: string;
-    avatar?: string;
 };
 
 type user = {
-    name?: string;
-    surname?: string;
-    email?: string;
-    avatar?: string;
-    points?: number;
+    _id: string;
+    name: string;
+    surname: string;
+    email: string;
+    points: number;
 };
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
     session: {
         strategy: "jwt",
     },
@@ -30,27 +30,27 @@ const authOptions: NextAuthOptions = {
             name: "credentials",
             credentials: {},
             async authorize(credentials, req) {
-                if (!credentials) return {};
-
                 const { authType, email, password } = credentials as credentials;
 
                 await connection();
+
                 const user = await users.findOne({ email });
-                const avatar = "";
 
                 if (authType == "signin") {
                     if (user && user.password == password) {
-                        const { name, surname, points } = user;
+                        const id = user._id.toString();
 
-                        return { name, surname, email, avatar, points } as any;
+                        return { id, email } as any;
                     }
                 } else if (authType == "signup") {
                     if (!user) {
-                        const { name, surname, avatar } = credentials as credentials;
+                        const { name, surname } = credentials as credentials;
 
-                        users.create({ name, surname, password, email, points: 0 });
+                        const user = await users.create({ name, surname, password, email, points: 0 });
 
-                        return { name, surname, email, avatar, points: 0 } as any;
+                        const id = user._id.toString();
+
+                        return { id, email } as any;
                     }
                 }
             },
@@ -70,28 +70,27 @@ const authOptions: NextAuthOptions = {
 
             await connection();
 
-            const user = await users.findOne({ email });
+            const user = (await users.findOne({ email })) as user;
 
-            const { _id, name, surname, avatar, points } = user;
+            if (user) session.user = { id: user._id, email: session.user.email };
+            // console.log("session", session, user)
 
-            session.user = { _id, name, surname, email, avatar, points } as user;
+            // const id: string = session.user.id as string;
+
+            // session.user = { id };
 
             return session;
         },
-        async signIn({ profile, account, user, credentials, email }) {
+        async signIn({ profile, account }) {
             if (account?.provider == "google") {
-                const points = 0;
-
                 const {
                     email,
                     given_name: name,
                     family_name: surname,
-                    picture: avatar,
                 } = profile as {
                     given_name: string;
                     family_name: string;
                     email: string;
-                    picture: string;
                 };
 
                 await connection();
@@ -99,7 +98,7 @@ const authOptions: NextAuthOptions = {
                 const user = await users.findOne({ email });
 
                 if (!user) {
-                    users.create({ name, surname, email, avatar, points });
+                    users.create({ name, surname, email, points: 0 });
                 }
             }
 

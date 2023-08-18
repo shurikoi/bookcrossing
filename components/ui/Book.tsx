@@ -1,16 +1,28 @@
 import Image from "next/image";
-import { MouseEventHandler, useState } from "react";
+import React, { Dispatch, MouseEventHandler, SetStateAction, useState } from "react";
 import Loader from "../ContentLoader";
+import { data } from "../Publications";
+import convertDate from "@/lib/convertDate";
 
-interface Book {
-    title: string;
-    author: string;
-    image: string;
-    date: string;
-    onClick?: MouseEventHandler;
+interface BookProps {
+    // title: string;
+    // author: string;
+    // image: string;
+    // date: string;
+    data: data;
+    setCurrentBook?: Dispatch<SetStateAction<data>>;
+    setIsBookModalActive?: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Book({ title, author, date, image, onClick }: Book) {
+const Book = React.memo(({ data, setCurrentBook, setIsBookModalActive }: BookProps) => {
+    function handleBookClick() {
+        if (setCurrentBook && setIsBookModalActive) {
+            setCurrentBook(data);
+
+            setIsBookModalActive(true);
+        }
+    }
+
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const [isImageLoading, setIsImageLoading] = useState(true);
     const [isHovered, setIsHovered] = useState(false);
@@ -19,21 +31,21 @@ export default function Book({ title, author, date, image, onClick }: Book) {
             className="relative flex flex-col justify-between p-5 w-60 h-72 bg-black rounded-2xl font-inter shadow-md shadow-black/50 cursor-pointer hover:-translate-y-1 will-change-transform duration-200 flex-shrink-0 overflow-hidden"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            onClick={onClick}
+            onClick={handleBookClick}
         >
-            <div className="text-[#CDCDCD] text-[17px] font-normal cursor-text w-fit">{date}</div>
+            <div className="text-[#CDCDCD] text-[17px] font-normal cursor-text w-fit">{convertDate(data.date)}</div>
             <div>
                 <div
                     className="font-medium text-[21px] text-white overflow-hidden text-ellipsis cursor-text w-fit max-w-full"
-                    title={title}
+                    title={data.title}
                 >
-                    {title}
+                    {data.title}
                 </div>
                 <div
                     className="text-[#CDCDCD] text-[18px] font-normal overflow-hidden text-ellipsis cursor-text w-fit max-w-full h-[1em] leading-none"
-                    title={author}
+                    title={data.author}
                 >
-                    {author}
+                    {data.author}
                 </div>
             </div>
             <div
@@ -44,7 +56,7 @@ export default function Book({ title, author, date, image, onClick }: Book) {
                 {!isImageLoaded && !isImageLoading && <>No Image</>}
             </div>
             <img
-                src={image}
+                src={data.image}
                 alt=""
                 className="-z-10 object-cover w-full h-full absolute top-0 left-0"
                 onLoad={() => {
@@ -63,4 +75,6 @@ export default function Book({ title, author, date, image, onClick }: Book) {
             )}
         </div>
     );
-}
+});
+
+export default Book;

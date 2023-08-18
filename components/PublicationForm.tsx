@@ -56,6 +56,16 @@ export default function PublicationForm() {
         file: undefined,
     });
 
+    const data = {
+        author,
+        title,
+        description,
+        category,
+        image: image.url,
+        owner: session?.user.id!,
+        date: "Dzisiaj"
+    };
+
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState<boolean>(false);
 
     const imageRef = useRef<HTMLInputElement>(null);
@@ -88,7 +98,7 @@ export default function PublicationForm() {
         form.append("image", image.file!);
         form.append("imageName", image.file?.name!);
         form.append("author", author);
-        form.append("owner", session!.user._id!);
+        form.append("owner", session?.user.id!);
         form.append("title", title);
         form.append("description", description);
         form.append("category", category);
@@ -199,7 +209,7 @@ export default function PublicationForm() {
                         placeholder="Zacznij pisać"
                     ></textarea>
                 </div>
-                <Book author={author} title={title} date="Dzisiaj" image={image.url} />
+                <Book data={data} />
             </div>
 
             {false ? (

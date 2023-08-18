@@ -1,14 +1,17 @@
 "use client";
 
-import { MouseEventHandler, useContext } from "react";
-import { FormContext } from "@/components/FormProvider";
+import { MouseEventHandler } from "react";
+import { useForm } from "@/components/contexts/FormContext";
 import Pencil from "./PencilIcon";
 
 export default function getStartedBtn({ onClick }: { onClick?: MouseEventHandler }) {
-    const { setFormActive } = useContext(FormContext);
+    const { setFormActive } = useForm();
 
     return (
-        <div className="select-none group cursor-pointer" onClick={() => setFormActive((formActive: boolean) => !formActive)}>
+        <div
+            className="select-none group cursor-pointer"
+            onClick={() => setFormActive((formActive: boolean) => !formActive)}
+        >
             <div
                 className="bg-[#00FF0A] rounded-2xl px-7 py-2.5  shadow-lg  will-change-transform
 cursor-pointer shadow-black/20 font-normal duration-200 transition-transform group-hover:-translate-y-1 "

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useContext } from "react";
-import { FormContext } from "@/components/FormProvider";
+import { FormContext } from "@/components/contexts/FormContext";
 
 export default function crossBtn({setMenuActive} : {setMenuActive : Dispatch<SetStateAction<boolean>>}) {
 

@@ -3,7 +3,7 @@ import Advantages from "./Advantages";
 import Header from "./UnathorizedHeader";
 import GetStarted from "./GetStarted";
 import AuthForm from "./AuthForm";
-import { FormProvider } from "./FormProvider";
+import { FormProvider } from "./contexts/FormContext";
 
 export default function StartPage() {
     return (

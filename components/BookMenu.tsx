@@ -33,7 +33,7 @@ export default function ModalBookMenu({ data }: { data: data }) {
                         </div>
                     </div>
                 </div>
-                <Book author={author} title={title} date="Dzisiaj" image={image} />
+                <Book data={data} />
             </div>
             <div className="font-inter text-sm resize-none w-full h-36 cursor-auto whitespace-pre-wrap break-words overflow-y-auto">{description}</div>
         </div>

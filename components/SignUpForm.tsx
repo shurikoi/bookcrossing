@@ -5,12 +5,11 @@ import { currentState } from "./AuthForm";
 import { signIn } from "next-auth/react";
 
 type SignInForm = {
-    className?: string;
     email: string;
     setCurrentState: Dispatch<SetStateAction<currentState>>;
 };
 
-export default function SignUpForm({ className, email, setCurrentState }: SignInForm) {
+export default function SignUpForm({ email, setCurrentState }: SignInForm) {
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
     const [name, setName] = useState<string>("");
     const [surname, setSurname] = useState<string>("");

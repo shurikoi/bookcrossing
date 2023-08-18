@@ -1,17 +1,14 @@
-import { useContext, useRef, useState } from "react";
-import { FormContext } from "./FormProvider";
-import CrossBtn from "@/components/ui/CrossBtn";
+import { FormEvent, useRef, useState } from "react";
 import DefaultForm from "./DefaultForm";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
-import { useSession } from "next-auth/react";
-import CheckClickOutside from "@/components/CheckClickOutside";
 import ModalMenu from "./ui/ModalMenu";
+import { useForm } from "./contexts/FormContext";
 
 export type currentState = "default" | "signin" | "signup";
 
 export default function AuthForm() {
-    const { formActive, setFormActive } = useContext(FormContext);
+    const { formActive, setFormActive } = useForm();
     const [currentState, setCurrentState] = useState<currentState>("default");
     const [email, setEmail] = useState("");
 
@@ -25,7 +22,7 @@ export default function AuthForm() {
 
     return (
         <ModalMenu modalActive={formActive} setModalActive={setFormActive} style={{padding: "56px 40px"}}>
-            <form action="" className="text-center flex items-center flex-col gap-8 w-[460px] ">
+            <form className="text-center flex items-center flex-col gap-8 w-[460px] " onSubmit={(e : FormEvent) => e.preventDefault()}>
                 {states[currentState]}
             </form>
         </ModalMenu>

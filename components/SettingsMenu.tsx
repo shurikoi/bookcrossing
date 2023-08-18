@@ -4,6 +4,7 @@ import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import ProfileIcon from "./ui/ProfileIcon";
 import SettingsInput from "./ui/SettingsInput";
 import ChangePasswordMenu from "./ChangePasswordMenu";
+import { useUserData } from "./contexts/UserProviders";
 
 interface SettingsMenu {
     isSettingsMenuActive: boolean;
@@ -21,7 +22,7 @@ const settings = {
 };
 
 export default function SettingsMenu({ isSettingsMenuActive, setIsSettingsMenuActive }: SettingsMenu) {
-    const { data: session } = useSession();
+    const { user } = useUserData()
     const [currentPage, setCurrentPage] = useState<settings>("profile");
 
     return (
@@ -31,9 +32,9 @@ export default function SettingsMenu({ isSettingsMenuActive, setIsSettingsMenuAc
                     <div className="font-normal px-6 text-[15px] text-[#5F5F5F]">Ustawienia</div>
                     <div>
                         <div className="font-normal px-6">
-                            {session?.user.name} {session?.user.surname}
+                            {user?.name} {user?.surname}
                         </div>
-                        <div className="font-extralight px-6 text-[#575757]">{session?.user.email}</div>
+                        <div className="font-extralight px-6 text-[#575757]">{user?.email}</div>
                     </div>
                     <div>
                         {Object.values(settings).map((settingsItem) => (
@@ -51,27 +52,25 @@ export default function SettingsMenu({ isSettingsMenuActive, setIsSettingsMenuAc
 }
 
 function ProfilePage() {
-    const [name, setName] = useState("");
-    const [surname, setSurname] = useState("");
-    const [email, setEmail] = useState("");
+    const { user } = useUserData()
 
     const [isChangePasswordMenuActive, setIsChangePasswordMenuActive] = useState<boolean>(false);
 
     return (
         <div className="flex flex-col gap-6">
-            <div className="font-head text-[18px]">Mój profil</div>
+            <div className="font-head text-[18px] whitespace-nowrap">Mój profil</div>
             <div className="flex flex-col gap-1">
                 <div className="font-extralight text-[14px]">Preferowane imię</div>
-                <SettingsInput value={name} setValue={setName} />
+                <SettingsInput value={user!.name} setValue={user!.setName} type="name"/>
             </div>
             <div className="flex flex-col gap-1">
                 <div className="font-extralight text-[14px]">Preferowane nazwisko</div>
-                <SettingsInput value={surname} setValue={setSurname} />
+                <SettingsInput value={user!.surname} setValue={user!.setSurname} type="surname"/>
             </div>
             <hr />
             <div className="flex flex-col gap-1">
                 <div className="font-extralight text-[14px]">Email</div>
-                <SettingsInput value={email} setValue={setEmail} />
+                <SettingsInput value={user!.email} setValue={user!.setEmail} type="email"/>
             </div>
             <div className="flex flex-col gap-1">
                 <div className="font-extralight text-[14px]">Hasło</div>

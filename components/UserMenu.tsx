@@ -1,12 +1,13 @@
 import { signOut, useSession } from "next-auth/react";
 import { Dispatch, SetStateAction } from "react";
+import { useUserData } from "./contexts/UserProviders";
 interface UserMenu {
     menuActive: boolean;
     setIsSettingsMenuActive: Dispatch<SetStateAction<boolean>>;
     setMenuActive: Dispatch<SetStateAction<boolean>>;
 }
 export default function UserMenu({ menuActive, setIsSettingsMenuActive, setMenuActive }: UserMenu) {
-    const { data: session, status } = useSession();
+    const { user } = useUserData();
 
     const activeStyle: React.CSSProperties = { opacity: 1, pointerEvents: "all" };
     const inActiveStyle: React.CSSProperties = { opacity: 0, pointerEvents: "none" };
@@ -18,9 +19,9 @@ export default function UserMenu({ menuActive, setIsSettingsMenuActive, setMenuA
         >
             <div className="flex flex-col px-3">
                 <div className="font-normal whitespace-pre">
-                    {session?.user.name} {session?.user.surname}
+                    {user?.name} {user?.surname}
                 </div>
-                <div className="font-extralight">{session?.user.email}</div>
+                <div className="font-extralight">{user?.email}</div>
             </div>
             <div className="flex flex-col">
                 <div
