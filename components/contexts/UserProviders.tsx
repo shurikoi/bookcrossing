@@ -61,12 +61,12 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     }, [name, surname, email, points, loading]);
 
     useMemo(() => {
-        if (name != "" && surname != "" && email != "")
+        if (!loading)
             fetch("/api/changeUserData", { method: "post", body: JSON.stringify({ name, surname, email }) });
     }, [name, surname, email]);
 
     return (
-        <UserContext.Provider value={status == "unauthenticated" ? { loading: false } : data}>
+        <UserContext.Provider value={status == "unauthenticated" ? { loading: false, user: undefined } : data}>
             {children}
         </UserContext.Provider>
     );
@@ -74,6 +74,9 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
 function useUserData() {
     const data: data = useContext(UserContext);
+    useEffect(() => {
+        console.log(data)
+    },[data])
     return data;
 }
 

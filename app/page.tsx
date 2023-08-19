@@ -1,14 +1,16 @@
 "use client"
 
-import MainLayout from "@/components/MainLayout";
-import SessionProvider from "@/components/contexts/SessionProvider";
+import Loader from "@/components/PageLoader";
+import { useUserData } from "@/components/contexts/UserProviders";
+import AuthorizedStartPage from "@/components/AuthorizedStartPage";
+import UnauthorizedStartPage from "@/components/UnauthorizedStartPage";
 
 export default function Home() {
-    return (
-        <>
-            <SessionProvider>
-                <MainLayout />
-            </SessionProvider>
-        </>
-    );
+    const { user, loading } = useUserData();
+
+    if (loading) return <Loader></Loader>;
+
+    if (user) return <AuthorizedStartPage></AuthorizedStartPage>;
+
+    return <UnauthorizedStartPage></UnauthorizedStartPage>;
 }

@@ -32,6 +32,37 @@ export default function DefaultForm({ setEmail, className, setCurrentState, emai
         }
     }
 
+    function handleSignIn() {
+        const h = 700;
+        const w = 600;
+        // dual screen fix
+        const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
+        const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
+
+        const width = window.innerWidth
+            ? window.innerWidth
+            : document.documentElement.clientWidth
+            ? document.documentElement.clientWidth
+            : screen.width;
+        const height = window.innerHeight
+            ? window.innerHeight
+            : document.documentElement.clientHeight
+            ? document.documentElement.clientHeight
+            : screen.height;
+
+        const systemZoom = width / window.screen.availWidth;
+        const left = (width - w) / 2 / systemZoom + dualScreenLeft;
+        const top = (height - h) / 2 / systemZoom + dualScreenTop;
+        
+        const newWindow = window.open(
+            "/google-signin",
+            "",
+            `popup=true,height=${h},width=${w},top=${top},left=${left}`
+        );
+
+        newWindow?.focus();
+    }
+
     return (
         <>
             <div className="text-2xl font-semibold">Zaloguj się lub zarejestruj w kilka sekund</div>
@@ -55,7 +86,7 @@ export default function DefaultForm({ setEmail, className, setCurrentState, emai
             <div className="font-normal text-[15px]">Lub</div>
             <div
                 className="flex gap-6 px-5 py-3 items-center bg-[#EFEFEF] rounded-lg cursor-pointer"
-                onClick={() => signIn("google")}
+                onClick={handleSignIn}
             >
                 <Image alt="" src="/images/google.png" width={25} height={25}></Image>
                 <div className="font-extralight">Kontynuuj przez Google</div>
