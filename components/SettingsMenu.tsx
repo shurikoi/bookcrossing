@@ -22,7 +22,7 @@ const settings = {
 };
 
 export default function SettingsMenu({ isSettingsMenuActive, setIsSettingsMenuActive }: SettingsMenu) {
-    const { user } = useUserData()
+    const { user } = useUserData();
     const [currentPage, setCurrentPage] = useState<settings>("profile");
 
     return (
@@ -52,7 +52,7 @@ export default function SettingsMenu({ isSettingsMenuActive, setIsSettingsMenuAc
 }
 
 function ProfilePage() {
-    const { user } = useUserData()
+    const { user } = useUserData();
 
     const [isChangePasswordMenuActive, setIsChangePasswordMenuActive] = useState<boolean>(false);
 
@@ -61,27 +61,34 @@ function ProfilePage() {
             <div className="font-head text-[18px] whitespace-nowrap">Mój profil</div>
             <div className="flex flex-col gap-1">
                 <div className="font-extralight text-[14px]">Preferowane imię</div>
-                <SettingsInput value={user!.name} setValue={user!.setName} type="name"/>
+                <SettingsInput value={user!.name} setValue={user!.setName} type="name" />
             </div>
             <div className="flex flex-col gap-1">
                 <div className="font-extralight text-[14px]">Preferowane nazwisko</div>
-                <SettingsInput value={user!.surname} setValue={user!.setSurname} type="surname"/>
+                <SettingsInput value={user!.surname} setValue={user!.setSurname} type="surname" />
             </div>
             <hr />
-            <div className="flex flex-col gap-1">
-                <div className="font-extralight text-[14px]">Email</div>
-                <SettingsInput value={user!.email} setValue={user!.setEmail} type="email"/>
-            </div>
-            <div className="flex flex-col gap-1">
-                <div className="font-extralight text-[14px]">Hasło</div>
-                <div
-                    className="border-[#BEBEBE] border w-fit p-2 px-4 font-extralight text-[14px] rounded-md cursor-pointer"
-                    onClick={() => setIsChangePasswordMenuActive(true)}
-                >
-                    Zmień hasło
-                </div>
-            </div>
-            <ChangePasswordMenu isActive={isChangePasswordMenuActive} setIsActive={setIsChangePasswordMenuActive}/>
+            {user?.isPasswordExist && (
+                <>
+                    <div className="flex flex-col gap-1">
+                        <div className="font-extralight text-[14px]">Email</div>
+                        <SettingsInput value={user!.email} setValue={user!.setEmail} type="email" />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <div className="font-extralight text-[14px]">Hasło</div>
+                        <div
+                            className="border-[#BEBEBE] border w-fit p-2 px-4 font-extralight text-[14px] rounded-md cursor-pointer"
+                            onClick={() => setIsChangePasswordMenuActive(true)}
+                        >
+                            Zmień hasło
+                        </div>
+                    </div>
+                    <ChangePasswordMenu
+                        isActive={isChangePasswordMenuActive}
+                        setIsActive={setIsChangePasswordMenuActive}
+                    />
+                </>
+            )}
         </div>
     );
 }

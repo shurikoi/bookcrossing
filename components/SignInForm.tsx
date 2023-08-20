@@ -1,20 +1,33 @@
 import ArrowBtn from "@/components/ui/ArrowBtn";
-import { Dispatch, MouseEventHandler, SetStateAction, useState } from "react";
+import {
+    Dispatch,
+    KeyboardEvent,
+    MouseEventHandler,
+    SetStateAction,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import ShowPasswordBtn from "./ui/ShowPasswordBtn";
 import { currentState } from "./AuthForm";
 import { signIn } from "next-auth/react";
 
 type SignInForm = {
     email: string;
-    className?: string;
     setCurrentState: Dispatch<SetStateAction<currentState>>;
+    formActive: boolean;
 };
 
-export default function SignInForm({ email, className, setCurrentState }: SignInForm) {
+export default function SignInForm({ email, formActive, setCurrentState }: SignInForm) {
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
     const [password, setPassword] = useState("");
+    const inputRef = useRef<HTMLInputElement>(null);
 
-    function handleClick() {
+    useEffect(() => {
+        if (inputRef.current) inputRef.current.focus();
+    }, [inputRef, formActive]);
+
+    function handleSubmit() {
         fetch("/api/checkPassword", {
             method: "POST",
             body: JSON.stringify({ email, password }),
@@ -23,6 +36,10 @@ export default function SignInForm({ email, className, setCurrentState }: SignIn
             .then(async (data) => {
                 if (data.isValid) signIn("credentials", { authType: "signin", email, password });
             });
+    }
+
+    function handleKeyDown(e: KeyboardEvent) {
+        if (e.key == "Enter") handleSubmit();
     }
 
     return (
@@ -44,13 +61,15 @@ export default function SignInForm({ email, className, setCurrentState }: SignIn
                     className="outline-none"
                     value={password}
                     onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
+                    onKeyDown={handleKeyDown}
+                    ref={inputRef}
                 />
                 <ShowPasswordBtn
                     onClick={() => setIsPasswordVisible((isPasswordVisible) => !isPasswordVisible)}
                     isPasswordVisible={isPasswordVisible}
                 ></ShowPasswordBtn>
             </div>
-            <button className="cursor-pointer font-light text-[15px] text-[#61C558] select-none" onClick={handleClick}>
+            <button className="cursor-pointer font-light text-[15px] text-[#61C558] select-none" onClick={handleSubmit}>
                 Zaloguj
             </button>
         </>

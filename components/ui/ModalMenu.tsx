@@ -9,7 +9,7 @@ interface ModalMenu extends React.HTMLAttributes<HTMLDivElement> {
     padding?: string;
 }
 
-const ModalMenu = ({ children, modalActive, setModalActive, ...props }: ModalMenu) => {
+const ModalMenu = React.memo(({ children, modalActive, setModalActive, ...props }: ModalMenu) => {
     const menuRef = useRef<HTMLDivElement>(null);
 
     const style: React.CSSProperties = modalActive
@@ -42,6 +42,6 @@ const ModalMenu = ({ children, modalActive, setModalActive, ...props }: ModalMen
             </CheckClickOutside>
         </div>
     );
-}
+})
 
 export default ModalMenu

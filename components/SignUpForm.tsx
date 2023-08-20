@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, KeyboardEvent, SetStateAction, useState } from "react";
 import ArrowBtn from "@/components/ui/ArrowBtn";
 import ShowPasswordBtn from "./ui/ShowPasswordBtn";
 import { currentState } from "./AuthForm";
@@ -16,7 +16,7 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
     const [password, setPassword] = useState<string>("");
     const [cpassword, setCpassword] = useState<string>("");
 
-    function handleClick() {
+    function handleSubmit() {
         fetch("/api/checkUser", {
             method: "POST",
             body: JSON.stringify({ email }),
@@ -25,6 +25,10 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
             .then((data) => {
                 if (!data.isExist) signIn("credentials", { authType: "signup", name, surname, email, password });
             });
+    }
+
+    function handleKeyDown(e: KeyboardEvent) {
+        if (e.key == "Enter") handleSubmit();
     }
 
     return (
@@ -46,6 +50,7 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                     value={name}
                     onInput={(e) => setName((e.target as HTMLInputElement).value)}
                     className="w-full outline-none border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px]"
+                    onKeyDown={handleKeyDown}
                 />
 
                 <input
@@ -55,6 +60,7 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                     value={surname}
                     onInput={(e) => setSurname((e.target as HTMLInputElement).value)}
                     className="w-full outline-none border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px]"
+                    onKeyDown={handleKeyDown}
                 />
             </div>
             <div className="border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px] flex justify-between w-full">
@@ -65,6 +71,7 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                     className="outline-none"
                     value={password}
                     onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
+                    onKeyDown={handleKeyDown}
                 />
                 <ShowPasswordBtn
                     onClick={() => setIsPasswordVisible((isPasswordVisible) => !isPasswordVisible)}
@@ -79,13 +86,14 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                     className="outline-none"
                     value={cpassword}
                     onInput={(e) => setCpassword((e.target as HTMLInputElement).value)}
+                    onKeyDown={handleKeyDown}
                 />
                 <ShowPasswordBtn
                     onClick={() => setIsPasswordVisible((isPasswordVisible) => !isPasswordVisible)}
                     isPasswordVisible={isPasswordVisible}
                 ></ShowPasswordBtn>
             </div>
-            <button className="cursor-pointer font-light text-[15px] text-[#61C558] select-none" onClick={handleClick}>
+            <button className="cursor-pointer font-light text-[15px] text-[#61C558] select-none" onClick={handleSubmit}>
                 Zaloguj
             </button>
         </>

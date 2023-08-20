@@ -1,21 +1,28 @@
 import Image from "next/image";
 import ArrowBtn from "@/components/ui/ArrowBtn";
 import { currentState } from "./AuthForm";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import isEmailValid from "@/lib/isEmailValid";
-import { signIn } from "next-auth/react";
+import ContentLoader from "./ContentLoader";
 
 type DefaultForm = {
     setEmail: Dispatch<SetStateAction<string>>;
     setCurrentState: Dispatch<SetStateAction<currentState>>;
     email: string;
-    className?: string;
+    formActive: boolean;
 };
 
-export default function DefaultForm({ setEmail, className, setCurrentState, email }: DefaultForm) {
+export default function DefaultForm({ setEmail, setCurrentState, email, formActive }: DefaultForm) {
     const [error, setError] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const inputRef = useRef<HTMLInputElement>(null);
+    
+    useEffect(() => {
+        if (inputRef.current) inputRef.current.focus();
+    }, [inputRef, formActive]);
 
-    async function handleClick() {
+    async function handleSubmit() {
+        setLoading(true);
         if (isEmailValid(email)) {
             setError(false);
             const response = await fetch("/api/checkUser", {
@@ -27,9 +34,17 @@ export default function DefaultForm({ setEmail, className, setCurrentState, emai
 
             if (data.isExist) setCurrentState("signin");
             else setCurrentState("signup");
+
+            setLoading(false);
         } else {
+            setLoading(false);
+
             setError(true);
         }
+    }
+
+    function handleKeyDown(e: KeyboardEvent) {
+        if (e.key == "Enter") handleSubmit();
     }
 
     function handleSignIn() {
@@ -53,7 +68,7 @@ export default function DefaultForm({ setEmail, className, setCurrentState, emai
         const systemZoom = width / window.screen.availWidth;
         const left = (width - w) / 2 / systemZoom + dualScreenLeft;
         const top = (height - h) / 2 / systemZoom + dualScreenTop;
-        
+
         const newWindow = window.open(
             "/google-signin",
             "",
@@ -80,8 +95,16 @@ export default function DefaultForm({ setEmail, className, setCurrentState, emai
                     className="outline-none"
                     value={email}
                     onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
+                    onKeyDown={handleKeyDown}
+                    ref={inputRef}
                 />
-                <ArrowBtn wrapperClassName="bg-[#95ED8E]" onClick={handleClick} isError={error}></ArrowBtn>
+                {loading ? (
+                    <div className="relative w-7 h-7">
+                        <ContentLoader />
+                    </div>
+                ) : (
+                    <ArrowBtn wrapperClassName="bg-[#95ED8E]" onClick={handleSubmit} isError={error}></ArrowBtn>
+                )}
             </div>
             <div className="font-normal text-[15px]">Lub</div>
             <div

@@ -1,5 +1,6 @@
 "use client";
 
+import connection from "@/lib/connection";
 import users from "@/model/user";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useMemo, useState } from "react";
@@ -17,6 +18,7 @@ interface data {
         setEmail: Dispatch<SetStateAction<string>>;
         points: number;
         setPoints: Dispatch<SetStateAction<number>>;
+        isPasswordExist: boolean;
     };
 }
 
@@ -27,6 +29,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     const [surname, setSurname] = useState("");
     const [email, setEmail] = useState("");
     const [points, setPoints] = useState(0);
+    const [isPasswordExist, setIsPasswordExist] = useState(false)
 
     const [data, setData] = useState<data>({ loading: true });
     const [loading, setLoading] = useState(true);
@@ -42,6 +45,8 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
             const user = await response.json();
 
+            if (user.password)
+                setIsPasswordExist(true)
             setName(user.name);
             setSurname(user.surname);
             setEmail(user.email);
@@ -56,9 +61,9 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     useMemo(() => {
         setData({
             loading,
-            user: { name, setName, surname, setSurname, email, setEmail, points, setPoints },
+            user: { name, setName, surname, setSurname, email, setEmail, points, setPoints, isPasswordExist },
         });
-    }, [name, surname, email, points, loading]);
+    }, [name, surname, email, points, loading, isPasswordExist]);
 
     useMemo(() => {
         if (!loading)
