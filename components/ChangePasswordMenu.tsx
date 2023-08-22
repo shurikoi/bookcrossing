@@ -5,13 +5,13 @@ import PasswordIcon from "./ui/PasswordIcon";
 
 interface ChangePasswordMenu {
     isActive: boolean;
-    setIsActive: Dispatch<SetStateAction<boolean>>;
+    setIsActive: Dispatch<SetStateAction>;
 }
 
 export default function ChangePasswordMenu({ isActive, setIsActive }: ChangePasswordMenu) {
-    const [currentPassword, setCurrentPassword] = useState<string>("");
-    const [newPassword, setNewPassword] = useState<string>("");
-    const [confirmPassword, setConfirmPassword] = useState<string>("");
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     return (
         <ModalMenu modalActive={isActive} setModalActive={setIsActive} style={{ padding: "40px 80px" }}>

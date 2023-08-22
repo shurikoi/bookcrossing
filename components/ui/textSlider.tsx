@@ -10,8 +10,8 @@ type textSlider = {
 };
 
 export default function TextSlider({ text, duration, height = 36 }: textSlider) {
-    const [selectedText, setSelectedText] = useState<number>(0);
-    const [isEnd, setIsEnd] = useState<boolean>(false);
+    const [selectedText, setSelectedText] = useState(0);
+    const [isEnd, setIsEnd] = useState(false);
 
     useEffect(() => {
         const interval = setInterval(() => {

@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useContext } from "react";
 import { FormContext } from "@/components/contexts/FormContext";
 
-export default function crossBtn({setMenuActive} : {setMenuActive : Dispatch<SetStateAction<boolean>>}) {
+export default function crossBtn({setMenuActive} : {setMenuActive : Dispatch<SetStateAction>}) {
 
     return (
         <div className="absolute right-0 top-0 w-[35px] h-[35px] translate-x-[calc(100%+10px)] rounded-full cursor-pointer" onClick={() => setMenuActive(false)}>

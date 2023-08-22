@@ -4,14 +4,14 @@ import CategoriesMenu from "./CategoriesMenu";
 
 type categories = {
     categories: string[];
-    setCategory: Dispatch<SetStateAction<string>>;
+    setCategory: Dispatch<SetStateAction>;
     error: boolean;
 };
 
 export default function Categories({ categories, setCategory, error }: categories) {
-    const [categoriesMenuActive, setCategoriesMenuActive] = useState<boolean>(false);
-    const [categoryValue, setCategoryValue] = useState<string>(""); // input value
-    const [selectedCategory, setSelectedCategory] = useState<number>(0);
+    const [categoriesMenuActive, setCategoriesMenuActive] = useState(false);
+    const [categoryValue, setCategoryValue] = useState(""); // input value
+    const [selectedCategory, setSelectedCategory] = useState(0);
     const [filteredCategories, setFilteredCategories] = useState<string[]>(categories);
 
     const menuRef = useRef<HTMLDivElement>(null);

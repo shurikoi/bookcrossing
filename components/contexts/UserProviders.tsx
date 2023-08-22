@@ -1,7 +1,5 @@
 "use client";
 
-import connection from "@/lib/connection";
-import users from "@/model/user";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useMemo, useState } from "react";
 
@@ -29,7 +27,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     const [surname, setSurname] = useState("");
     const [email, setEmail] = useState("");
     const [points, setPoints] = useState(0);
-    const [isPasswordExist, setIsPasswordExist] = useState(false)
+    const [isPasswordExist, setIsPasswordExist] = useState(false);
 
     const [data, setData] = useState<data>({ loading: true });
     const [loading, setLoading] = useState(true);
@@ -45,8 +43,8 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
             const user = await response.json();
 
-            if (user.password)
-                setIsPasswordExist(true)
+            if (user.isPasswordExist) setIsPasswordExist(true);
+
             setName(user.name);
             setSurname(user.surname);
             setEmail(user.email);
@@ -66,8 +64,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     }, [name, surname, email, points, loading, isPasswordExist]);
 
     useMemo(() => {
-        if (!loading)
-            fetch("/api/changeUserData", { method: "post", body: JSON.stringify({ name, surname, email }) });
+        if (!loading) fetch("/api/changeUserData", { method: "post", body: JSON.stringify({ name, surname, email }) });
     }, [name, surname, email]);
 
     return (
@@ -79,9 +76,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
 function useUserData() {
     const data: data = useContext(UserContext);
-    useEffect(() => {
-        console.log(data)
-    },[data])
+
     return data;
 }
 

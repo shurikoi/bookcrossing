@@ -5,7 +5,7 @@ import TagIcon from "./ui/TagIcon";
 import LinkIcon from "./ui/LinkIcon";
 import Categories from "./Categories";
 import ProfileIcon from "./ui/ProfileIcon";
-import ContentLoader from "./ContentLoader";
+import ContentLoader from "./ui/ContentLoader";
 import WarningIcon from "./ui/WarningIcon";
 
 const categories = [
@@ -66,7 +66,7 @@ export default function PublicationForm() {
         date: "Dzisiaj"
     };
 
-    const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState<boolean>(false);
+    const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(false);
 
     const imageRef = useRef<HTMLInputElement>(null);
 
@@ -119,7 +119,7 @@ export default function PublicationForm() {
     }
 
     return (
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 w-[700px]">
             <div className="flex gap-16">
                 <div className="flex flex-col gap-5">
                     <div className="flex flex-col">

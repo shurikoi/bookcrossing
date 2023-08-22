@@ -10,11 +10,11 @@ type SignInForm = {
 };
 
 export default function SignUpForm({ email, setCurrentState }: SignInForm) {
-    const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
-    const [name, setName] = useState<string>("");
-    const [surname, setSurname] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const [cpassword, setCpassword] = useState<string>("");
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [name, setName] = useState("");
+    const [surname, setSurname] = useState("");
+    const [password, setPassword] = useState("");
+    const [cpassword, setCpassword] = useState("");
 
     function handleSubmit() {
         fetch("/api/checkUser", {

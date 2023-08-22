@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 
 type checkClickOutside = {
     elRef: RefObject<HTMLElement>;
-    setIsActive: Dispatch<SetStateAction<boolean>>;
+    setIsActive: Dispatch<SetStateAction>;
     isActive: boolean;
     children: React.ReactNode
 };

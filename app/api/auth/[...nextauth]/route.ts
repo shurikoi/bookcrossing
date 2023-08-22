@@ -66,7 +66,6 @@ export const authOptions: NextAuthOptions = {
     },
     callbacks: {
         async session({ session }) {
-            console.log(session)
             const email: string = session?.user?.email as string;
 
             await connection();

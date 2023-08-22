@@ -3,7 +3,7 @@ import ArrowBtn from "@/components/ui/ArrowBtn";
 import { currentState } from "./AuthForm";
 import { Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import isEmailValid from "@/lib/isEmailValid";
-import ContentLoader from "./ContentLoader";
+import ContentLoader from "./ui/ContentLoader";
 
 type DefaultForm = {
     setEmail: Dispatch<SetStateAction<string>>;
@@ -13,8 +13,8 @@ type DefaultForm = {
 };
 
 export default function DefaultForm({ setEmail, setCurrentState, email, formActive }: DefaultForm) {
-    const [error, setError] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     
     useEffect(() => {

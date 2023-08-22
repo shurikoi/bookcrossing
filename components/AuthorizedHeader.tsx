@@ -8,8 +8,8 @@ import { useUserData } from "./contexts/UserProviders";
 
 export default function Header() {
     const { user } = useUserData();
-    const [menuActive, setMenuActive] = useState<boolean>(false);
-    const [isSettingsMenuActive, setIsSettingsMenuActive] = useState<boolean>(true);
+    const [menuActive, setMenuActive] = useState(false);
+    const [isSettingsMenuActive, setIsSettingsMenuActive] = useState(false);
 
     const menuRef = useRef<HTMLDivElement>(null);
     return (

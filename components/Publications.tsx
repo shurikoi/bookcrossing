@@ -3,7 +3,7 @@ import AddBookBtn from "./ui/AddBookBtn";
 import Book from "./ui/Book";
 import ModalMenu from "./ui/ModalMenu";
 import PublicationForm from "./PublicationForm";
-import ContentLoader from "./ContentLoader";
+import ContentLoader from "./ui/ContentLoader";
 import BookMenu from "./BookMenu";
 import convertDate from "@/lib/convertDate";
 
@@ -18,10 +18,10 @@ export type data = {
 };
 
 export default function Publications() {
-    const [isPublicationModalActive, setIsPublicationModalActive] = useState<boolean>(false);
-    const [isBookModalActive, setIsBookModalActive] = useState<boolean>(false);
+    const [isPublicationModalActive, setIsPublicationModalActive] = useState(false);
+    const [isBookModalActive, setIsBookModalActive] = useState(false);
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState<data[]>();
 
     const [currentBook, setCurrentBook] = useState<data>({

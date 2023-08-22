@@ -5,10 +5,11 @@ export default function convertDate(date: string) {
 
     const day = 86400;
     const daysFromPublication = Math.round(timeDifference / day);
-
-    if (daysFromPublication < 1) return "Dzisiaj";
+    console.log(daysFromPublication)
+    if (daysFromPublication < 1 || Number.isNaN(daysFromPublication)) return "Dzisiaj";
     else if (daysFromPublication < 2) return "Wczoraj";
     else if (daysFromPublication > 20)
         if (daysFromPublication.toString()[1] == "1") return `${daysFromPublication} dzień temu`;
+
     return `${daysFromPublication} dni temu`;
 }

@@ -19,7 +19,7 @@ type SignInForm = {
 };
 
 export default function SignInForm({ email, formActive, setCurrentState }: SignInForm) {
-    const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [password, setPassword] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
 

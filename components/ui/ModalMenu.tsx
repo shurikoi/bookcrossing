@@ -5,7 +5,7 @@ import CheckClickOutside from "../CheckClickOutside";
 interface ModalMenu extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
     modalActive: boolean;
-    setModalActive: Dispatch<SetStateAction<boolean>>;
+    setModalActive: Dispatch<SetStateAction>;
     padding?: string;
 }
 

@@ -1,6 +1,5 @@
-import { useSession } from "next-auth/react";
 import ModalMenu from "./ui/ModalMenu";
-import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import ProfileIcon from "./ui/ProfileIcon";
 import SettingsInput from "./ui/SettingsInput";
 import ChangePasswordMenu from "./ChangePasswordMenu";
@@ -53,8 +52,7 @@ export default function SettingsMenu({ isSettingsMenuActive, setIsSettingsMenuAc
 
 function ProfilePage() {
     const { user } = useUserData();
-
-    const [isChangePasswordMenuActive, setIsChangePasswordMenuActive] = useState<boolean>(false);
+    const [isChangePasswordMenuActive, setIsChangePasswordMenuActive] = useState(false);
 
     return (
         <div className="flex flex-col gap-6">

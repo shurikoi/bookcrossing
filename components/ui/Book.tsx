@@ -1,6 +1,6 @@
 import Image from "next/image";
-import React, { Dispatch, MouseEventHandler, SetStateAction, useState } from "react";
-import Loader from "../ContentLoader";
+import React, { Dispatch, MouseEventHandler, SetStateAction, useMemo, useState } from "react";
+import Loader from "./ContentLoader";
 import { data } from "../Publications";
 import convertDate from "@/lib/convertDate";
 
@@ -23,9 +23,18 @@ const Book = React.memo(({ data, setCurrentBook, setIsBookModalActive }: BookPro
         }
     }
 
+    const date = useMemo(() => {
+        const date = convertDate(data.date)
+        if (date == "NaN")
+            return "Dzisiaj"
+        else
+            return date
+    }, [data.date])
+
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const [isImageLoading, setIsImageLoading] = useState(true);
     const [isHovered, setIsHovered] = useState(false);
+
     return (
         <div
             className="relative flex flex-col justify-between p-5 w-60 h-72 bg-black rounded-2xl font-inter shadow-md shadow-black/50 cursor-pointer hover:-translate-y-1 will-change-transform duration-200 flex-shrink-0 overflow-hidden"
@@ -33,7 +42,7 @@ const Book = React.memo(({ data, setCurrentBook, setIsBookModalActive }: BookPro
             onMouseLeave={() => setIsHovered(false)}
             onClick={handleBookClick}
         >
-            <div className="text-[#CDCDCD] text-[17px] font-normal cursor-text w-fit">{convertDate(data.date)}</div>
+            <div className="text-[#CDCDCD] text-[17px] font-normal cursor-text w-fit">{date}</div>
             <div>
                 <div
                     className="font-medium text-[21px] text-white overflow-hidden text-ellipsis cursor-text w-fit max-w-full"
