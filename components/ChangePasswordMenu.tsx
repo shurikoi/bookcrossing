@@ -5,7 +5,7 @@ import PasswordIcon from "./ui/PasswordIcon";
 
 interface ChangePasswordMenu {
     isActive: boolean;
-    setIsActive: Dispatch<SetStateAction>;
+    setIsActive: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function ChangePasswordMenu({ isActive, setIsActive }: ChangePasswordMenu) {

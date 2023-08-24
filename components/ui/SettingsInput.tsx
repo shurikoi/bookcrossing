@@ -1,12 +1,12 @@
 import React, { Dispatch, FormEvent, SetStateAction } from "react";
 
-interface SettingsInput {
+interface SettingsInputProps {
     value: string;
     setValue: Dispatch<SetStateAction<string>>;
-    type: "name" | "surname" | "email";
+    type?: "name" | "surname" | "email";
 }
 
-const SettingsInput = React.memo(({ value, setValue, type }: SettingsInput) => {
+const SettingsInput = React.memo(({ value, setValue, type }: SettingsInputProps) => {
     function handleInput(e: FormEvent<HTMLInputElement>) {
         const target = e.target as HTMLInputElement;
         setValue(target.value);

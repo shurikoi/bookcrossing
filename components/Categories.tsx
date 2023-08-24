@@ -4,7 +4,7 @@ import CategoriesMenu from "./CategoriesMenu";
 
 type categories = {
     categories: string[];
-    setCategory: Dispatch<SetStateAction>;
+    setCategory: Dispatch<SetStateAction<string>>;
     error: boolean;
 };
 
@@ -81,7 +81,7 @@ export default function Categories({ categories, setCategory, error }: categorie
     }
 
     return (
-        <>
+        <div className="relative z-10">
             <input
                 type="text"
                 placeholder="wybierz..."
@@ -105,6 +105,6 @@ export default function Categories({ categories, setCategory, error }: categorie
                 setCategory={setCategory}
                 selectedCategory={selectedCategory}
             />
-        </>
+        </div>
     );
 }

@@ -7,6 +7,7 @@ import Categories from "./Categories";
 import ProfileIcon from "./ui/ProfileIcon";
 import ContentLoader from "./ui/ContentLoader";
 import WarningIcon from "./ui/WarningIcon";
+import Contact, { messenger } from "./Contact";
 
 const categories = [
     "Powieść historyczna",
@@ -29,6 +30,8 @@ export type publicationData = {
     owner: string;
     imageName: string;
     image: File;
+    messenger: messenger;
+    messengerDescription: string;
 };
 
 interface image {
@@ -41,6 +44,7 @@ type errors = {
     author: boolean;
     category: boolean;
     image: boolean;
+    messengerDescription: boolean;
     hasErrors: boolean;
 };
 
@@ -56,6 +60,9 @@ export default function PublicationForm() {
         file: undefined,
     });
 
+    const [messenger, setMessenger] = useState<messenger>("Telegram");
+    const [messengerDescription, setMessengerDescription] = useState("");
+
     const data = {
         author,
         title,
@@ -63,7 +70,7 @@ export default function PublicationForm() {
         category,
         image: image.url,
         owner: session?.user.id!,
-        date: "Dzisiaj"
+        date: "Dzisiaj",
     };
 
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(false);
@@ -75,6 +82,7 @@ export default function PublicationForm() {
         author: false,
         category: false,
         image: false,
+        messengerDescription: false,
         hasErrors: false,
     });
 
@@ -102,6 +110,8 @@ export default function PublicationForm() {
         form.append("title", title);
         form.append("description", description);
         form.append("category", category);
+        form.append("messenger", messenger);
+        form.append("messengerDescription", messengerDescription);
 
         fetch("/api/createPublication", {
             method: "POST",
@@ -120,9 +130,9 @@ export default function PublicationForm() {
 
     return (
         <div className="flex flex-col gap-5 w-[700px]">
-            <div className="flex gap-16">
+            <div className="flex gap-16 justify-between">
                 <div className="flex flex-col gap-5">
-                    <div className="flex flex-col">
+                    <div className="relative flex flex-col">
                         <input
                             className={`w-full font-head font-normal placeholder:text-[#9A9A9A] duration-200 text-lg`}
                             type="text"
@@ -131,39 +141,37 @@ export default function PublicationForm() {
                             placeholder="Bez tytułu"
                         />
                         {errors.title && (
-                            <div className="flex items-center gap-1">
+                            <div className="absolute flex items-center gap-1 -bottom-3">
                                 <>
                                     <WarningIcon />
                                     <div className=" text-[#DD0000] font-inter font-normal text-[13px] leading-none">
-                                        Niestety, tytuł musi się składać z 2-55 znaków
+                                        Niestety, pole musi się składać z 2-55 znaków
                                     </div>
                                 </>
                             </div>
                         )}
                     </div>
-                    <div className="flex gap-12 font-extralight text-[14px]">
+                    <div className="flex gap-12 font-extralight text-[14px] justify-between">
                         <div className="text-left flex flex-col gap-5">
                             <div className="flex gap-3 items-center">
                                 <TagIcon />
                                 <div>Kategoria</div>
                             </div>
                             <div className="flex flex-col gap-1">
-                                <div className="flex gap-3 items-center">
+                                <div className="relative flex gap-3 items-center">
                                     <ProfileIcon />
                                     <div>Autor</div>
                                 </div>
-                                {errors.author && <div className="h-[1em]"></div>}
                             </div>
                             <div className="flex gap-3 items-center">
                                 <LinkIcon />
                                 <div>Zdjęcie</div>
                             </div>
+                            <Contact messenger={messenger} setMessenger={setMessenger} />
                         </div>
                         <div className="flex flex-col gap-5">
-                            <div className="relative">
-                                <Categories categories={categories} setCategory={setCategory} error={errors.category} />
-                            </div>
-                            <div className="flex flex-col gap-1">
+                            <Categories categories={categories} setCategory={setCategory} error={errors.category} />
+                            <div className="relative flex flex-col gap-1">
                                 <input
                                     className={`placeholder:text-[#9A9A9A]`}
                                     type="text"
@@ -172,11 +180,11 @@ export default function PublicationForm() {
                                     placeholder="wprowadź tutaj..."
                                 />
                                 {errors.author && (
-                                    <div className="flex items-center gap-1">
+                                    <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-4">
                                         <>
                                             <WarningIcon />
-                                            <div className=" text-[#DD0000] font-inter font-normal text-[13px] leading-none">
-                                                Niestety, tytuł musi się składać z 2-55 znaków
+                                            <div className=" text-[#DD0000] font-inter font-normal text-[13px] h-[1em] leading-none">
+                                                Niestety, pole musi się składać z 2-55 znaków
                                             </div>
                                         </>
                                     </div>
@@ -193,8 +201,26 @@ export default function PublicationForm() {
                                 type="file"
                                 onInput={handleInputFile}
                                 placeholder="wybierz..."
+                                accept="image/png, image/jpeg"
                                 hidden
                             />
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    placeholder="wprowadź tutaj..."
+                                    onInput={(e) => setMessengerDescription((e.target as HTMLInputElement).value)}
+                                />
+                                {errors.author && (
+                                    <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-4">
+                                        <>
+                                            <WarningIcon />
+                                            <div className=" text-[#DD0000] font-inter font-normal text-[13px] h-[1em] leading-none">
+                                                Niestety, tytuł musi się składać z 2-55 znaków
+                                            </div>
+                                        </>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                     <hr className="border-black/40" />

@@ -1,10 +1,10 @@
 import Bell from "./ui/BellIcon";
 import UserMenu from "./UserMenu";
 import { useState, useRef } from "react";
-import CheckClickOutside from "./CheckClickOutside";
 import Image from "next/image";
 import SettingsMenu from "./SettingsMenu";
 import { useUserData } from "./contexts/UserProviders";
+import useClickOutside from "./useClickOutside";
 
 export default function Header() {
     const { user } = useUserData();
@@ -12,6 +12,11 @@ export default function Header() {
     const [isSettingsMenuActive, setIsSettingsMenuActive] = useState(false);
 
     const menuRef = useRef<HTMLDivElement>(null);
+
+    useClickOutside(menuRef, () => {
+        setMenuActive(false);
+    });
+    
     return (
         <>
             <header
@@ -29,7 +34,6 @@ export default function Header() {
                         <Image src="/images/image 1359.png" alt="" width={20} height={20}></Image>
                         <div className="text-lg font-normal">{user?.points}</div>
                     </div>
-                    <CheckClickOutside isActive={menuActive} setIsActive={setMenuActive} elRef={menuRef}>
                         <div className="relative" ref={menuRef}>
                             <div
                                 className="flex items-center gap-2 text-xl font-normal text-white cursor-pointer"
@@ -53,7 +57,6 @@ export default function Header() {
                                 setMenuActive={setMenuActive}
                             />
                         </div>
-                    </CheckClickOutside>
                 </div>
             </header>
             <SettingsMenu

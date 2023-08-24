@@ -3,8 +3,8 @@ import { Dispatch, SetStateAction } from "react";
 import { useUserData } from "./contexts/UserProviders";
 interface UserMenu {
     menuActive: boolean;
-    setIsSettingsMenuActive: Dispatch<SetStateAction>;
-    setMenuActive: Dispatch<SetStateAction>;
+    setIsSettingsMenuActive: Dispatch<SetStateAction<boolean>>;
+    setMenuActive: Dispatch<SetStateAction<boolean>>;
 }
 export default function UserMenu({ menuActive, setIsSettingsMenuActive, setMenuActive }: UserMenu) {
     const { user } = useUserData();

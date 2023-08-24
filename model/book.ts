@@ -8,6 +8,8 @@ const book = new Schema(
         author: String,
         image: String,
         description: String,
+        messenger: String,
+        messengerDescription: String,
         date: Date,
     },
     { versionKey: false }

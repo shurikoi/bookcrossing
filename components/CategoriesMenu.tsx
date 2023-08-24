@@ -7,9 +7,9 @@ type CategoriesMenu = {
     menuActive: boolean;
     categoryValue: string;
     selectedCategory: number;
-    setSelectedCategory: Dispatch<SetStateAction>;
-    setCategoryValue: Dispatch<SetStateAction>;
-    setCategory: Dispatch<SetStateAction>;
+    setSelectedCategory: Dispatch<SetStateAction<number>>;
+    setCategoryValue: Dispatch<SetStateAction<string>>;
+    setCategory: Dispatch<SetStateAction<string>>;
 };
 
 export default function CategoriesMenu({

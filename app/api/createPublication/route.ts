@@ -17,18 +17,20 @@ export async function POST(req: Request) {
 
     const parts = data.imageName.split(".");
 
-    const imageName = parts.slice(0, -1).join("");
-    const imageExtension = parts.slice(-1);
+    const image = {
+        name: parts.slice(0, -1).join(""),
+        extension: parts.slice(-1)
+    };
 
     const buffer = Buffer.from(await data.image!.arrayBuffer());
 
     const date = new Date().getTime();
 
-    const imagePath = `/books/${date}_${imageName}.${imageExtension}`;
+    const path = `/books/${date}_${image.name}.${image.extension}`;
 
-    fs.writeFile("./public" + imagePath, buffer, () => {});
+    fs.writeFile("./public" + path, buffer, () => {});
 
-    const { title, owner, description, category, author } = data;
+    const { title, owner, description, category, author, messenger, messengerDescription } = data;
 
     books.create({
         title,
@@ -36,7 +38,9 @@ export async function POST(req: Request) {
         description,
         category,
         author,
-        image: imagePath,
+        messenger,
+        messengerDescription,
+        image: path,
         date: date,
     });
 
