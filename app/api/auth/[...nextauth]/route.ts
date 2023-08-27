@@ -65,22 +65,22 @@ export const authOptions: NextAuthOptions = {
         signOut: "/",
     },
     callbacks: {
-        async session({ session }) {
-            const email: string = session?.user?.email as string;
+        // async session({ session }) {
+        //     const email: string = session?.user?.email as string;
 
-            await connection();
+        //     // await connection();
 
-            const user = (await users.findOne({ email })) as user;
+        //     // const user = (await users.findOne({ email })) as user;
 
-            if (user) session.user = { id: user._id, email: session.user.email };
-            // console.log("session", session, user)
+        //     // if (user) session.user = { id: user._id, email: session.user.email };
+        //     // console.log("session", session, user)
 
-            // const id: string = session.user.id as string;
+        //     // const id: string = session.user.id as string;
 
-            // session.user = { id };
+        //     // session.user = { id };
 
-            return session;
-        },
+        //     return session;
+        // },
         async signIn({ profile, account }) {
             if (account?.provider == "google") {
                 const {

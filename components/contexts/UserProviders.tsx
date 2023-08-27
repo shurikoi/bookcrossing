@@ -32,13 +32,13 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     const [data, setData] = useState<data>({ loading: true });
     const [loading, setLoading] = useState(true);
 
-    const id = session?.user.id;
+    const userEmail = session?.user.email;
 
     useEffect(() => {
         async function fetchUser() {
             const response = await fetch("/api/getUserData", {
                 method: "post",
-                body: JSON.stringify({ id }),
+                body: JSON.stringify({ email: userEmail }),
             });
 
             const user = await response.json();
@@ -53,8 +53,8 @@ function UserProvider({ children }: { children: React.ReactNode }) {
             setLoading(false);
         }
 
-        if (id) fetchUser();
-    }, [id]);
+        if (userEmail) fetchUser();
+    }, [userEmail]);
 
     useMemo(() => {
         setData({
