@@ -36,6 +36,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         async function fetchUser() {
+            console.log(userEmail)
             const response = await fetch("/api/getUserData", {
                 method: "post",
                 body: JSON.stringify({ email: userEmail }),
