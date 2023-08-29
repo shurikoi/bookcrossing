@@ -7,7 +7,7 @@ import Categories from "./Categories";
 import ProfileIcon from "../ui/icons/ProfileIcon";
 import ContentLoader from "../ui/ContentLoader";
 import WarningIcon from "../ui/icons/WarningIcon";
-import Contact, { messenger } from "../Contact";
+import Contact, { messenger } from "./Contact";
 import { bookData } from "./Publications";
 import isDataValid from "@/lib/isDataValid";
 
@@ -201,7 +201,7 @@ export default function PublicationForm() {
                                 )}
                             </div>
                             <div
-                                className={`cursor-pointer overflow-ellipsis overflow-hidden w-[240px]`}
+                                className={`cursor-pointer overflow-ellipsis overflow-hidden w-[240px] whitespace-nowrap`}
                                 onClick={() => imageRef.current?.click()}
                             >
                                 {image.file ? image.file.name : "wybierz plik do 10 MB"}

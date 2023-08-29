@@ -5,9 +5,10 @@ import { Dispatch, SetStateAction, createContext, useContext, useEffect, useMemo
 
 const UserContext = createContext<any>(null);
 
-interface data {
+type userData = {
     loading: boolean;
     user?: {
+        id: string;
         name: string;
         setName: Dispatch<SetStateAction<string>>;
         surname: string;
@@ -23,14 +24,31 @@ interface data {
 function UserProvider({ children }: { children: React.ReactNode }) {
     const { data: session, status } = useSession();
 
+    const [id, setId] = useState("");
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
     const [email, setEmail] = useState("");
     const [points, setPoints] = useState(0);
     const [isPasswordExist, setIsPasswordExist] = useState(false);
-
-    const [data, setData] = useState<data>({ loading: true });
     const [loading, setLoading] = useState(true);
+
+    const userData : userData = {
+        loading,
+        user: {
+            id,
+            name,
+            setName,
+            surname,
+            setSurname,
+            email,
+            setEmail,
+            points,
+            setPoints,
+            isPasswordExist,
+        },
+    };
+
+    // const [data, setData] = useState<data>({ loading: true });
 
     const userEmail = session?.user.email;
 
@@ -45,6 +63,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
             if (user.isPasswordExist) setIsPasswordExist(true);
 
+            setId(user.id);
             setName(user.name);
             setSurname(user.surname);
             setEmail(user.email);
@@ -56,26 +75,37 @@ function UserProvider({ children }: { children: React.ReactNode }) {
         if (userEmail) fetchUser();
     }, [userEmail]);
 
-    useMemo(() => {
-        setData({
-            loading,
-            user: { name, setName, surname, setSurname, email, setEmail, points, setPoints, isPasswordExist },
-        });
-    }, [name, surname, email, points, loading, isPasswordExist]);
+    // useMemo(() => {
+    //     setData({
+    //         loading,
+    //         user: {
+    //             id,
+    //             name,
+    //             setName,
+    //             surname,
+    //             setSurname,
+    //             email,
+    //             setEmail,
+    //             points,
+    //             setPoints,
+    //             isPasswordExist,
+    //         },
+    //     });
+    // }, [id, name, surname, email, points, loading, isPasswordExist]);
 
     useMemo(() => {
         if (!loading) fetch("/api/changeUserData", { method: "post", body: JSON.stringify({ name, surname, email }) });
     }, [name, surname, email]);
 
     return (
-        <UserContext.Provider value={status == "unauthenticated" ? { loading: false, user: undefined } : data}>
+        <UserContext.Provider value={status == "unauthenticated" ? { loading: false, user: undefined } : userData}>
             {children}
         </UserContext.Provider>
     );
 }
 
 function useUserData() {
-    const data: data = useContext(UserContext);
+    const data: userData = useContext(UserContext);
 
     return data;
 }

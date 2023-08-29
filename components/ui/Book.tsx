@@ -36,7 +36,7 @@ const Book = React.memo(({ data, setCurrentBook, setIsBookModalActive }: BookPro
             <div className="text-[#CDCDCD] text-[17px] font-normal cursor-text w-fit">{date}</div>
             <div>
                 <div
-                    className="font-medium text-[21px] text-white overflow-hidden text-ellipsis cursor-text w-fit max-w-full"
+                    className="font-medium text-[21px] text-white overflow-hidden text-ellipsis cursor-text w-fit max-w-full whitespace-nowrap"
                     title={data.title}
                 >
                     {data.title}

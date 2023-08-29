@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import BookMenu from "./BookMenu";
-import { messenger } from "../Contact";
+import { messenger } from "./Contact";
 import ContentLoader from "../ui/ContentLoader";
 import Book from "../ui/Book";
 import PublicationForm from "./PublicationMenu";
