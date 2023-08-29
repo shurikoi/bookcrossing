@@ -1,16 +1,11 @@
-import Image from "next/image";
-import React, { Dispatch, MouseEventHandler, SetStateAction, useMemo, useState } from "react";
+import React, { Dispatch, SetStateAction, useMemo, useState } from "react";
 import Loader from "./ContentLoader";
-import { data } from "../Publications";
 import convertDate from "@/lib/convertDate";
+import { bookData } from "../authorized/Publications";
 
 interface BookProps {
-    // title: string;
-    // author: string;
-    // image: string;
-    // date: string;
-    data: data;
-    setCurrentBook?: Dispatch<SetStateAction<data>>;
+    data: bookData;
+    setCurrentBook?: Dispatch<SetStateAction<bookData>>;
     setIsBookModalActive?: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -24,12 +19,8 @@ const Book = React.memo(({ data, setCurrentBook, setIsBookModalActive }: BookPro
     }
 
     const date = useMemo(() => {
-        const date = convertDate(data.date)
-        if (date == "NaN")
-            return "Dzisiaj"
-        else
-            return date
-    }, [data.date])
+        return convertDate(data.date);
+    }, [data.date]);
 
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const [isImageLoading, setIsImageLoading] = useState(true);

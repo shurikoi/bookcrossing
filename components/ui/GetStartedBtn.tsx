@@ -2,7 +2,7 @@
 
 import { MouseEventHandler } from "react";
 import { useForm } from "@/components/contexts/FormContext";
-import Pencil from "./PencilIcon";
+import Pencil from "./icons/PencilIcon";
 
 export default function getStartedBtn({ onClick }: { onClick?: MouseEventHandler }) {
     const { setFormActive } = useForm();

@@ -1,13 +1,15 @@
 import { FormEvent, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-import Book from "./ui/Book";
-import TagIcon from "./ui/TagIcon";
-import LinkIcon from "./ui/LinkIcon";
+import Book from "../ui/Book";
+import TagIcon from "../ui/icons/TagIcon";
+import LinkIcon from "../ui/LinkIcon";
 import Categories from "./Categories";
-import ProfileIcon from "./ui/ProfileIcon";
-import ContentLoader from "./ui/ContentLoader";
-import WarningIcon from "./ui/WarningIcon";
-import Contact, { messenger } from "./Contact";
+import ProfileIcon from "../ui/icons/ProfileIcon";
+import ContentLoader from "../ui/ContentLoader";
+import WarningIcon from "../ui/icons/WarningIcon";
+import Contact, { messenger } from "../Contact";
+import { bookData } from "./Publications";
+import isDataValid from "@/lib/isDataValid";
 
 const categories = [
     "Powieść historyczna",
@@ -63,13 +65,15 @@ export default function PublicationForm() {
     const [messenger, setMessenger] = useState<messenger>("Telegram");
     const [messengerDescription, setMessengerDescription] = useState("");
 
-    const data = {
+    const bookData: bookData = {
         author,
         title,
         description,
         category,
         image: image.url,
         owner: session?.user.id!,
+        messenger,
+        messengerDescription,
         date: "Dzisiaj",
     };
 
@@ -112,6 +116,12 @@ export default function PublicationForm() {
         form.append("category", category);
         form.append("messenger", messenger);
         form.append("messengerDescription", messengerDescription);
+
+        isDataValid({
+            ...bookData,
+            image: image.file!,
+            imageName: image.file?.name!
+        });
 
         fetch("/api/createPublication", {
             method: "POST",
@@ -235,7 +245,7 @@ export default function PublicationForm() {
                         placeholder="Zacznij pisać"
                     ></textarea>
                 </div>
-                <Book data={data} />
+                <Book data={bookData} />
             </div>
 
             {false ? (

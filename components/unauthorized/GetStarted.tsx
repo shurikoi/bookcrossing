@@ -1,6 +1,6 @@
 import Image from "next/image";
-import GetStartedBtn from "./ui/GetStartedBtn";
-import { eUkraine } from "./fonts";
+import GetStartedBtn from "../ui/GetStartedBtn";
+import { eUkraine } from "../fonts";
 
 export default function GetStarted() {
     return (

@@ -1,10 +1,10 @@
-import { messengers } from "./Contact";
-import { data } from "./Publications";
-import Book from "./ui/Book";
-import ProfileIcon from "./ui/ProfileIcon";
-import TagIcon from "./ui/TagIcon";
+import { messengers } from "../Contact";
+import { bookData } from "./Publications";
+import Book from "../ui/Book";
+import ProfileIcon from "../ui/icons/ProfileIcon";
+import TagIcon from "../ui/icons/TagIcon";
 
-export default function BookMenu({ data }: { data: data }) {
+export default function BookMenu({ data }: { data: bookData }) {
     const { title, author, category, description, messengerDescription, messenger } = data;
     return (
         <div className="flex flex-col gap-5 w-[700px]">

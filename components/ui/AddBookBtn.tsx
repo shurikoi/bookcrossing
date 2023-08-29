@@ -1,5 +1,5 @@
 import { MouseEventHandler } from "react";
-import Pencil from "./PencilIcon";
+import Pencil from "./icons/PencilIcon";
 
 export default function AddBookBtn({ onClick }: { onClick: MouseEventHandler }) {
     return (

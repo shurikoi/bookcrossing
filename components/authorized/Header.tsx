@@ -1,10 +1,10 @@
-import Bell from "./ui/BellIcon";
+import BellIcon from "../ui/BellIcon";
 import UserMenu from "./UserMenu";
 import { useState, useRef } from "react";
 import Image from "next/image";
 import SettingsMenu from "./SettingsMenu";
-import { useUserData } from "./contexts/UserProviders";
-import useClickOutside from "./useClickOutside";
+import { useUserData } from "../contexts/UserProviders";
+import useClickOutside from "../hooks/useClickOutside";
 
 export default function Header() {
     const { user } = useUserData();
@@ -27,8 +27,8 @@ export default function Header() {
                     <div className="text-2xl text-white font-head">BookCrossing</div>
                 </div>
                 <div className="flex items-center gap-[30px]">
-                    <div className="p-2 bg-white rounded-full shadow-md shadow-black/30">
-                        <Bell></Bell>
+                    <div className="p-2 bg-white rounded-full shadow-md shadow-black/30 cursor-pointer hover:-translate-y-0.5 duration-200">
+                        <BellIcon></BellIcon>
                     </div>
                     <div className="flex items-center gap-6 bg-white border-[#DFDFE0] border-[3px] rounded-full px-3 py-1">
                         <Image src="/images/image 1359.png" alt="" width={20} height={20}></Image>

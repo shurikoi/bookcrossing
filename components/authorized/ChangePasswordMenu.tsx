@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import ModalMenu from "./ui/ModalMenu";
-import SettingsInput from "./ui/SettingsInput";
-import PasswordIcon from "./ui/PasswordIcon";
+import ModalMenu from "../ui/ModalMenu";
+import SettingsInput from "../ui/SettingsInput";
+import PasswordIcon from "../ui/icons/PasswordIcon";
 
 interface ChangePasswordMenu {
     isActive: boolean;

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import AddBookBtn from "./ui/AddBookBtn";
-import Book from "./ui/Book";
-import ModalMenu from "./ui/ModalMenu";
-import PublicationForm from "./PublicationForm";
-import ContentLoader from "./ui/ContentLoader";
-import BookMenu from "./BookMenu";
-import { messenger } from "./Contact";
 
-export type data = {
+import BookMenu from "./BookMenu";
+import { messenger } from "../Contact";
+import ContentLoader from "../ui/ContentLoader";
+import Book from "../ui/Book";
+import PublicationForm from "./PublicationMenu";
+import ModalMenu from "../ui/ModalMenu";
+import AddBookBtn from "../ui/AddBookBtn";
+
+export type bookData = {
     title: string;
     owner: string;
     author: string;
@@ -24,9 +25,9 @@ export default function Publications() {
     const [isBookModalActive, setIsBookModalActive] = useState(false);
 
     const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState<data[]>();
+    const [data, setData] = useState<bookData[]>();
 
-    const [currentBook, setCurrentBook] = useState<data>({
+    const [currentBook, setCurrentBook] = useState<bookData>({
         title: "",
         owner: "",
         author: "",
@@ -46,7 +47,7 @@ export default function Publications() {
                 method: "POST",
             });
 
-            const books: data[] = await response.json();
+            const books: bookData[] = await response.json();
             
             setIsLoading(false);
 

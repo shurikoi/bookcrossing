@@ -1,9 +1,9 @@
-import ModalMenu from "./ui/ModalMenu";
+import ModalMenu from "../ui/ModalMenu";
 import { Dispatch, SetStateAction, useState } from "react";
-import ProfileIcon from "./ui/ProfileIcon";
-import SettingsInput from "./ui/SettingsInput";
+import ProfileIcon from "../ui/icons/ProfileIcon";
+import SettingsInput from "../ui/SettingsInput";
 import ChangePasswordMenu from "./ChangePasswordMenu";
-import { useUserData } from "./contexts/UserProviders";
+import { useUserData } from "../contexts/UserProviders";
 
 interface SettingsMenu {
     isSettingsMenuActive: boolean;

@@ -1,5 +1,4 @@
 import { Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef, useState } from "react";
-import { publicationData } from "./PublicationForm";
 import CategoriesMenu from "./CategoriesMenu";
 
 type categories = {

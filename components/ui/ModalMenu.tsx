@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import CrossBtn from "./CrossBtn";
-import useClickOutside from "../useClickOutside";
+import useClickOutside from "../hooks/useClickOutside";
 
 interface ModalMenu extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;

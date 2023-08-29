@@ -1,6 +1,6 @@
 import { signOut, useSession } from "next-auth/react";
 import { Dispatch, SetStateAction } from "react";
-import { useUserData } from "./contexts/UserProviders";
+import { useUserData } from "../contexts/UserProviders";
 interface UserMenu {
     menuActive: boolean;
     setIsSettingsMenuActive: Dispatch<SetStateAction<boolean>>;

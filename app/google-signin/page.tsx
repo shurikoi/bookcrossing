@@ -1,7 +1,8 @@
 "use client";
 
 import { useUserData } from "@/components/contexts/UserProviders";
-import { signIn, useSession } from "next-auth/react";
+import ContentLoader from "@/components/ui/ContentLoader";
+import { signIn } from "next-auth/react";
 import { useEffect } from "react";
 
 export default function GoogleSignin() {
@@ -14,5 +15,6 @@ export default function GoogleSignin() {
         }
     }, [user, loading]);
 
+    if (loading) return <ContentLoader></ContentLoader>
     return <></>;
 }

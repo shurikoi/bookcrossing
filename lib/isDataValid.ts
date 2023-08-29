@@ -1,4 +1,4 @@
-import { publicationData } from "@/components/PublicationForm";
+import { publicationData } from "@/components/authorized/PublicationMenu";
 
 export default function isDataValid(data: publicationData) {
     const { title, author, category, image, description, messengerDescription } = data;
@@ -18,7 +18,7 @@ export default function isDataValid(data: publicationData) {
     if (messengerDescription.length < 2 || messengerDescription.length > 55) errors.messengerDescription = true;
     if (description.length == 0) errors.description = true;
 
-    if (!image.size || image.size / (1024 * 1024) > 10 || !["image/png", "image/jpeg"].includes(image.type))
+    if (!image || !image.size || image.size / (1024 * 1024) > 10 || !["image/png", "image/jpeg"].includes(image.type))
         errors.image = true;
     
     if (category.trim() == "") errors.category = true;

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { eUkraine } from "./fonts";
+import { eUkraine } from "../fonts";
 
 export default function Advantages() {
     return (

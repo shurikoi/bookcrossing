@@ -3,7 +3,7 @@ import ArrowBtn from "@/components/ui/ArrowBtn";
 import { currentState } from "./AuthForm";
 import { Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import isEmailValid from "@/lib/isEmailValid";
-import ContentLoader from "./ui/ContentLoader";
+import ContentLoader from "../ui/ContentLoader";
 
 type DefaultForm = {
     setEmail: Dispatch<SetStateAction<string>>;

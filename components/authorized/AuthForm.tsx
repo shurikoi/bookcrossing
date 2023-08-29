@@ -1,9 +1,9 @@
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import DefaultForm from "./DefaultForm";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
-import ModalMenu from "./ui/ModalMenu";
-import { useForm } from "./contexts/FormContext";
+import ModalMenu from "../ui/ModalMenu";
+import { useForm } from "../contexts/FormContext";
 
 export type currentState = "default" | "signin" | "signup";
 
