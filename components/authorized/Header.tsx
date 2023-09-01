@@ -1,4 +1,4 @@
-import BellIcon from "../ui/BellIcon";
+import BellIcon from "../ui/icons/BellIcon";
 import UserMenu from "./UserMenu";
 import { useState, useRef } from "react";
 import Image from "next/image";
@@ -9,7 +9,7 @@ import useClickOutside from "../hooks/useClickOutside";
 export default function Header() {
     const { user } = useUserData();
     const [menuActive, setMenuActive] = useState(false);
-    const [isSettingsMenuActive, setIsSettingsMenuActive] = useState(false);
+    const [isSettingsMenuActive, setIsSettingsMenuActive] = useState(true);
 
     const menuRef = useRef<HTMLDivElement>(null);
 

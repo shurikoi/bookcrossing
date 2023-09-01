@@ -12,10 +12,10 @@ interface userData {
 
 export async function POST(req: Request) {
     const { email, name, surname } = (await req.json()) as userData;
-    await connection();
 
-    const { user } = (await getServerSession(authOptions)) as { user: { id: string; email: string } };
-    const { id } = user;
-    const updateduser = await users.updateOne({ _id: id }, { email, name, surname });
+    const { user } = (await getServerSession(authOptions)) as { user: { email: string } };
+
+    await users.updateOne({ email: user.email }, { email, name, surname });
+
     return NextResponse.json({}, { status: 200 });
 }

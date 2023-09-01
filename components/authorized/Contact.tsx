@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useMemo, useRef, useState } from "react";
 import TelegramIcon from "../ui/icons/TelegramIcon";
-import SnapchatIcon from "../ui/SnapchatIcon";
+import SnapchatIcon from "../ui/icons/SnapchatIcon";
 import MessengerIcon from "../ui/icons/MessengerIcon";
 import InstagramIcon from "../ui/icons/InstagramIcon";
 import useClickOutside from "../hooks/useClickOutside";

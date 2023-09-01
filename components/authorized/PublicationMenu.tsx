@@ -2,7 +2,7 @@ import { FormEvent, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import Book from "../ui/Book";
 import TagIcon from "../ui/icons/TagIcon";
-import LinkIcon from "../ui/LinkIcon";
+import LinkIcon from "../ui/icons/LinkIcon";
 import Categories from "./Categories";
 import ProfileIcon from "../ui/icons/ProfileIcon";
 import ContentLoader from "../ui/ContentLoader";
@@ -10,6 +10,7 @@ import WarningIcon from "../ui/icons/WarningIcon";
 import Contact, { messenger } from "./Contact";
 import { bookData } from "./Publications";
 import isDataValid from "@/lib/isDataValid";
+import { useUserData } from "../contexts/UserProviders";
 
 const categories = [
     "Powieść historyczna",
@@ -51,7 +52,7 @@ type errors = {
 };
 
 export default function PublicationForm() {
-    const { data: session } = useSession();
+    const { user } = useUserData();
 
     const [author, setAuthor] = useState("");
     const [title, setTitle] = useState("");
@@ -71,7 +72,7 @@ export default function PublicationForm() {
         description,
         category,
         image: image.url,
-        owner: session?.user.id!,
+        owner: user!.id,
         messenger,
         messengerDescription,
         date: "Dzisiaj",
@@ -105,23 +106,31 @@ export default function PublicationForm() {
         if (isSubmitButtonDisabled) return;
         setIsSubmitButtonDisabled(true);
 
+        const errors = isDataValid({
+            ...bookData,
+            image: image.file!,
+            imageName: image.file?.name!
+        });
+
+        if (errors.hasErrors) {
+            setIsSubmitButtonDisabled(false);
+            setErrors(errors)
+            return
+        }
+
         const form = new FormData();
 
         form.append("image", image.file!);
         form.append("imageName", image.file?.name!);
         form.append("author", author);
-        form.append("owner", session?.user.id!);
+        form.append("owner", user!.id);
         form.append("title", title);
         form.append("description", description);
         form.append("category", category);
         form.append("messenger", messenger);
         form.append("messengerDescription", messengerDescription);
 
-        isDataValid({
-            ...bookData,
-            image: image.file!,
-            imageName: image.file?.name!
-        });
+        
 
         fetch("/api/createPublication", {
             method: "POST",
@@ -201,7 +210,7 @@ export default function PublicationForm() {
                                 )}
                             </div>
                             <div
-                                className={`cursor-pointer overflow-ellipsis overflow-hidden w-[240px] whitespace-nowrap`}
+                                className={`${errors.image && "text-[#DD0000]"} cursor-pointer overflow-ellipsis overflow-hidden w-[240px] whitespace-nowrap`}
                                 onClick={() => imageRef.current?.click()}
                             >
                                 {image.file ? image.file.name : "wybierz plik do 10 MB"}
@@ -214,13 +223,14 @@ export default function PublicationForm() {
                                 accept="image/png, image/jpeg"
                                 hidden
                             />
-                            <div className="relative">
+                            {/* <div className="relative"> */}
                                 <input
+                                className={`${errors.messengerDescription ? "placeholder:text-[#DD0000]" : "placeholder:text-[#9A9A9A]"}`}
                                     type="text"
                                     placeholder="wprowadź tutaj..."
                                     onInput={(e) => setMessengerDescription((e.target as HTMLInputElement).value)}
                                 />
-                                {errors.author && (
+                                {/* {errors.author && (
                                     <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-4">
                                         <>
                                             <WarningIcon />
@@ -229,8 +239,8 @@ export default function PublicationForm() {
                                             </div>
                                         </>
                                     </div>
-                                )}
-                            </div>
+                                )} */}
+                            {/* </div> */}
                         </div>
                     </div>
                     <hr className="border-black/40" />

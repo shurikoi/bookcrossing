@@ -1,8 +1,9 @@
 import ArrowBtn from "@/components/ui/ArrowBtn";
 import { Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import ShowPasswordBtn from "../ui/ShowPasswordBtn";
-import { currentState } from "./AuthForm";
+import { currentState } from "../authorized/AuthForm";
 import { signIn } from "next-auth/react";
+import ContentLoader from "../ui/ContentLoader";
 
 type SignInForm = {
     email: string;
@@ -12,21 +13,27 @@ type SignInForm = {
 
 export default function SignInForm({ email, formActive, setCurrentState }: SignInForm) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [password, setPassword] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-        if (inputRef.current) inputRef.current.focus();
-    }, [inputRef, formActive]);
+    // useEffect(() => {
+    //     if (inputRef.current) inputRef.current.focus();
+    // }, [inputRef, formActive]);
 
     function handleSubmit() {
+        setIsLoading(true);
         fetch("/api/checkPassword", {
             method: "POST",
             body: JSON.stringify({ email, password }),
         })
             .then((response) => response.json())
             .then(async (data) => {
-                if (data.isValid) signIn("credentials", { authType: "signin", email, password });
+                if (data.isValid) {
+                    signIn("credentials", { authType: "signin", email, password });
+                    return;
+                }
+                setIsLoading(false);
             });
     }
 
@@ -55,13 +62,25 @@ export default function SignInForm({ email, formActive, setCurrentState }: SignI
                     onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
                     onKeyDown={handleKeyDown}
                     ref={inputRef}
+                    autoFocus
                 />
-                <ShowPasswordBtn
-                    onClick={() => setIsPasswordVisible((isPasswordVisible) => !isPasswordVisible)}
-                    isPasswordVisible={isPasswordVisible}
-                ></ShowPasswordBtn>
+                {isLoading ? (
+                    <div className="relative w-6 h-6">
+                        <ContentLoader></ContentLoader>
+                    </div>
+                ) : (
+                    <ShowPasswordBtn
+                        onClick={() => setIsPasswordVisible((isPasswordVisible) => !isPasswordVisible)}
+                        isPasswordVisible={isPasswordVisible}
+                    ></ShowPasswordBtn>
+                )}
             </div>
-            <button className="cursor-pointer font-light text-[15px] text-[#61C558] select-none" onClick={handleSubmit}>
+            <button
+                className={`${
+                    isLoading ? "text-gray-400" : "text-[#61C558]"
+                } cursor-pointer font-light text-[15px] select-none`}
+                onClick={handleSubmit}
+            >
                 Zaloguj
             </button>
         </>

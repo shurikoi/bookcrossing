@@ -1,6 +1,6 @@
 import Image from "next/image";
 import ArrowBtn from "@/components/ui/ArrowBtn";
-import { currentState } from "./AuthForm";
+import { currentState } from "../authorized/AuthForm";
 import { Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import isEmailValid from "@/lib/isEmailValid";
 import ContentLoader from "../ui/ContentLoader";
@@ -17,9 +17,9 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
     const [loading, setLoading] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     
-    useEffect(() => {
-        if (inputRef.current) inputRef.current.focus();
-    }, [inputRef, formActive]);
+    // useEffect(() => {
+    //     if (inputRef.current) inputRef.current.focus();
+    // }, [inputRef, formActive]);
 
     async function handleSubmit() {
         setLoading(true);
@@ -97,6 +97,7 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
                     onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
                     onKeyDown={handleKeyDown}
                     ref={inputRef}
+                    autoFocus
                 />
                 {loading ? (
                     <div className="relative w-7 h-7">

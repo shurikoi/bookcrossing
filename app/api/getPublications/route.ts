@@ -12,8 +12,6 @@ type book = {
 
 export async function POST() {
 
-    await connection();
-
     const publications : book[] = await books.find({});
 
     return NextResponse.json(publications);

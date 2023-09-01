@@ -7,8 +7,6 @@ export async function POST(req: Request) {
     
     const { email } = body;
 
-    await connection()
-
     const { _id: id, name, surname, points, password } = await users.findOne({ email });
 
     return NextResponse.json({ id, name, surname, email, points, isPasswordExist: !!password });

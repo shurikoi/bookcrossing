@@ -4,6 +4,7 @@ import ProfileIcon from "../ui/icons/ProfileIcon";
 import SettingsInput from "../ui/SettingsInput";
 import ChangePasswordMenu from "./ChangePasswordMenu";
 import { useUserData } from "../contexts/UserProviders";
+import SetPasswordMenu from "./SetPasswordMenu";
 
 interface SettingsMenu {
     isSettingsMenuActive: boolean;
@@ -53,7 +54,7 @@ export default function SettingsMenu({ isSettingsMenuActive, setIsSettingsMenuAc
 function ProfilePage() {
     const { user } = useUserData();
     const [isChangePasswordMenuActive, setIsChangePasswordMenuActive] = useState(false);
-
+    const [isSetPasswordMenuActive, setIsSetPasswordMenuActive] = useState(true);
     return (
         <div className="flex flex-col gap-6">
             <div className="font-head text-[18px] whitespace-nowrap">Mój profil</div>
@@ -66,7 +67,7 @@ function ProfilePage() {
                 <SettingsInput value={user!.surname} setValue={user!.setSurname} type="surname" />
             </div>
             <hr />
-            {user?.isPasswordExist && (
+            {user?.isPasswordExist ? (
                 <>
                     <div className="flex flex-col gap-1">
                         <div className="font-extralight text-[14px]">Email</div>
@@ -84,6 +85,22 @@ function ProfilePage() {
                     <ChangePasswordMenu
                         isActive={isChangePasswordMenuActive}
                         setIsActive={setIsChangePasswordMenuActive}
+                    />
+                </>
+            ) : (
+                <>
+                    <div className="flex flex-col gap-1">
+                        <div className="font-extralight text-[14px]">Hasło</div>
+                        <div
+                            className="border-[#BEBEBE] border w-fit p-2 px-4 font-extralight text-[14px] rounded-md cursor-pointer"
+                            onClick={() => setIsSetPasswordMenuActive(true)}
+                        >
+                            Ustaw hasło
+                        </div>
+                    </div>
+                    <SetPasswordMenu
+                        isActive={isSetPasswordMenuActive}
+                        setIsActive={setIsSetPasswordMenuActive}
                     />
                 </>
             )}

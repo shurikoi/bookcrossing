@@ -7,8 +7,6 @@ export async function POST(req: Request) {
 
     const email: string = data.email;
 
-    await connection();
-
     const user = await users.findOne({ email });
 
     if (user)

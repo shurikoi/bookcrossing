@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from "react";
-import DefaultForm from "./DefaultForm";
-import SignInForm from "./SignInForm";
-import SignUpForm from "./SignUpForm";
+import DefaultForm from "../unauthorized/DefaultForm";
+import SignInForm from "../unauthorized/SignInForm";
+import SignUpForm from "../unauthorized/SignUpForm";
 import ModalMenu from "../ui/ModalMenu";
 import { useForm } from "../contexts/FormContext";
 
