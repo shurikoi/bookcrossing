@@ -3,6 +3,7 @@ import users from "@/model/user";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+    await connection()
     const body = (await req.json()) as { email: string };
     
     const { email } = body;

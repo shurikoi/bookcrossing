@@ -63,7 +63,7 @@ export default function Publications() {
     }
 
     return (
-        <div className="px-28 py-16">
+        <div className="px-28 py-16 relative">
             <div className="flex gap-6 flex-wrap justify-center">
                 {isLoading ? (
                     <ContentLoader></ContentLoader>

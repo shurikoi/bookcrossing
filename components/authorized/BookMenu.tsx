@@ -11,7 +11,7 @@ export default function BookMenu({ data }: { data: bookData }) {
     const { user } = useUserData();
     const { title, author, category, description, messengerDescription, messenger } = data;
     return (
-        <div className="flex flex-col gap-5 w-[700px]">
+        <div className="flex flex-col gap-5 ">
             <div className="flex gap-16">
                 <div className="flex flex-col gap-5 w-full">
                     <div className="w-full font-head font-normal text-lg">{title}</div>
