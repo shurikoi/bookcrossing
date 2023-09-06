@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import books from "@/model/book";
+import connection from "@/lib/connection";
 import isDataValid from "@/lib/isDataValid";
 
 export async function POST(req: Request) {
+    await connection()
+
     const body = await req.formData();
 
     const data: any = {};

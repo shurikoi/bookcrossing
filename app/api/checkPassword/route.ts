@@ -3,6 +3,7 @@ import users from "@/model/user";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+    await connection()
 
     const data: { email: string; password: string } = await req.json();
 

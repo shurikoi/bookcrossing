@@ -11,6 +11,8 @@ interface userData {
 }
 
 export async function POST(req: Request) {
+    await connection()
+
     const { email, name, surname } = (await req.json()) as userData;
 
     const { user } = (await getServerSession(authOptions)) as { user: { email: string } };
