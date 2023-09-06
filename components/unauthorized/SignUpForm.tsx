@@ -1,7 +1,7 @@
 import { Dispatch, KeyboardEvent, SetStateAction, useState } from "react";
 import ArrowBtn from "@/components/ui/ArrowBtn";
 import ShowPasswordBtn from "../ui/ShowPasswordBtn";
-import { currentState } from "../authorized/AuthForm";
+import { currentState } from "./AuthForm";
 import { signIn } from "next-auth/react";
 
 type SignInForm = {

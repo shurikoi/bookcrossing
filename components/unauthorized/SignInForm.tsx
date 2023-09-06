@@ -1,7 +1,7 @@
 import ArrowBtn from "@/components/ui/ArrowBtn";
 import { Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import ShowPasswordBtn from "../ui/ShowPasswordBtn";
-import { currentState } from "../authorized/AuthForm";
+import { currentState } from "./AuthForm";
 import { signIn } from "next-auth/react";
 import ContentLoader from "../ui/ContentLoader";
 
@@ -17,9 +17,9 @@ export default function SignInForm({ email, formActive, setCurrentState }: SignI
     const [password, setPassword] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
 
-    // useEffect(() => {
-    //     if (inputRef.current) inputRef.current.focus();
-    // }, [inputRef, formActive]);
+    useEffect(() => {
+        if (inputRef.current && formActive) inputRef.current.focus();
+    }, [formActive]);
 
     function handleSubmit() {
         setIsLoading(true);

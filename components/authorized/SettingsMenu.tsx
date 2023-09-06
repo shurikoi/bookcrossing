@@ -26,7 +26,7 @@ export default function SettingsMenu({ isSettingsMenuActive, setIsSettingsMenuAc
     const [currentPage, setCurrentPage] = useState<settings>("profile");
 
     return (
-        <ModalMenu modalActive={isSettingsMenuActive} setModalActive={setIsSettingsMenuActive}>
+        <ModalMenu isModalActive={isSettingsMenuActive} setIsModalActive={setIsSettingsMenuActive}>
             <div className="flex w-[900px] min-h-[600px]">
                 <div className="bg-[#F1F1F1] flex flex-col gap-8 py-6 rounded-tl-lg rounded-bl-lg ">
                     <div className="font-normal px-6 text-[15px] text-[#5F5F5F]">Ustawienia</div>

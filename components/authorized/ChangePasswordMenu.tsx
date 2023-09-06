@@ -14,7 +14,7 @@ export default function ChangePasswordMenu({ isActive, setIsActive }: ChangePass
     const [confirmPassword, setConfirmPassword] = useState("");
 
     return (
-        <ModalMenu modalActive={isActive} setModalActive={setIsActive} style={{ padding: "48px 80px 33px" }}>
+        <ModalMenu isModalActive={isActive} setIsModalActive={setIsActive} style={{ padding: "48px 80px 33px" }}>
             <div className="flex flex-col items-center text-center gap-8">
                 <PasswordIcon />
                 <div className="font-light text-[17px]">Zmień hasło</div>

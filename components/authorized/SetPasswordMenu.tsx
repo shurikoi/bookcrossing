@@ -20,7 +20,7 @@ export default function SetPasswordMenu({ isActive, setIsActive }: SetPasswordMe
     }
 
     return (
-        <ModalMenu modalActive={isActive} setModalActive={setIsActive} style={{ padding: "48px 80px 33px" }}>
+        <ModalMenu isModalActive={isActive} setIsModalActive={setIsActive} style={{ padding: "48px 80px 33px" }}>
             <div className="flex flex-col items-center text-center gap-5 w-60">
                 <PasswordIcon />
                 <div>

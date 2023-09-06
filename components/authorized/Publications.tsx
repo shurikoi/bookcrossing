@@ -83,16 +83,16 @@ export default function Publications() {
             <AddBookBtn onClick={handleAddBookClick} />
 
             <ModalMenu
-                modalActive={isPublicationModalActive}
-                setModalActive={setIsPublicationModalActive}
+                isModalActive={isPublicationModalActive}
+                setIsModalActive={setIsPublicationModalActive}
                 style={{ padding: "25px" }}
             >
                 <PublicationForm />
             </ModalMenu>
 
             <ModalMenu
-                modalActive={isBookModalActive}
-                setModalActive={setIsBookModalActive}
+                isModalActive={isBookModalActive}
+                setIsModalActive={setIsBookModalActive}
                 style={{ padding: "25px" }}
             >
                 <BookMenu data={currentBook} />

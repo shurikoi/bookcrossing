@@ -16,7 +16,7 @@ export default function arrowBtn({
     const errorColor = "bg-[#8a2a2a]";
 
     return (
-        <div className={`cursor-pointer rounded-full w-7 h-7 ${wrapperClassName} ${isError && errorColor} duration-300`} onClick={onClick}>
+        <div className={`cursor-pointer rounded-full w-7 h-7 ${wrapperClassName}${isError ? errorColor : ""} duration-300`} onClick={onClick}>
             <div className={`relative w-full h-full`}>
                 <div
                     className={`w-0.5 h-[10px] absolute top-[50%] left-[50%] rotate-45 translate-x-[-50%] translate-y-[calc(-50%+3px)]  ${arrowClassName}`}

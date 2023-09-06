@@ -1,6 +1,6 @@
 import Image from "next/image";
 import ArrowBtn from "@/components/ui/ArrowBtn";
-import { currentState } from "../authorized/AuthForm";
+import { currentState } from "./AuthForm";
 import { Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import isEmailValid from "@/lib/isEmailValid";
 import ContentLoader from "../ui/ContentLoader";
@@ -16,10 +16,10 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
-    
-    // useEffect(() => {
-    //     if (inputRef.current) inputRef.current.focus();
-    // }, [inputRef, formActive]);
+
+    useEffect(() => {
+        if (inputRef.current && formActive) inputRef.current.focus();
+    }, [formActive]);
 
     async function handleSubmit() {
         setLoading(true);
@@ -80,32 +80,34 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
 
     return (
         <>
-            <div className="text-2xl font-semibold">Zaloguj się lub zarejestruj w kilka sekund</div>
-            <div className="text-[13px] font-extralight">
+            <div className="text-2xl font-semibold text-[17px] sm:text-[24px]">
+                Zaloguj się lub zarejestruj w kilka sekund
+            </div>
+            <div className="text-[10px] sm:text-[13px] font-extralight">
                 Użyj adresu e-mail. Sprawdzimy, czy już masz konto. Jeśli nie, pomożemy Ci je utworzyć.
             </div>
             <div
                 className={`${
                     error ? "border-[#8a2a2a]" : "border-[#61C558]"
-                } border-2 rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300`}
+                } border-2 rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300 w-full`}
             >
                 <input
                     type="text"
                     placeholder="myemail@example.com"
-                    className="outline-none"
+                    className="placeholder:font-light w-full"
                     value={email}
                     onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
                     onKeyDown={handleKeyDown}
                     ref={inputRef}
                     autoFocus
                 />
-                {loading ? (
-                    <div className="relative w-7 h-7">
+                <div className="relative w-7 h-7">
+                    {loading ? (
                         <ContentLoader />
-                    </div>
-                ) : (
-                    <ArrowBtn wrapperClassName="bg-[#95ED8E]" onClick={handleSubmit} isError={error}></ArrowBtn>
-                )}
+                    ) : (
+                        <ArrowBtn wrapperClassName="bg-[#95ED8E]" onClick={handleSubmit} isError={error}></ArrowBtn>
+                    )}
+                </div>
             </div>
             <div className="font-normal text-[15px]">Lub</div>
             <div
@@ -113,7 +115,7 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
                 onClick={handleSignIn}
             >
                 <Image alt="" src="/images/google.png" width={25} height={25}></Image>
-                <div className="font-extralight">Kontynuuj przez Google</div>
+                <div className="font-light text-[12px] sm:text-[16px] text-[#525252]">Kontynuuj przez Google</div>
             </div>
         </>
     );

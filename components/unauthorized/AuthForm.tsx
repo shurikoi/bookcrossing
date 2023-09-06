@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
-import DefaultForm from "../unauthorized/DefaultForm";
-import SignInForm from "../unauthorized/SignInForm";
-import SignUpForm from "../unauthorized/SignUpForm";
+import DefaultForm from "./DefaultForm";
+import SignInForm from "./SignInForm";
+import SignUpForm from "./SignUpForm";
 import ModalMenu from "../ui/ModalMenu";
 import { useForm } from "../contexts/FormContext";
 
@@ -30,8 +30,8 @@ export default function AuthForm() {
     }
 
     return (
-        <ModalMenu modalActive={formActive} setModalActive={setFormActive}  style={{ padding: "56px 40px" }}>
-            <form className="text-center flex items-center flex-col gap-8 w-[460px]" onSubmit={handleSubmit}>
+        <ModalMenu isModalActive={formActive} setIsModalActive={setFormActive}>
+            <form className="text-center flex items-center flex-col gap-8 w-full sm:w-[460px] py-8 px-6 sm:py-14 sm:px-10" onSubmit={handleSubmit}>
                 {states[currentState]}
             </form>
         </ModalMenu>
