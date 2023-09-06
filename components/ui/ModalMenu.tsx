@@ -2,33 +2,41 @@ import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import CrossBtn from "./CrossBtn";
 import useClickOutside from "../hooks/useClickOutside";
 
-interface ModalMenu extends React.HTMLAttributes<HTMLDivElement> {
+interface ModalMenuProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
     modalActive: boolean;
     setModalActive: Dispatch<SetStateAction<boolean>>;
-    padding?: string;
+    smallScreen?: boolean;
 }
 
-const ModalMenu = React.memo(({ children, modalActive, setModalActive, ...props }: ModalMenu) => {
+const ModalMenu = React.memo(({ children, modalActive, setModalActive, smallScreen, ...props }: ModalMenuProps) => {
     const menuRef = useRef<HTMLDivElement>(null);
 
     const style: React.CSSProperties = modalActive
         ? {
-              opacity: 1,
-              pointerEvents: "auto",
-          }
+            opacity: 1,
+            pointerEvents: "auto",
+        }
         : {
-              opacity: 0,
-              pointerEvents: "none",
-          };
+            opacity: 0,
+            pointerEvents: "none",
+        };
 
-    useClickOutside(menuRef, () => {
+    useClickOutside(menuRef, () => {    
         setModalActive(false);
     });
 
+    if (smallScreen) return (
+        <div className="fixed w-full h-full top-0 left-0 bg-white duration-300"
+        style={style}>
+            <CrossBtn smallScreen setMenuActive={setModalActive}></CrossBtn>
+        </div>
+    )
+
     return (
+
         <div
-            className={`fixed left-0 top-0 w-screen h-screen flex items-center justify-center  duration-300 transition-opacity z-50`}
+            className={`fixed left-0 top-0 w-screen h-screen sm:flex items-center justify-center  duration-300 transition-opacity z-50 hidden`}
             style={style}
         >
             <div
@@ -43,7 +51,7 @@ const ModalMenu = React.memo(({ children, modalActive, setModalActive, ...props 
                 {children}
             </div>
         </div>
-    );
+    )
 });
 
 export default ModalMenu;

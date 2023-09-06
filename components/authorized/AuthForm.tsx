@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import DefaultForm from "../unauthorized/DefaultForm";
 import SignInForm from "../unauthorized/SignInForm";
 import SignUpForm from "../unauthorized/SignUpForm";
@@ -30,7 +30,7 @@ export default function AuthForm() {
     }
 
     return (
-        <ModalMenu modalActive={formActive} setModalActive={setFormActive} style={{ padding: "56px 40px" }}>
+        <ModalMenu modalActive={formActive} setModalActive={setFormActive}  style={{ padding: "56px 40px" }}>
             <form className="text-center flex items-center flex-col gap-8 w-[460px]" onSubmit={handleSubmit}>
                 {states[currentState]}
             </form>
