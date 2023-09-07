@@ -85,7 +85,7 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
             <div
                 className={`${
                     error ? "border-[#8a2a2a]" : "border-[#61C558]"
-                } border-2 rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300 w-full gap-3`}
+                } border-2 rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300 w-full sm:w-auto gap-3`}
             >
                 <input
                     type="text"
