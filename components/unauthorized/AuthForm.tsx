@@ -1,9 +1,10 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, Fragment, useRef, useState } from "react";
 import DefaultForm from "./DefaultForm";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 import ModalMenu from "../ui/ModalMenu";
 import { useForm } from "../contexts/FormContext";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 export type currentState = "default" | "signin" | "signup";
 
@@ -29,11 +30,30 @@ export default function AuthForm() {
         e.preventDefault();
     }
 
+    const nodeRef = useRef<any>(null);
+
     return (
         <ModalMenu isModalActive={formActive} setIsModalActive={setFormActive}>
-            <form className="text-center flex items-center flex-col gap-8 w-full sm:w-[460px] py-8 px-6 sm:py-14 sm:px-10" onSubmit={handleSubmit}>
-                {states[currentState]}
-            </form>
+            <SwitchTransition mode="out-in">
+                <CSSTransition
+                    key={currentState}
+                    classNames="fade"
+                    addEndListener={(done: any) => {
+                        if (nodeRef.current) {
+                            nodeRef.current.addEventListener("transitionend", done, false);
+                        }
+                    }}
+                    nodeRef={nodeRef}
+                >
+                    <form
+                        className="text-center flex items-center flex-col gap-8 w-full sm:w-[460px] py-8 px-6 sm:py-14 sm:px-10"
+                        onSubmit={handleSubmit}
+                        ref={nodeRef}
+                    >
+                        {states[currentState]}
+                    </form>
+                </CSSTransition>
+            </SwitchTransition>
         </ModalMenu>
     );
 }

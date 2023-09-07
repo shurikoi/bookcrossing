@@ -6,7 +6,6 @@ type textSlider = {
     text: string[];
     duration: number;
     height?: number;
-    stop?: boolean;
 };
 
 export default function TextSlider({ text, duration, height = 36 }: textSlider) {

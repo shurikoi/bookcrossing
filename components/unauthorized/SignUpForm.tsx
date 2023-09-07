@@ -3,6 +3,7 @@ import ArrowBtn from "@/components/ui/ArrowBtn";
 import ShowPasswordBtn from "../ui/ShowPasswordBtn";
 import { currentState } from "./AuthForm";
 import { signIn } from "next-auth/react";
+import CloseBtn from "../ui/CloseBtn";
 
 type SignInForm = {
     email: string;
@@ -34,14 +35,10 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
     return (
         <>
             <div className="flex gap-5 items-center">
-                <ArrowBtn
-                    arrowClassName="bg-black"
-                    wrapperClassName="rotate-180 scale-150 absolute top-[42px] left-5"
-                    onClick={() => setCurrentState("default")}
-                ></ArrowBtn>
-                <div className="text-2xl font-semibold">Utwórz konto</div>
+                <CloseBtn smallScreen onClick={() => setCurrentState("default")} type="arrow"></CloseBtn>
+                <div className="text-[17px] sm:text-[24px] font-semibold">Utwórz konto</div>
             </div>
-            <div className="text-[13px] font-extralight">tworzysz konto na serwisie BookCrossing za pomocą {email}</div>
+            <div className="text-[10px] sm:text-[13px] font-extralight">tworzysz konto na serwisie BookCrossing za pomocą {email}</div>
             <div className="flex gap-3">
                 <input
                     type="text"
@@ -49,7 +46,7 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                     placeholder="Imię"
                     value={name}
                     onInput={(e) => setName((e.target as HTMLInputElement).value)}
-                    className="w-full outline-none border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px]"
+                    className="w-full  border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px]"
                     onKeyDown={handleKeyDown}
                 />
 
@@ -59,16 +56,16 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                     placeholder="Nazwisko"
                     value={surname}
                     onInput={(e) => setSurname((e.target as HTMLInputElement).value)}
-                    className="w-full outline-none border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px]"
+                    className="w-full  border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px]"
                     onKeyDown={handleKeyDown}
                 />
             </div>
-            <div className="border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px] flex justify-between w-full">
+            <div className="border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px] flex justify-between w-full gap-3">
                 <input
                     type={isPasswordVisible ? "text" : "password"}
                     name="password"
                     placeholder="Hasło"
-                    className="outline-none"
+                    className="w-full"
                     value={password}
                     onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
                     onKeyDown={handleKeyDown}
@@ -78,12 +75,12 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                     isPasswordVisible={isPasswordVisible}
                 ></ShowPasswordBtn>
             </div>
-            <div className="border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px] flex justify-between w-full">
+            <div className="border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px] flex justify-between w-full gap-3">
                 <input
                     type={isPasswordVisible ? "text" : "password"}
                     name="cpassword"
                     placeholder="Powtórz hasło"
-                    className="outline-none"
+                    className="w-full"
                     value={cpassword}
                     onInput={(e) => setCpassword((e.target as HTMLInputElement).value)}
                     onKeyDown={handleKeyDown}

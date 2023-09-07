@@ -17,10 +17,6 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
     const [loading, setLoading] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-        if (inputRef.current && formActive) inputRef.current.focus();
-    }, [formActive]);
-
     async function handleSubmit() {
         setLoading(true);
         if (isEmailValid(email)) {
@@ -80,7 +76,7 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
 
     return (
         <>
-            <div className="text-2xl font-semibold text-[17px] sm:text-[24px]">
+            <div className="font-semibold text-[17px] sm:text-[24px]">
                 Zaloguj się lub zarejestruj w kilka sekund
             </div>
             <div className="text-[10px] sm:text-[13px] font-extralight">
@@ -89,7 +85,7 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
             <div
                 className={`${
                     error ? "border-[#8a2a2a]" : "border-[#61C558]"
-                } border-2 rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300 w-full`}
+                } border-2 rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300 w-full gap-3`}
             >
                 <input
                     type="text"
@@ -99,7 +95,6 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
                     onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
                     onKeyDown={handleKeyDown}
                     ref={inputRef}
-                    autoFocus
                 />
                 <div className="relative w-7 h-7">
                     {loading ? (
