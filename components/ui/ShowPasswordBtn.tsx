@@ -8,5 +8,9 @@ interface ShowPasswordBtn {
 }
 
 export default function ShowPasswordBtn({ isPasswordVisible, onClick }: ShowPasswordBtn) {
-    return <div className="cursor-pointer" onClick={onClick}>{isPasswordVisible ? <OpenedEye></OpenedEye> : <ClosedEye></ClosedEye>}</div>;
+    return (
+        <div className="cursor-pointer" onClick={onClick}>
+            {isPasswordVisible ? <OpenedEye></OpenedEye> : <ClosedEye></ClosedEye>}
+        </div>
+    );
 }

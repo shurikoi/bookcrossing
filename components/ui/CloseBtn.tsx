@@ -17,7 +17,7 @@ export default function CloseBtn({ onClick, smallScreen, type = "cross" }: Close
     return (
         <div
             className={`${
-                smallScreen ? "left-8 top-8 w-6 h-6" : "right-0 top-0 translate-x-[calc(100%+10px)] w-8 h-8"
+                smallScreen ? "left-8 top-8 w-6 h-6 sm:top-14" : "right-0 top-0 translate-x-[calc(100%+10px)] w-8 h-8"
             } absolute rounded-full cursor-pointer`}
             onClick={onClick}
         >

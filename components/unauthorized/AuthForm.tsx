@@ -22,7 +22,7 @@ export default function AuthForm() {
                 setCurrentState={setCurrentState}
             ></DefaultForm>
         ),
-        signin: <SignInForm email={email} formActive={formActive} setCurrentState={setCurrentState}></SignInForm>,
+        signin: <SignInForm email={email} setCurrentState={setCurrentState}></SignInForm>,
         signup: <SignUpForm email={email} setCurrentState={setCurrentState}></SignUpForm>,
     };
 

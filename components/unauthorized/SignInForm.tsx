@@ -9,10 +9,9 @@ import CloseBtn from "../ui/CloseBtn";
 type SignInForm = {
     email: string;
     setCurrentState: Dispatch<SetStateAction<currentState>>;
-    formActive: boolean;
 };
 
-export default function SignInForm({ email, formActive, setCurrentState }: SignInForm) {
+export default function SignInForm({ email, setCurrentState }: SignInForm) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [password, setPassword] = useState("");
@@ -43,7 +42,7 @@ export default function SignInForm({ email, formActive, setCurrentState }: SignI
             <div className="flex gap-5 items-center">
                 <CloseBtn smallScreen onClick={() => setCurrentState("default")} type="arrow"></CloseBtn>
 
-                <div className="text-[17px] sm:text-[24px] font-semibold">Zaloguj się na koncie</div>
+                <div className="text-[17px] sm:text-[24px] font-semibold leading-none">Zaloguj się na koncie</div>
             </div>
             <div className="text-[10px] sm:text-[13px] font-extralight">za pomocą {email}</div>
             <div className="border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px] flex justify-between gap-3">

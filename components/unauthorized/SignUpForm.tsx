@@ -36,7 +36,7 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
         <>
             <div className="flex gap-5 items-center">
                 <CloseBtn smallScreen onClick={() => setCurrentState("default")} type="arrow"></CloseBtn>
-                <div className="text-[17px] sm:text-[24px] font-semibold">Utwórz konto</div>
+                <div className="text-[17px] sm:text-[24px] font-semibold leading-none">Utwórz konto</div>
             </div>
             <div className="text-[10px] sm:text-[13px] font-extralight">tworzysz konto na serwisie BookCrossing za pomocą {email}</div>
             <div className="flex gap-3">
