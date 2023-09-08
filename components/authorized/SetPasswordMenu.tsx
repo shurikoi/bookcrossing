@@ -21,7 +21,7 @@ export default function SetPasswordMenu({ isActive, setIsActive }: SetPasswordMe
 
     return (
         <ModalMenu isModalActive={isActive} setIsModalActive={setIsActive} style={{ padding: "48px 80px 33px" }}>
-            <div className="flex flex-col items-center text-center gap-5 w-60">
+            <div className="flex flex-col items-center text-center gap-5 w-60 px-20 pt-12 pb-8">
                 <PasswordIcon />
                 <div>
                     <div className="font-light text-[17px]">Ustaw hasło</div>

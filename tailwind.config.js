@@ -6,10 +6,11 @@ module.exports = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    
+
     extend: {
       screens: {
-        '2md': '960px'
+        '2md': '960px',
+        '2sm': '768px'
       },
       fontFamily: {
         head: 'var(--font-head)',
@@ -17,8 +18,8 @@ module.exports = {
       },
       keyframes: {
         rotation: {
-          '0%': {transform: 'rotate(0deg)'},
-          '100%': {transform: 'rotate(360deg)'}
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' }
         },
         scaling: {
           '0%, 100%': { transform: 'scale(1)' },

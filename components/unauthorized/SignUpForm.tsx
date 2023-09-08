@@ -24,7 +24,8 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
         })
             .then((response) => response.json())
             .then((data) => {
-                if (!data.isExist) signIn("credentials", { authType: "signup", name, surname, email, password });
+                if (!data.isExist)
+                    signIn("credentials", { authType: "signup", name, surname, email, password, redirect: false });
             });
     }
 
@@ -35,10 +36,12 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
     return (
         <>
             <div className="flex gap-5 items-center">
-                <CloseBtn smallScreen onClick={() => setCurrentState("default")} type="arrow"></CloseBtn>
+                <CloseBtn position="left" onClick={() => setCurrentState("default")} type="arrow"></CloseBtn>
                 <div className="text-[17px] sm:text-[24px] font-semibold leading-none">Utwórz konto</div>
             </div>
-            <div className="text-[10px] sm:text-[13px] font-extralight">tworzysz konto na serwisie BookCrossing za pomocą {email}</div>
+            <div className="text-[10px] sm:text-[13px] font-extralight">
+                tworzysz konto na serwisie BookCrossing za pomocą {email}
+            </div>
             <div className="flex gap-3">
                 <input
                     type="text"

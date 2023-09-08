@@ -26,7 +26,7 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
             .then((response) => response.json())
             .then(async (data) => {
                 if (data.isValid) {
-                    signIn("credentials", { authType: "signin", email, password });
+                    signIn("credentials", { authType: "signin", email, password, redirect:false });
                     return;
                 }
                 setIsLoading(false);

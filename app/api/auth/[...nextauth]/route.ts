@@ -3,7 +3,6 @@ import users from "@/model/user";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { signOut } from "next-auth/react";
 
 type credentials = {
     authType: "signin" | "signup";
@@ -29,7 +28,7 @@ export const authOptions: NextAuthOptions = {
         CredentialsProvider({
             name: "credentials",
             credentials: {},
-            async authorize(credentials, req) {
+            async authorize(credentials) {
                 const { authType, email, password } = credentials as credentials;
 
                 await connection();
@@ -38,19 +37,15 @@ export const authOptions: NextAuthOptions = {
 
                 if (authType == "signin") {
                     if (user && user.password == password) {
-                        const id = user._id.toString();
-
-                        return { id, email } as any;
+                        return { email } as any;
                     }
                 } else if (authType == "signup") {
                     if (!user) {
                         const { name, surname } = credentials as credentials;
 
-                        const user = await users.create({ name, surname, password, email, points: 0 });
+                        await users.create({ name, surname, password, email, points: 0 });
 
-                        const id = user._id.toString();
-
-                        return { id, email } as any;
+                        return { email } as any;
                     }
                 }
             },
@@ -60,27 +55,7 @@ export const authOptions: NextAuthOptions = {
             clientId: process.env.GOOGLE_CLIENT_ID as string,
         }),
     ],
-    pages: {
-        signIn: "/",
-        signOut: "/",
-    },
     callbacks: {
-        // async session({ session }) {
-        //     const email: string = session?.user?.email as string;
-
-        //     // await connection();
-
-        //     // const user = (await users.findOne({ email })) as user;
-
-        //     // if (user) session.user = { id: user._id, email: session.user.email };
-        //     // console.log("session", session, user)
-
-        //     // const id: string = session.user.id as string;
-
-        //     // session.user = { id };
-
-        //     return session;
-        // },
         async signIn({ profile, account }) {
             if (account?.provider == "google") {
                 const {

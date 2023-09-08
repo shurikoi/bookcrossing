@@ -8,22 +8,22 @@ import useClickOutside from "../hooks/useClickOutside";
 
 export default function Header() {
     const { user } = useUserData();
-    const [menuActive, setMenuActive] = useState(false);
+    const [isMenuActive, setIsMenuActive] = useState(false);
     const [isSettingsMenuActive, setIsSettingsMenuActive] = useState(false);
 
     const menuRef = useRef<HTMLDivElement>(null);
 
     useClickOutside(menuRef, () => {
-        setMenuActive(false);
+        setIsMenuActive(false);
     });
 
     return (
         <>
             <header
                 className="bg-black
-        flex items-center py-4 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(/images/header.png)]"
+        flex items-center flex-col sm:flex-row py-4 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(/images/header.png)]"
             >
-                <div className="flex items-center justify-between mr-auto">
+                <div className="flex items-center justify-between sm:mr-auto">
                     <div className="text-2xl text-white font-head">BookCrossing</div>
                 </div>
                 <div className="flex items-center gap-[30px]">
@@ -39,7 +39,7 @@ export default function Header() {
                     <div className="relative" ref={menuRef}>
                         <div
                             className="flex items-center gap-2 text-xl font-normal text-white cursor-pointer"
-                            onClick={() => setMenuActive((menuActive) => !menuActive)}
+                            onClick={() => setIsMenuActive((menuActive) => !menuActive)}
                         >
                             <div className="select-none">{user?.name}</div>
                             <svg
@@ -54,9 +54,9 @@ export default function Header() {
                             </svg>
                         </div>
                         <UserMenu
-                            menuActive={menuActive}
+                            isMenuActive={isMenuActive}
                             setIsSettingsMenuActive={setIsSettingsMenuActive}
-                            setMenuActive={setMenuActive}
+                            setMenuActive={setIsMenuActive}
                         />
                     </div>
                 </div>

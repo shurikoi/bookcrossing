@@ -11,6 +11,7 @@ import Contact, { messenger } from "./Contact";
 import { bookData } from "./Publications";
 import isDataValid from "@/lib/isDataValid";
 import { useUserData } from "../contexts/UserProviders";
+import SubmitIcon from "../ui/icons/SubmitIcon";
 
 const categories = [
     "Powieść historyczna",
@@ -104,18 +105,30 @@ export default function PublicationForm() {
 
     function handleSubmit() {
         if (isSubmitButtonDisabled) return;
+
         setIsSubmitButtonDisabled(true);
+        setErrors({
+            title: false,
+            author: false,
+            category: false,
+            image: false,
+            messengerDescription: false,
+            hasErrors: false,
+        });
 
         const errors = isDataValid({
             ...bookData,
             image: image.file!,
-            imageName: image.file?.name!
+            imageName: image.file?.name!,
         });
 
         if (errors.hasErrors) {
-            setIsSubmitButtonDisabled(false);
-            setErrors(errors)
-            return
+            setTimeout(() => {
+                setIsSubmitButtonDisabled(false);
+                setErrors(errors);
+            }, 250);
+
+            return;
         }
 
         const form = new FormData();
@@ -130,27 +143,20 @@ export default function PublicationForm() {
         form.append("messenger", messenger);
         form.append("messengerDescription", messengerDescription);
 
-        
-
         fetch("/api/createPublication", {
             method: "POST",
             body: form,
         })
             .then((res) => res.json())
             .then((data) => {
-                if (data.hasErrors) {
-                    setErrors(data);
-                    setTimeout(() => {
-                        setIsSubmitButtonDisabled(false);
-                    }, 250);
-                } else window.location.reload();
+                window.location.reload();
             });
     }
 
     return (
-        <div className="flex flex-col gap-5 w-[700px]">
-            <div className="flex gap-16 justify-between">
-                <div className="flex flex-col gap-5">
+        <div className="flex flex-col 2sm:gap-5 h-full 2sm:h-fit justify-between max-w-[680px] 2sm:p-6">
+            <div className="flex justify-between 2sm:gap-4">
+                <div className="flex flex-col gap-5 w-full">
                     <div className="relative flex flex-col">
                         <input
                             className={`w-full font-head font-normal placeholder:text-[#9A9A9A] duration-200 text-lg`}
@@ -180,6 +186,16 @@ export default function PublicationForm() {
                                 <div className="relative flex gap-3 items-center">
                                     <ProfileIcon />
                                     <div>Autor</div>
+                                    {errors.author && (
+                                        <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-4">
+                                            <>
+                                                <WarningIcon />
+                                                <div className=" text-[#DD0000] font-inter font-normal text-[13px] h-[1em] leading-none">
+                                                    Niestety, pole musi się składać z 2-55 znaków
+                                                </div>
+                                            </>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="flex gap-3 items-center">
@@ -190,30 +206,20 @@ export default function PublicationForm() {
                         </div>
                         <div className="flex flex-col gap-5">
                             <Categories categories={categories} setCategory={setCategory} error={errors.category} />
-                            <div className="relative flex flex-col gap-1">
-                                <input
-                                    className={`placeholder:text-[#9A9A9A]`}
-                                    type="text"
-                                    value={author}
-                                    onInput={(e) => setAuthor((e.target as HTMLInputElement).value)}
-                                    placeholder="wprowadź tutaj..."
-                                />
-                                {errors.author && (
-                                    <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-4">
-                                        <>
-                                            <WarningIcon />
-                                            <div className=" text-[#DD0000] font-inter font-normal text-[13px] h-[1em] leading-none">
-                                                Niestety, pole musi się składać z 2-55 znaków
-                                            </div>
-                                        </>
-                                    </div>
-                                )}
-                            </div>
+                            <input
+                                className={`placeholder:text-[#9A9A9A]`}
+                                type="text"
+                                value={author}
+                                onInput={(e) => setAuthor((e.target as HTMLInputElement).value)}
+                                placeholder="wprowadź tutaj..."
+                            />
                             <div
-                                className={`${errors.image && "text-[#DD0000]"} cursor-pointer overflow-ellipsis overflow-hidden w-[240px] whitespace-nowrap`}
+                                className={`${
+                                    errors.image && "text-[#DD0000]"
+                                } cursor-pointer overflow-ellipsis overflow-hidden whitespace-nowrap`}
                                 onClick={() => imageRef.current?.click()}
                             >
-                                {image.file ? image.file.name : "wybierz plik do 10 MB"}
+                                {image.file ? "Załączono" : "wybierz plik do 10 MB"}
                             </div>
                             <input
                                 ref={imageRef}
@@ -223,24 +229,16 @@ export default function PublicationForm() {
                                 accept="image/png, image/jpeg"
                                 hidden
                             />
-                            {/* <div className="relative"> */}
-                                <input
-                                className={`${errors.messengerDescription ? "placeholder:text-[#DD0000]" : "placeholder:text-[#9A9A9A]"}`}
-                                    type="text"
-                                    placeholder="wprowadź tutaj..."
-                                    onInput={(e) => setMessengerDescription((e.target as HTMLInputElement).value)}
-                                />
-                                {/* {errors.author && (
-                                    <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-4">
-                                        <>
-                                            <WarningIcon />
-                                            <div className=" text-[#DD0000] font-inter font-normal text-[13px] h-[1em] leading-none">
-                                                Niestety, tytuł musi się składać z 2-55 znaków
-                                            </div>
-                                        </>
-                                    </div>
-                                )} */}
-                            {/* </div> */}
+                            <input
+                                className={`${
+                                    errors.messengerDescription
+                                        ? "placeholder:text-[#DD0000]"
+                                        : "placeholder:text-[#9A9A9A]"
+                                }`}
+                                type="text"
+                                placeholder="wprowadź tutaj..."
+                                onInput={(e) => setMessengerDescription((e.target as HTMLInputElement).value)}
+                            />
                         </div>
                     </div>
                     <hr className="border-black/40" />
@@ -255,11 +253,16 @@ export default function PublicationForm() {
                         placeholder="Zacznij pisać"
                     ></textarea>
                 </div>
-                <Book data={bookData} />
+                <div className="hidden 2sm:block">
+                    <Book data={bookData} />
+                </div>
             </div>
 
-            {false ? (
-                <ContentLoader />
+            <div className="2sb:mt-auto flex justify-center 2sm:justify-start">
+            {isSubmitButtonDisabled ? (
+                <div className="relative w-[33px] h-[33px]">
+                    <ContentLoader />
+                </div>
             ) : (
                 <div
                     className={`${
@@ -267,9 +270,10 @@ export default function PublicationForm() {
                     } duration-200 cursor-pointer w-fit`}
                     onClick={handleSubmit}
                 >
-                    Potwierdź
+                    <SubmitIcon></SubmitIcon>
                 </div>
             )}
+            </div>
         </div>
     );
 }

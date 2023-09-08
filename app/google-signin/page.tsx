@@ -15,6 +15,6 @@ export default function GoogleSignin() {
         }
     }, [user, loading]);
 
-    if (loading) return <ContentLoader></ContentLoader>
+    if (loading) return <ContentLoader></ContentLoader>;
     return <></>;
 }

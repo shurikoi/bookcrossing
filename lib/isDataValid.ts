@@ -20,9 +20,8 @@ export default function isDataValid(data: publicationData) {
 
     if (!image || !image.size || image.size / (1024 * 1024) > 10 || !["image/png", "image/jpeg"].includes(image.type))
         errors.image = true;
-    
-    if (category.trim() == "") errors.category = true;
 
+    if (category.trim() == "") errors.category = true;
 
     Object.values(errors).forEach((error) => {
         if (error) {

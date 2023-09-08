@@ -48,7 +48,7 @@ export default function Publications() {
             });
 
             const books: bookData[] = await response.json();
-            
+
             setIsLoading(false);
 
             if (books.length === 0) return;
@@ -82,19 +82,11 @@ export default function Publications() {
 
             <AddBookBtn onClick={handleAddBookClick} />
 
-            <ModalMenu
-                isModalActive={isPublicationModalActive}
-                setIsModalActive={setIsPublicationModalActive}
-                style={{ padding: "25px" }}
-            >
+            <ModalMenu fullMode isModalActive={isPublicationModalActive} setIsModalActive={setIsPublicationModalActive}>
                 <PublicationForm />
             </ModalMenu>
 
-            <ModalMenu
-                isModalActive={isBookModalActive}
-                setIsModalActive={setIsBookModalActive}
-                style={{ padding: "25px" }}
-            >
+            <ModalMenu fullMode isModalActive={isBookModalActive} setIsModalActive={setIsBookModalActive}>
                 <BookMenu data={currentBook} />
             </ModalMenu>
         </div>

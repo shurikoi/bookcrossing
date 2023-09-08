@@ -84,6 +84,7 @@ export default function Categories({ categories, setCategory, error }: categorie
             <input
                 type="text"
                 placeholder="wybierz..."
+                className={`${error ? "placeholder:text-[#DD0000]" : ""}`}
                 value={categoryValue}
                 onKeyDown={handleKeyDown}
                 onInput={(e) => setCategoryValue((e.target as HTMLInputElement).value)}

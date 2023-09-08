@@ -5,6 +5,7 @@ interface ModalMenuProps extends HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
     isModalActive: boolean;
     setIsModalActive: Dispatch<SetStateAction<boolean>>;
+    fullMode?: boolean;
     menuRef: React.RefObject<HTMLDivElement>;
 }
 
@@ -12,6 +13,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
     children,
     isModalActive,
     setIsModalActive,
+    fullMode = false,
     menuRef,
 }: ModalMenuProps) {
     const [menuYPosition, setMenuYPosition] = useState(0);
@@ -19,27 +21,29 @@ const MobileModalMenu = memo(function MobileModalMenu({
 
     useEffect(() => {
         function updateMenuPosition(e: TouchEvent) {
-            const touchY = e.touches[0].clientY - startPosition;
-            if (menuRef.current) {
-                menuRef.current.classList.remove("duration-200");
+            const clientY = e.touches[0].clientY - startPosition;
 
-                if (menuRef.current?.clientHeight - menuYPosition <= menuRef.current?.clientHeight && touchY > 0)
-                    setMenuYPosition(touchY);
-                else 
-                    setMenuYPosition(0);
+            if (menuRef.current) {
+                if (menuRef.current.clientHeight - menuYPosition <= menuRef.current.clientHeight && clientY > 0)
+                    setMenuYPosition(clientY);
+                else setMenuYPosition(0);
             }
         }
 
         function updateStartPosition(e: TouchEvent) {
-            const touchY = e.touches[0].clientY;
+            const clientY = e.touches[0].clientY;
 
-            setStartPosition(touchY);
+            menuRef.current?.classList.remove("duration-200");
+
+            menuRef.current?.classList.add("select-none");
+
+            setStartPosition(clientY);
         }
 
         function handleTouchEnd(e: TouchEvent) {
-            if (menuRef.current) {
-                menuRef.current.classList.add("duration-200");
-            }
+            menuRef.current?.classList.add("duration-200");
+
+            menuRef.current?.classList.remove("select-none");
 
             setMenuYPosition(0);
 
@@ -49,25 +53,23 @@ const MobileModalMenu = memo(function MobileModalMenu({
         }
 
         if (menuRef.current) {
-            menuRef.current.addEventListener("touchstart", updateStartPosition);
-            menuRef.current.addEventListener("touchmove", updateMenuPosition);
-            menuRef.current.addEventListener("touchend", handleTouchEnd);
+            menuRef.current?.addEventListener("touchstart", updateStartPosition);
+            menuRef.current?.addEventListener("touchmove", updateMenuPosition);
+            menuRef.current?.addEventListener("touchend", handleTouchEnd);
         }
 
         return () => {
-            if (menuRef.current) {
-                menuRef.current.removeEventListener("touchmove", updateMenuPosition);
-                menuRef.current.removeEventListener("touchstart", updateStartPosition);
-                menuRef.current.removeEventListener("touchend", handleTouchEnd);
-            }
+            menuRef.current?.removeEventListener("touchstart", updateStartPosition);
+            menuRef.current?.removeEventListener("touchmove", updateMenuPosition);
+            menuRef.current?.removeEventListener("touchend", handleTouchEnd);
         };
-    }, [menuYPosition, startPosition]);
+    }, [startPosition, menuYPosition, window]);
 
     useEffect(() => {
-        if (isModalActive) {
+        if (isModalActive && !fullMode) {
             setMenuYPosition(0);
         }
-    }, [isModalActive]);
+    }, [fullMode, isModalActive]);
 
     return (
         <>
@@ -76,16 +78,25 @@ const MobileModalMenu = memo(function MobileModalMenu({
                     isModalActive ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
                 } fixed top-0 left-0 w-screen duration-200 h-screen bg-black/40`}
             ></div>
+
             <div
-                className={`${
-                    isModalActive ? "bottom-0 touch-none" : "bottom-[-100%] touch-auto"
-                } fixed w-full h-fit bottom-0 left-0 bg-white p-8 rounded-t-xl duration-200`}
+                className={`${isModalActive ? "bottom-0 touch-none" : "bottom-[-100%] touch-auto"} ${
+                    fullMode ? "h-full" : "h-fit rounded-t-xl"
+                } fixed w-full bottom-0 left-0 bg-white p-8 duration-200`}
                 ref={menuRef}
                 style={{ transform: `translateY(${menuYPosition}px)` }}
             >
-                <div className="absolute top-2 left-1/2 -translate-x-1/2 w-1/4 bg-gray-400 rounded-full h-1"></div>
-                <div className="text-center font-head text-2xl leading-none font-medium">BookCrossing</div>
-                {children}
+                {fullMode ? (
+                    <CloseBtn type="arrow" position="left" onClick={() => setIsModalActive(false)}></CloseBtn>
+                ) : (
+                    <div className="absolute top-2 left-1/2 -translate-x-1/2 w-1/4 bg-gray-400 rounded-full h-1"></div>
+                )}
+
+                <div className="flex flex-col gap-5 h-full">
+                    <div className="text-center font-head text-2xl leading-none font-medium">BookCrossing</div>
+
+                    {children}
+                </div>
             </div>
         </>
     );

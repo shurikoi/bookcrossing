@@ -3,13 +3,19 @@ import CloseBtn from "./CloseBtn";
 import useClickOutside from "../hooks/useClickOutside";
 import MobileModalMenu from "./MobileModalMenu";
 
-interface ModalMenuProps extends React.HTMLAttributes<HTMLDivElement> {
+interface ModalMenuProps {
     children: React.ReactNode;
     isModalActive: boolean;
+    fullMode?: boolean;
     setIsModalActive: Dispatch<SetStateAction<boolean>>;
 }
 
-const ModalMenu = memo(function ModalMenu ({ children, isModalActive, setIsModalActive, ...props }: ModalMenuProps) {
+const ModalMenu = memo(function ModalMenu({
+    fullMode = false,
+    children,
+    isModalActive,
+    setIsModalActive,
+}: ModalMenuProps) {
     const menuRef = useRef<HTMLDivElement>(null);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
 
@@ -17,12 +23,11 @@ const ModalMenu = memo(function ModalMenu ({ children, isModalActive, setIsModal
         checkScreenSize();
 
         function checkScreenSize() {
-            setIsSmallScreen(window.innerWidth < 640);
+            setIsSmallScreen(window.innerWidth < 768);
         }
 
         window.addEventListener("resize", checkScreenSize);
     }, []);
-
 
     useClickOutside(menuRef, () => {
         setIsModalActive(false);
@@ -31,7 +36,7 @@ const ModalMenu = memo(function ModalMenu ({ children, isModalActive, setIsModal
     return (
         <>
             {isSmallScreen ? (
-                <MobileModalMenu isModalActive={isModalActive} setIsModalActive={setIsModalActive} menuRef={menuRef}>
+                <MobileModalMenu fullMode={fullMode} isModalActive={isModalActive} setIsModalActive={setIsModalActive} menuRef={menuRef}>
                     {children}
                 </MobileModalMenu>
             ) : (
@@ -46,7 +51,6 @@ const ModalMenu = memo(function ModalMenu ({ children, isModalActive, setIsModal
                     <div
                         ref={menuRef}
                         className={`relative bg-white shadow-sm rounded-lg duration-300 transition-opacity `}
-                        {...props}
                     >
                         <CloseBtn onClick={() => setIsModalActive(false)}></CloseBtn>
                         {children}

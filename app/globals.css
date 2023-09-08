@@ -4,7 +4,10 @@
 
 input,
 textarea,
-button {
+button,
+input:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
   outline: none;
 }
 

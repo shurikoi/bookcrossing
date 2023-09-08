@@ -75,24 +75,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
         if (userEmail) fetchUser();
     }, [userEmail]);
 
-    // useMemo(() => {
-    //     setData({
-    //         loading,
-    //         user: {
-    //             id,
-    //             name,
-    //             setName,
-    //             surname,
-    //             setSurname,
-    //             email,
-    //             setEmail,
-    //             points,
-    //             setPoints,
-    //             isPasswordExist,
-    //         },
-    //     });
-    // }, [id, name, surname, email, points, loading, isPasswordExist]);
-
     useMemo(() => {
         if (!loading) fetch("/api/changeUserData", { method: "post", body: JSON.stringify({ name, surname, email }) });
     }, [name, surname, email]);
