@@ -12,6 +12,8 @@ import { bookData } from "./Publications";
 import isDataValid from "@/lib/isDataValid";
 import { useUserData } from "../contexts/UserProviders";
 import SubmitIcon from "../ui/icons/SubmitIcon";
+import { useScreen } from "../contexts/ScreenProvider";
+import PreviewMenu from "./PreviewMenu";
 
 const categories = [
     "Powieść historyczna",
@@ -80,6 +82,9 @@ export default function PublicationForm() {
     };
 
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(false);
+    const [isPreviewMenuActive, setIsPreviewMenuActive] = useState(false);
+
+    const { isSmallScreen } = useScreen();
 
     const imageRef = useRef<HTMLInputElement>(null);
 
@@ -106,7 +111,13 @@ export default function PublicationForm() {
     function handleSubmit() {
         if (isSubmitButtonDisabled) return;
 
+        if (!isPreviewMenuActive) {
+            setIsPreviewMenuActive(true);
+            return;
+        }
+
         setIsSubmitButtonDisabled(true);
+
         setErrors({
             title: false,
             author: false,
@@ -258,22 +269,31 @@ export default function PublicationForm() {
                 </div>
             </div>
 
-            <div className="2sb:mt-auto flex justify-center 2sm:justify-start">
-            {isSubmitButtonDisabled ? (
-                <div className="relative w-[33px] h-[33px]">
-                    <ContentLoader />
-                </div>
-            ) : (
-                <div
-                    className={`${
-                        isSubmitButtonDisabled ? "text-gray-400" : "text-black"
-                    } duration-200 cursor-pointer w-fit`}
-                    onClick={handleSubmit}
-                >
-                    <SubmitIcon></SubmitIcon>
-                </div>
-            )}
+            <div className="flex justify-center 2sm:justify-start">
+                {isSubmitButtonDisabled ? (
+                    <div className="relative w-[33px] h-[33px]">
+                        <ContentLoader />
+                    </div>
+                ) : (
+                    <div
+                        className={`${
+                            isSubmitButtonDisabled ? "text-gray-400" : "text-black"
+                        } duration-200 cursor-pointer w-fit`}
+                        onClick={handleSubmit}
+                    >
+                        <SubmitIcon></SubmitIcon>
+                    </div>
+                )}
             </div>
+            {isSmallScreen && (
+                <PreviewMenu
+                    previewData={bookData}
+                    handleSubmit={handleSubmit}
+                    isSubmitButtonDisabled={isSubmitButtonDisabled}
+                    isMenuActive={isPreviewMenuActive}
+                    setIsMenuActive={setIsPreviewMenuActive}
+                ></PreviewMenu>
+            )}
         </div>
     );
 }

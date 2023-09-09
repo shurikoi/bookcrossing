@@ -62,8 +62,8 @@ export default function Header() {
                 </div>
             </header>
             <SettingsMenu
-                isSettingsMenuActive={isSettingsMenuActive}
-                setIsSettingsMenuActive={setIsSettingsMenuActive}
+                isMenuActive={isSettingsMenuActive}
+                setIsMenuActive={setIsSettingsMenuActive}
             />
         </>
     );

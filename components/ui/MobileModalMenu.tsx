@@ -35,17 +35,11 @@ const MobileModalMenu = memo(function MobileModalMenu({
 
             menuRef.current?.classList.remove("duration-200");
 
-            menuRef.current?.classList.add("select-none");
-
             setStartPosition(clientY);
         }
 
         function handleTouchEnd(e: TouchEvent) {
             menuRef.current?.classList.add("duration-200");
-
-            menuRef.current?.classList.remove("select-none");
-
-            setMenuYPosition(0);
 
             if (menuRef.current && menuYPosition > 100) {
                 setIsModalActive(false);
@@ -66,7 +60,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
     }, [startPosition, menuYPosition, window]);
 
     useEffect(() => {
-        if (isModalActive && !fullMode) {
+        if (isModalActive) {
             setMenuYPosition(0);
         }
     }, [fullMode, isModalActive]);
@@ -76,13 +70,13 @@ const MobileModalMenu = memo(function MobileModalMenu({
             <div
                 className={`${
                     isModalActive ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-                } fixed top-0 left-0 w-screen duration-200 h-screen bg-black/40`}
+                } fixed top-0 left-0 w-screen duration-200 h-screen bg-black/40 z-10`}
             ></div>
 
             <div
                 className={`${isModalActive ? "bottom-0 touch-none" : "bottom-[-100%] touch-auto"} ${
                     fullMode ? "h-full" : "h-fit rounded-t-xl"
-                } fixed w-full bottom-0 left-0 bg-white p-8 duration-200`}
+                } fixed w-full bottom-0 left-0 bg-white p-8 duration-200 z-10`}
                 ref={menuRef}
                 style={{ transform: `translateY(${menuYPosition}px)` }}
             >

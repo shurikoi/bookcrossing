@@ -3,11 +3,11 @@ import Advantages from "./Advantages";
 import Header from "./Header";
 import GetStarted from "./GetStarted";
 import AuthForm from "./AuthForm";
-import { FormProvider } from "../contexts/FormContext";
+import { FormModalProvider } from "../contexts/FormModalProvider";
 
 export default function StartPage() {
     return (
-        <FormProvider>
+        <FormModalProvider>
             <Header></Header>
             <Advantages></Advantages>
 
@@ -21,6 +21,6 @@ export default function StartPage() {
 
             <GetStarted></GetStarted>
             <AuthForm></AuthForm>
-        </FormProvider>
+        </FormModalProvider>
     );
 }

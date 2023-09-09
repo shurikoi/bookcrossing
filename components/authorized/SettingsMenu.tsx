@@ -6,12 +6,12 @@ import ChangePasswordMenu from "./ChangePasswordMenu";
 import { useUserData } from "../contexts/UserProviders";
 import SetPasswordMenu from "./SetPasswordMenu";
 
-interface SettingsMenu {
-    isSettingsMenuActive: boolean;
-    setIsSettingsMenuActive: Dispatch<SetStateAction<boolean>>;
+interface SettingsMenuProps {
+    isMenuActive: boolean;
+    setIsMenuActive: Dispatch<SetStateAction<boolean>>;
 }
 
-type settings = "profile";
+type pages = "profile";
 
 const settings = {
     profile: {
@@ -21,12 +21,12 @@ const settings = {
     },
 };
 
-export default function SettingsMenu({ isSettingsMenuActive, setIsSettingsMenuActive }: SettingsMenu) {
+export default function SettingsMenu({ isMenuActive, setIsMenuActive }: SettingsMenuProps) {
     const { user } = useUserData();
-    const [currentPage, setCurrentPage] = useState<settings>("profile");
+    const [currentPage, setCurrentPage] = useState<pages>("profile");
 
     return (
-        <ModalMenu isModalActive={isSettingsMenuActive} setIsModalActive={setIsSettingsMenuActive}>
+        <ModalMenu fullMode isModalActive={isMenuActive} setIsModalActive={setIsMenuActive}>
             <div className="flex w-[900px] min-h-[600px]">
                 <div className="bg-[#F1F1F1] flex flex-col gap-8 py-6 rounded-tl-lg rounded-bl-lg ">
                     <div className="font-normal px-6 text-[15px] text-[#5F5F5F]">Ustawienia</div>

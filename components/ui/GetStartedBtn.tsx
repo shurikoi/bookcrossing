@@ -1,4 +1,4 @@
-import { useForm } from "@/components/contexts/FormContext";
+import { useForm } from "@/components/contexts/FormModalProvider";
 
 export default function GetStartedBtn() {
     const { setFormActive } = useForm();
