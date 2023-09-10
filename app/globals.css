@@ -11,6 +11,10 @@ button:focus-visible {
   outline: none;
 }
 
+:placeholder{
+  user-select:none;
+}
+
 ::-webkit-scrollbar {
   width: 16px;
 }

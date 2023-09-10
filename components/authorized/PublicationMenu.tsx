@@ -9,7 +9,7 @@ import ContentLoader from "../ui/ContentLoader";
 import WarningIcon from "../ui/icons/WarningIcon";
 import Contact, { messenger } from "./Contact";
 import { bookData } from "./Publications";
-import isDataValid from "@/lib/isDataValid";
+import isPublicationDataValid from "@/lib/isPublicationDataValid";
 import { useUserData } from "../contexts/UserProviders";
 import SubmitIcon from "../ui/icons/SubmitIcon";
 import { useScreen } from "../contexts/ScreenProvider";
@@ -127,7 +127,7 @@ export default function PublicationForm() {
             hasErrors: false,
         });
 
-        const errors = isDataValid({
+        const errors = isPublicationDataValid({
             ...bookData,
             image: image.file!,
             imageName: image.file?.name!,

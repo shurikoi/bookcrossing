@@ -4,17 +4,17 @@ import { useEffect, useState } from "react";
 
 type textSlider = {
     text: string[];
-    duration: number;
+    duration?: number;
     height?: number;
 };
 
-export default function TextSlider({ text, duration, height = 36 }: textSlider) {
+export default function TextSlider({ text, duration = 2000, height = 36 }: textSlider) {
     const [selectedText, setSelectedText] = useState(0);
     const [isEnd, setIsEnd] = useState(false);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setSelectedText((selectedText: number) => {
+            setSelectedText((selectedText) => {
                 if (selectedText == text.length) {
                     setIsEnd(true);
                     return 0;
@@ -29,7 +29,7 @@ export default function TextSlider({ text, duration, height = 36 }: textSlider) 
         if (isEnd) {
             setTimeout(() => {
                 setIsEnd(false);
-                setSelectedText((selectedText: number) => {
+                setSelectedText((selectedText) => {
                     return selectedText + 1;
                 });
             }, 1);

@@ -9,10 +9,9 @@ export default function GoogleSignin() {
     const { user, loading } = useUserData();
 
     useEffect(() => {
-        if (!loading) {
-            if (!user) signIn("google");
-            if (user) window.close();
-        }
+        signIn("google");
+
+        if (user && !loading) window.close();
     }, [user, loading]);
 
     if (loading) return <ContentLoader></ContentLoader>;

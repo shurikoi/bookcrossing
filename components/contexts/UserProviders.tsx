@@ -47,7 +47,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
             isPasswordExist,
         },
     };
-
+    
     // const [data, setData] = useState<data>({ loading: true });
 
     const userEmail = session?.user.email;
@@ -76,9 +76,9 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     }, [userEmail]);
 
     useMemo(() => {
-        if (!loading) fetch("/api/changeUserData", { method: "post", body: JSON.stringify({ name, surname, email }) });
+        if (!loading && userData.user) fetch("/api/changeUserData", { method: "post", body: JSON.stringify({ name, surname, email }) });
     }, [name, surname, email]);
-
+    console.log(status, session)
     return (
         <UserContext.Provider value={status == "unauthenticated" ? { loading: false, user: undefined } : userData}>
             {children}
@@ -88,7 +88,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
 function useUserData() {
     const data: userData = useContext(UserContext);
-
+    console.log(data)
     return data;
 }
 

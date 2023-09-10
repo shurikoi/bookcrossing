@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import fs from "fs";
 import books from "@/model/book";
 import connection from "@/lib/connection";
-import isDataValid from "@/lib/isDataValid";
+import isPublicationDataValid from "@/lib/isPublicationDataValid";
 
 export async function POST(req: Request) {
     await connection()
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     for (const [key, value] of body) {
         data[key] = value;
     }
-    const errors = isDataValid(data);
+    const errors = isPublicationDataValid(data);
 
     if (errors.hasErrors) return NextResponse.json(errors);
 

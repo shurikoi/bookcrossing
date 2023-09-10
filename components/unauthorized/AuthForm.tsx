@@ -46,7 +46,7 @@ export default function AuthForm() {
                     nodeRef={nodeRef}
                 >
                     <form
-                        className="text-center flex items-center flex-col gap-8 w-full sm:w-[460px] py-8 px-6 sm:py-14 sm:px-10"
+                        className="text-center flex items-center flex-col gap-8 w-full 2sm:max-w-[500px] sm px-6 py-8 sm:px-10 sm:py-14"
                         onSubmit={handleSubmit}
                         ref={nodeRef}
                     >

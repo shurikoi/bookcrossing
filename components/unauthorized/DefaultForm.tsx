@@ -4,6 +4,7 @@ import { currentState } from "./AuthForm";
 import { Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import isEmailValid from "@/lib/isEmailValid";
 import ContentLoader from "../ui/ContentLoader";
+import WarningIcon from "../ui/icons/WarningIcon";
 
 type DefaultForm = {
     setEmail: Dispatch<SetStateAction<string>>;
@@ -13,14 +14,17 @@ type DefaultForm = {
 };
 
 export default function DefaultForm({ setEmail, setCurrentState, email, formActive }: DefaultForm) {
-    const [error, setError] = useState(false);
+    const [isEmailCorrect, setIsEmailCorrect] = useState(true);
     const [loading, setLoading] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
     async function handleSubmit() {
         setLoading(true);
+        setIsEmailCorrect(true)
+
         if (isEmailValid(email)) {
-            setError(false);
+            setIsEmailCorrect(true);
+
             const response = await fetch("/api/checkUser", {
                 method: "POST",
                 body: JSON.stringify({ email }),
@@ -33,9 +37,11 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
 
             setLoading(false);
         } else {
-            setLoading(false);
+            setTimeout(() => {
+                setLoading(false);
 
-            setError(true);
+                setIsEmailCorrect(false);
+            }, 250);
         }
     }
 
@@ -76,16 +82,12 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
 
     return (
         <>
-            <div className="font-semibold text-[17px] sm:text-[24px]">
-                Zaloguj się lub zarejestruj w kilka sekund
-            </div>
+            <div className="font-semibold text-[17px] sm:text-[24px]">Zaloguj się lub zarejestruj w kilka sekund</div>
             <div className="text-[10px] sm:text-[13px] font-extralight">
                 Użyj adresu e-mail. Sprawdzimy, czy już masz konto. Jeśli nie, pomożemy Ci je utworzyć.
             </div>
             <div
-                className={`${
-                    error ? "border-[#8a2a2a]" : "border-[#61C558]"
-                } border-2 rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300 w-full sm:w-auto gap-3`}
+                className={`relative border-[#61C558] border rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300 w-full sm:w-auto gap-3`}
             >
                 <input
                     type="text"
@@ -97,12 +99,19 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
                     ref={inputRef}
                 />
                 <div className="relative w-7 h-7">
-                    {loading ? (
-                        <ContentLoader />
-                    ) : (
-                        <ArrowBtn wrapperClassName="bg-[#95ED8E]" onClick={handleSubmit} isError={error}></ArrowBtn>
-                    )}
+                    {loading ? <ContentLoader></ContentLoader> : <ArrowBtn onClick={handleSubmit}></ArrowBtn>}
                 </div>
+
+                {!isEmailCorrect && (
+                    <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-5 left-0">
+                        <>
+                            <WarningIcon />
+                            <div className=" text-[#DD0000] font-inter font-normal text-[13px] h-[1em] leading-none">
+                                Nie prawidłowy email. Spróbuj jeszcze raz
+                            </div>
+                        </>
+                    </div>
+                )}
             </div>
             <div className="font-normal text-[15px]">Lub</div>
             <div

@@ -1,9 +1,10 @@
 import { Dispatch, KeyboardEvent, SetStateAction, useState } from "react";
-import ArrowBtn from "@/components/ui/ArrowBtn";
 import ShowPasswordBtn from "../ui/ShowPasswordBtn";
 import { currentState } from "./AuthForm";
 import { signIn } from "next-auth/react";
 import CloseBtn from "../ui/CloseBtn";
+import isSignUpDataValid from "@/lib/isSignUpDataValid";
+import WarningIcon from "../ui/icons/WarningIcon";
 
 type SignInForm = {
     email: string;
@@ -12,12 +13,39 @@ type SignInForm = {
 
 export default function SignUpForm({ email, setCurrentState }: SignInForm) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [errors, setErrors] = useState({
+        name: false,
+        surname: false,
+        password: false,
+    });
+
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
     const [password, setPassword] = useState("");
     const [cpassword, setCpassword] = useState("");
 
     function handleSubmit() {
+        setIsLoading(true);
+
+        setErrors({
+            name: false,
+            surname: false,
+            password: false,
+        });
+
+        const errors = isSignUpDataValid({ name, surname, password });
+
+        if (errors.hasErrors) {
+            setTimeout(() => {
+                setErrors(errors);
+                setIsLoading(false);
+            }, 250);
+
+            return;
+        }
+
         fetch("/api/checkUser", {
             method: "POST",
             body: JSON.stringify({ email }),
@@ -43,27 +71,50 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                 tworzysz konto na serwisie BookCrossing za pomocą {email}
             </div>
             <div className="flex gap-3">
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="Imię"
-                    value={name}
-                    onInput={(e) => setName((e.target as HTMLInputElement).value)}
-                    className="w-full  border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px]"
-                    onKeyDown={handleKeyDown}
-                />
-
-                <input
-                    type="text"
-                    name="surname"
-                    placeholder="Nazwisko"
-                    value={surname}
-                    onInput={(e) => setSurname((e.target as HTMLInputElement).value)}
-                    className="w-full  border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px]"
-                    onKeyDown={handleKeyDown}
-                />
+                <div className="relative">
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Imię"
+                        value={name}
+                        onInput={(e) => setName((e.target as HTMLInputElement).value)}
+                        className="w-full  border-[#61C558] border rounded-lg px-4 py-2.5 text-[15px]"
+                        onKeyDown={handleKeyDown}
+                    />
+                    {errors.name && (
+                        <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-5 left-0">
+                            <>
+                                <WarningIcon />
+                                <div className=" text-[#DD0000] font-inter font-normal text-[13px] h-[1em] leading-none">
+                                    Niestety, pole musi się składać z 2-55 znaków
+                                </div>
+                            </>
+                        </div>
+                    )}
+                </div>
+                <div className="relative">
+                    <input
+                        type="text"
+                        name="surname"
+                        placeholder="Nazwisko"
+                        value={surname}
+                        onInput={(e) => setSurname((e.target as HTMLInputElement).value)}
+                        className="w-full  border-[#61C558] border rounded-lg px-4 py-2.5 text-[15px]"
+                        onKeyDown={handleKeyDown}
+                    />
+                    {errors.surname && (
+                        <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-5 left-0">
+                            <>
+                                <WarningIcon />
+                                <div className=" text-[#DD0000] font-inter font-normal text-[13px] h-[1em] leading-none">
+                                    Niestety, pole musi się składać z 2-55 znaków
+                                </div>
+                            </>
+                        </div>
+                    )}
+                </div>
             </div>
-            <div className="border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px] flex justify-between w-full gap-3">
+            <div className="relative border-[#61C558] border rounded-lg px-4 py-2.5 text-[15px] flex justify-between w-full gap-3">
                 <input
                     type={isPasswordVisible ? "text" : "password"}
                     name="password"
@@ -73,12 +124,22 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                     onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
                     onKeyDown={handleKeyDown}
                 />
+                {errors.name && (
+                    <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-5 left-0">
+                        <>
+                            <WarningIcon />
+                            <div className=" text-[#DD0000] font-inter font-normal text-[13px] h-[1em] leading-none">
+                                Utwórz silniejsze hasło
+                            </div>
+                        </>
+                    </div>
+                )}
                 <ShowPasswordBtn
                     onClick={() => setIsPasswordVisible((isPasswordVisible) => !isPasswordVisible)}
                     isPasswordVisible={isPasswordVisible}
                 ></ShowPasswordBtn>
             </div>
-            <div className="border-[#61C558] border-2 rounded-lg px-4 py-2.5 text-[15px] flex justify-between w-full gap-3">
+            <div className="border-[#61C558] border rounded-lg px-4 py-2.5 text-[15px] flex justify-between w-full gap-3">
                 <input
                     type={isPasswordVisible ? "text" : "password"}
                     name="cpassword"
@@ -93,7 +154,12 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                     isPasswordVisible={isPasswordVisible}
                 ></ShowPasswordBtn>
             </div>
-            <button className="cursor-pointer font-light text-[15px] text-[#61C558] select-none" onClick={handleSubmit}>
+            <button
+                className={`${
+                    isLoading ? "text-gray-400" : "text-[#61C558]"
+                } cursor-pointer font-light text-[15px]  select-none duration-200`}
+                onClick={handleSubmit}
+            >
                 Zaloguj
             </button>
         </>

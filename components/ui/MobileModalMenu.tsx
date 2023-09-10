@@ -63,7 +63,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
         if (isModalActive) {
             setMenuYPosition(0);
         }
-    }, [fullMode, isModalActive]);
+    }, [isModalActive]);
 
     return (
         <>
