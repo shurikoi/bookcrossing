@@ -254,8 +254,7 @@ export default function PublicationForm() {
                     </div>
                     <hr className="border-black/40" />
                     <div className="font-inter text-xs font-light">
-                        Napisz jak się z Tobą skontaktować. <br />
-                        Tutaj możesz także dodać dodatkowe informacje.
+                        Tutaj napiszesz dodatkowe informacje
                     </div>
                     <textarea
                         value={description}

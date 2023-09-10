@@ -90,7 +90,8 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
                 className={`relative border-[#61C558] border rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300 w-full sm:w-auto gap-3`}
             >
                 <input
-                    type="text"
+                    type="email"
+                    autoComplete="username"
                     placeholder="myemail@example.com"
                     className="placeholder:font-light w-full"
                     value={email}
