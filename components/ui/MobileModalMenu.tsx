@@ -43,6 +43,8 @@ const MobileModalMenu = memo(function MobileModalMenu({
 
             if (menuRef.current && menuYPosition > 100) {
                 setIsModalActive(false);
+            } else {
+                setMenuYPosition(0);
             }
         }
 
