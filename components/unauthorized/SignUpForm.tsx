@@ -84,10 +84,11 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                 tworzysz konto na serwisie BookCrossing za pomocą {email}
             </div>
             <div className="flex gap-3">
+                <input type="text" name="username" value={email} className="opacity-0 pointer-events-none absolute" tabIndex={0} disabled aria-disabled />
                 <div className="relative">
                     <input
                         type="text"
-                        name="name"
+                        name="firstName"
                         placeholder="Imię"
                         value={name}
                         onInput={(e) => setName((e.target as HTMLInputElement).value)}
@@ -108,9 +109,8 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                 <div className="relative">
                     <input
                         type="text"
-                        autoComplete="off"
-
-                        name="surname"
+                        name="lastName"
+                        autoComplete="family-name"
                         placeholder="Nazwisko"
                         value={surname}
                         onInput={(e) => setSurname((e.target as HTMLInputElement).value)}

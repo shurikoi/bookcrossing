@@ -30,15 +30,15 @@ export default function ChangePasswordMenu({ isActive, setIsActive }: ChangePass
                 <div className="flex flex-col gap-3">
                     <div className="flex flex-col gap-1">
                         <div className="font-extralight text-[14px]">Podaj obecne hasło</div>
-                        <SettingsInput value={currentPassword} setValue={setCurrentPassword} />
+                        <SettingsInput value={currentPassword} setValue={setCurrentPassword} type="password"/>
                     </div>
                     <div className="flex flex-col gap-1">
                         <div className="font-extralight text-[14px]">Nowe hasło</div>
-                        <SettingsInput value={newPassword} setValue={setNewPassword} />
+                        <SettingsInput value={newPassword} setValue={setNewPassword} type="password"/>
                     </div>
                     <div className="flex flex-col gap-1">
                         <div className="font-extralight text-[14px]">Nowe hasło</div>
-                        <SettingsInput value={confirmPassword} setValue={setConfirmPassword} />
+                        <SettingsInput value={confirmPassword} setValue={setConfirmPassword} type="password"/>
                     </div>
                 </div>
                 <div className="text-[#61C558] cursor-pointer" onClick={handleSubmit}>Potwierdź zmiany</div>

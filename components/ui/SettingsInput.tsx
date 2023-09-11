@@ -3,12 +3,13 @@ import React, { Dispatch, FormEvent, SetStateAction } from "react";
 interface SettingsInputProps {
     value: string;
     setValue: Dispatch<SetStateAction<string>>;
-    type?: "name" | "surname" | "email";
+    type?: "email" | "text" | "password";
 }
 
-const SettingsInput = React.memo(({ value, setValue, type }: SettingsInputProps) => {
+const SettingsInput = React.memo(({ value, setValue, type="text" }: SettingsInputProps) => {
     function handleInput(e: FormEvent<HTMLInputElement>) {
         const target = e.target as HTMLInputElement;
+
         setValue(target.value);
     }
 
@@ -16,7 +17,7 @@ const SettingsInput = React.memo(({ value, setValue, type }: SettingsInputProps)
         <input
             value={value}
             onInput={handleInput}
-            type="text"
+            type={type}
             className="font-extralight text-[14px] p-1 bg-[#EFEFEF] border-[#BEBEBE] rounded-md border w-60"
         />
     );

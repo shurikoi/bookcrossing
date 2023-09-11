@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     const { newPassword } = await req.json();
 
     const { user } = (await getServerSession(authOptions)) as { user: { email: string } };
-    console.log(user)
+
     await users.updateOne({ email: user.email }, { password: hashPassword(newPassword) });
 
     return NextResponse.json({}, { status: 200 });

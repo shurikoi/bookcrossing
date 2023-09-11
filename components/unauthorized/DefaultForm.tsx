@@ -91,7 +91,9 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
             >
                 <input
                     type="email"
-                    autoComplete="username"
+                    autoComplete="email"
+                    name="email"
+                    autoCorrect="off"
                     placeholder="myemail@example.com"
                     className="placeholder:font-light w-full"
                     value={email}

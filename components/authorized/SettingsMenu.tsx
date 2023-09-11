@@ -60,11 +60,11 @@ function ProfilePage() {
             <div className="font-head text-[18px] whitespace-nowrap">Mój profil</div>
             <div className="flex flex-col gap-1">
                 <div className="font-extralight text-[14px]">Preferowane imię</div>
-                <SettingsInput value={user!.name} setValue={user!.setName} type="name" />
+                <SettingsInput value={user!.name} setValue={user!.setName} />
             </div>
             <div className="flex flex-col gap-1">
                 <div className="font-extralight text-[14px]">Preferowane nazwisko</div>
-                <SettingsInput value={user!.surname} setValue={user!.setSurname} type="surname" />
+                <SettingsInput value={user!.surname} setValue={user!.setSurname} />
             </div>
             <hr />
             {user?.isPasswordExist ? (

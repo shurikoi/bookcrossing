@@ -38,7 +38,7 @@ export const authOptions: NextAuthOptions = {
                 const user = await users.findOne({ email });
 
                 if (authType == "signin") {
-                    if (user && user.password == password) {
+                    if (user && user.password == hashPassword(password)) {
                         return { email } as any;
                     }
                 } else if (authType == "signup") {
