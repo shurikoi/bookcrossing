@@ -13,8 +13,8 @@ type SignInForm = {
 
 const errorMessages = {
     length: "Hsfdsf",
-    number: "sdfdf"
-}
+    number: "sdfdf",
+};
 
 export default function SignUpForm({ email, setCurrentState }: SignInForm) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -27,7 +27,7 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
             length: false,
             number: false,
         },
-        hasErrors: false
+        hasErrors: false,
     });
 
     const [name, setName] = useState("");
@@ -45,11 +45,11 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                 length: false,
                 number: false,
             },
-            hasErrors: false
+            hasErrors: false,
         });
 
         const errors = isSignUpDataValid({ name, surname, password });
-        console.log(errors)
+        console.log(errors);
         if (errors.hasErrors) {
             setTimeout(() => {
                 setErrors(errors);
@@ -77,14 +77,22 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
     return (
         <>
             <div className="flex gap-5 items-center">
-                <CloseBtn position="left" onClick={() => setCurrentState("default")} type="arrow"></CloseBtn>
+                <CloseBtn onClick={() => setCurrentState("default")} type="arrow"></CloseBtn>
                 <div className="text-[17px] sm:text-[24px] font-semibold leading-none">Utwórz konto</div>
             </div>
             <div className="text-[10px] sm:text-[13px] font-extralight">
                 tworzysz konto na serwisie BookCrossing za pomocą {email}
             </div>
             <div className="flex gap-3">
-                <input type="text" name="username" value={email} className="opacity-0 pointer-events-none absolute" tabIndex={0} disabled aria-disabled />
+                <input
+                    type="text"
+                    name="username"
+                    value={email}
+                    className="opacity-0 pointer-events-none absolute"
+                    tabIndex={0}
+                    disabled
+                    aria-disabled
+                />
                 <div className="relative">
                     <input
                         type="text"
@@ -148,9 +156,7 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                                     // errors.password[0]
                                     errors.password.length && "Hasło musi zawierać minimum 8 znaków"
                                 }
-                                {
-                                    errors.password.number && "Hasło musi zawierać cyfry"
-                                }
+                                {errors.password.number && "Hasło musi zawierać cyfry"}
                             </div>
                         </>
                     </div>
@@ -176,8 +182,9 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                 ></ShowPasswordBtn>
             </div>
             <button
-                className={`${isLoading ? "text-gray-400" : "text-[#61C558]"
-                    } cursor-pointer font-light text-[15px]  select-none duration-200`}
+                className={`${
+                    isLoading ? "text-gray-400" : "text-[#61C558]"
+                } cursor-pointer font-light text-[15px]  select-none duration-200`}
                 onClick={handleSubmit}
             >
                 Zaloguj

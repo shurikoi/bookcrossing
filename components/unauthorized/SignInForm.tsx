@@ -16,7 +16,7 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
     const [isLoading, setIsLoading] = useState(false);
     const [password, setPassword] = useState("");
 
-    const [isPasswordCorrect, setIsPasswordCorrect] = useState(true)
+    const [isPasswordCorrect, setIsPasswordCorrect] = useState(true);
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -32,7 +32,7 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
             .then((response) => response.json())
             .then(async (data) => {
                 if (data.isValid) {
-                    signIn("credentials", { authType: "signin", email, password, redirect:false });
+                    signIn("credentials", { authType: "signin", email, password, redirect: false });
                     return;
                 }
 
@@ -46,9 +46,9 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
     }
 
     return (
-        <>
+        <div className="flex items-center flex-col gap-8 px-8">
             <div className="flex gap-5 items-center">
-                <CloseBtn position="left" onClick={() => setCurrentState("default")} type="arrow"></CloseBtn>
+                <CloseBtn onClick={() => setCurrentState("default")} type="arrow"></CloseBtn>
 
                 <div className="text-[17px] sm:text-[24px] font-semibold leading-none">Zaloguj się na koncie</div>
             </div>
@@ -79,7 +79,7 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
                         <>
                             <WarningIcon />
                             <div className=" text-[#DD0000] font-inter font-normal text-[13px] h-[1em] leading-none">
-                            Nieprawidłowe hasło. Spróbuj jeszcze raz
+                                Nieprawidłowe hasło. Spróbuj jeszcze raz
                             </div>
                         </>
                     </div>
@@ -93,6 +93,6 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
             >
                 Zaloguj
             </button>
-        </>
+        </div>
     );
 }

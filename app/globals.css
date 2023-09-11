@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
+input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 textarea:-webkit-autofill,
 textarea:-webkit-autofill:hover,
@@ -23,8 +23,8 @@ button:focus-visible {
   outline: none;
 }
 
-:placeholder{
-  user-select:none;
+:placeholder {
+  user-select: none;
 }
 
 ::-webkit-scrollbar {
@@ -39,18 +39,25 @@ button:focus-visible {
 }
 
 .fade-enter {
+  transform: translate(10px);
+
   opacity: 0;
 }
 
 .fade-enter-active {
+  transform: translate(0%);
   opacity: 1;
 }
 
 .fade-exit {
+  transform: translate(0%);
+
   opacity: 1;
 }
 
 .fade-exit-active {
+  transform: translate(10px);
+
   opacity: 0;
 }
 

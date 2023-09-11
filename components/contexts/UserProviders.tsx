@@ -18,6 +18,7 @@ type userData = {
         points: number;
         setPoints: Dispatch<SetStateAction<number>>;
         isPasswordExist: boolean;
+        setIsPasswordExist:  Dispatch<SetStateAction<boolean>>;
     };
 }
 
@@ -45,6 +46,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
             points,
             setPoints,
             isPasswordExist,
+            setIsPasswordExist
         },
     };
     
@@ -78,7 +80,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     useMemo(() => {
         if (!loading && userData.user) fetch("/api/changeUserData", { method: "post", body: JSON.stringify({ name, surname, email }) });
     }, [name, surname, email]);
-    console.log(status, session)
+
     return (
         <UserContext.Provider value={status == "unauthenticated" ? { loading: false, user: undefined } : userData}>
             {children}
@@ -88,6 +90,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
 function useUserData() {
     const data: userData = useContext(UserContext);
+
     return data;
 }
 

@@ -83,7 +83,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
                 style={{ transform: `translateY(${menuYPosition}px)` }}
             >
                 {fullMode ? (
-                    <CloseBtn type="arrow" position="left" onClick={() => setIsModalActive(false)}></CloseBtn>
+                    <CloseBtn type="arrow" onClick={() => setIsModalActive(false)}></CloseBtn>
                 ) : (
                     <div className="absolute top-2 left-1/2 -translate-x-1/2 w-1/4 bg-gray-400 rounded-full h-1"></div>
                 )}

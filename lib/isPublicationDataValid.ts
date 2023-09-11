@@ -23,11 +23,7 @@ export default function isPublicationDataValid(publicationData: publicationData)
 
     if (category.trim() == "") errors.category = true;
 
-    Object.values(errors).forEach((error) => {
-        if (error) {
-            errors.hasErrors = true;
-        }
-    });
+    if (Object.values(errors).includes(true)) errors.hasErrors = true;
 
     return errors;
 }

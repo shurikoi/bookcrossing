@@ -111,7 +111,7 @@ export default function PublicationForm() {
     function handleSubmit() {
         if (isSubmitButtonDisabled) return;
 
-        if (!isPreviewMenuActive) {
+        if (!isPreviewMenuActive && isSmallScreen) {
             setIsPreviewMenuActive(true);
             return;
         }

@@ -6,13 +6,15 @@ import connection from "@/lib/connection";
 import hashPassword from "@/lib/hashPassword";
 
 export async function POST(req: Request) {
-    await connection()
+    await connection();
 
     const { newPassword } = await req.json();
 
     const { user } = (await getServerSession(authOptions)) as { user: { email: string } };
 
-    await users.updateOne({ email: user.email }, { password: hashPassword(newPassword) });
+    const hashedPassword = await hashPassword(newPassword);
+
+    await users.updateOne({ email: user.email }, { password: hashedPassword });
 
     return NextResponse.json({}, { status: 200 });
 }
