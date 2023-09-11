@@ -13,9 +13,18 @@ export default function ChangePasswordMenu({ isActive, setIsActive }: ChangePass
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+
+    
+    function handleSubmit(){
+        fetch("/api/changePassword", {
+            method: "POST",
+            body: newPassword
+        })
+    }
+
     return (
-        <ModalMenu isModalActive={isActive} setIsModalActive={setIsActive} style={{ padding: "48px 80px 33px" }}>
-            <div className="flex flex-col items-center text-center gap-8">
+        <ModalMenu isModalActive={isActive} setIsModalActive={setIsActive} >
+            <div className="flex flex-col items-center text-center gap-8 py-8 px-16">
                 <PasswordIcon />
                 <div className="font-light text-[17px]">Zmień hasło</div>
                 <div className="flex flex-col gap-3">
@@ -32,7 +41,7 @@ export default function ChangePasswordMenu({ isActive, setIsActive }: ChangePass
                         <SettingsInput value={confirmPassword} setValue={setConfirmPassword} />
                     </div>
                 </div>
-                <div className="text-[#61C558] cursor-pointer">Potwierdź zmiany</div>
+                <div className="text-[#61C558] cursor-pointer" onClick={handleSubmit}>Potwierdź zmiany</div>
             </div>
         </ModalMenu>
     );

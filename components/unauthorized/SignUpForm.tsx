@@ -11,6 +11,11 @@ type SignInForm = {
     setCurrentState: Dispatch<SetStateAction<currentState>>;
 };
 
+const errorMessages = {
+    length: "Hsfdsf",
+    number: "sdfdf"
+}
+
 export default function SignUpForm({ email, setCurrentState }: SignInForm) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +23,11 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
     const [errors, setErrors] = useState({
         name: false,
         surname: false,
-        password: false,
+        password: {
+            length: false,
+            number: false,
+        },
+        hasErrors: false
     });
 
     const [name, setName] = useState("");
@@ -32,11 +41,15 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
         setErrors({
             name: false,
             surname: false,
-            password: false,
+            password: {
+                length: false,
+                number: false,
+            },
+            hasErrors: false
         });
 
         const errors = isSignUpDataValid({ name, surname, password });
-
+        console.log(errors)
         if (errors.hasErrors) {
             setTimeout(() => {
                 setErrors(errors);
@@ -95,6 +108,8 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                 <div className="relative">
                     <input
                         type="text"
+                        autoComplete="off"
+
                         name="surname"
                         placeholder="Nazwisko"
                         value={surname}
@@ -124,12 +139,18 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                     onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
                     onKeyDown={handleKeyDown}
                 />
-                {errors.name && (
+                {Object.values(errors.password).includes(true) && (
                     <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-5 left-0">
                         <>
                             <WarningIcon />
                             <div className=" text-[#DD0000] font-inter font-normal text-[13px] h-[1em] leading-none">
-                                Utwórz silniejsze hasło
+                                {
+                                    // errors.password[0]
+                                    errors.password.length && "Hasło musi zawierać minimum 8 znaków"
+                                }
+                                {
+                                    errors.password.number && "Hasło musi zawierać cyfry"
+                                }
                             </div>
                         </>
                     </div>
@@ -155,9 +176,8 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                 ></ShowPasswordBtn>
             </div>
             <button
-                className={`${
-                    isLoading ? "text-gray-400" : "text-[#61C558]"
-                } cursor-pointer font-light text-[15px]  select-none duration-200`}
+                className={`${isLoading ? "text-gray-400" : "text-[#61C558]"
+                    } cursor-pointer font-light text-[15px]  select-none duration-200`}
                 onClick={handleSubmit}
             >
                 Zaloguj

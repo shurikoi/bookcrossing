@@ -7,7 +7,7 @@ import UnauthorizedStartPage from "@/components/unauthorized/StartPage";
 
 export default function Home() {
     const { user, loading } = useUserData();
-
+    
     if (loading) return <ContentLoader></ContentLoader>;
 
     if (user)

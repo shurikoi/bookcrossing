@@ -88,7 +88,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
 function useUserData() {
     const data: userData = useContext(UserContext);
-    console.log(data)
     return data;
 }
 
