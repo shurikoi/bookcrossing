@@ -76,14 +76,15 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
 
     return (
         <>
-            <div className="flex gap-5 items-center">
-                <CloseBtn onClick={() => setCurrentState("default")} type="arrow"></CloseBtn>
-                <div className="text-[17px] sm:text-[24px] font-semibold leading-none">Utwórz konto</div>
+            <CloseBtn onClick={() => setCurrentState("default")} type="arrow"></CloseBtn>
+            <div className="flex gap-3 flex-col items-center">
+                <div className="text-[20px] sm:text-[24px] font-medium leading-none">Utwórz konto</div>
+                <div className="text-[14px] font-extralight">
+                    tworzysz konto na serwisie BookCrossing za pomocą {email}
+                </div>
             </div>
-            <div className="text-[10px] sm:text-[13px] font-extralight">
-                tworzysz konto na serwisie BookCrossing za pomocą {email}
-            </div>
-            <div className="flex gap-3">
+
+            <div className="flex gap-8 flex-col 2sm:flex-row 2sm:gap-3 w-full">
                 <input
                     type="text"
                     name="username"
@@ -182,9 +183,8 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                 ></ShowPasswordBtn>
             </div>
             <button
-                className={`${
-                    isLoading ? "text-gray-400" : "text-[#61C558]"
-                } cursor-pointer font-light text-[15px]  select-none duration-200`}
+                className={`${isLoading ? "text-gray-400" : "text-[#61C558]"
+                    } cursor-pointer font-light text-[15px]  select-none duration-200`}
                 onClick={handleSubmit}
             >
                 Zaloguj

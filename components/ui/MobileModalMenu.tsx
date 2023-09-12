@@ -77,7 +77,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
 
             <div
                 className={`${isModalActive ? "bottom-0 touch-none" : "bottom-[-100%] touch-auto"} ${
-                    fullMode ? "h-full" : "h-fit rounded-t-xl"
+                    fullMode ? "h-full" : "rounded-t-xl"
                 } fixed w-full bottom-0 left-0 bg-white p-8 duration-200 z-10`}
                 ref={menuRef}
                 style={{ transform: `translateY(${menuYPosition}px)` }}

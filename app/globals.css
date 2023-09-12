@@ -23,6 +23,13 @@ button:focus-visible {
   outline: none;
 }
 
+input,
+textarea {
+  font-size: 16px !important;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
 :placeholder {
   user-select: none;
 }
@@ -38,32 +45,50 @@ button:focus-visible {
   border-radius: 8px;
 }
 
-.fade-enter {
-  transform: translate(10px);
+@media (min-width: 768px) {
+  .fade-enter {
+    transform: translate(10px);
 
+    opacity: 0;
+  }
+
+  .fade-enter-active {
+    transform: translate(0%);
+    opacity: 1;
+  }
+
+  .fade-exit {
+    transform: translate(0%);
+
+    opacity: 1;
+  }
+
+  .fade-exit-active {
+    transform: translate(10px);
+
+    opacity: 0;
+  }
+}
+
+.fade-enter {
   opacity: 0;
 }
 
 .fade-enter-active {
-  transform: translate(0%);
   opacity: 1;
 }
 
 .fade-exit {
-  transform: translate(0%);
-
   opacity: 1;
 }
 
 .fade-exit-active {
-  transform: translate(10px);
-
   opacity: 0;
 }
 
 .fade-enter-active,
 .fade-exit-active {
-  transition: .4s;
+  transition: 0.4s;
 }
 
 /* 
