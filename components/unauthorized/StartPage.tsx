@@ -4,8 +4,13 @@ import Header from "./Header";
 import GetStarted from "./GetStarted";
 import AuthForm from "./AuthForm";
 import { FormModalProvider } from "../contexts/FormModalProvider";
+import { useEffect } from "react";
 
 export default function StartPage() {
+    // useEffect(() => {
+    //     test(3)
+    // }, [])
+
     return (
         <FormModalProvider>
             <Header></Header>
