@@ -59,13 +59,13 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
         const width = window.innerWidth
             ? window.innerWidth
             : document.documentElement.clientWidth
-            ? document.documentElement.clientWidth
-            : screen.width;
+                ? document.documentElement.clientWidth
+                : screen.width;
         const height = window.innerHeight
             ? window.innerHeight
             : document.documentElement.clientHeight
-            ? document.documentElement.clientHeight
-            : screen.height;
+                ? document.documentElement.clientHeight
+                : screen.height;
 
         const systemZoom = width / window.screen.availWidth;
         const left = (width - w) / 2 / systemZoom + dualScreenLeft;
@@ -82,12 +82,14 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
 
     return (
         <>
-            <div className="font-semibold text-[17px] sm:text-[24px]">Zaloguj się lub zarejestruj w kilka sekund</div>
-            <div className="text-[10px] sm:text-[13px] font-extralight">
-                Użyj adresu e-mail. Sprawdzimy, czy już masz konto. Jeśli nie, pomożemy Ci je utworzyć.
+            <div className="flex gap-3 flex-col items-center">
+                <div className="font-medium text-[20px] sm:text-[24px]">Zaloguj się lub zarejestruj w kilka sekund</div>
+                <div className="text-[13px] font-extralight">
+                    Sprawdzimy, czy już masz konto. Jeśli nie, pomożemy Ci je utworzyć.
+                </div>
             </div>
             <div
-                className={`relative border-[#61C558] border rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300 w-full sm:w-auto gap-3`}
+                className={`relative border-[#61C558] border rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300 w-full 2sm:w-auto gap-3`}
             >
                 <input
                     type="email"
@@ -118,11 +120,11 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
             </div>
             <div className="font-normal text-[15px]">Lub</div>
             <div
-                className="flex gap-6 px-5 py-3 items-center bg-[#EFEFEF] rounded-lg cursor-pointer"
+                className="flex gap-4 px-5 py-3 items-center bg-[#EFEFEF] rounded-lg cursor-pointer"
                 onClick={handleSignIn}
             >
                 <Image alt="" src="/images/google.png" width={25} height={25}></Image>
-                <div className="font-light text-[12px] sm:text-[16px] text-[#525252]">Kontynuuj przez Google</div>
+                <div className="font-light text-[16px] text-[#525252]">Kontynuuj przez Google</div>
             </div>
         </>
     );
