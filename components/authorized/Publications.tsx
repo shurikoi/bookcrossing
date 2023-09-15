@@ -100,14 +100,11 @@ export default function Publications() {
             <TransitionGroup className="flex gap-6 flex-wrap justify-center">
                 {bookData &&
                     bookData.map((data, index) => {
-                        const nodeRef = createRef<HTMLDivElement>()
-                        
                         return (
-                            <CSSTransition key={index} classNames="item" timeout={1000} nodeRef={nodeRef}>
+                            <CSSTransition key={index} classNames="item" timeout={500}>
                                 <Book
                                     key={index}
                                     data={data}
-                                    ref={nodeRef}
                                     setCurrentBook={setCurrentBook}
                                         setIsBookModalActive={setIsBookModalActive}
                                 />
