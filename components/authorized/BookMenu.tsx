@@ -8,7 +8,7 @@ export default function BookMenu({ data }: { data: bookData }) {
     const { title, author, category, description, messengerDescription, messenger } = data;
 
     return (
-        <div className="flex flex-col text-left mt-16 sm:mt-0 gap-5 sm:p-6">
+        <div className="flex flex-col text-left mt-16 md:h-[500px] md:w-[640px] lg:w-[820px] sm:mt-0 gap-5 sm:p-6">
             <div className="flex gap-16">
                 <div className="flex flex-col gap-10 w-full">
                     <div className="flex flex-col gap-5">
@@ -45,21 +45,10 @@ export default function BookMenu({ data }: { data: bookData }) {
                         {description}
                     </div>
                 </div>
-                <div className="hidden 2sm:block">
+                <div className="hidden md:block">
                     <Book data={data} />
                 </div>
             </div>
-
-            {/* <div className="flex gap-2">
-                <div className="shadow-md px-4 py-2 flex items-center bg-red-400 gap-3 rounded-lg duration-200 hover:-translate-y-0.5 cursor-pointer will-change-transform select-none">
-                    <TrashCanIcon />
-                    <div>Usuń</div>
-                </div>
-                <div className="shadow-md px-4 py-2 flex items-center bg-[#F2F9F0] gap-3 rounded-lg duration-200 hover:-translate-y-0.5 cursor-pointer will-change-transform select-none">
-                    <PencilIcon />
-                    <div>Edytuj</div>
-                </div>
-            </div> */}
         </div>
     );
 }

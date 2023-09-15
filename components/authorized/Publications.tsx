@@ -106,10 +106,10 @@ export default function Publications() {
                                     key={index}
                                     data={data}
                                     setCurrentBook={setCurrentBook}
-                                        setIsBookModalActive={setIsBookModalActive}
+                                    setIsBookModalActive={setIsBookModalActive}
                                 />
                             </CSSTransition>
-                        )
+                        );
                     })}
                 <div ref={observerRef}></div>
             </TransitionGroup>

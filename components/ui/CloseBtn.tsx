@@ -15,7 +15,7 @@ export default function CloseBtn({ onClick, type = "cross" }: CloseBtnProps) {
         },
         arrow: {
             icon: <ArrowIcon></ArrowIcon>,
-            style: "left-8 top-8 w-6 h-6 2sm:top-14",
+            style: "left-8 top-8 w-6 h-6 md:top-14",
         },
     };
 

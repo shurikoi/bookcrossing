@@ -75,7 +75,7 @@ export default function PublicationForm() {
         description,
         category,
         image: image.url,
-        owner: user!.id,
+        owner: user?.id!,
         messenger,
         messengerDescription,
         date: "Dzisiaj",
@@ -147,7 +147,7 @@ export default function PublicationForm() {
         form.append("image", image.file!);
         form.append("imageName", image.file?.name!);
         form.append("author", author);
-        form.append("owner", user!.id);
+        form.append("owner", user?.id!);
         form.append("title", title);
         form.append("description", description);
         form.append("category", category);
@@ -165,8 +165,8 @@ export default function PublicationForm() {
     }
 
     return (
-        <div className="flex flex-col 2sm:gap-5 h-full 2sm:h-fit justify-between max-w-[680px] 2sm:p-6">
-            <div className="flex justify-between 2sm:gap-4">
+        <div className="flex flex-col md:gap-5 h-full  justify-between md:min-h-[500px] md:min-w-[640px] lg:min-w-[820px] md:p-6">
+            <div className="flex justify-between md:gap-4">
                 <div className="flex flex-col gap-5 w-full">
                     <div className="relative flex flex-col">
                         <input
@@ -253,9 +253,7 @@ export default function PublicationForm() {
                         </div>
                     </div>
                     <hr className="border-black/40" />
-                    <div className="font-inter text-xs font-light">
-                        Tutaj napiszesz dodatkowe informacje
-                    </div>
+                    <div className="font-inter text-xs font-light">Tutaj napiszesz dodatkowe informacje</div>
                     <textarea
                         value={description}
                         onInput={(e) => setDescription((e.target as HTMLTextAreaElement).value)}
@@ -263,12 +261,12 @@ export default function PublicationForm() {
                         placeholder="Zacznij pisać"
                     ></textarea>
                 </div>
-                <div className="hidden 2sm:block">
+                <div className="hidden md:block">
                     <Book data={bookData} />
                 </div>
             </div>
 
-            <div className="flex justify-center 2sm:justify-start">
+            <div className="flex justify-center md:justify-start">
                 {isSubmitButtonDisabled ? (
                     <div className="relative w-[33px] h-[33px]">
                         <ContentLoader />

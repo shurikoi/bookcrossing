@@ -84,7 +84,7 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                 </div>
             </div>
 
-            <div className="flex gap-8 flex-col 2sm:flex-row 2sm:gap-3 w-full">
+            <div className="flex gap-8 flex-col md:flex-row md:gap-3 w-full">
                 <input
                     type="text"
                     name="username"

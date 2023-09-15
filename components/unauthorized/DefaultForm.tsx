@@ -89,7 +89,7 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
                 </div>
             </div>
             <div
-                className={`relative border-[#61C558] border rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300 w-full 2sm:w-auto gap-3`}
+                className={`relative border-[#61C558] border rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300 w-full md:w-auto gap-3`}
             >
                 <input
                     type="email"

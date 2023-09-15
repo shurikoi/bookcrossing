@@ -23,7 +23,7 @@ export default function PreviewMenu({
         <ModalMenu isModalActive={isMenuActive} setIsModalActive={setIsMenuActive}>
             <div className="flex items-center justify-center flex-col gap-4 ">
                 <Book data={previewData}></Book>
-                <div className="flex justify-center 2sm:justify-start">
+                <div className="flex justify-center md:justify-start">
                     {isSubmitButtonDisabled ? (
                         <div className="relative w-[33px] h-[33px]">
                             <ContentLoader />

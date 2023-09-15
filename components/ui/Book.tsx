@@ -58,7 +58,7 @@ const Book = React.memo(({ data, setCurrentBook, setIsBookModalActive, ref }: Bo
                 {!isImageLoaded && !isImageLoading && <>No Image</>}
             </div>
             <img
-                src={data.image}
+                src={data.image || ""}
                 alt=""
                 className="-z-10 object-cover w-full h-full absolute top-0 left-0"
                 onLoad={() => {

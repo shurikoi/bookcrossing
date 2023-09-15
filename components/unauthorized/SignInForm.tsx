@@ -46,7 +46,7 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
     }
 
     return (
-        <div className="flex items-center flex-col gap-8 2sm:px-8">
+        <div className="flex items-center flex-col gap-8 md:px-8">
             <CloseBtn onClick={() => setCurrentState("default")} type="arrow"></CloseBtn>
             <div className="flex gap-3 flex-col items-center">
                 <div className="text-[20px] sm:text-[24px] font-medium leading-none">Zaloguj się na koncie</div>
