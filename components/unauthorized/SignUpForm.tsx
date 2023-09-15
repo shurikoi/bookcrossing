@@ -3,7 +3,7 @@ import ShowPasswordBtn from "../ui/ShowPasswordBtn";
 import { currentState } from "./AuthForm";
 import { signIn } from "next-auth/react";
 import CloseBtn from "../ui/CloseBtn";
-import isSignUpDataValid from "@/lib/isSignUpDataValid";
+import { errors, validateUserData } from "@/lib/isUserDataValid";
 import WarningIcon from "../ui/icons/WarningIcon";
 
 type SignInForm = {
@@ -11,21 +11,23 @@ type SignInForm = {
     setCurrentState: Dispatch<SetStateAction<currentState>>;
 };
 
-const errorMessages = {
-    length: "Hsfdsf",
-    number: "sdfdf",
-};
-
 export default function SignUpForm({ email, setCurrentState }: SignInForm) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const [errors, setErrors] = useState({
-        name: false,
-        surname: false,
+    const [errors, setErrors] = useState<errors>({
+        name: {
+            isValid: false,
+        },
+        surname: {
+            isValid: false,
+        },
         password: {
-            length: false,
-            number: false,
+            isValid: false,
+            errors: {
+                length: false,
+                number: false,
+            },
         },
         hasErrors: false,
     });
@@ -39,17 +41,24 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
         setIsLoading(true);
 
         setErrors({
-            name: false,
-            surname: false,
+            name: {
+                isValid: false,
+            },
+            surname: {
+                isValid: false,
+            },
             password: {
-                length: false,
-                number: false,
+                isValid: false,
+                errors: {
+                    length: false,
+                    number: false,
+                },
             },
             hasErrors: false,
         });
 
-        const errors = isSignUpDataValid({ name, surname, password });
-        console.log(errors);
+        const errors = validateUserData({ name, surname, password });
+
         if (errors.hasErrors) {
             setTimeout(() => {
                 setErrors(errors);
@@ -104,12 +113,12 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                         className="w-full  border-[#61C558] border rounded-lg px-4 py-2.5 text-[15px]"
                         onKeyDown={handleKeyDown}
                     />
-                    {errors.name && (
+                    {!errors.name?.isValid && (
                         <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-5 left-0">
                             <>
                                 <WarningIcon />
                                 <div className=" text-[#DD0000] font-inter font-normal text-[13px] h-[1em] leading-none">
-                                    Niestety, pole musi się składać z 2-55 znaków
+                                    {errors.name?.error}
                                 </div>
                             </>
                         </div>
@@ -126,12 +135,12 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                         className="w-full  border-[#61C558] border rounded-lg px-4 py-2.5 text-[15px]"
                         onKeyDown={handleKeyDown}
                     />
-                    {errors.surname && (
+                    {!errors.surname?.isValid && (
                         <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-5 left-0">
                             <>
                                 <WarningIcon />
                                 <div className=" text-[#DD0000] font-inter font-normal text-[13px] h-[1em] leading-none">
-                                    Niestety, pole musi się składać z 2-55 znaków
+                                    {errors.surname?.error}
                                 </div>
                             </>
                         </div>
@@ -148,16 +157,12 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                     onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
                     onKeyDown={handleKeyDown}
                 />
-                {Object.values(errors.password).includes(true) && (
+                {!errors.password?.isValid && (
                     <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-5 left-0">
                         <>
                             <WarningIcon />
                             <div className=" text-[#DD0000] font-inter font-normal text-[13px] h-[1em] leading-none">
-                                {
-                                    // errors.password[0]
-                                    errors.password.length && "Hasło musi zawierać minimum 8 znaków"
-                                }
-                                {errors.password.number && "Hasło musi zawierać cyfry"}
+                                {errors.password?.error}
                             </div>
                         </>
                     </div>
@@ -183,8 +188,9 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                 ></ShowPasswordBtn>
             </div>
             <button
-                className={`${isLoading ? "text-gray-400" : "text-[#61C558]"
-                    } cursor-pointer font-light text-[15px]  select-none duration-200`}
+                className={`${
+                    isLoading ? "text-gray-400" : "text-[#61C558]"
+                } cursor-pointer font-light text-[15px]  select-none duration-200`}
                 onClick={handleSubmit}
             >
                 Zaloguj

@@ -36,16 +36,16 @@ export const authOptions: NextAuthOptions = {
                 await connection();
 
                 const user = await users.findOne({ email });
-
+                const hashedPassword = await hashPassword(password);
+                
                 if (authType == "signin") {
-                    if (user && user.password == hashPassword(password)) {
+                    if (user && user.password == hashedPassword) {
+                        console.log("returned");
                         return { email } as any;
                     }
                 } else if (authType == "signup") {
                     if (!user) {
                         const { name, surname } = credentials as credentials;
-
-                        const hashedPassword = await hashPassword(password)
 
                         await users.create({ name, surname, password: hashedPassword, email, points: 0 });
 

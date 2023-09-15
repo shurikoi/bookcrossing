@@ -1,24 +1,16 @@
-import React, { Dispatch, RefObject, SetStateAction, useMemo, useState } from "react";
+import { RefObject, useMemo, useState } from "react";
 import Loader from "./ContentLoader";
 import convertDate from "@/lib/convertDate";
 import { bookData } from "../authorized/Publications";
+import { memo } from "react";
 
 interface BookProps {
     data: bookData;
-    setCurrentBook?: Dispatch<SetStateAction<bookData>>;
-    setIsBookModalActive?: Dispatch<SetStateAction<boolean>>;
-    ref?: RefObject<HTMLDivElement>
+    ref?: RefObject<HTMLDivElement>;
+    handleClick?: () => void;
 }
 
-const Book = React.memo(({ data, setCurrentBook, setIsBookModalActive, ref }: BookProps) => {
-    function handleBookClick() {
-        if (setCurrentBook && setIsBookModalActive) {
-            setCurrentBook(data);
-
-            setIsBookModalActive(true);
-        }
-    }
-
+const Book = memo(({ data, handleClick, ref }: BookProps) => {
     const date = useMemo(() => {
         return convertDate(data.date);
     }, [data.date]);
@@ -29,10 +21,10 @@ const Book = React.memo(({ data, setCurrentBook, setIsBookModalActive, ref }: Bo
 
     return (
         <div
-            className="relative flex flex-col justify-between p-5 w-60 h-72 bg-black rounded-2xl font-inter shadow-md shadow-black/50 cursor-pointer hover:-translate-y-1 will-change-transform duration-200 flex-shrink-0 overflow-hidden"
+            className="relative flex flex-col justify-between p-5 w-60 h-72 bg-black rounded-2xl font-inter shadow-md shadow-black/50 cursor-pointer hover:-translate-y-1 will-change-transform duration-200 transition-transform flex-shrink-0 overflow-hidden"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            onClick={handleBookClick}
+            onClick={handleClick}
             ref={ref}
         >
             <div className="text-[#CDCDCD] text-[17px] font-normal cursor-text w-fit">{date}</div>
@@ -52,7 +44,7 @@ const Book = React.memo(({ data, setCurrentBook, setIsBookModalActive, ref }: Bo
             </div>
             <div
                 className={` ${
-                    isImageLoaded ? `${isHovered ? "bg-black/30" : "bg-black/30"}` : "bg-black duration-0"
+                    isImageLoaded ? "bg-black/30" : "bg-black duration-0"
                 }  duration-200 absolute w-full h-full left-0 top-0 text-white flex items-center justify-center z-[-1]`}
             >
                 {!isImageLoaded && !isImageLoading && <>No Image</>}

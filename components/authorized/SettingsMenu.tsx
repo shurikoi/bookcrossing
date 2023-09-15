@@ -5,6 +5,7 @@ import SettingsInput from "../ui/SettingsInput";
 import ChangePasswordMenu from "./ChangePasswordMenu";
 import { useUserData } from "../contexts/UserProviders";
 import SetPasswordMenu from "./SetPasswordMenu";
+import { validateName, validateSurname } from "@/lib/isUserDataValid";
 
 interface SettingsMenuProps {
     isMenuActive: boolean;
@@ -53,18 +54,20 @@ export default function SettingsMenu({ isMenuActive, setIsMenuActive }: Settings
 
 function ProfilePage() {
     const { user } = useUserData();
+
     const [isChangePasswordMenuActive, setIsChangePasswordMenuActive] = useState(false);
     const [isSetPasswordMenuActive, setIsSetPasswordMenuActive] = useState(true);
+
     return (
         <div className="flex flex-col gap-6">
             <div className="font-head text-[18px] whitespace-nowrap">Mój profil</div>
             <div className="flex flex-col gap-1">
                 <div className="font-extralight text-[14px]">Preferowane imię</div>
-                <SettingsInput value={user!.name} setValue={user!.setName} />
+                <SettingsInput value={user!.name} setValue={user!.setName} validator={validateName}/>
             </div>
             <div className="flex flex-col gap-1">
                 <div className="font-extralight text-[14px]">Preferowane nazwisko</div>
-                <SettingsInput value={user!.surname} setValue={user!.setSurname} />
+                <SettingsInput value={user!.surname} setValue={user!.setSurname} validator={validateSurname}/>
             </div>
             <hr />
             {user?.isPasswordExist ? (

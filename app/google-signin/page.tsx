@@ -9,8 +9,8 @@ export default function GoogleSignin() {
     const { user, loading } = useUserData();
 
     useEffect(() => {
-        signIn("google");
-
+        const signedin = signIn("google");
+console.log(signedin)
         if (user && !loading) window.close();
     }, [user, loading]);
 

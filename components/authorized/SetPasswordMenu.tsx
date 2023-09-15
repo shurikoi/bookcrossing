@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import ModalMenu from "../ui/ModalMenu";
 import SettingsInput from "../ui/SettingsInput";
 import PasswordIcon from "../ui/icons/PasswordIcon";
-import { checkPassword } from "@/lib/isSignUpDataValid";
+import { validatePassword } from "@/lib/isUserDataValid";
 import { useUserData } from "../contexts/UserProviders";
 
 interface SetPasswordMenuProps {
@@ -21,7 +21,7 @@ export default function SetPasswordMenu({ isActive, setIsActive }: SetPasswordMe
     function handleClick() {
         setIsLoading(true);
 
-        if (checkPassword(newPassword).hasErrors || newPassword != confirmPassword) {
+        if (!validatePassword(newPassword).isValid || newPassword != confirmPassword) {
             setTimeout(() => setIsLoading(false), 250);
             return;
         }

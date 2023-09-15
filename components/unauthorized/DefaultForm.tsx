@@ -2,9 +2,9 @@ import Image from "next/image";
 import ArrowBtn from "@/components/ui/ArrowBtn";
 import { currentState } from "./AuthForm";
 import { Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef, useState } from "react";
-import isEmailValid from "@/lib/isEmailValid";
 import ContentLoader from "../ui/ContentLoader";
 import WarningIcon from "../ui/icons/WarningIcon";
+import { validateEmail, validateUserData } from "@/lib/isUserDataValid";
 
 type DefaultForm = {
     setEmail: Dispatch<SetStateAction<string>>;
@@ -14,16 +14,16 @@ type DefaultForm = {
 };
 
 export default function DefaultForm({ setEmail, setCurrentState, email, formActive }: DefaultForm) {
-    const [isEmailCorrect, setIsEmailCorrect] = useState(true);
+    const [isEmailValid, setIsEmailValid] = useState(true);
     const [loading, setLoading] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
     async function handleSubmit() {
         setLoading(true);
-        setIsEmailCorrect(true)
+        setIsEmailValid(false);
 
-        if (isEmailValid(email)) {
-            setIsEmailCorrect(true);
+        if (validateEmail(email).isValid) {
+            setIsEmailValid(true);
 
             const response = await fetch("/api/checkUser", {
                 method: "POST",
@@ -40,7 +40,7 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
             setTimeout(() => {
                 setLoading(false);
 
-                setIsEmailCorrect(false);
+                setIsEmailValid(false);
             }, 250);
         }
     }
@@ -59,13 +59,13 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
         const width = window.innerWidth
             ? window.innerWidth
             : document.documentElement.clientWidth
-                ? document.documentElement.clientWidth
-                : screen.width;
+            ? document.documentElement.clientWidth
+            : screen.width;
         const height = window.innerHeight
             ? window.innerHeight
             : document.documentElement.clientHeight
-                ? document.documentElement.clientHeight
-                : screen.height;
+            ? document.documentElement.clientHeight
+            : screen.height;
 
         const systemZoom = width / window.screen.availWidth;
         const left = (width - w) / 2 / systemZoom + dualScreenLeft;
@@ -107,7 +107,7 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
                     {loading ? <ContentLoader></ContentLoader> : <ArrowBtn onClick={handleSubmit}></ArrowBtn>}
                 </div>
 
-                {!isEmailCorrect && (
+                {!isEmailValid && (
                     <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-5 left-0">
                         <>
                             <WarningIcon />

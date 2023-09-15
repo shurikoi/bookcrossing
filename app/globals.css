@@ -25,7 +25,7 @@ button:focus-visible {
 
 input,
 textarea {
-  font-size: 16px !important;
+  /* font-size: 16px !important; */
 
   -webkit-tap-highlight-color: transparent;
 }
@@ -96,10 +96,12 @@ textarea {
 }
 .item-enter-active {
   opacity: 1;
+
   transition: opacity 500ms ease-in;
 }
 .item-exit {
   opacity: 1;
+
 }
 .item-exit-active {
   opacity: 0;

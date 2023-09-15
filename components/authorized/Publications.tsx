@@ -28,7 +28,7 @@ export default function Publications() {
     const [isBookModalActive, setIsBookModalActive] = useState(false);
 
     const [isLoading, setIsLoading] = useState(true);
-    const [bookData, setBookData] = useState<bookData[]>([]);
+    const [books, setBooks] = useState<bookData[]>([]);
 
     const [currentBook, setCurrentBook] = useState<bookData>({
         title: "",
@@ -44,7 +44,9 @@ export default function Publications() {
 
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(0);
+
     const observerRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
         if (isLoading && hasMore) {
             getPublications();
@@ -59,17 +61,17 @@ export default function Publications() {
                 }),
             });
 
-            const books: bookData[] = await response.json();
+            const fetchedBooks: bookData[] = await response.json();
 
             setPage((prev) => prev + 1);
             setIsLoading(false);
-            console.log(books);
-            if (books.length === 0) {
+
+            if (fetchedBooks.length === 0) {
                 setHasMore(false);
                 return;
             }
 
-            setBookData([...bookData, ...books]);
+            setBooks([...books, ...fetchedBooks]);
         }
     }, [isLoading, hasMore]);
 
@@ -91,28 +93,33 @@ export default function Publications() {
             if (observerRef.current) observer.disconnect();
         };
     }, [observerRef, observerRef.current, hasMore, isLoading]);
+
     function handleAddBookClick() {
         setIsPublicationModalActive(true);
     }
 
     return (
         <div className="px-28 py-16 relative">
-            <TransitionGroup className="flex gap-6 flex-wrap justify-center">
-                {bookData &&
-                    bookData.map((data, index) => {
+            <div className="flex gap-6 flex-wrap justify-center">
+                {books &&
+                    books.map((book, index) => {
                         return (
-                            <CSSTransition key={index} classNames="item" timeout={500}>
-                                <Book
-                                    key={index}
-                                    data={data}
-                                    setCurrentBook={setCurrentBook}
-                                    setIsBookModalActive={setIsBookModalActive}
-                                />
-                            </CSSTransition>
+                            <TransitionGroup>
+                                <CSSTransition key={index} classNames="item" timeout={300}>
+                                    <Book
+                                        key={index}
+                                        data={book}
+                                        handleClick={() => {
+                                            setCurrentBook(book);
+                                            setIsBookModalActive(true);
+                                        }}
+                                    />
+                                </CSSTransition>
+                            </TransitionGroup>
                         );
                     })}
                 <div ref={observerRef}></div>
-            </TransitionGroup>
+            </div>
             {isLoading && (
                 <div className="relative mt-5">
                     <ContentLoader></ContentLoader>

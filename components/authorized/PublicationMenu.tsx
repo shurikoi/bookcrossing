@@ -75,7 +75,7 @@ export default function PublicationForm() {
         description,
         category,
         image: image.url,
-        owner: user?.id!,
+        owner: user!.id,
         messenger,
         messengerDescription,
         date: "Dzisiaj",
@@ -147,7 +147,7 @@ export default function PublicationForm() {
         form.append("image", image.file!);
         form.append("imageName", image.file?.name!);
         form.append("author", author);
-        form.append("owner", user?.id!);
+        form.append("owner", user!.id);
         form.append("title", title);
         form.append("description", description);
         form.append("category", category);
@@ -187,7 +187,7 @@ export default function PublicationForm() {
                             </div>
                         )}
                     </div>
-                    <div className="flex gap-12 font-extralight text-[14px] justify-between">
+                    <div className="flex gap-12 font-extralight text-[14px] justify-start">
                         <div className="text-left flex flex-col gap-5">
                             <div className="flex gap-3 items-center">
                                 <TagIcon />
@@ -226,7 +226,7 @@ export default function PublicationForm() {
                             />
                             <div
                                 className={`${
-                                    errors.image && "text-[#DD0000]"
+                                    errors.image ? "text-[#DD0000]" : "text-inherit"
                                 } cursor-pointer overflow-ellipsis overflow-hidden whitespace-nowrap`}
                                 onClick={() => imageRef.current?.click()}
                             >
@@ -262,7 +262,9 @@ export default function PublicationForm() {
                     ></textarea>
                 </div>
                 <div className="hidden md:block">
-                    <Book data={bookData} />
+                    <Book data={bookData} handleClick={() => {
+                        imageRef.current?.click()
+                    }}/>
                 </div>
             </div>
 

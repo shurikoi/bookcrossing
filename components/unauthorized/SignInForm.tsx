@@ -16,14 +16,14 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
     const [isLoading, setIsLoading] = useState(false);
     const [password, setPassword] = useState("");
 
-    const [isPasswordCorrect, setIsPasswordCorrect] = useState(true);
+    const [isPasswordValid, setIsPasswordValid] = useState(true);
 
     const inputRef = useRef<HTMLInputElement>(null);
 
     function handleSubmit() {
         setIsLoading(true);
 
-        setIsPasswordCorrect(true);
+        setIsPasswordValid(true);
 
         fetch("/api/checkPassword", {
             method: "POST",
@@ -36,7 +36,7 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
                     return;
                 }
 
-                setIsPasswordCorrect(false);
+                setIsPasswordValid(false);
                 setIsLoading(false);
             });
     }
@@ -73,7 +73,7 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
                         isPasswordVisible={isPasswordVisible}
                     ></ShowPasswordBtn>
                 )}
-                {!isPasswordCorrect && (
+                {!isPasswordValid && (
                     <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-5 left-0">
                         <>
                             <WarningIcon />

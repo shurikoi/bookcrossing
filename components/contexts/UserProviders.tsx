@@ -1,5 +1,6 @@
 "use client";
 
+import { validateUserData } from "@/lib/isUserDataValid";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useMemo, useState } from "react";
 
@@ -8,15 +9,15 @@ const UserContext = createContext<any>(null);
 type userData = {
     loading: boolean;
     user?: {
-        id: string | undefined;
-        name: string | undefined;
-        surname: string | undefined;
-        email: string | undefined;
+        id: string;
+        name: string;
+        surname: string;
+        email: string;
         points: number;
         isPasswordExist: boolean;
-        setName: Dispatch<SetStateAction<string | undefined>>;
-        setSurname: Dispatch<SetStateAction<string | undefined>>;
-        setEmail: Dispatch<SetStateAction<string | undefined>>;
+        setName: Dispatch<SetStateAction<string>>;
+        setSurname: Dispatch<SetStateAction<string>>;
+        setEmail: Dispatch<SetStateAction<string>>;
         setPoints: Dispatch<SetStateAction<number>>;
         setIsPasswordExist: Dispatch<SetStateAction<boolean>>;
     };
@@ -25,10 +26,10 @@ type userData = {
 function UserProvider({ children }: { children: React.ReactNode }) {
     const { data: session, status } = useSession();
 
-    const [id, setId] = useState<string | undefined>(undefined);
-    const [name, setName] = useState<string | undefined>(undefined);
-    const [surname, setSurname] = useState<string | undefined>(undefined);
-    const [email, setEmail] = useState<string | undefined>(undefined);
+    const [id, setId] = useState<string>("");
+    const [name, setName] = useState<string>("");
+    const [surname, setSurname] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
     const [points, setPoints] = useState(0);
     const [isPasswordExist, setIsPasswordExist] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -78,7 +79,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     }, [userEmail]);
 
     useMemo(() => {
-        if (!loading && userData.user && !Object.values(userData.user).includes(undefined)) // if no user and fields are not empty
+        if (!loading && userData.user && validateUserData({ name, surname, email }))
             fetch("/api/changeUserData", { method: "post", body: JSON.stringify({ name, surname, email }) });
     }, [name, surname, email]);
 
@@ -91,7 +92,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
 function useUserData() {
     const data: userData = useContext(UserContext);
-
     return data;
 }
 
