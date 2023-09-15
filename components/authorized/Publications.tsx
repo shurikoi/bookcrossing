@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, createRef, useEffect, useRef, useState } from "react";
 
 import BookMenu from "./BookMenu";
 import { messenger } from "./Contact";
@@ -7,6 +7,7 @@ import Book from "../ui/Book";
 import PublicationForm from "./PublicationMenu";
 import ModalMenu from "../ui/ModalMenu";
 import AddBookBtn from "../ui/AddBookBtn";
+import { CSSTransition, SwitchTransition, TransitionGroup } from "react-transition-group";
 
 export type bookData = {
     title: string;
@@ -20,12 +21,14 @@ export type bookData = {
     date: string;
 };
 
+const limit = 10;
+
 export default function Publications() {
     const [isPublicationModalActive, setIsPublicationModalActive] = useState(false);
     const [isBookModalActive, setIsBookModalActive] = useState(false);
 
     const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState<bookData[]>();
+    const [bookData, setBookData] = useState<bookData[]>([]);
 
     const [currentBook, setCurrentBook] = useState<bookData>({
         title: "",
@@ -39,46 +42,85 @@ export default function Publications() {
         date: "",
     });
 
+    const [hasMore, setHasMore] = useState(true);
+    const [page, setPage] = useState(0);
+    const observerRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
-        getPublications();
+        if (isLoading && hasMore) {
+            getPublications();
+        }
 
         async function getPublications() {
             const response = await fetch("/api/getPublications", {
                 method: "POST",
+                body: JSON.stringify({
+                    limit,
+                    page,
+                }),
             });
 
             const books: bookData[] = await response.json();
 
+            setPage((prev) => prev + 1);
             setIsLoading(false);
+            console.log(books);
+            if (books.length === 0) {
+                setHasMore(false);
+                return;
+            }
 
-            if (books.length === 0) return;
-
-            setData(books);
-            setCurrentBook(books[0]);
+            setBookData([...bookData, ...books]);
         }
-    }, []);
+    }, [isLoading, hasMore]);
 
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting) {
+                    setIsLoading(true);
+                }
+            },
+            {
+                rootMargin: "100px",
+            }
+        );
+
+        if (observerRef.current && hasMore) observer.observe(observerRef.current);
+
+        return () => {
+            if (observerRef.current) observer.disconnect();
+        };
+    }, [observerRef, observerRef.current, hasMore, isLoading]);
     function handleAddBookClick() {
         setIsPublicationModalActive(true);
     }
 
     return (
         <div className="px-28 py-16 relative">
-            <div className="flex gap-6 flex-wrap justify-center">
-                {isLoading ? (
+            <TransitionGroup className="flex gap-6 flex-wrap justify-center">
+                {bookData &&
+                    bookData.map((data, index) => {
+                        const nodeRef = createRef<HTMLDivElement>()
+                        
+                        return (
+                            <CSSTransition key={index} classNames="item" timeout={1000} nodeRef={nodeRef}>
+                                <Book
+                                    key={index}
+                                    data={data}
+                                    ref={nodeRef}
+                                    setCurrentBook={setCurrentBook}
+                                        setIsBookModalActive={setIsBookModalActive}
+                                />
+                            </CSSTransition>
+                        )
+                    })}
+                <div ref={observerRef}></div>
+            </TransitionGroup>
+            {isLoading && (
+                <div className="relative mt-5">
                     <ContentLoader></ContentLoader>
-                ) : (
-                    data &&
-                    data.map((data, index) => (
-                        <Book
-                            key={index}
-                            data={data}
-                            setCurrentBook={setCurrentBook}
-                            setIsBookModalActive={setIsBookModalActive}
-                        />
-                    ))
-                )}
-            </div>
+                </div>
+            )}
 
             <AddBookBtn onClick={handleAddBookClick} />
 

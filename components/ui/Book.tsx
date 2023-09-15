@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useMemo, useState } from "react";
+import React, { Dispatch, RefObject, SetStateAction, useMemo, useState } from "react";
 import Loader from "./ContentLoader";
 import convertDate from "@/lib/convertDate";
 import { bookData } from "../authorized/Publications";
@@ -7,9 +7,10 @@ interface BookProps {
     data: bookData;
     setCurrentBook?: Dispatch<SetStateAction<bookData>>;
     setIsBookModalActive?: Dispatch<SetStateAction<boolean>>;
+    ref?: RefObject<HTMLDivElement>
 }
 
-const Book = React.memo(({ data, setCurrentBook, setIsBookModalActive }: BookProps) => {
+const Book = React.memo(({ data, setCurrentBook, setIsBookModalActive, ref }: BookProps) => {
     function handleBookClick() {
         if (setCurrentBook && setIsBookModalActive) {
             setCurrentBook(data);
@@ -32,6 +33,7 @@ const Book = React.memo(({ data, setCurrentBook, setIsBookModalActive }: BookPro
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             onClick={handleBookClick}
+            ref={ref}
         >
             <div className="text-[#CDCDCD] text-[17px] font-normal cursor-text w-fit">{date}</div>
             <div>
@@ -50,7 +52,7 @@ const Book = React.memo(({ data, setCurrentBook, setIsBookModalActive }: BookPro
             </div>
             <div
                 className={` ${
-                    isImageLoaded ? `${isHovered ? "bg-transparent" : "bg-black/30"}` : "bg-black duration-0"
+                    isImageLoaded ? `${isHovered ? "bg-black/30" : "bg-black/30"}` : "bg-black duration-0"
                 }  duration-200 absolute w-full h-full left-0 top-0 text-white flex items-center justify-center z-[-1]`}
             >
                 {!isImageLoaded && !isImageLoading && <>No Image</>}
