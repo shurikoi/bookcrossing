@@ -187,14 +187,14 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
                     isPasswordVisible={isPasswordVisible}
                 ></ShowPasswordBtn>
             </div>
-            <button
+            <div
                 className={`${
                     isLoading ? "text-gray-400" : "text-[#61C558]"
                 } cursor-pointer font-light text-[15px]  select-none duration-200`}
                 onClick={handleSubmit}
             >
                 Zaloguj
-            </button>
+            </div>
         </>
     );
 }

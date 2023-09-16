@@ -5,18 +5,16 @@ type CategoriesMenu = {
     categories: string[];
     filteredCategories: string[];
     menuActive: boolean;
-    categoryValue: string;
+    category: string;
     selectedCategory: number;
     setSelectedCategory: Dispatch<SetStateAction<number>>;
-    setCategoryValue: Dispatch<SetStateAction<string>>;
     setCategory: Dispatch<SetStateAction<string>>;
 };
 
 export default function CategoriesMenu({
     menuRef,
     categories,
-    categoryValue,
-    setCategoryValue,
+    category,
     menuActive,
     filteredCategories,
     setCategory,
@@ -35,22 +33,20 @@ export default function CategoriesMenu({
                     key={category}
                     onMouseOver={() => setSelectedCategory(index)}
                     onMouseDown={() => {
-                        setCategoryValue(category);
                         setCategory(category);
                     }}
                 >
                     <span className="p-1.5 bg-[#F2F9F0]">{category}</span>
                 </div>
             ))}
-            {!categories.includes(categoryValue) && categoryValue.trim().length != 0 && (
+            {!categories.includes(category) && category.trim().length != 0 && (
                 <div
                     className="cursor-pointer transition-colors duration-200 hover:bg-[#F2F9F0] p-2.5"
                     onMouseDown={() => {
-                        setCategoryValue(categoryValue);
-                        setCategory(categoryValue);
+                        setCategory(category);
                     }}
                 >
-                    Stworzyć <span className="p-1.5 bg-[#F2F9F0]">{categoryValue}</span>
+                    Stworzyć <span className="p-1.5 bg-[#F2F9F0]">{category}</span>
                 </div>
             )}
         </div>

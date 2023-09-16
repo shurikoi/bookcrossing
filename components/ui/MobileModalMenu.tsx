@@ -20,6 +20,8 @@ const MobileModalMenu = memo(function MobileModalMenu({
     const [startPosition, setStartPosition] = useState(0);
 
     useEffect(() => {
+        if (fullMode) return
+            
         function updateMenuPosition(e: TouchEvent) {
             const clientY = e.touches[0].clientY - startPosition;
 
@@ -31,6 +33,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
         }
 
         function updateStartPosition(e: TouchEvent) {
+            console.log(menuRef.current)
             const clientY = e.touches[0].clientY;
 
             menuRef.current?.classList.remove("duration-200");

@@ -1,4 +1,4 @@
-import { RefObject, useMemo, useState } from "react";
+import { useState } from "react";
 import Loader from "./ContentLoader";
 import convertDate from "@/lib/convertDate";
 import { bookData } from "../authorized/Publications";
@@ -6,15 +6,10 @@ import { memo } from "react";
 
 interface BookProps {
     data: bookData;
-    ref?: RefObject<HTMLDivElement>;
     handleClick?: () => void;
 }
 
-const Book = memo(({ data, handleClick, ref }: BookProps) => {
-    const date = useMemo(() => {
-        return convertDate(data.date);
-    }, [data.date]);
-
+const Book = memo(({ data, handleClick}: BookProps) => {
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const [isImageLoading, setIsImageLoading] = useState(true);
     const [isHovered, setIsHovered] = useState(false);
@@ -25,9 +20,8 @@ const Book = memo(({ data, handleClick, ref }: BookProps) => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             onClick={handleClick}
-            ref={ref}
         >
-            <div className="text-[#CDCDCD] text-[17px] font-normal cursor-text w-fit">{date}</div>
+            <div className="text-[#CDCDCD] text-[17px] font-normal cursor-text w-fit">{convertDate(data.date)}</div>
             <div>
                 <div
                     className="font-medium text-[21px] text-white overflow-hidden text-ellipsis cursor-text w-fit max-w-full whitespace-nowrap"

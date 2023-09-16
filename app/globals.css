@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  /* font-size: 16px !important; */
+  -webkit-tap-highlight-color: transparent;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -23,12 +28,6 @@ button:focus-visible {
   outline: none;
 }
 
-input,
-textarea {
-  /* font-size: 16px !important; */
-
-  -webkit-tap-highlight-color: transparent;
-}
 
 :placeholder {
   user-select: none;
@@ -92,20 +91,26 @@ textarea {
 }
 
 .item-enter {
+  transform: translate(10px);
+
   opacity: 0;
 }
+
 .item-enter-active {
+  transform: translate(0%);
   opacity: 1;
-
-  transition: opacity 500ms ease-in;
 }
+
 .item-exit {
-  opacity: 1;
+  transform: translate(0%);
 
+  opacity: 1;
 }
+
 .item-exit-active {
+  transform: translate(10px);
+
   opacity: 0;
-  transition: opacity 500ms ease-in;
 }
 
 /* 

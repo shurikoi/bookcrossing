@@ -1,13 +1,12 @@
-import { Fragment, createRef, useEffect, useRef, useState } from "react";
-
+import { createRef, useEffect, useRef, useState } from "react";
 import BookMenu from "./BookMenu";
 import { messenger } from "./Contact";
 import ContentLoader from "../ui/ContentLoader";
 import Book from "../ui/Book";
-import PublicationForm from "./PublicationMenu";
+import PublicationMenu from "./PublicationMenu";
 import ModalMenu from "../ui/ModalMenu";
 import AddBookBtn from "../ui/AddBookBtn";
-import { CSSTransition, SwitchTransition, TransitionGroup } from "react-transition-group";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 export type bookData = {
     title: string;
@@ -68,6 +67,7 @@ export default function Publications() {
 
             if (fetchedBooks.length === 0) {
                 setHasMore(false);
+                setPage((prev) => prev - 1);
                 return;
             }
 
@@ -100,26 +100,24 @@ export default function Publications() {
 
     return (
         <div className="px-28 py-16 relative">
-            <div className="flex gap-6 flex-wrap justify-center">
+            <TransitionGroup className="flex gap-6 flex-wrap justify-center">
                 {books &&
                     books.map((book, index) => {
                         return (
-                            <TransitionGroup>
-                                <CSSTransition key={index} classNames="item" timeout={300}>
-                                    <Book
-                                        key={index}
-                                        data={book}
-                                        handleClick={() => {
-                                            setCurrentBook(book);
-                                            setIsBookModalActive(true);
-                                        }}
-                                    />
-                                </CSSTransition>
-                            </TransitionGroup>
+                            <CSSTransition key={index} classNames="item" timeout={500}>
+                                <Book
+                                    key={index}
+                                    data={book}
+                                    handleClick={() => {
+                                        setCurrentBook(book);
+                                        setIsBookModalActive(true);
+                                    }}
+                                />
+                            </CSSTransition>
                         );
                     })}
-                <div ref={observerRef}></div>
-            </div>
+                <div ref={observerRef} className="absolute bottom-0"></div>
+            </TransitionGroup>
             {isLoading && (
                 <div className="relative mt-5">
                     <ContentLoader></ContentLoader>
@@ -128,9 +126,11 @@ export default function Publications() {
 
             <AddBookBtn onClick={handleAddBookClick} />
 
-            <ModalMenu fullMode isModalActive={isPublicationModalActive} setIsModalActive={setIsPublicationModalActive}>
-                <PublicationForm />
-            </ModalMenu>
+            <PublicationMenu
+                isModalActive={isPublicationModalActive}
+                setIsModalActive={setIsPublicationModalActive}
+                setBooks={setBooks}
+            />
 
             <ModalMenu fullMode isModalActive={isBookModalActive} setIsModalActive={setIsBookModalActive}>
                 <BookMenu data={currentBook} />

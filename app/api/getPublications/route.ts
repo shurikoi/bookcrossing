@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
     await connection()
 
-    const publications : book[] = await books.find({}).skip(skip).limit(limit);
+    const publications : book[] = await books.find({}).sort({date: "desc"}).skip(skip).limit(limit);
 
     return NextResponse.json(publications);
 }

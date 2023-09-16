@@ -84,13 +84,13 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
                     </div>
                 )}
             </div>
-            <button
+            <div
                 className={`${isLoading ? "text-gray-400" : "text-[#61C558]"
                     } cursor-pointer font-light text-[15px] select-none`}
                 onClick={handleSubmit}
             >
                 Zaloguj
-            </button>
+            </div>
         </div>
     );
 }

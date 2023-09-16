@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import Book from "../ui/Book";
 import TagIcon from "../ui/icons/TagIcon";
@@ -14,6 +14,7 @@ import { useUserData } from "../contexts/UserProviders";
 import SubmitIcon from "../ui/icons/SubmitIcon";
 import { useScreen } from "../contexts/ScreenProvider";
 import PreviewMenu from "./PreviewMenu";
+import ModalMenu from "../ui/ModalMenu";
 
 const categories = [
     "Powieść historyczna",
@@ -54,7 +55,13 @@ type errors = {
     hasErrors: boolean;
 };
 
-export default function PublicationForm() {
+interface publicationMenuProps {
+    setBooks: Dispatch<SetStateAction<bookData[]>>;
+    isModalActive: boolean;
+    setIsModalActive: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function PublicationMenu({ setBooks, isModalActive, setIsModalActive }: publicationMenuProps) {
     const { user } = useUserData();
 
     const [author, setAuthor] = useState("");
@@ -81,7 +88,7 @@ export default function PublicationForm() {
         date: "Dzisiaj",
     };
 
-    const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [isPreviewMenuActive, setIsPreviewMenuActive] = useState(false);
 
     const { isSmallScreen } = useScreen();
@@ -109,14 +116,14 @@ export default function PublicationForm() {
     }
 
     function handleSubmit() {
-        if (isSubmitButtonDisabled) return;
+        if (isLoading) return;
 
         if (!isPreviewMenuActive && isSmallScreen) {
             setIsPreviewMenuActive(true);
             return;
         }
 
-        setIsSubmitButtonDisabled(true);
+        setIsLoading(true);
 
         setErrors({
             title: false,
@@ -135,7 +142,7 @@ export default function PublicationForm() {
 
         if (errors.hasErrors) {
             setTimeout(() => {
-                setIsSubmitButtonDisabled(false);
+                setIsLoading(false);
                 setErrors(errors);
             }, 250);
 
@@ -160,139 +167,157 @@ export default function PublicationForm() {
         })
             .then((res) => res.json())
             .then((data) => {
-                window.location.reload();
+                setBooks((prev) => [bookData, ...prev]);
+                setIsLoading(false);
+                setIsModalActive(false);
+
+                setAuthor("");
+                setTitle("");
+                setDescription("");
+                setCategory("");
+                setMessengerDescription("");
+                setImage({
+                    url: "",
+                    file: undefined,
+                });
+                setMessenger("Telegram");
             });
     }
 
     return (
-        <div className="flex flex-col md:gap-5 h-full  justify-between md:min-h-[500px] md:min-w-[640px] lg:min-w-[820px] md:p-6">
-            <div className="flex justify-between md:gap-4">
-                <div className="flex flex-col gap-5 w-full">
-                    <div className="relative flex flex-col">
-                        <input
-                            className={`w-full font-head font-normal placeholder:text-[#9A9A9A] duration-200 text-lg`}
-                            type="text"
-                            value={title}
-                            onInput={(e) => setTitle((e.target as HTMLInputElement).value)}
-                            placeholder="Bez tytułu"
-                        />
-                        {errors.title && (
-                            <div className="absolute flex items-center gap-1 -bottom-3">
-                                <>
-                                    <WarningIcon />
-                                    <div className=" text-[#DD0000] font-inter font-normal text-[13px] leading-none">
-                                        Niestety, pole musi się składać z 2-55 znaków
-                                    </div>
-                                </>
-                            </div>
-                        )}
-                    </div>
-                    <div className="flex gap-12 font-extralight text-[14px] justify-start">
-                        <div className="text-left flex flex-col gap-5">
-                            <div className="flex gap-3 items-center">
-                                <TagIcon />
-                                <div>Kategoria</div>
-                            </div>
-                            <div className="flex flex-col gap-1">
-                                <div className="relative flex gap-3 items-center">
-                                    <ProfileIcon />
-                                    <div>Autor</div>
-                                    {errors.author && (
-                                        <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-4">
-                                            <>
-                                                <WarningIcon />
-                                                <div className=" text-[#DD0000] font-inter font-normal text-[13px] h-[1em] leading-none">
-                                                    Niestety, pole musi się składać z 2-55 znaków
-                                                </div>
-                                            </>
+        <ModalMenu fullMode isModalActive={isModalActive} setIsModalActive={setIsModalActive}>
+            <div className="flex flex-col md:gap-5 h-full  justify-between md:min-h-[500px] md:min-w-[640px] lg:min-w-[820px] md:p-6">
+                <div className="flex justify-between md:gap-4">
+                    <div className="flex flex-col gap-5 w-full">
+                        <div className="relative flex flex-col">
+                            <input
+                                className={`w-full font-head font-normal placeholder:text-[#9A9A9A] duration-200 text-lg`}
+                                type="text"
+                                value={title}
+                                onInput={(e) => setTitle((e.target as HTMLInputElement).value)}
+                                placeholder="Bez tytułu"
+                            />
+                            {errors.title && (
+                                <div className="absolute flex items-center gap-1 -bottom-3">
+                                    <>
+                                        <WarningIcon />
+                                        <div className=" text-[#DD0000] font-inter font-normal text-[13px] leading-none">
+                                            Niestety, pole musi się składać z 2-55 znaków
                                         </div>
-                                    )}
+                                    </>
                                 </div>
-                            </div>
-                            <div className="flex gap-3 items-center">
-                                <LinkIcon />
-                                <div>Zdjęcie</div>
-                            </div>
-                            <Contact messenger={messenger} setMessenger={setMessenger} />
+                            )}
                         </div>
-                        <div className="flex flex-col gap-5">
-                            <Categories categories={categories} setCategory={setCategory} error={errors.category} />
-                            <input
-                                className={`placeholder:text-[#9A9A9A]`}
-                                type="text"
-                                value={author}
-                                onInput={(e) => setAuthor((e.target as HTMLInputElement).value)}
-                                placeholder="wprowadź tutaj..."
-                            />
-                            <div
-                                className={`${
-                                    errors.image ? "text-[#DD0000]" : "text-inherit"
-                                } cursor-pointer overflow-ellipsis overflow-hidden whitespace-nowrap`}
-                                onClick={() => imageRef.current?.click()}
-                            >
-                                {image.file ? "Załączono" : "wybierz plik do 10 MB"}
+                        <div className="flex gap-12 font-extralight text-[14px] justify-start">
+                            <div className="text-left flex flex-col gap-5">
+                                <div className="flex gap-3 items-center">
+                                    <TagIcon />
+                                    <div>Kategoria</div>
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <div className="relative flex gap-3 items-center">
+                                        <ProfileIcon />
+                                        <div>Autor</div>
+                                        {errors.author && (
+                                            <div className="absolute flex items-center gap-1 whitespace-nowrap -bottom-4">
+                                                <>
+                                                    <WarningIcon />
+                                                    <div className=" text-[#DD0000] font-inter font-normal text-[13px] h-[1em] leading-none">
+                                                        Niestety, pole musi się składać z 2-55 znaków
+                                                    </div>
+                                                </>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="flex gap-3 items-center">
+                                    <LinkIcon />
+                                    <div>Zdjęcie</div>
+                                </div>
+                                <Contact messenger={messenger} setMessenger={setMessenger} />
                             </div>
-                            <input
-                                ref={imageRef}
-                                type="file"
-                                onInput={handleInputFile}
-                                placeholder="wybierz..."
-                                accept="image/png, image/jpeg"
-                                hidden
-                            />
-                            <input
-                                className={`${
-                                    errors.messengerDescription
-                                        ? "placeholder:text-[#DD0000]"
-                                        : "placeholder:text-[#9A9A9A]"
-                                }`}
-                                type="text"
-                                placeholder="wprowadź tutaj..."
-                                onInput={(e) => setMessengerDescription((e.target as HTMLInputElement).value)}
-                            />
+                            <div className="flex flex-col gap-5">
+                                <Categories categories={categories} category={category} setCategory={setCategory} error={errors.category} />
+                                <input
+                                    className={`placeholder:text-[#9A9A9A]`}
+                                    type="text"
+                                    value={author}
+                                    onInput={(e) => setAuthor((e.target as HTMLInputElement).value)}
+                                    placeholder="wprowadź tutaj..."
+                                />
+                                <div
+                                    className={`${
+                                        errors.image ? "text-[#DD0000]" : "text-inherit"
+                                    } cursor-pointer overflow-ellipsis overflow-hidden whitespace-nowrap`}
+                                    onClick={() => imageRef.current?.click()}
+                                >
+                                    {image.file ? "Załączono" : "wybierz plik do 10 MB"}
+                                </div>
+                                <input
+                                    ref={imageRef}
+                                    type="file"
+                                    onInput={handleInputFile}
+                                    placeholder="wybierz..."
+                                    accept="image/png, image/jpeg"
+                                    hidden
+                                />
+                                <input
+                                    className={`${
+                                        errors.messengerDescription
+                                            ? "placeholder:text-[#DD0000]"
+                                            : "placeholder:text-[#9A9A9A]"
+                                    }`}
+                                    type="text"
+                                    placeholder="wprowadź tutaj..."
+                                    onInput={(e) => setMessengerDescription((e.target as HTMLInputElement).value)}
+                                />
+                            </div>
                         </div>
+                        <hr className="border-black/40" />
+                        <div className="font-inter text-xs font-light">Tutaj napiszesz dodatkowe informacje</div>
+                        <textarea
+                            value={description}
+                            onInput={(e) => setDescription((e.target as HTMLTextAreaElement).value)}
+                            className="font-inter text-sm resize-none w-full h-36 cursor-auto"
+                            placeholder="Zacznij pisać"
+                        ></textarea>
                     </div>
-                    <hr className="border-black/40" />
-                    <div className="font-inter text-xs font-light">Tutaj napiszesz dodatkowe informacje</div>
-                    <textarea
-                        value={description}
-                        onInput={(e) => setDescription((e.target as HTMLTextAreaElement).value)}
-                        className="font-inter text-sm resize-none w-full h-36 cursor-auto"
-                        placeholder="Zacznij pisać"
-                    ></textarea>
+                    <div className="hidden md:block">
+                        <Book
+                            data={bookData}
+                            handleClick={() => {
+                                imageRef.current?.click();
+                            }}
+                        />
+                    </div>
                 </div>
-                <div className="hidden md:block">
-                    <Book data={bookData} handleClick={() => {
-                        imageRef.current?.click()
-                    }}/>
-                </div>
-            </div>
 
-            <div className="flex justify-center md:justify-start">
-                {isSubmitButtonDisabled ? (
-                    <div className="relative w-[33px] h-[33px]">
-                        <ContentLoader />
-                    </div>
-                ) : (
-                    <div
-                        className={`${
-                            isSubmitButtonDisabled ? "text-gray-400" : "text-black"
-                        } duration-200 cursor-pointer w-fit`}
-                        onClick={handleSubmit}
-                    >
-                        <SubmitIcon></SubmitIcon>
-                    </div>
+                <div className="flex justify-center md:justify-start">
+                    {isLoading ? (
+                        <div className="relative w-[33px] h-[33px]">
+                            <ContentLoader />
+                        </div>
+                    ) : (
+                        <div
+                            className={`${
+                                isLoading ? "text-gray-400" : "text-black"
+                            } duration-200 cursor-pointer w-fit`}
+                            onClick={handleSubmit}
+                        >
+                            <SubmitIcon></SubmitIcon>
+                        </div>
+                    )}
+                </div>
+                {isSmallScreen && (
+                    <PreviewMenu
+                        previewData={bookData}
+                        handleSubmit={handleSubmit}
+                        isLoading={isLoading}
+                        isMenuActive={isPreviewMenuActive}
+                        setIsMenuActive={setIsPreviewMenuActive}
+                    ></PreviewMenu>
                 )}
             </div>
-            {isSmallScreen && (
-                <PreviewMenu
-                    previewData={bookData}
-                    handleSubmit={handleSubmit}
-                    isSubmitButtonDisabled={isSubmitButtonDisabled}
-                    isMenuActive={isPreviewMenuActive}
-                    setIsMenuActive={setIsPreviewMenuActive}
-                ></PreviewMenu>
-            )}
-        </div>
+        </ModalMenu>
     );
 }

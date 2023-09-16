@@ -1,12 +1,12 @@
 import ModalMenu from "../ui/ModalMenu";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { bookData } from "./Publications";
 import Book from "../ui/Book";
 import SubmitIcon from "../ui/icons/SubmitIcon";
 import ContentLoader from "../ui/ContentLoader";
 interface PreviewMenuProps {
     handleSubmit: () => void;
-    isSubmitButtonDisabled: boolean;
+    isLoading: boolean;
     previewData: bookData;
     isMenuActive: boolean;
     setIsMenuActive: Dispatch<SetStateAction<boolean>>;
@@ -14,7 +14,7 @@ interface PreviewMenuProps {
 
 export default function PreviewMenu({
     handleSubmit,
-    isSubmitButtonDisabled,
+    isLoading,
     previewData,
     isMenuActive,
     setIsMenuActive,
@@ -24,14 +24,14 @@ export default function PreviewMenu({
             <div className="flex items-center justify-center flex-col gap-4 ">
                 <Book data={previewData}></Book>
                 <div className="flex justify-center md:justify-start">
-                    {isSubmitButtonDisabled ? (
+                    {isLoading ? (
                         <div className="relative w-[33px] h-[33px]">
                             <ContentLoader />
                         </div>
                     ) : (
                         <div
                             className={`${
-                                isSubmitButtonDisabled ? "text-gray-400" : "text-black"
+                                isLoading ? "text-gray-400" : "text-black"
                             } duration-200 cursor-pointer w-fit`}
                             onClick={handleSubmit}
                         >

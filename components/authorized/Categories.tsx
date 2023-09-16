@@ -5,11 +5,11 @@ type categories = {
     categories: string[];
     setCategory: Dispatch<SetStateAction<string>>;
     error: boolean;
+    category: string;
 };
 
-export default function Categories({ categories, setCategory, error }: categories) {
+export default function Categories({ categories, setCategory, error, category }: categories) {
     const [categoriesMenuActive, setCategoriesMenuActive] = useState(false);
-    const [categoryValue, setCategoryValue] = useState(""); // input value
     const [selectedCategory, setSelectedCategory] = useState(0);
     const [filteredCategories, setFilteredCategories] = useState<string[]>(categories);
 
@@ -23,20 +23,19 @@ export default function Categories({ categories, setCategory, error }: categorie
 
     useEffect(() => {
         const newCategories: string[] = categories.filter(
-            (category) => category.toLowerCase().includes(categoryValue.toLowerCase()) && category != categoryValue
+            (categoryItem) => categoryItem.toLowerCase().includes(category.toLowerCase()) && category != categoryItem
         );
 
         if (filteredCategories != newCategories) setSelectedCategory(0);
 
         setFilteredCategories(newCategories);
 
-        categories.forEach((category) => {
-            if (category.toLowerCase() == categoryValue.toLowerCase()) {
-                setCategory(categoryValue);
-                setCategoryValue(category);
+        categories.forEach((categoryItem) => {
+            if (categoryItem.toLowerCase() == category.toLowerCase()) {
+                setCategory(categoryItem);
             }
         });
-    }, [categoryValue]);
+    }, [category]);
 
     function handleKeyDown(e: KeyboardEvent) {
         if (e.key == "ArrowDown") {
@@ -74,7 +73,6 @@ export default function Categories({ categories, setCategory, error }: categorie
                 return newSelectedCategory;
             });
         } else if (e.key == "Enter") {
-            setCategoryValue(categories[selectedCategory]);
             setCategory(categories[selectedCategory]);
         }
     }
@@ -85,9 +83,9 @@ export default function Categories({ categories, setCategory, error }: categorie
                 type="text"
                 placeholder="wybierz..."
                 className={`${error ? "placeholder:text-[#DD0000]" : ""}`}
-                value={categoryValue}
+                value={category}
                 onKeyDown={handleKeyDown}
-                onInput={(e) => setCategoryValue((e.target as HTMLInputElement).value)}
+                onInput={(e) => setCategory((e.target as HTMLInputElement).value)}
                 onFocus={() => {
                     setSelectedCategory(0);
                     setCategoriesMenuActive(true);
@@ -98,8 +96,7 @@ export default function Categories({ categories, setCategory, error }: categorie
                 menuRef={menuRef}
                 categories={categories}
                 filteredCategories={filteredCategories}
-                categoryValue={categoryValue}
-                setCategoryValue={setCategoryValue}
+                category={category}
                 setSelectedCategory={setSelectedCategory}
                 menuActive={categoriesMenuActive}
                 setCategory={setCategory}
