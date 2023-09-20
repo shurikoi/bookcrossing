@@ -1,5 +1,4 @@
 import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
-import { useSession } from "next-auth/react";
 import Book from "../ui/Book";
 import TagIcon from "../ui/icons/TagIcon";
 import LinkIcon from "../ui/icons/LinkIcon";

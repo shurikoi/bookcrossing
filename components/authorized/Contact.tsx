@@ -1,9 +1,10 @@
-import { Dispatch, SetStateAction, useMemo, useRef, useState } from "react";
+import { Dispatch, RefObject, SetStateAction, useMemo, useRef, useState } from "react";
 import TelegramIcon from "../ui/icons/TelegramIcon";
 import SnapchatIcon from "../ui/icons/SnapchatIcon";
 import MessengerIcon from "../ui/icons/MessengerIcon";
 import InstagramIcon from "../ui/icons/InstagramIcon";
 import useClickOutside from "../hooks/useClickOutside";
+import DropDownMenu from "../DropDownMenu";
 
 interface messengers {
     [key: string]: {
@@ -30,10 +31,6 @@ export default function Contact({ messenger, setMessenger }: ContactProps) {
     const [isMenuActive, setIsMenuActive] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
-    useClickOutside(menuRef, () => {
-        setIsMenuActive(false);
-    });
-
     return (
         <div className="relative select-none" ref={menuRef}>
             <div
@@ -44,47 +41,44 @@ export default function Contact({ messenger, setMessenger }: ContactProps) {
                 <div>{messengers[messenger].name}</div>
             </div>
             <ContactMenu
-                isActive={isMenuActive}
-                setIsActive={setIsMenuActive}
+                isMenuActive={isMenuActive}
+                setIsMenuActive={setIsMenuActive}
                 messenger={messenger}
                 setMessenger={setMessenger}
+                menuRef={menuRef}
             />
         </div>
     );
 }
 
 interface ContactMenuProps {
-    isActive: boolean;
-    setIsActive: Dispatch<SetStateAction<boolean>>;
+    isMenuActive: boolean;
+    setIsMenuActive: Dispatch<SetStateAction<boolean>>;
     messenger: messenger;
     setMessenger: Dispatch<SetStateAction<messenger>>;
+    menuRef: RefObject<HTMLDivElement>;
 }
 
-function ContactMenu({ isActive, setIsActive, messenger, setMessenger }: ContactMenuProps) {
-    const filteredMessenger = useMemo(
-        () => Object.values(messengers).filter((messengerItem) => messengerItem.name != messenger),
-        [messenger]
-    );
+function ContactMenu({ isMenuActive, setIsMenuActive, messenger, setMessenger, menuRef }: ContactMenuProps) {
+    const filteredMessenger = Object.values(messengers).filter((messengerItem) => messengerItem.name != messenger);
 
     return (
-        <div
-            className={`${
-                isActive ? "opacity-100  pointer-events-auto" : "opacity-0  pointer-events-none"
-            } absolute flex flex-col -bottom-2 -left-2 translate-y-[100%] shadow-md rounded-lg border border-black/10 duration-300 overflow-auto`}
-        >
-            {filteredMessenger.map((messenger) => (
-                <div
-                    className="flex bg-white gap-2 p-2 items-center cursor-pointer hover:bg-gray-100 duration-300"
-                    onClick={() => {
-                        setIsActive(false);
-                        setMessenger(messenger.name);
-                    }}
-                    key={messenger.name}
-                >
-                    <div>{messenger.icon}</div>
-                    <div>{messenger.name}</div>
-                </div>
-            ))}
-        </div>
+        <DropDownMenu isMenuActive={isMenuActive} setIsMenuActive={setIsMenuActive} menuRef={menuRef}>
+            <div className="absolute flex flex-col -bottom-2 -left-2 translate-y-[100%] shadow-md rounded-lg border border-black/10 duration-300 overflow-auto">
+                {filteredMessenger.map((messenger) => (
+                    <div
+                        className="flex bg-white gap-2 p-2 items-center cursor-pointer hover:bg-gray-100 duration-300"
+                        onClick={() => {
+                            setIsMenuActive(false);
+                            setMessenger(messenger.name);
+                        }}
+                        key={messenger.name}
+                    >
+                        <div>{messenger.icon}</div>
+                        <div>{messenger.name}</div>
+                    </div>
+                ))}
+            </div>
+        </DropDownMenu>
     );
 }

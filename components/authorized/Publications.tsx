@@ -7,6 +7,7 @@ import PublicationMenu from "./PublicationMenu";
 import ModalMenu from "../ui/ModalMenu";
 import AddBookBtn from "../ui/AddBookBtn";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import FilterBar from "./FilterBar";
 
 export type bookData = {
     title: string;
@@ -99,30 +100,37 @@ export default function Publications() {
     }
 
     return (
-        <div className="px-28 py-16 relative">
-            <TransitionGroup className="flex gap-6 flex-wrap justify-center">
-                {books &&
-                    books.map((book, index) => {
-                        return (
-                            <CSSTransition key={index} classNames="item" timeout={500}>
-                                <Book
-                                    key={index}
-                                    data={book}
-                                    handleClick={() => {
-                                        setCurrentBook(book);
-                                        setIsBookModalActive(true);
-                                    }}
-                                />
-                            </CSSTransition>
-                        );
-                    })}
-                <div ref={observerRef} className="absolute bottom-0"></div>
-            </TransitionGroup>
-            {isLoading && (
-                <div className="relative mt-5">
-                    <ContentLoader></ContentLoader>
-                </div>
-            )}
+        <div className="flex flex-col items-center gap-10 pt-10">
+            <div className="text-center text-[25px] font-normal px-6 max-w-[800px] box-content">
+                Wierzymy, że korzystanie z serwisu może dostarczyć wiele radości i wzbogacić Twoje doświadczenie
+                czytelnicze.
+            </div>
+            <FilterBar></FilterBar>
+            <div className="px-28 relative">
+                <TransitionGroup className="flex gap-6 flex-wrap justify-center">
+                    {books &&
+                        books.map((book, index) => {
+                            return (
+                                <CSSTransition key={index} classNames="item" timeout={500}>
+                                    <Book
+                                        key={index}
+                                        data={book}
+                                        handleClick={() => {
+                                            setCurrentBook(book);
+                                            setIsBookModalActive(true);
+                                        }}
+                                    />
+                                </CSSTransition>
+                            );
+                        })}
+                    <div ref={observerRef} className="absolute bottom-0"></div>
+                </TransitionGroup>
+                {isLoading && (
+                    <div className="relative mt-5">
+                        <ContentLoader></ContentLoader>
+                    </div>
+                )}
+            </div>
 
             <AddBookBtn onClick={handleAddBookClick} />
 
@@ -132,9 +140,11 @@ export default function Publications() {
                 setBooks={setBooks}
             />
 
-            <ModalMenu fullMode isModalActive={isBookModalActive} setIsModalActive={setIsBookModalActive}>
-                <BookMenu data={currentBook} />
-            </ModalMenu>
+            <BookMenu
+                isBookModalActive={isBookModalActive}
+                setIsBookModalActive={setIsBookModalActive}
+                data={currentBook}
+            />
         </div>
     );
 }

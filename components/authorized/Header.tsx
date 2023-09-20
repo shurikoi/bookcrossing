@@ -57,6 +57,7 @@ export default function Header() {
                             isMenuActive={isMenuActive}
                             setIsSettingsMenuActive={setIsSettingsMenuActive}
                             setMenuActive={setIsMenuActive}
+                            menuRef={menuRef}
                         />
                     </div>
                 </div>
