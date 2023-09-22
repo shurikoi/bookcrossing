@@ -106,7 +106,7 @@ export default function Publications() {
                 czytelnicze.
             </div>
             <FilterBar></FilterBar>
-            <div className="px-28 relative">
+            <div className="px-28 flex flex-col gap-6 items-center">
                 <TransitionGroup className="flex gap-6 flex-wrap justify-center">
                     {books &&
                         books.map((book, index) => {
@@ -126,7 +126,7 @@ export default function Publications() {
                     <div ref={observerRef} className="absolute bottom-0"></div>
                 </TransitionGroup>
                 {isLoading && (
-                    <div className="relative mt-5">
+                    <div className="w-6 h-6 relative">
                         <ContentLoader></ContentLoader>
                     </div>
                 )}

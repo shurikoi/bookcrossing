@@ -25,7 +25,7 @@ export default function UserMenu({ isMenuActive, setIsSettingsMenuActive, setMen
                         className="p-3 sm:pr-48 cursor-pointer duration-200 font-normal rounded-md hover:bg-[#F2F9F0]"
                         onClick={() => {
                             setMenuActive(false);
-                            setIsSettingsMenuActive((prevState) => !prevState);
+                            setIsSettingsMenuActive(false);
                         }}
                     >
                         Ustawienia

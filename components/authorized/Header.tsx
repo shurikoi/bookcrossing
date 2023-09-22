@@ -21,13 +21,13 @@ export default function Header() {
         <>
             <header
                 className="bg-black
-        flex items-center flex-col sm:flex-row py-4 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(/images/header.png)]"
+        flex items-center flex-col md:flex-row py-4 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(/images/header.png)]"
             >
-                <div className="flex items-center justify-between sm:mr-auto">
+                <div className="flex items-center justify-between md:mr-auto">
                     <div className="text-2xl text-white font-head">BookCrossing</div>
                 </div>
                 <div className="flex items-center gap-[30px]">
-                    <div className="hidden sm:flex sm:items-center sm:gap-[30px]">
+                    <div className="hidden md:flex md:items-center md:gap-[30px]">
                         <div className="p-2 bg-white rounded-full shadow-md shadow-black/30 cursor-pointer hover:-translate-y-0.5 duration-200">
                             <BellIcon></BellIcon>
                         </div>

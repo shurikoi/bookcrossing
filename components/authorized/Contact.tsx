@@ -35,7 +35,7 @@ export default function Contact({ messenger, setMessenger }: ContactProps) {
         <div className="relative select-none" ref={menuRef}>
             <div
                 className="flex hover:bg-green bg-white gap-2 items-center cursor-pointer"
-                onClick={() => setIsMenuActive((isActive) => !isActive)}
+                onClick={() => setIsMenuActive((prev) => !prev)}
             >
                 <div>{messengers[messenger].icon}</div>
                 <div>{messengers[messenger].name}</div>
