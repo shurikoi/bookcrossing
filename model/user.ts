@@ -1,4 +1,3 @@
-import { ObjectId } from "mongodb";
 import { Schema, models, model } from "mongoose";
 
 const user = new Schema(

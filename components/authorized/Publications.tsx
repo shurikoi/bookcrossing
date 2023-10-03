@@ -1,13 +1,13 @@
-import { createRef, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import BookMenu from "./BookMenu";
 import { messenger } from "./Contact";
 import ContentLoader from "../ui/ContentLoader";
 import Book from "../ui/Book";
 import PublicationMenu from "./PublicationMenu";
-import ModalMenu from "../ui/ModalMenu";
 import AddBookBtn from "../ui/AddBookBtn";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import FilterBar from "./FilterBar";
+import { useSearchParams } from "next/navigation";
 
 export type bookData = {
     title: string;
@@ -24,6 +24,8 @@ export type bookData = {
 const limit = 10;
 
 export default function Publications() {
+    const params = useSearchParams();
+
     const [isPublicationModalActive, setIsPublicationModalActive] = useState(false);
     const [isBookModalActive, setIsBookModalActive] = useState(false);
 
@@ -53,11 +55,20 @@ export default function Publications() {
         }
 
         async function getPublications() {
+            const categories = params.get("categories")?.split(",");
+            const languages = params.get("languages")?.split(",");
+            const states = params.get("states")?.split(",");
+
             const response = await fetch("/api/getPublications", {
                 method: "POST",
                 body: JSON.stringify({
                     limit,
                     page,
+                    filter: {
+                        categories,
+                        languages,
+                        states,
+                    },
                 }),
             });
 
@@ -109,20 +120,18 @@ export default function Publications() {
             <div className="px-28 flex flex-col gap-6 items-center">
                 <TransitionGroup className="flex gap-6 flex-wrap justify-center">
                     {books &&
-                        books.map((book, index) => {
-                            return (
-                                <CSSTransition key={index} classNames="item" timeout={500}>
-                                    <Book
-                                        key={index}
-                                        data={book}
-                                        handleClick={() => {
-                                            setCurrentBook(book);
-                                            setIsBookModalActive(true);
-                                        }}
-                                    />
-                                </CSSTransition>
-                            );
-                        })}
+                        books.map((book, index) => (
+                            <CSSTransition key={index} classNames="item" timeout={500}>
+                                <Book
+                                    key={index}
+                                    data={book}
+                                    handleClick={() => {
+                                        setCurrentBook(book);
+                                        setIsBookModalActive(true);
+                                    }}
+                                />
+                            </CSSTransition>
+                        ))}
                     <div ref={observerRef} className="absolute bottom-0"></div>
                 </TransitionGroup>
                 {isLoading && (

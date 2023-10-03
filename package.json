@@ -28,6 +28,6 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
-    "@types/react-transition-group": "^4.4.6"
+    "@types/react-transition-group": "^4.4.7"
   }
 }
