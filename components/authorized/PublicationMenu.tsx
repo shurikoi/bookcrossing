@@ -1,4 +1,4 @@
-import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, memo, useRef, useState } from "react";
 import Book from "../ui/Book";
 import TagIcon from "../ui/icons/TagIcon";
 import LinkIcon from "../ui/icons/LinkIcon";
@@ -7,13 +7,13 @@ import ProfileIcon from "../ui/icons/ProfileIcon";
 import ContentLoader from "../ui/ContentLoader";
 import WarningIcon from "../ui/icons/WarningIcon";
 import Contact, { messenger } from "./Contact";
-import { bookData } from "./Publications";
 import isPublicationDataValid from "@/lib/isPublicationDataValid";
 import { useUserData } from "../contexts/UserProviders";
 import SubmitIcon from "../ui/icons/SubmitIcon";
 import { useScreen } from "../contexts/ScreenProvider";
 import PreviewMenu from "./PreviewMenu";
 import ModalMenu from "../ui/ModalMenu";
+import { bookData } from "./Main";
 
 const categories = [
     "Powieść historyczna",
@@ -60,7 +60,7 @@ interface publicationMenuProps {
     setIsModalActive: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function PublicationMenu({ setBooks, isModalActive, setIsModalActive }: publicationMenuProps) {
+export default memo(function PublicationMenu({ setBooks, isModalActive, setIsModalActive }: publicationMenuProps) {
     const { user } = useUserData();
 
     const [author, setAuthor] = useState("");
@@ -236,7 +236,12 @@ export default function PublicationMenu({ setBooks, isModalActive, setIsModalAct
                                 <Contact messenger={messenger} setMessenger={setMessenger} />
                             </div>
                             <div className="flex flex-col gap-5">
-                                <Categories categories={categories} category={category} setCategory={setCategory} error={errors.category} />
+                                <Categories
+                                    categories={categories}
+                                    category={category}
+                                    setCategory={setCategory}
+                                    error={errors.category}
+                                />
                                 <input
                                     className={`placeholder:text-[#9A9A9A]`}
                                     type="text"
@@ -319,4 +324,4 @@ export default function PublicationMenu({ setBooks, isModalActive, setIsModalAct
             </div>
         </ModalMenu>
     );
-}
+});

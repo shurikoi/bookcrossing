@@ -1,11 +1,11 @@
 import AuthorizedHeader from "./Header";
-import Publications from "./Publications";
+import Main from "./Main";
 
 export default function StartPage() {
     return (
         <>
             <AuthorizedHeader />
-            <Publications />
+            <Main></Main>
         </>
     );
 }

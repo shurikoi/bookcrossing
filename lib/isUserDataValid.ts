@@ -43,7 +43,7 @@ export function validateUserData(userData: userDataProps) {
     if (password != undefined) errors.password = validatePassword(password);
 
     errors.hasErrors = Object.values(errors).some((value) => value.isValid == false);
-    console.log(errors, name, surname, password, email)
+
     return errors;
 }
 

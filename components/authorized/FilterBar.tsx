@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import FilterMenu from "./FilterMenu";
 
 export default function FilterBar() {

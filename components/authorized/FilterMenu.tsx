@@ -1,7 +1,7 @@
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, memo, useEffect, useRef, useState } from "react";
 import DropDownMenu from "../DropDownMenu";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
+import { useFilter } from "../contexts/FilterProvider";
 
 interface FilterMenuProps {
     isMenuActive: boolean;
@@ -25,45 +25,15 @@ const languages = ["Angielski", "Polski", "Ukraiński"];
 
 const bookStates = ["Nowa", "Jak nowa", "Bardzo dobry", "Dobry", "Przeciętny", "Zły"];
 
-export default function FilterMenu({ isMenuActive, setIsMenuActive }: FilterMenuProps) {
+export default memo(function FilterMenu({ isMenuActive, setIsMenuActive }: FilterMenuProps) {
     const menuRef = useRef<HTMLDivElement>(null);
 
-    const router = useRouter();
-    const params = useSearchParams();
+    const params = new URLSearchParams(window.location.search);
 
-    // const [choosenCategories, setChoosenCategories] = useState<string[]>([params.get("categories")]);
-    // const [choosenLanguages, setChoosenLanguages] = useState<string[]>([params.get("languages")]);
-    // const [choosenStates, setChoosenStates] = useState<string[]>([params.get("states")]);
-
-    const choosenCategories = params.get("categories") || "";
-    const choosenLanguages = params.get("languages") || "";
-    const choosenStates = params.get("states") || "";
-
-    function setLanguages(e: ChangeEvent) {
-        const newParams = new URLSearchParams(Array.from(params.entries()));
-        const languages = newParams.get("languages")?.split(",") || [];
-
-        if (languages.includes(e.target.id)) languages.splice(languages.indexOf(e.target.id), 1);
-        else languages.push(e.target.id);
-
-        newParams.set("languages", languages?.join(","));
-        if (languages.join().length == 0) newParams.delete("languages");
-        
-        router.push(`?${newParams}`, { scroll: false });
-    }
-
-    function setStates(e: ChangeEvent) {
-        const newParams = new URLSearchParams(Array.from(params.entries()));
-        const states = newParams.get("states")?.split(",") || [];
-
-        if (states.includes(e.target.id)) states.splice(states.indexOf(e.target.id), 1);
-        else states.push(e.target.id);
-
-        newParams.set("states", states?.join(","));
-        if (states.join().length == 0) newParams.delete("states");
-
-        router.push(`?${newParams}`, { scroll: false });
-    }
+    const filter = useFilter();
+    // const choosenCategories = params.get("categories");
+    // const choosenLanguages = params.get("languages");
+    // const choosenStates = params.get("states");
 
     function setCategories(e: ChangeEvent<HTMLInputElement>) {
         const newParams = new URLSearchParams(Array.from(params.entries()));
@@ -73,21 +43,54 @@ export default function FilterMenu({ isMenuActive, setIsMenuActive }: FilterMenu
         else categories.push(e.target.id);
 
         newParams.set("categories", categories.join(","));
+        filter.setChoosenCategories(() => {
+            if (categories.join(",").length == 0) return [];
+
+            return categories;
+        });
 
         if (categories.join().length == 0) newParams.delete("categories");
-        console.log(categories);
-        router.push(`?${newParams}`, { scroll: false });
+
+        history.pushState({}, "", newParams.size > 0 ? `/?${newParams}` : "/");
     }
 
-    useEffect(() => {
+    function setLanguages(e: ChangeEvent<HTMLInputElement>) {
         const newParams = new URLSearchParams(Array.from(params.entries()));
+        const languages = newParams.get("languages")?.split(",") || [];
 
-        if (choosenCategories) newParams.set("categories", choosenCategories);
-        if (choosenLanguages) newParams.set("languages", choosenLanguages);
-        if (choosenStates) newParams.set("states", choosenStates);
+        if (languages.includes(e.target.id)) languages.splice(languages.indexOf(e.target.id), 1);
+        else languages.push(e.target.id);
 
-        router.push(`/?${newParams}`);
-    }, [router, choosenCategories, choosenLanguages, choosenStates]);
+        newParams.set("languages", languages?.join(","));
+        filter.setChoosenLanguages(() => {
+            if (languages.join(",").length == 0) return [];
+
+            return languages;
+        });
+
+        if (languages.join().length == 0) newParams.delete("languages");
+
+        history.pushState({}, "", newParams.size > 0 ? `/?${newParams}` : "/");
+    }
+
+    function setStates(e: ChangeEvent<HTMLInputElement>) {
+        const newParams = new URLSearchParams(Array.from(params.entries()));
+        const states = newParams.get("states")?.split(",") || [];
+
+        if (states.includes(e.target.id)) states.splice(states.indexOf(e.target.id), 1);
+        else states.push(e.target.id);
+
+        newParams.set("states", states?.join(","));
+        filter.setChoosenStates(() => {
+            if (states.join(",").length == 0) return [];
+
+            return states;
+        });
+
+        if (states.join().length == 0) newParams.delete("states");
+
+        history.pushState({}, "", newParams.size > 0 ? `/?${newParams}` : "/");
+    }
 
     return (
         <div ref={menuRef}>
@@ -112,8 +115,7 @@ export default function FilterMenu({ isMenuActive, setIsMenuActive }: FilterMenu
                                 <input
                                     className="border-2 border-[#747474] bg-white w-[15px] h-[15px] rounded-sm appearance-none checked:bg-[#2D50AA] checked:border-[#2D50AA] duration-200 cursor-pointer"
                                     type="checkbox"
-                                    name=""
-                                    checked={choosenCategories?.includes(category)}
+                                    checked={filter.choosenCategories?.includes(category)}
                                     id={category}
                                     onChange={setCategories}
                                 />
@@ -136,8 +138,7 @@ export default function FilterMenu({ isMenuActive, setIsMenuActive }: FilterMenu
                                 <input
                                     className="border-2 border-[#747474] bg-white w-[15px] h-[15px] rounded-sm appearance-none checked:bg-[#2D50AA] checked:border-[#2D50AA] duration-200 cursor-pointer"
                                     type="checkbox"
-                                    name=""
-                                    checked={choosenLanguages?.includes(language)}
+                                    checked={filter.choosenLanguages?.includes(language)}
                                     id={language}
                                     onChange={setLanguages}
                                 />
@@ -160,8 +161,7 @@ export default function FilterMenu({ isMenuActive, setIsMenuActive }: FilterMenu
                                 <input
                                     className="border-2 border-[#747474] bg-white w-[15px] h-[15px] rounded-sm appearance-none checked:bg-[#2D50AA] checked:border-[#2D50AA] duration-200 cursor-pointer"
                                     type="checkbox"
-                                    name=""
-                                    checked={choosenStates?.includes(bookState)}
+                                    checked={filter.choosenStates?.includes(bookState)}
                                     id={bookState}
                                     onChange={setStates}
                                 />
@@ -175,4 +175,4 @@ export default function FilterMenu({ isMenuActive, setIsMenuActive }: FilterMenu
             </DropDownMenu>
         </div>
     );
-}
+});

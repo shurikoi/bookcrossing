@@ -1,7 +1,7 @@
 "use client";
 
 import { validateUserData } from "@/lib/isUserDataValid";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useMemo, useState } from "react";
 
 const UserContext = createContext<any>(null);
@@ -62,17 +62,21 @@ function UserProvider({ children }: { children: React.ReactNode }) {
                 body: JSON.stringify({ email: userEmail }),
             });
 
-            const user = await response.json();
+            try {
+                const user = await response.json();
 
-            if (user.isPasswordExist) setIsPasswordExist(true);
+                if (user.isPasswordExist) setIsPasswordExist(true);
 
-            setId(user.id);
-            setName(user.name);
-            setSurname(user.surname);
-            setEmail(user.email);
-            setPoints(user.points);
+                setId(user.id);
+                setName(user.name);
+                setSurname(user.surname);
+                setEmail(user.email);
+                setPoints(user.points);
 
-            setLoading(false);
+                setLoading(false);
+            } catch (error) {
+                signOut();
+            }
         }
 
         if (userEmail) fetchUser();

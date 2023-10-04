@@ -33,10 +33,10 @@ export async function POST(req: Request) {
 
     const query : query = {}
 
-    if (filter.categories) query.category = filter.categories
-    if (filter.languages) query.language = filter.languages
-    if (filter.states) query.state = filter.states
-
+    if (filter.categories && filter.categories.length > 0) query.category = filter.categories
+    if (filter.languages && filter.languages.length > 0) query.language = filter.languages
+    if (filter.states && filter.states.length > 0) query.state = filter.states
+    console.log(filter)
     await connection()
 
     const publications : book[] = await books.find(query).sort({date: "desc"}).skip(skip).limit(limit);

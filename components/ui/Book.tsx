@@ -1,24 +1,21 @@
 import { useState } from "react";
 import Loader from "./ContentLoader";
 import convertDate from "@/lib/convertDate";
-import { bookData } from "../authorized/Publications";
 import { memo } from "react";
+import { bookData } from "../authorized/Main";
 
 interface BookProps {
     data: bookData;
     handleClick?: () => void;
 }
 
-const Book = memo(({ data, handleClick}: BookProps) => {
+const Book = memo(({ data, handleClick }: BookProps) => {
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const [isImageLoading, setIsImageLoading] = useState(true);
-    const [isHovered, setIsHovered] = useState(false);
 
     return (
         <div
             className="relative flex flex-col justify-between p-5 w-60 h-72 bg-black rounded-2xl font-inter shadow-md shadow-black/50 cursor-pointer hover:-translate-y-1 will-change-transform duration-200 transition-transform flex-shrink-0 overflow-hidden"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
             onClick={handleClick}
         >
             <div className="text-[#CDCDCD] text-[17px] font-normal cursor-text w-fit">{convertDate(data.date)}</div>

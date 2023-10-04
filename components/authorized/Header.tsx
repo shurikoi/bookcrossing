@@ -1,12 +1,12 @@
 import BellIcon from "../ui/icons/BellIcon";
 import UserMenu from "./UserMenu";
-import { useState, useRef } from "react";
+import { useState, useRef, memo } from "react";
 import Image from "next/image";
 import SettingsMenu from "./SettingsMenu";
 import { useUserData } from "../contexts/UserProviders";
 import useClickOutside from "../hooks/useClickOutside";
 
-export default function Header() {
+export default memo(function Header() {
     const { user } = useUserData();
     const [isMenuActive, setIsMenuActive] = useState(false);
     const [isSettingsMenuActive, setIsSettingsMenuActive] = useState(false);
@@ -62,10 +62,7 @@ export default function Header() {
                     </div>
                 </div>
             </header>
-            <SettingsMenu
-                isMenuActive={isSettingsMenuActive}
-                setIsMenuActive={setIsSettingsMenuActive}
-            />
+            <SettingsMenu isMenuActive={isSettingsMenuActive} setIsMenuActive={setIsSettingsMenuActive} />
         </>
     );
-}
+});

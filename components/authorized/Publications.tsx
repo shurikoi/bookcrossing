@@ -1,59 +1,35 @@
-import { useEffect, useRef, useState } from "react";
-import BookMenu from "./BookMenu";
-import { messenger } from "./Contact";
 import ContentLoader from "../ui/ContentLoader";
 import Book from "../ui/Book";
-import PublicationMenu from "./PublicationMenu";
-import AddBookBtn from "../ui/AddBookBtn";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import FilterBar from "./FilterBar";
 import { useSearchParams } from "next/navigation";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { bookData } from "./Main";
+import { useFilter } from "../contexts/FilterProvider";
 
-export type bookData = {
-    title: string;
-    owner: string;
-    author: string;
-    description: string;
-    category: string;
-    image: string;
-    messenger: messenger;
-    messengerDescription: string;
-    date: string;
-};
+interface PublicationsProps {
+    setCurrentBook: Dispatch<SetStateAction<bookData>>;
+    setIsBookModalActive: Dispatch<SetStateAction<boolean>>;
+    setBooks: Dispatch<SetStateAction<bookData[]>>;
+    books: bookData[];
+}
 
 const limit = 10;
 
-export default function Publications() {
-    const params = useSearchParams();
-
-    const [isPublicationModalActive, setIsPublicationModalActive] = useState(false);
-    const [isBookModalActive, setIsBookModalActive] = useState(false);
+export default function Publications({ setCurrentBook, setIsBookModalActive, setBooks, books }: PublicationsProps) {
+    const filter = useFilter();
+    const params = new URLSearchParams(window.location.search);
 
     const [isLoading, setIsLoading] = useState(true);
-    const [books, setBooks] = useState<bookData[]>([]);
-
-    const [currentBook, setCurrentBook] = useState<bookData>({
-        title: "",
-        owner: "",
-        author: "",
-        description: "",
-        category: "",
-        messenger: "Telegram",
-        messengerDescription: "",
-        image: "",
-        date: "",
-    });
-
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(0);
 
     const observerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        setPage(0)
-        setHasMore(true)
-        setBooks([])
-    }, [params])
+        setPage(0);
+        setHasMore(true);
+        setBooks([]);
+    }, [filter.choosenCategories, filter.choosenLanguages, filter.choosenStates]);
 
     useEffect(() => {
         if (isLoading && hasMore) {
@@ -61,9 +37,13 @@ export default function Publications() {
         }
 
         async function getPublications() {
-            const categories = params.get("categories")?.split(",");
-            const languages = params.get("languages")?.split(",");
-            const states = params.get("states")?.split(",");
+            // const categories = params.get("categories")?.split(",");
+            // const languages = params.get("languages")?.split(",");
+            // const states = params.get("states")?.split(",");
+            console.log("zapros")
+            const categories = filter.choosenCategories;
+            const languages = filter.choosenLanguages;
+            const states = filter.choosenStates;
 
             const response = await fetch("/api/getPublications", {
                 method: "POST",
@@ -79,7 +59,7 @@ export default function Publications() {
             });
 
             const fetchedBooks: bookData[] = await response.json();
-
+console.log(fetchedBooks)
             setPage((prev) => prev + 1);
             setIsLoading(false);
 
@@ -89,7 +69,7 @@ export default function Publications() {
                 return;
             }
 
-            setBooks([...books, ...fetchedBooks]);
+            setBooks((books) => [...books, ...fetchedBooks]);
         }
     }, [isLoading, hasMore]);
 
@@ -112,54 +92,29 @@ export default function Publications() {
         };
     }, [observerRef, observerRef.current, hasMore, isLoading]);
 
-    function handleAddBookClick() {
-        setIsPublicationModalActive(true);
-    }
-
     return (
-        <div className="flex flex-col items-center gap-10 pt-10">
-            <div className="text-center text-[25px] font-normal px-6 max-w-[800px] box-content">
-                Wierzymy, że korzystanie z serwisu może dostarczyć wiele radości i wzbogacić Twoje doświadczenie
-                czytelnicze.
-            </div>
-            <FilterBar></FilterBar>
-            <div className="px-28 flex flex-col gap-6 items-center">
-                <TransitionGroup className="flex gap-6 flex-wrap justify-center">
-                    {books &&
-                        books.map((book, index) => (
-                            <CSSTransition key={index} classNames="item" timeout={500}>
-                                <Book
-                                    key={index}
-                                    data={book}
-                                    handleClick={() => {
-                                        setCurrentBook(book);
-                                        setIsBookModalActive(true);
-                                    }}
-                                />
-                            </CSSTransition>
-                        ))}
-                    <div ref={observerRef} className="absolute bottom-0"></div>
-                </TransitionGroup>
-                {isLoading && (
-                    <div className="w-6 h-6 relative">
-                        <ContentLoader></ContentLoader>
-                    </div>
-                )}
-            </div>
-
-            <AddBookBtn onClick={handleAddBookClick} />
-
-            <PublicationMenu
-                isModalActive={isPublicationModalActive}
-                setIsModalActive={setIsPublicationModalActive}
-                setBooks={setBooks}
-            />
-
-            <BookMenu
-                isBookModalActive={isBookModalActive}
-                setIsBookModalActive={setIsBookModalActive}
-                data={currentBook}
-            />
+        <div className="px-28 flex flex-col gap-6 items-center">
+            <TransitionGroup className="flex gap-6 flex-wrap justify-center">
+                {books &&
+                    books.map((book, index) => (
+                        <CSSTransition key={index} classNames="item" timeout={500}>
+                            <Book
+                                key={index}
+                                data={book}
+                                handleClick={() => {
+                                    setCurrentBook(book);
+                                    setIsBookModalActive(true);
+                                }}
+                            />
+                        </CSSTransition>
+                    ))}
+                <div ref={observerRef} className="absolute bottom-0"></div>
+            </TransitionGroup>
+            {isLoading && (
+                <div className="w-6 h-6 relative">
+                    <ContentLoader></ContentLoader>
+                </div>
+            )}
         </div>
     );
 }
