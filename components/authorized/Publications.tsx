@@ -50,6 +50,12 @@ export default function Publications() {
     const observerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        setPage(0)
+        setHasMore(true)
+        setBooks([])
+    }, [params])
+
+    useEffect(() => {
         if (isLoading && hasMore) {
             getPublications();
         }

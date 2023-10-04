@@ -1,7 +1,6 @@
 import { Dispatch, KeyboardEvent, SetStateAction, useState } from "react";
 import ShowPasswordBtn from "../ui/ShowPasswordBtn";
 import { currentState } from "./AuthForm";
-import { signIn } from "next-auth/react";
 import CloseBtn from "../ui/CloseBtn";
 import { errors, validateUserData } from "@/lib/isUserDataValid";
 import WarningIcon from "../ui/icons/WarningIcon";
@@ -17,13 +16,13 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
 
     const [errors, setErrors] = useState<errors>({
         name: {
-            isValid: false,
+            isValid: true,
         },
         surname: {
-            isValid: false,
+            isValid: true,
         },
         password: {
-            isValid: false,
+            isValid: true,
             errors: {
                 length: false,
                 number: false,
@@ -42,13 +41,13 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
 
         setErrors({
             name: {
-                isValid: false,
+                isValid: true,
             },
             surname: {
-                isValid: false,
+                isValid: true,
             },
             password: {
-                isValid: false,
+                isValid: true,
                 errors: {
                     length: false,
                     number: false,
@@ -57,11 +56,11 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
             hasErrors: false,
         });
 
-        const errors = validateUserData({ name, surname, password });
+        const dataValidation = validateUserData({ name, surname, password });
 
-        if (errors.hasErrors) {
+        if (dataValidation.hasErrors) {
             setTimeout(() => {
-                setErrors(errors);
+                setErrors(dataValidation);
                 setIsLoading(false);
             }, 250);
 
@@ -74,8 +73,8 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
         })
             .then((response) => response.json())
             .then((data) => {
-                if (!data.isExist)
-                    signIn("credentials", { authType: "signup", name, surname, email, password, redirect: false });
+                if (!data.isExist){}
+                    // signIn("credentials", { authType: "signup", name, surname, email, password, redirect: false });
             });
     }
 

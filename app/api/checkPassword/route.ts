@@ -6,10 +6,10 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
     await connection();
 
-    const data: { email: string; password: string } = await req.json();
+    const body: { email: string; password: string } = await req.json();
 
-    const email: string = data.email;
-    const password: string = await hashPassword(data.password);
+    const email: string = body.email;
+    const password: string = await hashPassword(body.password);
 
     const user = await users.findOne({ email, password });
 

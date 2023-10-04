@@ -37,13 +37,13 @@ export function validateUserData(userData: userDataProps) {
         hasErrors: false,
     };
 
-    if (name) errors.name = validateName(name);
-    if (surname) errors.surname = validateSurname(surname);
-    if (email) errors.email = validateEmail(email);
-    if (password) errors.password = validatePassword(password);
+    if (name != undefined) errors.name = validateName(name);
+    if (surname != undefined) errors.surname = validateSurname(surname);
+    if (email != undefined) errors.email = validateEmail(email);
+    if (password != undefined) errors.password = validatePassword(password);
 
     errors.hasErrors = Object.values(errors).some((value) => value.isValid == false);
-    console.log(errors)
+    console.log(errors, name, surname, password, email)
     return errors;
 }
 

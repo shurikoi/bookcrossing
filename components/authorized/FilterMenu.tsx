@@ -21,9 +21,9 @@ const categories = [
     "Biografia",
 ];
 
-const languages = ["Polski", "Ukraiński"];
+const languages = ["Angielski", "Polski", "Ukraiński"];
 
-const bookStates = ["Bardzo dobry", "Dobry"];
+const bookStates = ["Nowa", "Jak nowa", "Bardzo dobry", "Dobry", "Przeciętny", "Zły"];
 
 export default function FilterMenu({ isMenuActive, setIsMenuActive }: FilterMenuProps) {
     const menuRef = useRef<HTMLDivElement>(null);

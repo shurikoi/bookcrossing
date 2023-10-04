@@ -47,7 +47,6 @@ button:focus-visible {
 @media (min-width: 768px) {
   .fade-enter {
     transform: translate(10px);
-
     opacity: 0;
   }
 
@@ -58,13 +57,11 @@ button:focus-visible {
 
   .fade-exit {
     transform: translate(0%);
-
     opacity: 1;
   }
 
   .fade-exit-active {
     transform: translate(10px);
-
     opacity: 0;
   }
 }
@@ -92,7 +89,6 @@ button:focus-visible {
 
 .item-enter {
   transform: translate(10px);
-
   opacity: 0;
 }
 
@@ -103,13 +99,11 @@ button:focus-visible {
 
 .item-exit {
   transform: translate(0%);
-
   opacity: 1;
 }
 
 .item-exit-active {
   transform: translate(10px);
-
   opacity: 0;
 }
 

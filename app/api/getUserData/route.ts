@@ -3,13 +3,13 @@ import users from "@/model/user";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-    await connection()
-    
-    const body = (await req.json()) as { email: string };
-    
+    await connection();
+
+    const body: { email: string } = await req.json();
+
     const { email } = body;
 
     const { _id: id, name, surname, points, password } = await users.findOne({ email });
-    
+
     return NextResponse.json({ id, name, surname, email, points, isPasswordExist: !!password });
 }
