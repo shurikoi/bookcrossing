@@ -1,7 +1,6 @@
 import ContentLoader from "../ui/ContentLoader";
 import Book from "../ui/Book";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { useSearchParams } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { bookData } from "./Main";
 import { useFilter } from "../contexts/FilterProvider";
@@ -17,7 +16,6 @@ const limit = 10;
 
 export default function Publications({ setCurrentBook, setIsBookModalActive, setBooks, books }: PublicationsProps) {
     const filter = useFilter();
-    const params = new URLSearchParams(window.location.search);
 
     const [isLoading, setIsLoading] = useState(true);
     const [hasMore, setHasMore] = useState(true);
@@ -37,13 +35,9 @@ export default function Publications({ setCurrentBook, setIsBookModalActive, set
         }
 
         async function getPublications() {
-            // const categories = params.get("categories")?.split(",");
-            // const languages = params.get("languages")?.split(",");
-            // const states = params.get("states")?.split(",");
-            console.log("zapros")
-            const categories = filter.choosenCategories;
-            const languages = filter.choosenLanguages;
-            const states = filter.choosenStates;
+            const categories = filter.choosenCategories || [];
+            const languages = filter.choosenLanguages || [];
+            const states = filter.choosenStates || [];
 
             const response = await fetch("/api/getPublications", {
                 method: "POST",
@@ -59,7 +53,7 @@ export default function Publications({ setCurrentBook, setIsBookModalActive, set
             });
 
             const fetchedBooks: bookData[] = await response.json();
-console.log(fetchedBooks)
+
             setPage((prev) => prev + 1);
             setIsLoading(false);
 

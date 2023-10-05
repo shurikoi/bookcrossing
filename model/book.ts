@@ -10,6 +10,8 @@ const book = new Schema(
         description: String,
         messenger: String,
         messengerDescription: String,
+        language: String,
+        state: String,
         date: Date,
     },
     { versionKey: false }

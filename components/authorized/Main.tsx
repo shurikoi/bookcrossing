@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { useState } from "react";
 import BookMenu from "./BookMenu";
 import PublicationMenu from "./PublicationMenu";
 import AddBookBtn from "../ui/AddBookBtn";
@@ -21,7 +21,7 @@ export type bookData = {
 
 export default function Main() {
     const [isPublicationModalActive, setIsPublicationModalActive] = useState(false);
-    const [isBookModalActive, setIsBookModalActive] = useState(false);
+    const [isBookModalActive, setIsBookModalActive] = useState(true);
 
     const [books, setBooks] = useState<bookData[]>([]);
 
