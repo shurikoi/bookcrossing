@@ -21,7 +21,7 @@ export type bookData = {
 
 export default function Main() {
     const [isPublicationModalActive, setIsPublicationModalActive] = useState(false);
-    const [isBookModalActive, setIsBookModalActive] = useState(true);
+    const [isBookModalActive, setIsBookModalActive] = useState(false);
 
     const [books, setBooks] = useState<bookData[]>([]);
 

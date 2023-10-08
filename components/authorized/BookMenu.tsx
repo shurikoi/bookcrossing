@@ -8,6 +8,7 @@ import { Dispatch, SetStateAction } from "react";
 import { bookData } from "./Main";
 import LanguageIcon from "../ui/icons/LanguageIcon";
 import LeafIcon from "../ui/icons/LeafIcon";
+import { useUserData } from "../contexts/UserProviders";
 
 interface BookMenuProps {
     data: bookData;
@@ -66,18 +67,34 @@ interface BookMenuProps {
 // }
 
 export default function BookMenu({ data, isBookModalActive, setIsBookModalActive }: BookMenuProps) {
-    const { title, image, author, category, description, messengerDescription, messenger } = data;
+    const { title, image, author, owner, category, description, messengerDescription, messenger } = data;
+
+    const { user } = useUserData();
+
     return (
         <ModalMenu fullMode isModalActive={isBookModalActive} setIsModalActive={setIsBookModalActive}>
             <div className="flex md:w-[640px] lg:w-[800px] gap-10 md:p-6">
                 <div className="flex flex-col gap-2.5 shrink-0">
-                    <img src={image} alt="book" className="rounded-md w-[200px]"/>
-                    <div className="font-inter font-medium py-1.5 border-2 text-center border-[#2B78B1] text-[#2B78B1] rounded-lg cursor-pointer hover:text-white hover:bg-[#2B78B1] duration-300">
-                        Edytuj
-                    </div>
-                    <div className="font-inter font-medium py-1.5 text-center border-2 border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer hover:text-[#CD5E4F] hover:bg-white hover:border-[#CD5E4F] duration-300">
-                        Usuń
-                    </div>
+                    <img src={image} alt="book" className="rounded-md w-[200px]" />
+                    {owner == user?.id ? (
+                        <>
+                            <div className="font-inter font-medium py-1.5 border-2 text-center border-[#2B78B1] text-[#2B78B1] rounded-lg cursor-pointer hover:text-white hover:bg-[#2B78B1] duration-300">
+                                Edytuj
+                            </div>
+                            <div className="font-inter font-medium py-1.5 text-center border-2 border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer hover:text-[#CD5E4F] hover:bg-white hover:border-[#CD5E4F] duration-300">
+                                Usuń
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="font-inter font-medium py-1.5 border-2 text-center border-[#2B78B1] text-[#2B78B1] rounded-lg cursor-pointer hover:text-white hover:bg-[#2B78B1] duration-300">
+                                Pokaż kontakt
+                            </div>
+                            <div className="font-inter font-medium py-1.5 text-center border-2 border-transparent bg-[#4F98CD] text-white rounded-lg cursor-pointer hover:text-[#4F98CD] hover:bg-white hover:border-[#4F98CD] duration-300">
+                                Zarezerwuj książkę
+                            </div>
+                        </>
+                    )}
                 </div>
                 <div className="flex flex-col gap-8">
                     <div className="font-head font-normal text-[20px]">{title}</div>

@@ -62,7 +62,7 @@ export default function Publications({ setCurrentBook, setIsBookModalActive, set
                 setPage((prev) => prev - 1);
                 return;
             }
-
+            setCurrentBook(fetchedBooks[0]);
             setBooks((books) => [...books, ...fetchedBooks]);
         }
     }, [isLoading, hasMore]);
