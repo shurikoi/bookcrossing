@@ -26,7 +26,7 @@ export default function BookMenu({ data, isBookModalActive, setIsBookModalActive
     }
 
     useEffect(() => {
-        setIsContactVisible(false);
+        if (isBookModalActive) setIsContactVisible(false);
     }, [isBookModalActive]);
 
     const { user } = useUserData();
@@ -36,12 +36,12 @@ export default function BookMenu({ data, isBookModalActive, setIsBookModalActive
             <div className="flex md:w-[640px] lg:w-[800px] gap-10 md:p-6">
                 <div className="flex flex-col gap-2.5 shrink-0 w-[200px]">
                     <img src={image} alt="book" className="rounded-md " />
-                    {owner != user?.id ? (
+                    {owner == user?.id ? (
                         <>
-                            <div className="font-inter font-medium py-1.5 border-2 text-center border-[#2B78B1] text-[#2B78B1] rounded-lg cursor-pointer hover:text-white hover:bg-[#2B78B1] duration-300">
+                            <div className="font-inter font-medium py-2 border-2 text-center border-[#2B78B1] text-[#2B78B1] rounded-lg cursor-pointer hover:text-white hover:bg-[#2B78B1] duration-300">
                                 Edytuj
                             </div>
-                            <div className="font-inter font-medium py-1.5 text-center border-2 border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer hover:text-[#CD5E4F] hover:bg-white hover:border-[#CD5E4F] duration-300">
+                            <div className="font-inter font-medium py-2 text-center border-2 border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer hover:text-[#CD5E4F] hover:bg-white hover:border-[#CD5E4F] duration-300">
                                 Usuń
                             </div>
                         </>
@@ -88,7 +88,7 @@ export default function BookMenu({ data, isBookModalActive, setIsBookModalActive
                         </div>
                         <div className="flex flex-col gap-3">
                             <div className="flex gap-3 items-center">
-                                <ProfileIcon></ProfileIcon>
+                                <TagIcon></TagIcon>
                                 <div className="text-[#4E4E4E]">Kategoria</div>
                             </div>
                             <div className="py-2 px-3 w-fit bg-[#e9d04d7a] rounded-sm">{category}</div>

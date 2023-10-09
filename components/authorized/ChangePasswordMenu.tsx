@@ -13,8 +13,6 @@ export default function ChangePasswordMenu({ isActive, setIsActive }: ChangePass
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-
-    
     function handleSubmit(){
         fetch("/api/changePassword", {
             method: "POST",

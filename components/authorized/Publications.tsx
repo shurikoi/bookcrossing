@@ -121,10 +121,10 @@ export default function Publications({
 
     return (
         <div className="px-28 flex flex-col gap-6 items-center">
-            <TransitionGroup className="flex gap-6 flex-wrap justify-center">
+            <TransitionGroup className="flex gap-6 flex-wrap justify-center" exit={false}>
                 {books &&
                     books.map((book, index) => (
-                        <CSSTransition key={index} classNames="item" timeout={500}>
+                        <CSSTransition key={index} classNames="item" timeout={500} >
                             <Book
                                 key={index}
                                 data={book}

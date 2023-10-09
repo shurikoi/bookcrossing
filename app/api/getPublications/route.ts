@@ -40,7 +40,6 @@ export async function POST(req: Request) {
     const queryCount = await books.count(query);
     const count = await books.count({})
 
-    console.log(count)
     await connection();
 
     const publications: book[] = await books.find(query).sort({ date: "desc" }).skip(skip).limit(limit);
