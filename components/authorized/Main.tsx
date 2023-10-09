@@ -19,11 +19,28 @@ export type bookData = {
     date: string;
 };
 
+export interface bookQuery {
+    categories: string[];
+    languages: string[];
+    states: string[];
+}
+
 export default function Main() {
     const [isPublicationModalActive, setIsPublicationModalActive] = useState(false);
     const [isBookModalActive, setIsBookModalActive] = useState(false);
 
     const [books, setBooks] = useState<bookData[]>([]);
+
+    // const [query, setQuery] = useState<bookQuery>({
+    //     categories: [],
+    //     languages: [],
+    //     states: []
+    // });
+
+    const [booksCount, setBooksCount] = useState(0);
+    const [booksQueryCount, setBooksQueryCount] = useState(0);
+
+    const [isBooksLoading, setIsBooksLoading] = useState(true);
 
     const [currentBook, setCurrentBook] = useState<bookData>({
         title: "",
@@ -48,12 +65,20 @@ export default function Main() {
                 czytelnicze.
             </div>
             <FilterProvider>
-                <FilterBar></FilterBar>
+                <FilterBar
+                    isBooksLoading={isBooksLoading}
+                    booksCount={booksCount}
+                    booksQueryCount={booksQueryCount}
+                ></FilterBar>
                 <Publications
                     setCurrentBook={setCurrentBook}
                     setIsBookModalActive={setIsBookModalActive}
                     setBooks={setBooks}
                     books={books}
+                    setBooksQueryCount={setBooksQueryCount}
+                    setBooksCount={setBooksCount}
+                    setIsBooksLoading={setIsBooksLoading}
+                    isBooksLoading={isBooksLoading}
                 ></Publications>
             </FilterProvider>
 

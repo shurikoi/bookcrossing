@@ -38,7 +38,7 @@ export default function Contact({ messenger, setMessenger }: ContactProps) {
                 onClick={() => setIsMenuActive((prev) => !prev)}
             >
                 <div>{messengers[messenger].icon}</div>
-                <div>{messengers[messenger].name}</div>
+                <div>{messenger}</div>
             </div>
             <ContactMenu
                 isMenuActive={isMenuActive}

@@ -4,7 +4,7 @@ import Book from "../ui/Book";
 import ProfileIcon from "../ui/icons/ProfileIcon";
 import TagIcon from "../ui/icons/TagIcon";
 import ModalMenu from "../ui/ModalMenu";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { bookData } from "./Main";
 import LanguageIcon from "../ui/icons/LanguageIcon";
 import LeafIcon from "../ui/icons/LeafIcon";
@@ -16,67 +16,27 @@ interface BookMenuProps {
     setIsBookModalActive: Dispatch<SetStateAction<boolean>>;
 }
 
-// export default function BookMenu({ data, isBookModalActive, setIsBookModalActive }: BookMenuProps) {
-//     const { title, author, category, description, messengerDescription, messenger } = data;
-//     return (
-//         <ModalMenu fullMode isModalActive={isBookModalActive} setIsModalActive={setIsBookModalActive}>
-//             <div className="flex flex-col text-left mt-16 md:h-[500px] md:w-[640px] lg:w-[820px] sm:mt-0 gap-5 sm:p-6">
-//                 <div className="flex gap-16">
-//                     <div className="flex flex-col gap-10 w-full">
-//                         <div className="flex flex-col gap-5">
-//                             <div className="w-full font-head font-normal text-xl">{title}</div>
-//                             <div className="flex gap-12 font-extralight text-[14px]">
-//                                 <div className="text-left flex flex-col gap-5">
-//                                     <div className="flex gap-3 items-center">
-//                                         <TagIcon></TagIcon>
-//                                         <div>Kategoria</div>
-//                                     </div>
-//                                     <div className="flex gap-3 items-center">
-//                                         <ProfileIcon></ProfileIcon>
-//                                         <div>Autor</div>
-//                                     </div>
-//                                     <div className="flex gap-3 items-center">
-//                                         {messengers[messenger]?.icon}
-//                                         <div>{messengers[messenger]?.name}</div>
-//                                     </div>
-//                                 </div>
-//                                 <div className="text-left flex flex-col gap-5">
-//                                     <div className="flex gap-3 items-center">
-//                                         <div>{category}</div>
-//                                     </div>
-//                                     <div className="flex gap-3 items-center">
-//                                         <div>{author}</div>
-//                                     </div>
-//                                     <div className="flex gap-3 items-center">
-//                                         <div>{messengerDescription}</div>
-//                                     </div>
-//                                 </div>
-//                             </div>
-//                         </div>
-//                         <div className="font-inter text-sm resize-none w-full max-w-[500px] h-36 cursor-auto whitespace-pre-wrap break-words overflow-y-auto ">
-//                             {description}
-//                         </div>
-//                     </div>
-//                     <div className="hidden md:block">
-//                         <Book data={data} />
-//                     </div>
-//                 </div>
-//             </div>
-//         </ModalMenu>
-//     );
-// }
-
 export default function BookMenu({ data, isBookModalActive, setIsBookModalActive }: BookMenuProps) {
     const { title, image, author, owner, category, description, messengerDescription, messenger } = data;
+
+    const [isContactVisible, setIsContactVisible] = useState(false);
+
+    function handleContactClick() {
+        if (!isContactVisible) setIsContactVisible(true);
+    }
+
+    useEffect(() => {
+        setIsContactVisible(false);
+    }, [isBookModalActive]);
 
     const { user } = useUserData();
 
     return (
         <ModalMenu fullMode isModalActive={isBookModalActive} setIsModalActive={setIsBookModalActive}>
             <div className="flex md:w-[640px] lg:w-[800px] gap-10 md:p-6">
-                <div className="flex flex-col gap-2.5 shrink-0">
-                    <img src={image} alt="book" className="rounded-md w-[200px]" />
-                    {owner == user?.id ? (
+                <div className="flex flex-col gap-2.5 shrink-0 w-[200px]">
+                    <img src={image} alt="book" className="rounded-md " />
+                    {owner != user?.id ? (
                         <>
                             <div className="font-inter font-medium py-1.5 border-2 text-center border-[#2B78B1] text-[#2B78B1] rounded-lg cursor-pointer hover:text-white hover:bg-[#2B78B1] duration-300">
                                 Edytuj
@@ -87,10 +47,23 @@ export default function BookMenu({ data, isBookModalActive, setIsBookModalActive
                         </>
                     ) : (
                         <>
-                            <div className="font-inter font-medium py-1.5 border-2 text-center border-[#2B78B1] text-[#2B78B1] rounded-lg cursor-pointer hover:text-white hover:bg-[#2B78B1] duration-300">
-                                Pokaż kontakt
+                            <div
+                                className="font-inter font-medium py-2 px-2 border-2 hover:border-[3px] box-content text-center border-[#2B78B1] text-[#2B78B1] rounded-lg cursor-pointer duration-300"
+                                onClick={handleContactClick}
+                            >
+                                {isContactVisible ? (
+                                    <div
+                                        className="flex gap-2 items-center justify-center"
+                                        title={messenger + " : " + messengerDescription}
+                                    >
+                                        <div>{messengers[messenger].icon}</div>
+                                        <div className="text-ellipsis  overflow-hidden">{messengerDescription}</div>
+                                    </div>
+                                ) : (
+                                    "Pokaż kontakt"
+                                )}
                             </div>
-                            <div className="font-inter font-medium py-1.5 text-center border-2 border-transparent bg-[#4F98CD] text-white rounded-lg cursor-pointer hover:text-[#4F98CD] hover:bg-white hover:border-[#4F98CD] duration-300">
+                            <div className="font-inter font-medium py-2 text-center border-2 border-transparent bg-[#4F98CD] text-white rounded-lg cursor-pointer hover:text-[#4F98CD] hover:bg-white hover:border-[#4F98CD] duration-300">
                                 Zarezerwuj książkę
                             </div>
                         </>

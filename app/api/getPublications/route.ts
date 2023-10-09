@@ -8,38 +8,42 @@ interface book {
     author: string;
     description: string;
     date: string;
-};
+}
 
 interface body {
     page: number;
     limit: number;
     filter: {
-        categories: string[] | null,
-        languages: string[] | null,
-        states: string[] | null
-    }
-} 
+        categories: string[] | null;
+        languages: string[] | null;
+        states: string[] | null;
+    };
+}
 
 interface query {
-    category? : string[],
-    language?: string[],
-    state?: string[]
+    category?: string[];
+    language?: string[];
+    state?: string[];
 }
 
 export async function POST(req: Request) {
-    const { page, limit, filter } : body = await req.json()
+    const { page, limit, filter }: body = await req.json();
 
-    const skip = page * limit
+    const skip = page * limit;
 
-    const query : query = {}
+    const query: query = {};
 
-    if (filter.categories && filter.categories.length > 0) query.category = filter.categories
-    if (filter.languages && filter.languages.length > 0) query.language = filter.languages
-    if (filter.states && filter.states.length > 0) query.state = filter.states
-    console.log(filter)
-    await connection()
+    if (filter.categories && filter.categories.length > 0) query.category = filter.categories;
+    if (filter.languages && filter.languages.length > 0) query.language = filter.languages;
+    if (filter.states && filter.states.length > 0) query.state = filter.states;
 
-    const publications : book[] = await books.find(query).sort({date: "desc"}).skip(skip).limit(limit);
+    const queryCount = await books.count(query);
+    const count = await books.count({})
 
-    return NextResponse.json(publications);
+    console.log(count)
+    await connection();
+
+    const publications: book[] = await books.find(query).sort({ date: "desc" }).skip(skip).limit(limit);
+
+    return NextResponse.json({ publications, queryCount, count });
 }

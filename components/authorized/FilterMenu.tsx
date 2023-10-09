@@ -1,12 +1,6 @@
 import { ChangeEvent, Dispatch, SetStateAction, memo, useEffect, useRef, useState } from "react";
 import DropDownMenu from "../DropDownMenu";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useFilter } from "../contexts/FilterProvider";
-
-interface FilterMenuProps {
-    isMenuActive: boolean;
-    setIsMenuActive: Dispatch<SetStateAction<boolean>>;
-}
 
 const categories = [
     "Powieść historyczna",
@@ -24,6 +18,11 @@ const categories = [
 const languages = ["Angielski", "Polski", "Ukraiński"];
 
 const bookStates = ["Nowa", "Jak nowa", "Bardzo dobry", "Dobry", "Przeciętny", "Zły"];
+
+interface FilterMenuProps {
+    isMenuActive: boolean;
+    setIsMenuActive: Dispatch<SetStateAction<boolean>>;
+}
 
 export default memo(function FilterMenu({ isMenuActive, setIsMenuActive }: FilterMenuProps) {
     const menuRef = useRef<HTMLDivElement>(null);
