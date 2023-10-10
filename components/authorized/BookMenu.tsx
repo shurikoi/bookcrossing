@@ -38,17 +38,17 @@ export default function BookMenu({ data, isBookModalActive, setIsBookModalActive
                     <img src={image} alt="book" className="rounded-md " />
                     {owner == user?.id ? (
                         <>
-                            <div className="font-inter font-medium py-2 border-2 text-center border-[#2B78B1] text-[#2B78B1] rounded-lg cursor-pointer hover:text-white hover:bg-[#2B78B1] duration-300">
+                            <div className="font-inter font-medium py-2.5 border-2 active:scale-[0.99] will-change-transform text-center border-[#2B78B1] text-[#2B78B1] rounded-lg cursor-pointer hover:text-white hover:bg-[#2B78B1] duration-300 select-none">
                                 Edytuj
                             </div>
-                            <div className="font-inter font-medium py-2 text-center border-2 border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer hover:text-[#CD5E4F] hover:bg-white hover:border-[#CD5E4F] duration-300">
+                            <div className="font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer hover:text-[#CD5E4F] hover:bg-white hover:border-[#CD5E4F] duration-300 select-none">
                                 Usuń
                             </div>
                         </>
                     ) : (
                         <>
                             <div
-                                className="font-inter font-medium py-2 px-2 border-2 hover:border-[3px] box-content text-center border-[#2B78B1] text-[#2B78B1] rounded-lg cursor-pointer duration-300"
+                                className="font-inter font-medium py-2.5 px-2 border-2 active:scale-[0.99] will-change-transform text-center border-[#2B78B1] text-[#2B78B1] rounded-lg cursor-pointer duration-300"
                                 onClick={handleContactClick}
                             >
                                 {isContactVisible ? (
@@ -57,13 +57,13 @@ export default function BookMenu({ data, isBookModalActive, setIsBookModalActive
                                         title={messenger + " : " + messengerDescription}
                                     >
                                         <div>{messengers[messenger].icon}</div>
-                                        <div className="text-ellipsis  overflow-hidden">{messengerDescription}</div>
+                                        <div className="text-ellipsis overflow-hidden ">{messengerDescription}</div>
                                     </div>
                                 ) : (
                                     "Pokaż kontakt"
                                 )}
                             </div>
-                            <div className="font-inter font-medium py-2 text-center border-2 border-transparent bg-[#4F98CD] text-white rounded-lg cursor-pointer hover:text-[#4F98CD] hover:bg-white hover:border-[#4F98CD] duration-300">
+                            <div className="font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#4F98CD] text-white rounded-lg cursor-pointer hover:text-[#4F98CD] hover:bg-white hover:border-[#4F98CD] duration-300 select-none">
                                 Zarezerwuj książkę
                             </div>
                         </>
