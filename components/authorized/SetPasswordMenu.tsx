@@ -4,6 +4,7 @@ import SettingsInput from "../ui/SettingsInput";
 import PasswordIcon from "../ui/icons/PasswordIcon";
 import { validatePassword } from "@/lib/isUserDataValid";
 import { useUserData } from "../contexts/UserProviders";
+import ApplyChanges from "../ui/ApplyChanges";
 
 interface SetPasswordMenuProps {
     isActive: boolean;
@@ -18,7 +19,7 @@ export default function SetPasswordMenu({ isActive, setIsActive }: SetPasswordMe
 
     const { user } = useUserData();
 
-    function handleClick() {
+    function handleSubmit() {
         setIsLoading(true);
 
         if (!validatePassword(newPassword).isValid || newPassword != confirmPassword) {
@@ -54,14 +55,7 @@ export default function SetPasswordMenu({ isActive, setIsActive }: SetPasswordMe
                         <SettingsInput value={confirmPassword} setValue={setConfirmPassword} type="password" />
                     </div>
                 </div>
-                <div
-                    className={`${
-                        isLoading ? "text-gray-500" : "text-[#61C558]"
-                    } cursor-pointer duration-200 select-none`}
-                    onClick={handleClick}
-                >
-                    Potwierdź zmiany
-                </div>
+                <ApplyChanges onClick={handleSubmit} />
             </div>
         </ModalMenu>
     );
