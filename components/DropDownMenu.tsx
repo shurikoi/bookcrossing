@@ -1,7 +1,7 @@
 import { Dispatch, RefObject, SetStateAction, useRef } from "react";
 import useClickOutside from "./hooks/useClickOutside";
 
-interface DropDownMenuProps extends React.HTMLAttributes<HTMLDivElement>{
+interface DropDownMenuProps extends React.HTMLAttributes<HTMLDivElement> {
     isMenuActive: boolean;
     setIsMenuActive: Dispatch<SetStateAction<boolean>>;
     animation?: {
@@ -9,7 +9,8 @@ interface DropDownMenuProps extends React.HTMLAttributes<HTMLDivElement>{
         inactive: string;
     };
     children: React.ReactNode;
-    menuRef?: RefObject<HTMLDivElement>
+    menuRef?: RefObject<HTMLDivElement>;
+    elRef?: RefObject<HTMLDivElement>;
 }
 
 const defaultAnimation = {
@@ -23,7 +24,9 @@ export default function DropDownMenu({
     animation = defaultAnimation,
     menuRef,
     children,
-    ...props
+    className,
+    style,
+    elRef,
 }: DropDownMenuProps) {
     const ref = menuRef || useRef<HTMLDivElement>(null);
 
@@ -32,7 +35,11 @@ export default function DropDownMenu({
     });
 
     return (
-        <div ref={ref} className={`${isMenuActive ? animation.active : animation.inactive} z-10 duration-200 ${props.className}`}>
+        <div
+            ref={menuRef ? (elRef ? elRef : ref) : ref}
+            className={`${isMenuActive ? animation.active : animation.inactive} z-10 duration-200 ${className || ""}`}
+            style={style}
+        >
             {children}
         </div>
     );

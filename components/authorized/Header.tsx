@@ -19,10 +19,7 @@ export default memo(function Header() {
 
     return (
         <>
-            <header
-                className="bg-black
-        flex items-center flex-col md:flex-row py-4 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(/images/header.png)]"
-            >
+            <header className="bg-black z-10 flex items-center flex-col md:flex-row py-4 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(/images/header.png)]">
                 <div className="flex items-center justify-between md:mr-auto">
                     <div className="text-2xl text-white font-head">BookCrossing</div>
                 </div>

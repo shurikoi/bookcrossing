@@ -1,9 +1,9 @@
 import ModalMenu from "../ui/ModalMenu";
 import { Dispatch, SetStateAction } from "react";
-import { bookData } from "./Publications";
 import Book from "../ui/Book";
 import SubmitIcon from "../ui/icons/SubmitIcon";
 import ContentLoader from "../ui/ContentLoader";
+import { bookData } from "./Main";
 interface PreviewMenuProps {
     handleSubmit: () => void;
     isLoading: boolean;

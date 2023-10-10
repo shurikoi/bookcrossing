@@ -82,7 +82,7 @@ export default function Categories({ categories, setCategory, error, category }:
             <input
                 type="text"
                 placeholder="wybierz..."
-                className={`${error ? "placeholder:text-[#DD0000]" : ""}`}
+                className={`${error ? "placeholder:text-[#DD0000]" : ""} py-2 px-3 bg-[#4d9ee97a] rounded-sm border-b w-full`}
                 value={category}
                 onKeyDown={handleKeyDown}
                 onInput={(e) => setCategory((e.target as HTMLInputElement).value)}

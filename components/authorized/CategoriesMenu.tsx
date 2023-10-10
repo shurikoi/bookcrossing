@@ -23,7 +23,7 @@ export default function CategoriesMenu({
 }: CategoriesMenu) {
     return (
         <div
-            className="absolute left-0 bottom-[-16px] translate-y-[100%] shadow-lg rounded-lg flex flex-col bg-white duration-200 max-h-[203px] transition-opacity w-max overflow-auto"
+            className="absolute left-0 bottom-[-8px] translate-y-[100%] shadow-lg rounded-lg flex flex-col bg-white duration-200 max-h-[203px] transition-opacity w-max overflow-auto"
             ref={menuRef}
             style={menuActive ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }}
         >

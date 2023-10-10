@@ -5,7 +5,7 @@ export default function useClickOutside(ref: RefObject<HTMLElement>, callback: (
         function checkClickOutside(e: MouseEvent) {
             const target = e.target as HTMLElement;
 
-            if (!ref.current?.contains(target) ) callback();
+            if (!ref.current?.contains(target)) callback();
         }
 
         document.addEventListener("mouseup", checkClickOutside);
