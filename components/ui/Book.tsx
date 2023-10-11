@@ -15,7 +15,7 @@ const Book = memo(({ data, handleClick }: BookProps) => {
 
     return (
         <div
-            className="relative flex flex-col justify-between p-5 w-[200px] h-72 bg-black rounded-2xl font-inter shadow-md shadow-black/50 cursor-pointer hover:-translate-y-1 will-change-transform duration-200 transition-transform flex-shrink-0 overflow-hidden"
+            className="relative flex flex-col justify-between p-5 w-60 h-72 bg-black rounded-2xl font-inter shadow-md shadow-black/50 cursor-pointer hover:-translate-y-1 will-change-transform duration-200 transition-transform flex-shrink-0 overflow-hidden"
             onClick={handleClick}
         >
             <div className="text-[#CDCDCD] text-[17px] font-normal cursor-text w-fit">{convertDate(data.date)}</div>

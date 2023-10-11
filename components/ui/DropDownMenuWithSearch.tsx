@@ -1,5 +1,5 @@
 import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef, useState } from "react";
-import DropDownMenu from "../DropDownMenu";
+import DropDownMenu from "./DropDownMenu";
 
 interface DropDownMenuProps {
     items: string[];

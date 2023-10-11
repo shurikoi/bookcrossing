@@ -1,5 +1,5 @@
 import { Dispatch, RefObject, SetStateAction, useRef } from "react";
-import useClickOutside from "./hooks/useClickOutside";
+import useClickOutside from "../hooks/useClickOutside";
 
 interface DropDownMenuProps extends React.HTMLAttributes<HTMLDivElement> {
     isMenuActive: boolean;

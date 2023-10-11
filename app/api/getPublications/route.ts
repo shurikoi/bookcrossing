@@ -1,3 +1,4 @@
+import { sort } from "@/components/contexts/FilterProvider";
 import connection from "@/lib/connection";
 import books from "@/model/book";
 import { NextResponse } from "next/server";
@@ -14,9 +15,11 @@ interface body {
     page: number;
     limit: number;
     filter: {
-        categories: string[] | null;
-        languages: string[] | null;
-        states: string[] | null;
+        categories: string[];
+        languages: string[];
+        states: string[];
+        sort: sort
+        
     };
 }
 
@@ -24,6 +27,7 @@ interface query {
     category?: string[];
     language?: string[];
     state?: string[];
+    sort?: sort
 }
 
 export async function POST(req: Request) {
@@ -42,7 +46,7 @@ export async function POST(req: Request) {
 
     await connection();
 
-    const publications: book[] = await books.find(query).sort({ date: "desc" }).skip(skip).limit(limit);
+    const publications: book[] = await books.find(query).sort({ date: filter.sort }).skip(skip).limit(limit);
 
     return NextResponse.json({ publications, queryCount, count });
 }

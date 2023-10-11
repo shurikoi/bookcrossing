@@ -5,7 +5,7 @@ import AddBookBtn from "../ui/AddBookBtn";
 import FilterBar from "./FilterBar";
 import { messenger } from "./Contact";
 import Publications from "./Publications";
-import { FilterProvider } from "../contexts/FilterProvider";
+import { FilterProvider, sort } from "../contexts/FilterProvider";
 
 export type bookData = {
     title: string;
@@ -23,6 +23,7 @@ export interface bookQuery {
     categories: string[];
     languages: string[];
     states: string[];
+    sort: sort;
 }
 
 export default function Main() {

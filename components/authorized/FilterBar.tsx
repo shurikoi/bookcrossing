@@ -1,9 +1,9 @@
 import { useState } from "react";
 import FilterMenu from "./FilterMenu";
-
 import ContentLoader from "../ui/ContentLoader";
 import ResetIcon from "../ui/icons/ResetIcon";
 import { useFilter } from "../contexts/FilterProvider";
+import SortMenu from "./SortMenu";
 
 interface FilterBarProps {
     booksCount: number;
@@ -22,9 +22,6 @@ function bookConjugation(booksCount: number) {
 export default function FilterBar({ booksCount, booksQueryCount, isBooksLoading }: FilterBarProps) {
     const filter = useFilter();
 
-    const [isFilterMenuActive, setIsFilterMenuActive] = useState(false);
-    const [isSortMenuActive, setIsSortMenuActive] = useState(false);
-
     function resetFilter() {
         history.pushState({}, "", "/");
 
@@ -35,13 +32,13 @@ export default function FilterBar({ booksCount, booksQueryCount, isBooksLoading 
 
     return (
         <div className="px-4 text-center md:text-left relative flex items-center justify-center gap-14 w-full py-3 shadow-[0px_4px_48px_0px_rgba(147,233,94,0.25)]">
-            <FilterMenu isMenuActive={isFilterMenuActive} setIsMenuActive={setIsFilterMenuActive}></FilterMenu>
+            <FilterMenu></FilterMenu>
             <div className="py-4 px-10 bg-[#FFF3E1] rounded-[5px] ">
                 {isBooksLoading ? (
                     <div className="w-6 h-6 relative">
                         <ContentLoader />
                     </div>
-                ) : booksCount == booksQueryCount ? (
+                ) : JSON.stringify(Object.values(filter.query)) == JSON.stringify([[], [], [], "asc"]) ? (
                     "Wszyskie książki"
                 ) : (
                     <div className="flex gap-10">
@@ -58,7 +55,7 @@ export default function FilterBar({ booksCount, booksQueryCount, isBooksLoading 
                     </div>
                 )}
             </div>
-            <div>Sortuj według</div>
+            <SortMenu></SortMenu>
         </div>
     );
 }

@@ -1,6 +1,6 @@
 import { MouseEventHandler } from "react";
 import CrossIcon from "./icons/CrossIcon";
-import ArrowIcon from "./icons/ArrowIcon";
+import ArrowIcon from "./icons/ArrowLeftIcon";
 
 interface CloseBtnProps {
     onClick: MouseEventHandler;

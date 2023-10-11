@@ -1,6 +1,7 @@
 import { ChangeEvent, Dispatch, SetStateAction, memo, useEffect, useRef, useState } from "react";
-import DropDownMenu from "../DropDownMenu";
+import DropDownMenu from "../ui/DropDownMenu";
 import { useFilter } from "../contexts/FilterProvider";
+import ArrowDownIcon from "../ui/icons/ArrowDownIcon";
 
 const categories = [
     "Powieść historyczna",
@@ -19,13 +20,15 @@ const languages = ["Angielski", "Polski", "Ukraiński"];
 
 const bookStates = ["Nowa", "Jak nowa", "Bardzo dobry", "Dobry", "Przeciętny", "Zły"];
 
-interface FilterMenuProps {
-    isMenuActive: boolean;
-    setIsMenuActive: Dispatch<SetStateAction<boolean>>;
-}
+// interface FilterMenuProps {
+//     isMenuActive: boolean;
+//     setIsMenuActive: Dispatch<SetStateAction<boolean>>;
+// }
 
-export default memo(function FilterMenu({ isMenuActive, setIsMenuActive }: FilterMenuProps) {
+export default memo(function FilterMenu() {
     const menuRef = useRef<HTMLDivElement>(null);
+
+    const [isMenuActive, setIsMenuActive] = useState(false);
 
     const params = new URLSearchParams(window.location.search);
 
@@ -93,8 +96,12 @@ export default memo(function FilterMenu({ isMenuActive, setIsMenuActive }: Filte
 
     return (
         <div ref={menuRef}>
-            <div onClick={() => setIsMenuActive((prev) => !prev)} className="cursor-pointer select-none">
+            <div
+                onClick={() => setIsMenuActive((prev) => !prev)}
+                className="flex gap-3 items-center py-3 px-5 rounded-lg cursor-pointer select-none border-2 border-[#3F3A5A]"
+            >
                 Filtruj według
+                <ArrowDownIcon></ArrowDownIcon>
             </div>
             <DropDownMenu
                 isMenuActive={isMenuActive}

@@ -1,10 +1,10 @@
 import { MouseEventHandler } from "react";
 
-type arrowBtn = {
+interface arrowBtnProps {
     onClick?: MouseEventHandler;
 };
 
-export default function arrowBtn({ onClick }: arrowBtn) {
+export default function arrowBtn({ onClick }: arrowBtnProps) {
     return (
         <div className={`cursor-pointer rounded-full w-7 h-7 bg-[#95ED8E] duration-300`} onClick={onClick}>
             <div className={`relative w-full h-full`}>

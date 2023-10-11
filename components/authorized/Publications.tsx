@@ -41,7 +41,7 @@ export default function Publications({
         setPage(0);
         setHasMore(true);
         setBooks([]);
-    }, [filter.choosenCategories, filter.choosenLanguages, filter.choosenStates]);
+    }, [filter.query]);
 
     useEffect(() => {
         if (isBooksLoading && hasMore) {
@@ -53,7 +53,7 @@ export default function Publications({
             // const categories = filter.choosenCategories;
             // const languages = filter.choosenLanguages;
             // const states = filter.choosenStates;
-
+            console.log(filter.query)
             const response = await fetch("/api/getPublications", {
                 method: "POST",
                 body: JSON.stringify({

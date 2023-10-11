@@ -1,5 +1,5 @@
 import Image from "next/image";
-import ArrowBtn from "@/components/ui/ArrowBtn";
+import ArrowBtn from "@/components/ui/buttons/ArrowBtn";
 import { currentState } from "./AuthForm";
 import { Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import ContentLoader from "../ui/ContentLoader";

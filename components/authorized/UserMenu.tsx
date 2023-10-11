@@ -1,7 +1,7 @@
 import { signOut, useSession } from "next-auth/react";
 import { Dispatch, SetStateAction, RefObject } from "react";
 import { useUserData } from "../contexts/UserProviders";
-import DropDownMenu from "../DropDownMenu";
+import DropDownMenu from "../ui/DropDownMenu";
 interface UserMenuProps {
     isMenuActive: boolean;
     setIsSettingsMenuActive: Dispatch<SetStateAction<boolean>>;

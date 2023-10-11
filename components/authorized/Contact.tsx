@@ -4,7 +4,7 @@ import SnapchatIcon from "../ui/icons/SnapchatIcon";
 import MessengerIcon from "../ui/icons/MessengerIcon";
 import InstagramIcon from "../ui/icons/InstagramIcon";
 import useClickOutside from "../hooks/useClickOutside";
-import DropDownMenu from "../DropDownMenu";
+import DropDownMenu from "../ui/DropDownMenu";
 
 interface messengers {
     [key: string]: {

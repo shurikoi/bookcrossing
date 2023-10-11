@@ -9,7 +9,7 @@ import LeafIcon from "../ui/icons/LeafIcon";
 import { useUserData } from "../contexts/UserProviders";
 import Book from "../ui/Book";
 import CategoriesMenu from "./CategoriesMenu";
-import DropDownMenuWithSearch from "./DropDownMenuWithSearch";
+import DropDownMenuWithSearch from "../ui/DropDownMenuWithSearch";
 import Categories from "./Categories";
 import { useScreen } from "../contexts/ScreenProvider";
 import isPublicationDataValid from "@/lib/isPublicationDataValid";
@@ -62,15 +62,14 @@ interface publicationMenuProps {
 }
 
 export default function BookMenu({ setBooks, isModalActive, setIsModalActive }: publicationMenuProps) {
-    
     const { user } = useUserData();
     const { isSmallScreen } = useScreen();
-    
+
     const [isContactVisible, setIsContactVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isPreviewMenuActive, setIsPreviewMenuActive] = useState(false);
+
     const imageRef = useRef<HTMLInputElement>(null);
-    
 
     const [author, setAuthor] = useState("");
     const [title, setTitle] = useState("");
@@ -78,13 +77,13 @@ export default function BookMenu({ setBooks, isModalActive, setIsModalActive }: 
     const [category, setCategory] = useState("");
     const [language, setLanguage] = useState("");
     const [state, setState] = useState("");
+    const [messenger, setMessenger] = useState<messenger>("Telegram");
+    const [messengerDescription, setMessengerDescription] = useState("");
+
     const [image, setImage] = useState<image>({
         url: "",
         file: undefined,
     });
-
-    const [messenger, setMessenger] = useState<messenger>("Telegram");
-    const [messengerDescription, setMessengerDescription] = useState("");
 
     const bookData: bookData = {
         author,
@@ -198,10 +197,10 @@ export default function BookMenu({ setBooks, isModalActive, setIsModalActive }: 
                     </div>
                     <textarea
                         className="resize-none border border-black/25 p-2 text-[#4E4E4E] text-[15px] font-inter font-light"
-                        name=""
-                        id=""
+                        value={description}
+                        onChange={(e: ChangeEvent<HTMLTextAreaElement >) => setDescription(e.target.value)}
                     >
-                        123213123123
+                        
                     </textarea>
                 </div>
             </div>
