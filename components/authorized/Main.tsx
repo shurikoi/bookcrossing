@@ -20,9 +20,11 @@ export type bookData = {
 };
 
 export interface bookQuery {
-    categories: string[];
-    languages: string[];
-    states: string[];
+    filter: {
+        categories: string[];
+        languages: string[];
+        states: string[];
+    };
     sort: sort;
 }
 
@@ -62,8 +64,8 @@ export default function Main() {
     return (
         <div className="flex flex-col items-center pt-10 h-full ">
             <div className="text-center text-[25px] font-normal px-6 max-w-[800px] box-content">
-                Wierzymy, że korzystanie z&nbsp;serwisu może dostarczyć wiele radości i&nbsp;wzbogacić Twoje doświadczenie
-                czytelnicze.
+                Wierzymy, że korzystanie z&nbsp;serwisu może dostarczyć wiele radości i&nbsp;wzbogacić Twoje
+                doświadczenie czytelnicze.
             </div>
             <FilterProvider>
                 <FilterBar

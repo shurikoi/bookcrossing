@@ -50,16 +50,12 @@ export default function Publications({
         }
 
         async function getPublications() {
-            // const categories = filter.choosenCategories;
-            // const languages = filter.choosenLanguages;
-            // const states = filter.choosenStates;
-            console.log(filter.query)
             const response = await fetch("/api/get-publications", {
                 method: "POST",
                 body: JSON.stringify({
                     limit,
                     page,
-                    filter: filter.query,
+                    query: filter.query,
                 }),
             });
 
@@ -120,11 +116,11 @@ export default function Publications({
     }, [observerRef, observerRef.current, hasMore, isBooksLoading]);
 
     return (
-        <div className="px-28 py-10 flex flex-col gap-6 items-center w-full h-full bg-[#f8faff] ">
+        <div className="px-28 pt-10 flex flex-col gap-6 items-center w-full h-full bg-[#f8faff]">
             <TransitionGroup className="flex gap-6 flex-wrap justify-center" exit={false}>
                 {books &&
                     books.map((book, index) => (
-                        <CSSTransition key={index} classNames="item" timeout={500} >
+                        <CSSTransition key={index} classNames="item" timeout={500}>
 
                                 <Book
                                     key={index}

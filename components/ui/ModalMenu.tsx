@@ -38,12 +38,12 @@ const ModalMenu = memo(function ModalMenu({
                 </MobileModalMenu>
             ) : (
                 <div
-                    className={`${
-                        isModalActive ? "opacity-100 pointer-events-all" : "opacity-0 pointer-events-none"
-                    } fixed left-0 top-0 w-screen h-screen sm:flex items-center justify-center duration-300 transition-opacity z-10`}
+                    className={`fixed left-0 top-0 w-screen h-screen sm:flex items-center justify-center duration-300 transition-opacity ${
+                        isModalActive ? "opacity-100 pointer-events-all z-10" : "opacity-0 pointer-events-none -z-10"
+                    } `}
                 >
                     <div
-                        className={`absolute top-0 left-0 w-screen h-screen bg-black/40  duration-300 transition-opacity  `}
+                        className={`absolute top-0 left-0 w-screen h-screen bg-black/40  duration-300 transition-opacity`}
                     ></div>
                     <div
                         ref={menuRef}

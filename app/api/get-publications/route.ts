@@ -1,3 +1,4 @@
+import { bookQuery } from "@/components/authorized/Main";
 import { sort } from "@/components/contexts/FilterProvider";
 import connection from "@/lib/connection";
 import books from "@/model/book";
@@ -14,39 +15,39 @@ interface book {
 interface body {
     page: number;
     limit: number;
-    filter: {
-        categories: string[];
-        languages: string[];
-        states: string[];
-        sort: sort
-        
-    };
+    query: bookQuery;
 }
 
-interface query {
+// interface query {
+//     category?: string[];
+//     language?: string[];
+//     state?: string[];
+//     sort?: sort
+// }
+
+interface filter {
     category?: string[];
     language?: string[];
     state?: string[];
-    sort?: sort
 }
 
 export async function POST(req: Request) {
-    const { page, limit, filter }: body = await req.json();
+    const { page, limit, query }: body = await req.json();
 
     const skip = page * limit;
 
-    const query: query = {};
+    const filter: filter = {};
 
-    if (filter.categories && filter.categories.length > 0) query.category = filter.categories;
-    if (filter.languages && filter.languages.length > 0) query.language = filter.languages;
-    if (filter.states && filter.states.length > 0) query.state = filter.states;
+    if (query.filter.categories.length > 0) filter.category = query.filter.categories;
+    if (query.filter.languages.length > 0) filter.language = query.filter.languages;
+    if (query.filter.states.length > 0) filter.state = query.filter.states;
 
-    const queryCount = await books.count(query);
-    const count = await books.count({})
+    const queryCount = await books.count(filter);
+    const count = await books.count({});
 
     await connection();
 
-    const publications: book[] = await books.find(query).sort({ date: filter.sort }).skip(skip).limit(limit);
+    const publications: book[] = await books.find(filter).sort({ date: query.sort }).skip(skip).limit(limit);
 
     return NextResponse.json({ publications, queryCount, count });
 }
