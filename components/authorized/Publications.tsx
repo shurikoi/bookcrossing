@@ -116,7 +116,7 @@ export default function Publications({
     }, [observerRef, observerRef.current, hasMore, isBooksLoading]);
 
     return (
-        <div className="px-28 pt-10 flex flex-col gap-6 items-center w-full h-full bg-[#f8faff]">
+        <div className="px-28 pt-10 flex w-full flex-col gap-6 items-center bg-[#f8faff]">
             <TransitionGroup className="flex gap-6 flex-wrap justify-center" exit={false}>
                 {books &&
                     books.map((book, index) => (
