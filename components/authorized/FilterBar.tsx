@@ -28,10 +28,11 @@ export default function FilterBar({ booksCount, booksQueryCount, isBooksLoading 
         filter.setChoosenCategories([]);
         filter.setChoosenLanguages([]);
         filter.setChoosenStates([]);
+        filter.setChoosenSort("asc");
     }
 
     return (
-        <div className="px-4 text-center md:text-left relative flex items-center justify-center gap-14 w-full py-3 shadow-[0px_4px_48px_0px_rgba(147,233,94,0.25)]">
+        <div className="mt-12 px-4 text-center md:text-left relative flex items-center justify-center gap-14 w-full py-3 shadow-[0px_0px_10px_1px_rgba(0,0,0,.1)]">
             <FilterMenu></FilterMenu>
             <div className="py-4 px-10 bg-[#FFF3E1] rounded-[5px] ">
                 {isBooksLoading ? (
