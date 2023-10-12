@@ -60,9 +60,9 @@ export default function Main() {
     }
 
     return (
-        <div className="flex flex-col items-center gap-10 pt-10">
+        <div className="flex flex-col items-center pt-10 h-full ">
             <div className="text-center text-[25px] font-normal px-6 max-w-[800px] box-content">
-                Wierzymy, że korzystanie z serwisu może dostarczyć wiele radości i wzbogacić Twoje doświadczenie
+                Wierzymy, że korzystanie z&nbsp;serwisu może dostarczyć wiele radości i&nbsp;wzbogacić Twoje doświadczenie
                 czytelnicze.
             </div>
             <FilterProvider>

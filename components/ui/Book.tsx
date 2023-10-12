@@ -15,7 +15,7 @@ const Book = memo(({ data, handleClick }: BookProps) => {
 
     return (
         <div
-            className="relative flex flex-col justify-between p-5 w-60 h-72 bg-black rounded-2xl font-inter shadow-md shadow-black/50 cursor-pointer hover:-translate-y-1 will-change-transform duration-200 transition-transform flex-shrink-0 overflow-hidden"
+            className="relative flex flex-col rounded-lg justify-between p-5 w-60 h-72 bg-black font-inter shadow-[0px_0px_15px_1px_rgba(0,0,0,.5)] hover:scale-[1.03] hover:shadow-[0px_0px_30px_1px_rgba(0,0,0,.5)] cursor-pointer will-change-transform duration-200 flex-shrink-0 overflow-hidden"
             onClick={handleClick}
         >
             <div className="text-[#CDCDCD] text-[17px] font-normal cursor-text w-fit">{convertDate(data.date)}</div>
@@ -31,9 +31,8 @@ const Book = memo(({ data, handleClick }: BookProps) => {
                 </div>
             </div>
             <div
-                className={` ${
-                    isImageLoaded ? "bg-black/30" : "bg-black duration-0"
-                }  duration-200 absolute w-full h-full left-0 top-0 text-white flex items-center justify-center z-[-1]`}
+                className={` ${isImageLoaded ? "bg-black/30" : "bg-black duration-0"
+                    }  duration-200 absolute w-full h-full left-0 top-0 text-white flex items-center justify-center z-[-1]`}
             >
                 {!isImageLoaded && !isImageLoading && <>No Image</>}
             </div>

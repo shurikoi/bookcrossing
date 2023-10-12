@@ -120,19 +120,20 @@ export default function Publications({
     }, [observerRef, observerRef.current, hasMore, isBooksLoading]);
 
     return (
-        <div className="px-28 flex flex-col gap-6 items-center">
+        <div className="px-28 py-10 flex flex-col gap-6 items-center w-full h-full bg-[#f8faff] ">
             <TransitionGroup className="flex gap-6 flex-wrap justify-center" exit={false}>
                 {books &&
                     books.map((book, index) => (
                         <CSSTransition key={index} classNames="item" timeout={500} >
-                            <Book
-                                key={index}
-                                data={book}
-                                handleClick={() => {
-                                    setCurrentBook(book);
-                                    setIsBookModalActive(true);
-                                }}
-                            />
+
+                                <Book
+                                    key={index}
+                                    data={book}
+                                    handleClick={() => {
+                                        setCurrentBook(book);
+                                        setIsBookModalActive(true);
+                                    }}
+                                />
                         </CSSTransition>
                     ))}
                 <div ref={observerRef} className="absolute bottom-0"></div>
