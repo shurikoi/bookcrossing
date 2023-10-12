@@ -57,7 +57,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         async function fetchUser() {
-            const response = await fetch("/api/getUserData", {
+            const response = await fetch("/api/get-user-data", {
                 method: "post",
                 body: JSON.stringify({ email: userEmail }),
             });
@@ -84,7 +84,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
     useMemo(() => {
         if (!loading && userData.user && validateUserData({ name, surname, email }))
-            fetch("/api/changeUserData", { method: "post", body: JSON.stringify({ name, surname, email }) });
+            fetch("/api/change-user-data", { method: "post", body: JSON.stringify({ name, surname, email }) });
     }, [name, surname, email]);
 
     return (

@@ -4,6 +4,7 @@ import { currentState } from "./AuthForm";
 import CloseBtn from "../ui/CloseBtn";
 import { errors, validateUserData } from "@/lib/isUserDataValid";
 import WarningIcon from "../ui/icons/WarningIcon";
+import { signIn } from "next-auth/react";
 
 type SignInForm = {
     email: string;
@@ -67,14 +68,14 @@ export default function SignUpForm({ email, setCurrentState }: SignInForm) {
             return;
         }
 
-        fetch("/api/checkUser", {
+        fetch("/api/check-user", {
             method: "POST",
             body: JSON.stringify({ email }),
         })
             .then((response) => response.json())
             .then((data) => {
                 if (!data.isExist){}
-                    // signIn("credentials", { authType: "signup", name, surname, email, password, redirect: false });
+                    signIn("credentials", { authType: "signup", name, surname, email, password, redirect: false });
             });
     }
 

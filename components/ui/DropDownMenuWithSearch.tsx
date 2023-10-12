@@ -4,7 +4,7 @@ import DropDownMenu from "./DropDownMenu";
 interface DropDownMenuProps {
     items: string[];
     setItem: Dispatch<SetStateAction<string>>;
-    inputClassName?: React.HTMLAttributes<HTMLDivElement>["className"]
+    inputClassName?: React.HTMLAttributes<HTMLDivElement>["className"];
 }
 
 export default function DropDownMenuWithSearch({ items, setItem, inputClassName }: DropDownMenuProps) {
@@ -20,7 +20,11 @@ export default function DropDownMenuWithSearch({ items, setItem, inputClassName 
     useEffect(() => {
         setItem(value);
 
-        setFilteredItems(items.filter((item) => item.toLowerCase().includes(value.toLowerCase()) && value.toLowerCase() != item.toLowerCase()));
+        setFilteredItems(
+            items.filter(
+                (item) => item.toLowerCase().includes(value.toLowerCase()) && value.toLowerCase() != item.toLowerCase()
+            )
+        );
     }, [value]);
 
     useEffect(() => {
@@ -74,15 +78,15 @@ export default function DropDownMenuWithSearch({ items, setItem, inputClassName 
     return (
         <div ref={menuRef} className="relative">
             {/* <div className="relative"> */}
-                <input
-                    className={inputClassName ? inputClassName : "py-2 px-3 bg-[#4d9ee97a] rounded-sm w-full"}
-                    type="text"
-                    value={value}
-                    onFocus={() => filteredItems.length != 0 && setIsMenuActive(true)}
-                    onKeyDown={handleKeyDown}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
-                />
-                {/* {value.length > 0 && (
+            <input
+                className={inputClassName ? inputClassName : "py-2 px-3 bg-[#4d9ee97a] rounded-sm w-full"}
+                type="text"
+                value={value}
+                onFocus={() => filteredItems.length != 0 && setIsMenuActive(true)}
+                onKeyDown={handleKeyDown}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
+            />
+            {/* {value.length > 0 && (
                     <div
                         className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
                         onClick={() => setValue("")}
@@ -100,6 +104,7 @@ export default function DropDownMenuWithSearch({ items, setItem, inputClassName 
             >
                 {filteredItems.map((item, index) => (
                     <div
+                        key={item}
                         className={`duration-300 cursor-pointer py-0.5 ${
                             index == selectedItemIndex ? "bg-[#dcf5d5]" : null
                         }`}

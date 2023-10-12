@@ -25,7 +25,7 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
 
         setIsPasswordValid(true);
 
-        fetch("/api/checkPassword", {
+        fetch("/api/check-password", {
             method: "POST",
             body: JSON.stringify({ email, password }),
         })

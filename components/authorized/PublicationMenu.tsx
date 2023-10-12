@@ -370,7 +370,7 @@ export default function BookMenu({ setBooks, isModalActive, setIsModalActive }: 
 //         form.append("messenger", messenger);
 //         form.append("messengerDescription", messengerDescription);
 
-//         fetch("/api/createPublication", {
+//         fetch("/api/create-publication", {
 //             method: "POST",
 //             body: form,
 //         })

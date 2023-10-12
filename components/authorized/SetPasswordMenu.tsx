@@ -27,7 +27,7 @@ export default function SetPasswordMenu({ isActive, setIsActive }: SetPasswordMe
             return;
         }
 
-        fetch("/api/setPassword", {
+        fetch("/api/set-password", {
             method: "POST",
             body: JSON.stringify({ newPassword }),
         })

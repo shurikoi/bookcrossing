@@ -25,7 +25,7 @@ export default function DefaultForm({ setEmail, setCurrentState, email, formActi
         if (validateEmail(email).isValid) {
             setIsEmailValid(true);
 
-            const response = await fetch("/api/checkUser", {
+            const response = await fetch("/api/check-user", {
                 method: "POST",
                 body: JSON.stringify({ email }),
             });

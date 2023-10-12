@@ -54,7 +54,7 @@ export default function Publications({
             // const languages = filter.choosenLanguages;
             // const states = filter.choosenStates;
             console.log(filter.query)
-            const response = await fetch("/api/getPublications", {
+            const response = await fetch("/api/get-publications", {
                 method: "POST",
                 body: JSON.stringify({
                     limit,
