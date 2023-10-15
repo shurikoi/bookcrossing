@@ -23,9 +23,9 @@ export default function FilterBar({ booksCount, booksQueryCount, isBooksLoading 
     const filter = useFilter();
 
     function resetFilter() {
-const params = new URLSearchParams(window.location.search);
+        const params = new URLSearchParams(window.location.search);
 
-        const sort = params.get("sort")
+        const sort = params.get("sort");
 
         history.pushState({}, "", sort ? `/?sort=${sort}` : "/");
 
@@ -42,7 +42,7 @@ const params = new URLSearchParams(window.location.search);
                     <div className="w-6 h-6 relative">
                         <ContentLoader />
                     </div>
-                ) : Object.values(filter.query.filter).every(item => item.length == 0) ? (
+                ) : Object.values(filter.query.filter).every((item) => item.length == 0) ? (
                     "Wszyskie książki"
                 ) : (
                     <div className="flex gap-10">

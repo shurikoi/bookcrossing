@@ -33,9 +33,6 @@ export default memo(function FilterMenu() {
     const params = new URLSearchParams(window.location.search);
 
     const filter = useFilter();
-    // const choosenCategories = params.get("categories");
-    // const choosenLanguages = params.get("languages");
-    // const choosenStates = params.get("states");
 
     function setCategories(e: ChangeEvent<HTMLInputElement>) {
         const newParams = new URLSearchParams(Array.from(params.entries()));
@@ -98,7 +95,7 @@ export default memo(function FilterMenu() {
         <div ref={menuRef}>
             <div
                 onClick={() => setIsMenuActive((prev) => !prev)}
-                className="flex gap-3 items-center py-3 px-5 rounded-lg cursor-pointer select-none border-2 border-[#3F3A5A]"
+                className="flex gap-16 items-center py-3 px-7 rounded-lg cursor-pointer select-none border-2 border-[#3F3A5A]"
             >
                 Filtruj według
                 <ArrowDownIcon></ArrowDownIcon>
