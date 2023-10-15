@@ -10,19 +10,21 @@ export default function SortMenu() {
 
     const menuRef = useRef<HTMLDivElement>(null);
 
-    const params = new URLSearchParams(window.location.search)
+    const params = new URLSearchParams(window.location.search);
 
     function setSort(e: MouseEvent<HTMLDivElement>) {
-        const sort = e.currentTarget.dataset.sort as sort;
+        const sort = e.currentTarget.dataset.sort;
 
-        const newParams = new URLSearchParams(Array.from(params.entries()));
+        if (sort == "asc" || sort == "desc") {
+            const newParams = new URLSearchParams(Array.from(params.entries()));
 
-        filter.setChoosenSort(sort);
-        newParams.set("sort", sort);
-        
-        setIsMenuActive(false);
-        
-        history.pushState({}, "", `/?${newParams}`);
+            filter.setChoosenSort(sort);
+            newParams.set("sort", sort);
+
+            setIsMenuActive(false);
+
+            history.pushState({}, "", `/?${newParams}`);
+        }
     }
 
     return (
@@ -42,7 +44,7 @@ export default function SortMenu() {
             >
                 <div
                     className={`hover:bg-[#F0F1F9] p-2.5 duration-300 rounded-md cursor-pointer ${
-                        filter.choosenSort == "desc" ? "bg-[#F0F1F9]" : null
+                        filter.choosenSort == "desc" ? "bg-[#F0F1F9]" : ""
                     }`}
                     data-sort="desc"
                     onClick={setSort}
@@ -51,7 +53,7 @@ export default function SortMenu() {
                 </div>
                 <div
                     className={`hover:bg-[#F0F1F9] p-2.5 duration-300 rounded-md cursor-pointer ${
-                        filter.choosenSort == "asc" ? "bg-[#F0F1F9]" : null
+                        filter.choosenSort == "asc" ? "bg-[#F0F1F9]" : ""
                     }`}
                     data-sort="asc"
                     onClick={setSort}

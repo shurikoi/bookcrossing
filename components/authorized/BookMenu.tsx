@@ -12,12 +12,6 @@ import { useUserData } from "../contexts/UserProviders";
 import { useBook } from "../contexts/BookProvider";
 import ContentLoader from "../ui/ContentLoader";
 
-// interface BookMenuProps {
-//     // data: bookData;
-//     isModalActive: boolean;
-//     setIsModalActive: Dispatch<SetStateAction<boolean>>;
-// }
-
 export default function BookMenu() {
     const { user } = useUserData();
     const { book, bookId, isLoading, setBookId } = useBook();

@@ -4,13 +4,6 @@ import convertDate from "@/lib/convertDate";
 import { memo } from "react";
 import { publication } from "../authorized/Main";
 
-// interface bookData {
-//     author: string;
-//     title: string;
-//     image: string;
-//     date: string;
-// }
-
 interface BookProps {
     data: publication;
     handleClick?: () => void;
@@ -57,19 +50,23 @@ const Book = memo(({ data, handleClick }: BookProps) => {
                     {!isImageLoaded && !isImageLoading && "No Image"}
                 </div>
             </div>
-            <img
-                src={data.image || ""}
-                alt=""
-                className={`object-cover w-full h-full absolute top-0 left-0 -z-10`}
-                onLoad={() => {
-                    setIsImageLoaded(true);
-                    setIsImageLoading(false);
-                }}
-                onError={() => {
-                    setIsImageLoaded(false);
-                    setIsImageLoading(false);
-                }}
-            />
+            {isImageLoaded || !isImageLoaded && isImageLoading ? (
+                <img
+                    src={data.image || ""}
+                    alt=""
+                    className={`object-cover w-full h-full absolute top-0 left-0 -z-10`}
+                    onLoad={() => {
+                        setIsImageLoaded(true);
+                        setIsImageLoading(false);
+                    }}
+                    onError={() => {
+                        setIsImageLoaded(false);
+                        setIsImageLoading(false);
+                    }}
+                />
+            ) : (
+                <div className="w-full h-full bg-black"></div>
+            )}
             {isImageLoading && (
                 <div className="absolute flex justify-center items-center w-full h-full top-0 left-0">
                     <Loader></Loader>

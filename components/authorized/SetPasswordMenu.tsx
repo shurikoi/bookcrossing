@@ -34,7 +34,7 @@ export default function SetPasswordMenu({ isActive, setIsActive }: SetPasswordMe
             .then((response) => response.json())
             .then(() => user?.setIsPasswordExist(true));
     }
-    // px-20 pt-12
+    
     return (
         <ModalMenu isModalActive={isActive} setIsModalActive={setIsActive}>
             <div className="flex flex-col items-center text-center gap-5 py-8 px-16">

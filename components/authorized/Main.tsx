@@ -28,13 +28,6 @@ export interface publication {
     image: string;
 }
 
-// export interface bookData {
-//     id: string;
-//     date: string;
-//     author: string;
-//     title: string;
-// }
-
 export interface bookQuery {
     filter: {
         category: string[];
@@ -46,32 +39,13 @@ export interface bookQuery {
 
 export default function Main() {
     const [isPublicationModalActive, setIsPublicationModalActive] = useState(false);
-    // const [isBookModalActive, setIsBookModalActive] = useState(false);
 
     const [books, setBooks] = useState<publication[]>([]);
-
-    // const [query, setQuery] = useState<bookQuery>({
-    //     categories: [],
-    //     languages: [],
-    //     states: []
-    // });
 
     const [booksCount, setBooksCount] = useState(0);
     const [booksQueryCount, setBooksQueryCount] = useState(0);
 
     const [isBooksLoading, setIsBooksLoading] = useState(true);
-
-    // const [currentBook, setCurrentBook] = useState<bookData>({
-    //     title: "",
-    //     owner: "",
-    //     author: "",
-    //     description: "",
-    //     category: "",
-    //     messenger: "Telegram",
-    //     messengerDescription: "",
-    //     image: "",
-    //     date: "",
-    // });
 
     function handleAddBookClick() {
         setIsPublicationModalActive(true);
@@ -86,12 +60,13 @@ export default function Main() {
             <BookProvider>
                 <FilterProvider>
                     <FilterBar
+                        setIsBooksLoading={setIsBooksLoading}
                         isBooksLoading={isBooksLoading}
                         booksCount={booksCount}
                         booksQueryCount={booksQueryCount}
                     ></FilterBar>
+
                     <Publications
-                        // setIsBookModalActive={setIsBookModalActive}
                         setBooks={setBooks}
                         books={books}
                         setBooksQueryCount={setBooksQueryCount}
@@ -100,7 +75,8 @@ export default function Main() {
                         isBooksLoading={isBooksLoading}
                     ></Publications>
                 </FilterProvider>
-                <BookMenu/>
+
+                <BookMenu />
             </BookProvider>
 
             <PublicationMenu

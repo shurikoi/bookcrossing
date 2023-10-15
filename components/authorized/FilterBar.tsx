@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useLayoutEffect } from "react";
 import FilterMenu from "./FilterMenu";
 import ContentLoader from "../ui/ContentLoader";
 import ResetIcon from "../ui/icons/ResetIcon";
@@ -9,6 +9,7 @@ interface FilterBarProps {
     booksCount: number;
     booksQueryCount: number;
     isBooksLoading: boolean;
+    setIsBooksLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 function bookConjugation(booksCount: number) {
@@ -19,10 +20,15 @@ function bookConjugation(booksCount: number) {
     else if (lastDigit == 0 || lastDigit >= 5) return "książek";
 }
 
-export default function FilterBar({ booksCount, booksQueryCount, isBooksLoading }: FilterBarProps) {
+export default function FilterBar({ booksCount, booksQueryCount, isBooksLoading, setIsBooksLoading }: FilterBarProps) {
     const filter = useFilter();
 
+    useLayoutEffect(() => {
+        setIsBooksLoading(true)
+    }, [filter.query])
+
     function resetFilter() {
+
         const params = new URLSearchParams(window.location.search);
 
         const sort = params.get("sort");

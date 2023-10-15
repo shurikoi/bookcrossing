@@ -7,8 +7,6 @@ import { useFilter } from "../contexts/FilterProvider";
 import { useBook } from "../contexts/BookProvider";
 
 interface PublicationsProps {
-    // setCurrentBook: Dispatch<SetStateAction<bookData>>;
-    // setIsBookModalActive: Dispatch<SetStateAction<boolean>>;
     setBooks: Dispatch<SetStateAction<publication[]>>;
     setBooksCount: Dispatch<SetStateAction<number>>;
     setBooksQueryCount: Dispatch<SetStateAction<number>>;
@@ -26,8 +24,6 @@ interface fetchData {
 const limit = 10;
 
 export default function Publications({
-    // setCurrentBook,
-    // setIsBookModalActive,
     setBooks,
     books,
     setBooksCount,
@@ -80,24 +76,10 @@ export default function Publications({
                 setPage((prev) => prev - 1);
             }
 
-            // setCurrentBook(
-            //     fetchedBooks[0] || {
-            //         title: "",
-            //         owner: "",
-            //         author: "",
-            //         description: "",
-            //         category: "",
-            //         messenger: "Telegram",
-            //         messengerDescription: "",
-            //         image: "",
-            //         date: "",
-            //     }
-            // );
-            console.log(fetchedBooks[0].id)
             setBooks((books) => [...books, ...fetchedBooks]);
 
             setBooksCount(data.count);
-            setBooksQueryCount(data.queryCount);
+            setBooksQueryCount(fetchedBooks.length);
         }
     }, [isBooksLoading, hasMore, filter.query]);
 

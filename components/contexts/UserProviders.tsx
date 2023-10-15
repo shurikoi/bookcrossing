@@ -51,8 +51,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
         },
     };
 
-    // const [data, setData] = useState<data>({ loading: true });
-
     const userEmail = session?.user.email;
 
     useEffect(() => {

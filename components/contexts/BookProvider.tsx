@@ -44,7 +44,6 @@ function BookProvider({ children }: { children: React.ReactNode }) {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        console.log(bookId);
         const params = new URLSearchParams(window.location.search);
 
         params.set("book", bookId);
@@ -60,11 +59,7 @@ function BookProvider({ children }: { children: React.ReactNode }) {
 
             const response = await fetch("/api/get-book", {
                 method: "POST",
-                body: JSON.stringify({ id: bookId }),
-                cache: "force-cache",
-                next: {
-                    revalidate: 600,
-                },
+                body: JSON.stringify({ id: bookId })
             });
 
             const book = await response.json();

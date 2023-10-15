@@ -23,10 +23,6 @@ interface filter {
     state?: string[];
 }
 
-// interface filter {
-//     [key : string] : string[]
-// }
-
 export async function POST(req: Request) {
     const { page, limit, query }: body = await req.json();
 
@@ -34,17 +30,12 @@ export async function POST(req: Request) {
 
     const filter: filter = {};
 
-    // Object.entries(query.filter).forEach(([key, value]) => {
-    //     if (value.length != 0) filter[key] = value
-    // })
-
     if (query.filter.category.length > 0) filter.category = query.filter.category;
     if (query.filter.language.length > 0) filter.language = query.filter.language;
     if (query.filter.state.length > 0) filter.state = query.filter.state;
 
     await connection();
 
-    const queryCount = await books.count(filter);
     const count = await books.count({});
 
     const publications: book[] = await books
@@ -53,5 +44,5 @@ export async function POST(req: Request) {
         .skip(skip)
         .limit(limit);
 
-    return NextResponse.json({ publications, queryCount, count });
+    return NextResponse.json({ publications, count });
 }

@@ -20,11 +20,6 @@ const languages = ["Angielski", "Polski", "Ukraiński"];
 
 const bookStates = ["Nowa", "Jak nowa", "Bardzo dobry", "Dobry", "Przeciętny", "Zły"];
 
-// interface FilterMenuProps {
-//     isMenuActive: boolean;
-//     setIsMenuActive: Dispatch<SetStateAction<boolean>>;
-// }
-
 export default memo(function FilterMenu() {
     const menuRef = useRef<HTMLDivElement>(null);
 

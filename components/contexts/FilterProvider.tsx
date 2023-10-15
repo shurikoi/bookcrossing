@@ -57,13 +57,6 @@ function FilterProvider({ children }: { children: React.ReactNode }) {
         sort: choosenSort,
     });
 
-    // useEffect(() => {
-    //     // const sort = params.get("sort");
-
-    //     // if (!sort || !["asc", "desc"].includes(sort)) setChoosenSort("asc");
-    //     // else setChoosenSort(params.get("sort") as sort);
-    // }, [choosenSort]);
-
     useEffect(() => {
         setQuery({
             filter: {
