@@ -6,8 +6,9 @@ import FilterBar from "./FilterBar";
 import { messenger } from "./Contact";
 import Publications from "./Publications";
 import { FilterProvider, sort } from "../contexts/FilterProvider";
+import { BookProvider } from "../contexts/BookProvider";
 
-export type bookData = {
+export interface bookData {
     title: string;
     owner: string;
     author: string;
@@ -17,22 +18,37 @@ export type bookData = {
     messenger: messenger;
     messengerDescription: string;
     date: string;
-};
+}
+
+export interface publication {
+    id?: string;
+    date: string;
+    author: string;
+    title: string;
+    image: string;
+}
+
+// export interface bookData {
+//     id: string;
+//     date: string;
+//     author: string;
+//     title: string;
+// }
 
 export interface bookQuery {
     filter: {
-        categories: string[];
-        languages: string[];
-        states: string[];
+        category: string[];
+        language: string[];
+        state: string[];
     };
     sort: sort;
 }
 
 export default function Main() {
     const [isPublicationModalActive, setIsPublicationModalActive] = useState(false);
-    const [isBookModalActive, setIsBookModalActive] = useState(false);
+    // const [isBookModalActive, setIsBookModalActive] = useState(false);
 
-    const [books, setBooks] = useState<bookData[]>([]);
+    const [books, setBooks] = useState<publication[]>([]);
 
     // const [query, setQuery] = useState<bookQuery>({
     //     categories: [],
@@ -45,17 +61,17 @@ export default function Main() {
 
     const [isBooksLoading, setIsBooksLoading] = useState(true);
 
-    const [currentBook, setCurrentBook] = useState<bookData>({
-        title: "",
-        owner: "",
-        author: "",
-        description: "",
-        category: "",
-        messenger: "Telegram",
-        messengerDescription: "",
-        image: "",
-        date: "",
-    });
+    // const [currentBook, setCurrentBook] = useState<bookData>({
+    //     title: "",
+    //     owner: "",
+    //     author: "",
+    //     description: "",
+    //     category: "",
+    //     messenger: "Telegram",
+    //     messengerDescription: "",
+    //     image: "",
+    //     date: "",
+    // });
 
     function handleAddBookClick() {
         setIsPublicationModalActive(true);
@@ -67,25 +83,25 @@ export default function Main() {
                 Wierzymy, że korzystanie z&nbsp;serwisu może dostarczyć wiele radości i&nbsp;wzbogacić Twoje
                 doświadczenie czytelnicze.
             </div>
-            <FilterProvider>
-                <FilterBar
-                    isBooksLoading={isBooksLoading}
-                    booksCount={booksCount}
-                    booksQueryCount={booksQueryCount}
-                ></FilterBar>
-                <Publications
-                    setCurrentBook={setCurrentBook}
-                    setIsBookModalActive={setIsBookModalActive}
-                    setBooks={setBooks}
-                    books={books}
-                    setBooksQueryCount={setBooksQueryCount}
-                    setBooksCount={setBooksCount}
-                    setIsBooksLoading={setIsBooksLoading}
-                    isBooksLoading={isBooksLoading}
-                ></Publications>
-            </FilterProvider>
-
-            <AddBookBtn onClick={handleAddBookClick} />
+            <BookProvider>
+                <FilterProvider>
+                    <FilterBar
+                        isBooksLoading={isBooksLoading}
+                        booksCount={booksCount}
+                        booksQueryCount={booksQueryCount}
+                    ></FilterBar>
+                    <Publications
+                        // setIsBookModalActive={setIsBookModalActive}
+                        setBooks={setBooks}
+                        books={books}
+                        setBooksQueryCount={setBooksQueryCount}
+                        setBooksCount={setBooksCount}
+                        setIsBooksLoading={setIsBooksLoading}
+                        isBooksLoading={isBooksLoading}
+                    ></Publications>
+                </FilterProvider>
+                <BookMenu/>
+            </BookProvider>
 
             <PublicationMenu
                 isModalActive={isPublicationModalActive}
@@ -93,11 +109,7 @@ export default function Main() {
                 setBooks={setBooks}
             />
 
-            <BookMenu
-                isBookModalActive={isBookModalActive}
-                setIsBookModalActive={setIsBookModalActive}
-                data={currentBook}
-            />
+            <AddBookBtn onClick={handleAddBookClick} />
         </div>
     );
 }

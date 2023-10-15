@@ -1,5 +1,4 @@
 import { bookQuery } from "@/components/authorized/Main";
-import { sort } from "@/components/contexts/FilterProvider";
 import connection from "@/lib/connection";
 import books from "@/model/book";
 import { NextResponse } from "next/server";
@@ -18,18 +17,15 @@ interface body {
     query: bookQuery;
 }
 
-// interface query {
-//     category?: string[];
-//     language?: string[];
-//     state?: string[];
-//     sort?: sort
-// }
-
 interface filter {
     category?: string[];
     language?: string[];
     state?: string[];
 }
+
+// interface filter {
+//     [key : string] : string[]
+// }
 
 export async function POST(req: Request) {
     const { page, limit, query }: body = await req.json();
@@ -38,16 +34,24 @@ export async function POST(req: Request) {
 
     const filter: filter = {};
 
-    if (query.filter.categories.length > 0) filter.category = query.filter.categories;
-    if (query.filter.languages.length > 0) filter.language = query.filter.languages;
-    if (query.filter.states.length > 0) filter.state = query.filter.states;
+    // Object.entries(query.filter).forEach(([key, value]) => {
+    //     if (value.length != 0) filter[key] = value
+    // })
+
+    if (query.filter.category.length > 0) filter.category = query.filter.category;
+    if (query.filter.language.length > 0) filter.language = query.filter.language;
+    if (query.filter.state.length > 0) filter.state = query.filter.state;
+
+    await connection();
 
     const queryCount = await books.count(filter);
     const count = await books.count({});
 
-    await connection();
-
-    const publications: book[] = await books.find(filter).sort({ date: query.sort }).skip(skip).limit(limit);
+    const publications: book[] = await books
+        .find(filter, { _id: 0, id: "$_id", author: 1, title: 1, date: 1, image: 1 })
+        .sort({ date: query.sort })
+        .skip(skip)
+        .limit(limit);
 
     return NextResponse.json({ publications, queryCount, count });
 }

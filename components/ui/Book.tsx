@@ -2,10 +2,17 @@ import { useState } from "react";
 import Loader from "./ContentLoader";
 import convertDate from "@/lib/convertDate";
 import { memo } from "react";
-import { bookData } from "../authorized/Main";
+import { publication } from "../authorized/Main";
+
+// interface bookData {
+//     author: string;
+//     title: string;
+//     image: string;
+//     date: string;
+// }
 
 interface BookProps {
-    data: bookData;
+    data: publication;
     handleClick?: () => void;
 }
 
@@ -23,7 +30,9 @@ const Book = memo(({ data, handleClick }: BookProps) => {
             onMouseLeave={() => setIsMouseOver(false)}
         >
             <div
-                className={`flex flex-col justify-between h-full p-5 duration-300 ${isMouseOver ? "opacity-0 pointer-events-none" : "opacity-100 pointer-events-auto"}`}
+                className={`flex flex-col justify-between h-full p-5 duration-200 ${
+                    isMouseOver ? "opacity-0 pointer-events-none" : "opacity-100 pointer-events-auto"
+                }`}
             >
                 <div className="text-[#CDCDCD] text-[17px] font-normal cursor-text w-fit">{convertDate(data.date)}</div>
                 <div>
@@ -42,7 +51,7 @@ const Book = memo(({ data, handleClick }: BookProps) => {
                 </div>
                 <div
                     className={` ${
-                        isImageLoaded ? "bg-black/30" : "bg-black duration-0"
+                        isImageLoaded ? "bg-black/40" : "bg-black duration-0"
                     }  duration-200 absolute w-full h-full left-0 top-0 text-white flex items-center justify-center z-[-1]`}
                 >
                     {!isImageLoaded && !isImageLoading && "No Image"}

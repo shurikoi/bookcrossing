@@ -23,9 +23,9 @@ const FilterContext = createContext<FilterContext>({
     choosenSort: "asc",
     query: {
         filter: {
-            categories: [],
-            languages: [],
-            states: [],
+            category: [],
+            language: [],
+            state: [],
         },
         sort: "asc",
     },
@@ -50,9 +50,9 @@ function FilterProvider({ children }: { children: React.ReactNode }) {
 
     const [query, setQuery] = useState<bookQuery>({
         filter: {
-            categories: choosenCategories,
-            languages: choosenLanguages,
-            states: choosenStates,
+            category: choosenCategories,
+            language: choosenLanguages,
+            state: choosenStates,
         },
         sort: choosenSort,
     });
@@ -67,9 +67,9 @@ function FilterProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         setQuery({
             filter: {
-                categories: choosenCategories,
-                languages: choosenLanguages,
-                states: choosenStates,
+                category: choosenCategories,
+                language: choosenLanguages,
+                state: choosenStates,
             },
             sort: choosenSort,
         });

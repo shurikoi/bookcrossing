@@ -3,7 +3,7 @@ import ProfileIcon from "../ui/icons/ProfileIcon";
 import TagIcon from "../ui/icons/TagIcon";
 import ModalMenu from "../ui/ModalMenu";
 import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useRef, useState } from "react";
-import { bookData } from "./Main";
+import { bookData, publication } from "./Main";
 import LanguageIcon from "../ui/icons/LanguageIcon";
 import LeafIcon from "../ui/icons/LeafIcon";
 import { useUserData } from "../contexts/UserProviders";
@@ -56,7 +56,7 @@ type errors = {
 };
 
 interface publicationMenuProps {
-    setBooks: Dispatch<SetStateAction<bookData[]>>;
+    setBooks: Dispatch<SetStateAction<publication[]>>;
     isModalActive: boolean;
     setIsModalActive: Dispatch<SetStateAction<boolean>>;
 }
@@ -113,8 +113,8 @@ export default function BookMenu({ setBooks, isModalActive, setIsModalActive }: 
     return (
         <ModalMenu fullMode isModalActive={isModalActive} setIsModalActive={setIsModalActive}>
             <div className="flex md:w-[640px] lg:w-[800px] gap-10 md:p-6">
-                <div className="flex flex-col justify-between gap-2.5 shrink-0 w-[200px]">
-                    <Book data={bookData}></Book>
+                <div className="flex flex-col justify-between gap-2.5 shrink-0 min-w-[200px]">
+                    {isModalActive ? <Book data={bookData}></Book> : null}
                     <div
                         className="font-inter font-medium py-2.5 px-2 active:scale-[0.99] will-change-transform text-center bg-[#52CD4F] text-white rounded-lg cursor-pointer duration-300"
                         onClick={handleContactClick}

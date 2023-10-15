@@ -20,17 +20,13 @@ export default function DropDownMenuWithSearch({ items, setItem, inputClassName 
     useEffect(() => {
         setItem(value);
 
-        setFilteredItems(
-            items.filter(
-                (item) => item.toLowerCase().includes(value.toLowerCase()) && value.toLowerCase() != item.toLowerCase()
-            )
-        );
+        setFilteredItems(items.filter((item) => item.toLowerCase().includes(value.toLowerCase())));
     }, [value]);
 
     useEffect(() => {
         setSelectedItemIndex(0);
 
-        setIsMenuActive(filteredItems.length != 0);
+        // setIsMenuActive(filteredItems.length != 0);
     }, [filteredItems]);
 
     function validateSelectedIndex(index: number) {
@@ -76,13 +72,14 @@ export default function DropDownMenuWithSearch({ items, setItem, inputClassName 
 
     const menuRef = useRef<HTMLDivElement>(null);
     return (
-        <div ref={menuRef} className="relative">
+        <div ref={menuRef} className={`relative`}>
             {/* <div className="relative"> */}
             <input
                 className={inputClassName ? inputClassName : "py-2 px-3 bg-[#4d9ee97a] rounded-sm w-full"}
                 type="text"
                 value={value}
                 onFocus={() => filteredItems.length != 0 && setIsMenuActive(true)}
+                onBlur={() => setIsMenuActive(false)}
                 onKeyDown={handleKeyDown}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
             />
@@ -106,7 +103,7 @@ export default function DropDownMenuWithSearch({ items, setItem, inputClassName 
                     <div
                         key={item}
                         className={`duration-300 cursor-pointer py-0.5 ${
-                            index == selectedItemIndex ? "bg-[#dcf5d5]" : null
+                            index == selectedItemIndex ? "bg-[#dcf5d5]" : ""
                         }`}
                         onMouseEnter={() => setSelectedItemIndex(index)}
                         onClick={() => setValue(item)}

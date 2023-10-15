@@ -2,25 +2,32 @@ import ContentLoader from "../ui/ContentLoader";
 import Book from "../ui/Book";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { bookData, bookQuery } from "./Main";
+import { bookData, bookQuery, publication } from "./Main";
 import { useFilter } from "../contexts/FilterProvider";
+import { useBook } from "../contexts/BookProvider";
 
 interface PublicationsProps {
-    setCurrentBook: Dispatch<SetStateAction<bookData>>;
-    setIsBookModalActive: Dispatch<SetStateAction<boolean>>;
-    setBooks: Dispatch<SetStateAction<bookData[]>>;
+    // setCurrentBook: Dispatch<SetStateAction<bookData>>;
+    // setIsBookModalActive: Dispatch<SetStateAction<boolean>>;
+    setBooks: Dispatch<SetStateAction<publication[]>>;
     setBooksCount: Dispatch<SetStateAction<number>>;
     setBooksQueryCount: Dispatch<SetStateAction<number>>;
     setIsBooksLoading: Dispatch<SetStateAction<boolean>>;
-    books: bookData[];
+    books: publication[];
     isBooksLoading: boolean;
+}
+
+interface fetchData {
+    publications: publication[];
+    count: number;
+    queryCount: number;
 }
 
 const limit = 10;
 
 export default function Publications({
-    setCurrentBook,
-    setIsBookModalActive,
+    // setCurrentBook,
+    // setIsBookModalActive,
     setBooks,
     books,
     setBooksCount,
@@ -29,6 +36,8 @@ export default function Publications({
     isBooksLoading,
 }: PublicationsProps) {
     const filter = useFilter();
+
+    const { setBookId } = useBook();
 
     const timerRef = useRef<NodeJS.Timer | null>(null);
 
@@ -59,13 +68,9 @@ export default function Publications({
                 }),
             });
 
-            const data: {
-                publications: bookData[];
-                count: number;
-                queryCount: number;
-            } = await response.json();
+            const data: fetchData = await response.json();
 
-            const fetchedBooks = data.publications;
+            const fetchedBooks : publication[] = data.publications;
 
             setPage((prev) => prev + 1);
             setIsBooksLoading(false);
@@ -75,20 +80,20 @@ export default function Publications({
                 setPage((prev) => prev - 1);
             }
 
-            setCurrentBook(
-                fetchedBooks[0] || {
-                    title: "",
-                    owner: "",
-                    author: "",
-                    description: "",
-                    category: "",
-                    messenger: "Telegram",
-                    messengerDescription: "",
-                    image: "",
-                    date: "",
-                }
-            );
-
+            // setCurrentBook(
+            //     fetchedBooks[0] || {
+            //         title: "",
+            //         owner: "",
+            //         author: "",
+            //         description: "",
+            //         category: "",
+            //         messenger: "Telegram",
+            //         messengerDescription: "",
+            //         image: "",
+            //         date: "",
+            //     }
+            // );
+            console.log(fetchedBooks[0].id)
             setBooks((books) => [...books, ...fetchedBooks]);
 
             setBooksCount(data.count);
@@ -116,20 +121,19 @@ export default function Publications({
     }, [observerRef, observerRef.current, hasMore, isBooksLoading]);
 
     return (
-        <div className="px-28 pt-10 flex w-full flex-col gap-6 items-center bg-[#f8faff]">
+        <div className="px-28 py-10 flex w-full flex-col gap-6 items-center bg-[#f8faff] h-full">
             <TransitionGroup className="flex gap-6 flex-wrap justify-center" exit={false}>
                 {books &&
                     books.map((book, index) => (
                         <CSSTransition key={index} classNames="item" timeout={500}>
-
-                                <Book
-                                    key={index}
-                                    data={book}
-                                    handleClick={() => {
-                                        setCurrentBook(book);
-                                        setIsBookModalActive(true);
-                                    }}
-                                />
+                            <Book
+                                key={index}
+                                data={book}
+                                handleClick={() => {
+                                    console.log(book)
+                                    setBookId(book.id!);
+                                }}
+                            />
                         </CSSTransition>
                     ))}
                 <div ref={observerRef} className="absolute bottom-0"></div>
