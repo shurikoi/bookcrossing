@@ -175,7 +175,7 @@ function PublicationImage({ file }: { file: File | undefined }) {
         if (file) setImage(URL.createObjectURL(file));
     }, [file]);
 
-    return <img className="w-[600px] h-[600px]" src={image} alt="" />;
+    return <img className="max-w-[600px] max-h-[600px] min-w-[400px] min-h-[400px]" src={image} alt="" />;
 }
 
 function StepTwo({ file, setCurrentStep }: StepTwoProps) {
