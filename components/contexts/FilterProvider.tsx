@@ -58,6 +58,12 @@ function FilterProvider({ children }: { children: React.ReactNode }) {
     });
 
     useEffect(() => {
+        const sort = params.get("sort");
+
+        if (sort != "desc" && sort != "asc") setChoosenSort("desc");
+    }, []);
+
+    useEffect(() => {
         setQuery({
             filter: {
                 category: choosenCategories,

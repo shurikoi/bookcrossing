@@ -9,6 +9,7 @@ interface ModalMenuProps {
     isModalActive: boolean;
     fullMode?: boolean;
     setIsModalActive: Dispatch<SetStateAction<boolean>>;
+    callback? : () => void
 }
 
 const ModalMenu = memo(function ModalMenu({
@@ -16,12 +17,14 @@ const ModalMenu = memo(function ModalMenu({
     children,
     isModalActive,
     setIsModalActive,
+    callback = () => null
 }: ModalMenuProps) {
     const menuRef = useRef<HTMLDivElement>(null);
 
     const { isSmallScreen } = useScreen();
 
     useClickOutside(menuRef, () => {
+        callback()
         setIsModalActive(false);
     });
 

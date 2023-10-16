@@ -1,24 +1,21 @@
 import { messengers } from "./Contact";
 
-import Book from "../ui/Book";
 import ProfileIcon from "../ui/icons/ProfileIcon";
 import TagIcon from "../ui/icons/TagIcon";
 import ModalMenu from "../ui/ModalMenu";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { bookData } from "./Main";
+import { useEffect, useState } from "react";
 import LanguageIcon from "../ui/icons/LanguageIcon";
 import LeafIcon from "../ui/icons/LeafIcon";
 import { useUserData } from "../contexts/UserProviders";
 import { useBook } from "../contexts/BookProvider";
 import ContentLoader from "../ui/ContentLoader";
+import NotFoundIcon from "../ui/icons/NotFoundIcon";
 
 export default function BookMenu() {
     const { user } = useUserData();
     const { book, bookId, isLoading, setBookId } = useBook();
 
-    const { title, image, author, owner, category, description, messengerDescription, messenger } = book;
-
-    const [isModalActive, setIsModalActive] = useState(true);
+    const [isModalActive, setIsModalActive] = useState(false);
     const [isContactVisible, setIsContactVisible] = useState(false);
 
     function handleContactClick() {
@@ -27,24 +24,22 @@ export default function BookMenu() {
 
     useEffect(() => {
         if (isModalActive) setIsContactVisible(false);
-        if (!isModalActive && bookId) setBookId("")
-    }, [isModalActive]);
+    }, [isModalActive, bookId, isLoading]);
 
     useEffect(() => {
         if (bookId) setIsModalActive(true);
-        else setIsModalActive(false)
     }, [bookId]);
 
     return (
-        <ModalMenu fullMode isModalActive={isModalActive} setIsModalActive={setIsModalActive}>
+        <ModalMenu fullMode isModalActive={isModalActive} setIsModalActive={setIsModalActive} callback={() => setBookId("")}>
             <div className="flex md:w-[640px] lg:w-[800px] gap-10 md:p-6 h-[448px]">
                 {isLoading ? (
                     <ContentLoader></ContentLoader>
-                ) : (
+                ) : book ? (
                     <>
                         <div className="flex flex-col gap-2.5 shrink-0 w-[200px]">
-                            <img src={image} alt="book" className="rounded-md " />
-                            {owner == user?.id ? (
+                            <img src={book.image} alt="book" className="rounded-md " />
+                            {book.owner == user?.id ? (
                                 <>
                                     <div className="font-inter font-medium py-2.5 border-2 active:scale-[0.99] will-change-transform text-center border-[#2B78B1] text-[#2B78B1] rounded-lg cursor-pointer hover:text-white hover:bg-[#2B78B1] duration-300 select-none">
                                         Edytuj
@@ -62,11 +57,11 @@ export default function BookMenu() {
                                         {isContactVisible ? (
                                             <div
                                                 className="flex gap-2 items-center justify-center"
-                                                title={messenger + " : " + messengerDescription}
+                                                title={book.messenger + " : " + book.messengerDescription}
                                             >
-                                                <div>{messengers[messenger].icon}</div>
+                                                <div>{messengers[book.messenger].icon}</div>
                                                 <div className="text-ellipsis overflow-hidden ">
-                                                    {messengerDescription}
+                                                    {book.messengerDescription}
                                                 </div>
                                             </div>
                                         ) : (
@@ -80,14 +75,14 @@ export default function BookMenu() {
                             )}
                         </div>
                         <div className="flex flex-col gap-8">
-                            <div className="font-head font-normal text-[20px]">{title}</div>
+                            <div className="font-head font-normal text-[20px]">{book.title}</div>
                             <div className="grid grid-cols-2 grid-rows-2 font-extralight leading-none text-[14px] gap-y-6 gap-x-10 w-fit">
                                 <div className="flex flex-col gap-3">
                                     <div className="flex gap-3 items-center">
                                         <ProfileIcon></ProfileIcon>
                                         <div className="text-[#4E4E4E]">Autor</div>
                                     </div>
-                                    <div className="py-2 px-3 w-fit bg-[#a4e94d7a] rounded-sm">{author}</div>
+                                    <div className="py-2 px-3 w-fit bg-[#a4e94d7a] rounded-sm">{book.author}</div>
                                 </div>
                                 <div className="flex flex-col gap-3">
                                     <div className="flex gap-3 items-center">
@@ -101,7 +96,7 @@ export default function BookMenu() {
                                         <TagIcon></TagIcon>
                                         <div className="text-[#4E4E4E]">Kategoria</div>
                                     </div>
-                                    <div className="py-2 px-3 w-fit bg-[#e9d04d7a] rounded-sm">{category}</div>
+                                    <div className="py-2 px-3 w-fit bg-[#e9d04d7a] rounded-sm">{book.category}</div>
                                 </div>
                                 <div className="flex flex-col gap-3">
                                     <div className="flex gap-3 items-center">
@@ -111,9 +106,14 @@ export default function BookMenu() {
                                     <div className="py-2 px-3 w-fit bg-[#e97c4d7a] rounded-sm">Polski</div>
                                 </div>
                             </div>
-                            <div className="text-[#474747] font-light font-inter text-[15px]">{description}</div>
+                            <div className="text-[#474747] font-light font-inter text-[15px]">{book.description}</div>
                         </div>
                     </>
+                ) : (
+                    <div className="flex flex-col items-center w-full gap-6">
+                        <div className="text-2xl">Takiej książki nie ma</div>
+                        <div className="w-3/4 h-3/4"><NotFoundIcon></NotFoundIcon></div>
+                    </div>
                 )}
             </div>
         </ModalMenu>

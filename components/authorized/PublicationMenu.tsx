@@ -2,7 +2,18 @@ import Contact, { messenger, messengers } from "./Contact";
 import ProfileIcon from "../ui/icons/ProfileIcon";
 import TagIcon from "../ui/icons/TagIcon";
 import ModalMenu from "../ui/ModalMenu";
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useRef, useState } from "react";
+import {
+    ChangeEvent,
+    Dispatch,
+    FormEvent,
+    Fragment,
+    MouseEvent,
+    SetStateAction,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from "react";
 import { bookData, publication } from "./Main";
 import LanguageIcon from "../ui/icons/LanguageIcon";
 import LeafIcon from "../ui/icons/LeafIcon";
@@ -13,6 +24,12 @@ import DropDownMenuWithSearch from "../ui/DropDownMenuWithSearch";
 import Categories from "./Categories";
 import { useScreen } from "../contexts/ScreenProvider";
 import isPublicationDataValid from "@/lib/isPublicationDataValid";
+import PhotosIcon from "../ui/icons/PhotosIcon";
+import ApplyChanges from "../ui/buttons/Button";
+import Button from "../ui/buttons/Button";
+import ArrowLeftIcon from "../ui/icons/ArrowLeftIcon";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
+import SmallPhotosIcon from "../ui/icons/SmallPhotosIcon";
 
 const languages = ["angielski", "polski", "ukraiński"];
 const bookStates = ["Nowa", "Jak nowa", "Bardzo dobry", "Dobry", "Przeciętny", "Zły"];
@@ -29,182 +46,202 @@ const categories = [
     "Biografia",
 ];
 
-export type publicationData = {
-    title: string;
-    author: string;
-    category: string;
-    description: string;
-    owner: string;
-    imageName: string;
-    image: File;
-    messenger: messenger;
-    messengerDescription: string;
-};
+// export type publicationData = {
+//     title: string;
+//     author: string;
+//     category: string;
+//     description: string;
+//     owner: string;
+//     imageName: string;
+//     image: File;
+//     messenger: messenger;
+//     messengerDescription: string;
+// };
 
-interface image {
-    url: string;
-    file: File | undefined;
+// interface image {
+//     url: string;
+//     file: File | undefined;
+// }
+
+// type errors = {
+//     title: boolean;
+//     author: boolean;
+//     category: boolean;
+//     image: boolean;
+//     messengerDescription: boolean;
+//     hasErrors: boolean;
+// };
+
+interface StepOneProps {
+    setFile: Dispatch<SetStateAction<File | undefined>>;
+    setCurrentStep: Dispatch<SetStateAction<number>>;
 }
 
-type errors = {
-    title: boolean;
-    author: boolean;
-    category: boolean;
-    image: boolean;
-    messengerDescription: boolean;
-    hasErrors: boolean;
-};
+interface StepTwoProps {
+    file: File | undefined;
+    setCurrentStep: Dispatch<SetStateAction<number>>;
+}
 
-interface publicationMenuProps {
+interface StepThreeProps {
+    file: File | undefined;
+    setCurrentStep: Dispatch<SetStateAction<number>>;
+}
+
+interface PublicationMenuProps {
     setBooks: Dispatch<SetStateAction<publication[]>>;
     isModalActive: boolean;
     setIsModalActive: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function BookMenu({ setBooks, isModalActive, setIsModalActive }: publicationMenuProps) {
-    const { user } = useUserData();
-    const { isSmallScreen } = useScreen();
+export default function PublicationMenu({ setBooks, isModalActive, setIsModalActive }: PublicationMenuProps) {
+    const [currentStep, setCurrentStep] = useState(0);
 
-    const [isContactVisible, setIsContactVisible] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isPreviewMenuActive, setIsPreviewMenuActive] = useState(false);
+    const [file, setFile] = useState<File>();
 
-    const imageRef = useRef<HTMLInputElement>(null);
+    const steps = [
+        <StepOne setFile={setFile} setCurrentStep={setCurrentStep}></StepOne>,
+        <StepTwo file={file} setCurrentStep={setCurrentStep}></StepTwo>,
+        <StepThree file={file} setCurrentStep={setCurrentStep}></StepThree>,
+    ];
+    const nodeRef = useRef<any>(null);
+    return (
+        <ModalMenu fullMode isModalActive={isModalActive} setIsModalActive={setIsModalActive}>
+            {/* {currentStep > 1 ? (
+                <div>
+                    <div className="h-8 relative"></div>
+                    <div>{steps[currentStep]}</div>
+                    <div className="flex justify-center p-4">
+                        <Button>Dalej</Button>
+                    </div>
+                </div>
+            ) : ( */}
+            <SwitchTransition mode="out-in">
+                <CSSTransition
+                    key={currentStep}
+                    classNames="fade"
+                    nodeRef={nodeRef}
+                    addEndListener={(done: any) => {
+                        if (nodeRef.current) {
+                            nodeRef.current.addEventListener("transitionend", done, false);
+                        }
+                    }}
+                >
+                    <div ref={nodeRef}>{steps[currentStep]}</div>
+                </CSSTransition>
+            </SwitchTransition>
+        </ModalMenu>
+    );
+}
 
-    const [author, setAuthor] = useState("");
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [category, setCategory] = useState("");
-    const [language, setLanguage] = useState("");
-    const [state, setState] = useState("");
-    const [messenger, setMessenger] = useState<messenger>("Telegram");
-    const [messengerDescription, setMessengerDescription] = useState("");
+function StepOne({ setFile, setCurrentStep }: StepOneProps) {
+    const fileRef = useRef<HTMLInputElement>(null);
 
-    const [image, setImage] = useState<image>({
-        url: "",
-        file: undefined,
-    });
+    useEffect(() => {
+        if (fileRef) fileRef.current?.addEventListener("change", () => {});
+    }, [fileRef]);
 
-    const bookData: bookData = {
-        author,
-        title,
-        description,
-        category,
-        image: image.url,
-        owner: user!.id,
-        messenger,
-        messengerDescription,
-        date: "Dzisiaj",
-    };
+    function openFileMenu() {
+        if (fileRef.current) fileRef.current.click();
+    }
 
-    const [errors, setErrors] = useState<errors>({
-        title: false,
-        author: false,
-        category: false,
-        image: false,
-        messengerDescription: false,
-        hasErrors: false,
-    });
+    function handleFileInput(e: ChangeEvent<HTMLInputElement>) {
+        const files = e.target.files;
 
-    function handleContactClick() {
-        if (!isContactVisible) setIsContactVisible(true);
+        if (files) {
+            if (files[0]) {
+                setFile(files[0]);
+                setCurrentStep(1);
+            }
+        }
     }
 
     return (
-        <ModalMenu fullMode isModalActive={isModalActive} setIsModalActive={setIsModalActive}>
-            <div className="flex md:w-[640px] lg:w-[800px] gap-10 md:p-6">
-                <div className="flex flex-col justify-between gap-2.5 shrink-0 min-w-[200px]">
-                    {isModalActive ? <Book data={bookData}></Book> : null}
-                    <div
-                        className="font-inter font-medium py-2.5 px-2 active:scale-[0.99] will-change-transform text-center bg-[#52CD4F] text-white rounded-lg cursor-pointer duration-300"
-                        onClick={handleContactClick}
-                    >
-                        {isContactVisible ? (
-                            <div className="flex gap-2 items-center justify-center">
-                                <div>Publikuj</div>
-                                <div className="text-ellipsis overflow-hidden ">{messengerDescription}</div>
-                            </div>
-                        ) : (
-                            "Pokaż kontakt"
-                        )}
+        <div className="flex flex-col items-center w-fit gap-16 px-[110px] py-[72px]">
+            <div className="font-light text-[17px]">Opublikuj książkę</div>
+            <PhotosIcon></PhotosIcon>
+            <div className="flex flex-col items-center gap-6">
+                <div className="font-extralight text-[14px]">Przeciągnij zjęcie tutaj</div>
+                <Button onClick={openFileMenu}>Albo wybierz ręcznie</Button>
+                <input ref={fileRef} type="file" accept="image/png, image/jpeg" hidden onChange={handleFileInput} />
+            </div>
+        </div>
+    );
+}
+
+function PublicationImage({ file }: { file: File | undefined }) {
+    const [image, setImage] = useState<string>();
+
+    useEffect(() => {
+        if (file) setImage(URL.createObjectURL(file));
+    }, [file]);
+
+    return <img className="w-[600px]" src={image} alt="" />;
+}
+
+function StepTwo({ file, setCurrentStep }: StepTwoProps) {
+    return (
+        <div className="flex flex-col items-center w-fit">
+            <div>
+                <div className="p-3 relative text-center">
+                    <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
+                        <ArrowLeftIcon></ArrowLeftIcon>
                     </div>
+                    <div>Przegląd</div>
                 </div>
-                <div className="flex flex-col gap-8">
-                    <input
-                        className="text-[#474747] font-head font-normal text-[20px] border-b border-b-black/25"
-                        placeholder="Bez tytułu"
-                        value={title}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
-                    />
-                    <div className="grid grid-cols-3 grid-rows-2 font-extralight leading-none text-[14px] gap-y-6 gap-x-10 w-fit grid-cols">
-                        <div className="flex flex-col gap-3">
-                            <div className="flex gap-3 items-center">
-                                <ProfileIcon></ProfileIcon>
-                                <div className="text-[#4E4E4E]">Autor</div>
-                            </div>
+                <PublicationImage file={file}></PublicationImage>
+                <div className="flex justify-center p-4">
+                    <Button onClick={() => setCurrentStep(2)}>Dalej</Button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function StepThree({ file, setCurrentStep }: StepThreeProps) {
+    const [title, setTitle] = useState("");
+    const [author, setAuthor] = useState("");
+
+    return (
+        <div className="flex flex-col items-center w-fit">
+            <div>
+                <div className="p-3 relative text-center">
+                    <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
+                        <ArrowLeftIcon></ArrowLeftIcon>
+                    </div>
+                    <div>2 / 3</div>
+                </div>
+                <div className="flex">
+                    <div className="flex-1">
+                        <PublicationImage file={file}></PublicationImage>
+                    </div>
+                    <div className="flex-1 flex flex-col gap-6 p-4">
+                        <div className="flex items-center justify-between px-1 font-inter text-[23px] appearance-none border-b border-b-black">
                             <input
-                                className="py-2 px-3 bg-[#a4e94d7a] rounded-sm"
+                                className="placeholder:text-black"
+                                placeholder="Tytuł"
+                                type="text"
+                                value={title}
+                                onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+                            />
+                            <SmallPhotosIcon></SmallPhotosIcon>
+                        </div>
+                        <div className="flex items-center justify-between px-1 font-inter text-[23px] appearance-none border-b border-b-black">
+                            <input
+                                className="placeholder:text-black"
+                                placeholder="Autor"
+                                type="text"
                                 value={author}
                                 onChange={(e: ChangeEvent<HTMLInputElement>) => setAuthor(e.target.value)}
                             />
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            <div className="flex gap-3 items-center">
-                                <LeafIcon></LeafIcon>
-                                <div className="text-[#4E4E4E]">Stan</div>
-                            </div>
-                            {/* <input className="py-2 px-3 bg-[#4d66e97a] rounded-sm" /> */}
-                            <DropDownMenuWithSearch
-                                items={bookStates}
-                                setItem={setState}
-                                inputClassName="py-2 px-3 bg-[#e9d04d7a] rounded-sm border-b w-full"
-                            ></DropDownMenuWithSearch>
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            <div className="flex gap-3 items-center">
-                                {/* <DropDownMenuWithSearch
-                                    items={categories}
-                                    setItem={setCategory}
-                                    inputClassName="py-2 px-3 bg-[#e9d04d7a] rounded-sm border-b w-full"
-                                ></DropDownMenuWithSearch> */}
-                                <Contact messenger={messenger} setMessenger={setMessenger}></Contact>
-                            </div>
-                            <input className="py-2 px-3 bg-[#4d9ee97a] rounded-sm border-b" />
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            <div className="flex gap-3 items-center">
-                                <TagIcon></TagIcon>
-                                <div className="text-[#4E4E4E]">Kategoria</div>
-                            </div>
-                            <DropDownMenuWithSearch
-                                items={categories}
-                                setItem={setCategory}
-                                inputClassName="py-2 px-3 bg-[#e9d04d7a] rounded-sm border-b w-full"
-                            ></DropDownMenuWithSearch>
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            <div className="flex gap-3 items-center">
-                                <LanguageIcon></LanguageIcon>
-                                <div className="text-[#4E4E4E]">Język</div>
-                            </div>
-                            {/* <input className="py-2 px-3 bg-[#e97c4d7a] rounded-sm border-b" /> */}
-                            <DropDownMenuWithSearch
-                                items={languages}
-                                setItem={setLanguage}
-                                inputClassName="py-2 px-3 bg-[#e97c4d7a] rounded-sm border-b w-full"
-                            ></DropDownMenuWithSearch>
+                            <ProfileIcon height={24} width={24}></ProfileIcon>
                         </div>
                     </div>
-                    <textarea
-                        className="resize-none border border-black/25 p-2 text-[#4E4E4E] text-[15px] font-inter font-light"
-                        value={description}
-                        onChange={(e: ChangeEvent<HTMLTextAreaElement >) => setDescription(e.target.value)}
-                    >
-                        
-                    </textarea>
+                </div>
+                <div className="flex justify-center p-4">
+                    <Button onClick={() => setCurrentStep(2)}>Dalej</Button>
                 </div>
             </div>
-        </ModalMenu>
+        </div>
     );
 }
 

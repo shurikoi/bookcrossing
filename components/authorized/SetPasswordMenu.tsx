@@ -4,7 +4,7 @@ import SettingsInput from "../ui/SettingsInput";
 import PasswordIcon from "../ui/icons/PasswordIcon";
 import { validatePassword } from "@/lib/isUserDataValid";
 import { useUserData } from "../contexts/UserProviders";
-import ApplyChanges from "../ui/buttons/ApplyChanges";
+import ApplyChanges from "../ui/buttons/Button";
 
 interface SetPasswordMenuProps {
     isActive: boolean;

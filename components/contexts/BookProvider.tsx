@@ -3,24 +3,14 @@ import { bookData, bookQuery } from "../authorized/Main";
 
 interface BookContext {
     setBookId: Dispatch<SetStateAction<string>>;
-    book: bookData;
+    book: bookData | undefined;
     bookId: string;
     isLoading: boolean;
 }
 
 const BookContext = createContext<BookContext>({
     setBookId: () => {},
-    book: {
-        title: "",
-        owner: "",
-        author: "",
-        description: "",
-        category: "",
-        messenger: "Telegram",
-        messengerDescription: "",
-        image: "",
-        date: "",
-    },
+    book: undefined,
     bookId: "",
     isLoading: true,
 });
@@ -29,17 +19,7 @@ function BookProvider({ children }: { children: React.ReactNode }) {
     const params = new URLSearchParams(window.location.search);
 
     const [bookId, setBookId] = useState(params.get("book") || "");
-    const [book, setBook] = useState<bookData>({
-        title: "",
-        owner: "",
-        author: "",
-        description: "",
-        category: "",
-        messenger: "Telegram",
-        messengerDescription: "",
-        image: "",
-        date: "",
-    });
+    const [book, setBook] = useState<bookData | undefined>();
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -57,14 +37,19 @@ function BookProvider({ children }: { children: React.ReactNode }) {
         async function getBook() {
             setIsLoading(true);
 
-            const response = await fetch("/api/get-book", {
-                method: "POST",
-                body: JSON.stringify({ id: bookId })
-            });
+            try {
+                const response = await fetch("/api/get-book", {
+                    method: "POST",
+                    body: JSON.stringify({ id: bookId })
+                });
+    
+                const book = await response.json();
 
-            const book = await response.json();
-            console.log(book);
-            setBook(book);
+                setBook(book);
+            } catch (error) {
+                setBook(undefined)   
+            }
+
             setIsLoading(false);
         }
     }, [bookId]);
