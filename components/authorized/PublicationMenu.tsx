@@ -175,7 +175,7 @@ function PublicationImage({ file }: { file: File | undefined }) {
         if (file) setImage(URL.createObjectURL(file));
     }, [file]);
 
-    return <img className="max-w-[600px] max-h-[600px] min-w-[400px] min-h-[400px]" src={image} alt="" />;
+    return <img className="max-w-[500px] h-[500px]" src={image} alt="" />;
 }
 
 function StepTwo({ file, setCurrentStep }: StepTwoProps) {
@@ -211,13 +211,13 @@ function StepThree({ file, setCurrentStep }: StepThreeProps) {
                     <div>2 / 3</div>
                 </div>
                 <div className="flex">
-                    <div className="flex-1">
+                    <div className="flex-1 ">
                         <PublicationImage file={file}></PublicationImage>
                     </div>
                     <div className="flex-1 flex flex-col gap-6 p-4">
-                        <div className="flex items-center justify-between px-1 font-inter text-[23px] appearance-none border-b border-b-black">
+                        <div className="flex items-center justify-between px-1 font-light font-inter text-[20px] appearance-none border-b border-b-black">
                             <input
-                                className="placeholder:text-black"
+                                className=""
                                 placeholder="Tytuł"
                                 type="text"
                                 value={title}
@@ -225,9 +225,9 @@ function StepThree({ file, setCurrentStep }: StepThreeProps) {
                             />
                             <SmallPhotosIcon></SmallPhotosIcon>
                         </div>
-                        <div className="flex items-center justify-between px-1 font-inter text-[23px] appearance-none border-b border-b-black">
+                        <div className="flex items-center justify-between px-1 font-light font-inter text-[20px] appearance-none border-b border-b-black">
                             <input
-                                className="placeholder:text-black"
+                                className=""
                                 placeholder="Autor"
                                 type="text"
                                 value={author}

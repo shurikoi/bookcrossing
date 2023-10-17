@@ -17,7 +17,7 @@ const Book = memo(({ data, handleClick }: BookProps) => {
 
     return (
         <div
-            className="relative rounded-lg w-60 h-72 bg-black font-inter shadow-[0px_0px_15px_1px_rgba(0,0,0,.5)] hover:scale-[1.03] hover:shadow-[0px_0px_30px_1px_rgba(0,0,0,.5)] cursor-pointer will-change-transform duration-200 flex-shrink-0 overflow-hidden"
+            className="relative w-60 h-72 bg-black font-inter shadow-[0px_0px_15px_1px_rgba(0,0,0,.5)] hover:scale-[1.03] hover:shadow-[0px_0px_30px_1px_rgba(0,0,0,.5)] cursor-pointer will-change-transform duration-200 flex-shrink-0 overflow-hidden"
             onClick={handleClick}
             onMouseEnter={() => setIsMouseOver(true)}
             onMouseLeave={() => setIsMouseOver(false)}
