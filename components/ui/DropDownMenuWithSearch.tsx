@@ -5,9 +5,10 @@ interface DropDownMenuProps {
     items: string[];
     setItem: Dispatch<SetStateAction<string>>;
     inputClassName?: React.HTMLAttributes<HTMLDivElement>["className"];
+    placeholder?: string
 }
 
-export default function DropDownMenuWithSearch({ items, setItem, inputClassName }: DropDownMenuProps) {
+export default function DropDownMenuWithSearch({ items, setItem, placeholder, inputClassName }: DropDownMenuProps) {
     const [isMenuActive, setIsMenuActive] = useState(false);
 
     const [value, setValue] = useState("");
@@ -20,7 +21,7 @@ export default function DropDownMenuWithSearch({ items, setItem, inputClassName 
     useEffect(() => {
         setItem(value);
 
-        setFilteredItems(items.filter((item) => item.toLowerCase().includes(value.toLowerCase())));
+        setFilteredItems(items.filter((item) => item.toLowerCase().includes(value.toLowerCase()) && item.toLowerCase() != value.toLowerCase()));
     }, [value]);
 
     useEffect(() => {
@@ -75,23 +76,17 @@ export default function DropDownMenuWithSearch({ items, setItem, inputClassName 
         <div ref={menuRef} className={`relative`}>
             {/* <div className="relative"> */}
             <input
-                className={inputClassName ? inputClassName : "py-2 px-3 bg-[#4d9ee97a] rounded-sm w-full"}
+                className={inputClassName ? inputClassName : "placeholder:text-[#6C6C6C]"}
                 type="text"
+                placeholder={placeholder}
                 value={value}
-                onFocus={() => filteredItems.length != 0 && setIsMenuActive(true)}
-                onBlur={() => setIsMenuActive(false)}
+                onFocus={() => setIsMenuActive(true)}
+                
+                // onBlur={() => setIsMenuActive(false)}
                 onKeyDown={handleKeyDown}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
             />
-            {/* {value.length > 0 && (
-                    <div
-                        className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
-                        onClick={() => setValue("")}
-                    >
-                        x
-                    </div>
-                )} */}
-            {/* </div> */}
+
             <DropDownMenu
                 elRef={scrollRef}
                 menuRef={menuRef}

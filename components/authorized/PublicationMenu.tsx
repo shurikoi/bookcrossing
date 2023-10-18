@@ -5,6 +5,7 @@ import ModalMenu from "../ui/ModalMenu";
 import {
     ChangeEvent,
     Dispatch,
+    DragEvent,
     FormEvent,
     Fragment,
     MouseEvent,
@@ -106,15 +107,6 @@ export default function PublicationMenu({ setBooks, isModalActive, setIsModalAct
     const nodeRef = useRef<any>(null);
     return (
         <ModalMenu fullMode isModalActive={isModalActive} setIsModalActive={setIsModalActive}>
-            {/* {currentStep > 1 ? (
-                <div>
-                    <div className="h-8 relative"></div>
-                    <div>{steps[currentStep]}</div>
-                    <div className="flex justify-center p-4">
-                        <Button>Dalej</Button>
-                    </div>
-                </div>
-            ) : ( */}
             <SwitchTransition mode="out-in">
                 <CSSTransition
                     key={currentStep}
@@ -136,16 +128,34 @@ export default function PublicationMenu({ setBooks, isModalActive, setIsModalAct
 function StepOne({ setFile, setCurrentStep }: StepOneProps) {
     const fileRef = useRef<HTMLInputElement>(null);
 
+    const [isWindowHovered, setIsWindowHovered] = useState(false);
+
     useEffect(() => {
-        if (fileRef) fileRef.current?.addEventListener("change", () => {});
-    }, [fileRef]);
+        function handleDragStart() {
+            setIsWindowHovered(true);
+        }
+
+        function handleDragEnd(e: any) {
+            if (!e.relatedTarget) setIsWindowHovered(false);
+        }
+
+        window.addEventListener("dragenter", handleDragStart);
+        window.addEventListener("dragleave", handleDragEnd);
+
+        return () => {
+            window.removeEventListener("dragenter", handleDragStart);
+            window.removeEventListener("dragleave", handleDragEnd);
+        };
+    }, []);
 
     function openFileMenu() {
         if (fileRef.current) fileRef.current.click();
     }
 
-    function handleFileInput(e: ChangeEvent<HTMLInputElement>) {
-        const files = e.target.files;
+    function handleImagePush(e: ChangeEvent<HTMLInputElement> | DragEvent) {
+        e.preventDefault();
+
+        const files = (e as DragEvent).dataTransfer?.files ?? (e as ChangeEvent<HTMLInputElement>).target?.files;
 
         if (files) {
             if (files[0]) {
@@ -156,13 +166,19 @@ function StepOne({ setFile, setCurrentStep }: StepOneProps) {
     }
 
     return (
-        <div className="flex flex-col items-center w-fit gap-16 px-[110px] py-[72px]">
+        <div
+            className={`flex flex-col rounded-lg items-center w-fit gap-16 px-[110px] py-[72px] duration-200 ${
+                isWindowHovered ? "bg-[#e4e4e4]" : "bg-white"
+            }`}
+            onDragOver={(e: DragEvent) => e.preventDefault()}
+            onDrop={handleImagePush}
+        >
             <div className="font-light text-[17px]">Opublikuj książkę</div>
             <PhotosIcon></PhotosIcon>
             <div className="flex flex-col items-center gap-6">
                 <div className="font-extralight text-[14px]">Przeciągnij zjęcie tutaj</div>
                 <Button onClick={openFileMenu}>Albo wybierz ręcznie</Button>
-                <input ref={fileRef} type="file" accept="image/png, image/jpeg" hidden onChange={handleFileInput} />
+                <input ref={fileRef} type="file" accept="image/png, image/jpeg" hidden onChange={handleImagePush} />
             </div>
         </div>
     );
@@ -178,44 +194,113 @@ function PublicationImage({ file }: { file: File | undefined }) {
     return <img className="max-w-[500px] h-[500px]" src={image} alt="" />;
 }
 
-function StepTwo({ file, setCurrentStep }: StepTwoProps) {
-    return (
-        <div className="flex flex-col items-center w-fit">
-            <div>
-                <div className="p-3 relative text-center">
-                    <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
-                        <ArrowLeftIcon></ArrowLeftIcon>
-                    </div>
-                    <div>Przegląd</div>
-                </div>
-                <PublicationImage file={file}></PublicationImage>
-                <div className="flex justify-center p-4">
-                    <Button onClick={() => setCurrentStep(2)}>Dalej</Button>
-                </div>
-            </div>
-        </div>
-    );
-}
+// function StepTwo({ file, setCurrentStep }: StepTwoProps) {
+//     return (
+//         <div className="flex flex-col items-center w-fit">
+//             <div>
+//                 <div className="p-3 relative text-center">
+//                     <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
+//                         <ArrowLeftIcon></ArrowLeftIcon>
+//                     </div>
+//                     <div>Przegląd</div>
+//                 </div>
+//                 <PublicationImage file={file}></PublicationImage>
+//                 <div className="flex justify-center p-4">
+//                     <Button onClick={() => setCurrentStep(2)}>Dalej</Button>
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// }
 
-function StepThree({ file, setCurrentStep }: StepThreeProps) {
+function StepTwo({ file, setCurrentStep }: StepThreeProps) {
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
+    const [bookCategory, setBookCategory] = useState("");
+    const [bookLanguage, setBookLanguage] = useState("");
+    const [bookState, setBookState] = useState("");
+    const [bookDescription, setBookDescription] = useState("");
+
+    const { user } = useUserData();
 
     return (
-        <div className="flex flex-col items-center w-fit">
-            <div>
-                <div className="p-3 relative text-center">
-                    <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
-                        <ArrowLeftIcon></ArrowLeftIcon>
-                    </div>
-                    <div>2 / 3</div>
+        <div className="flex flex-col ">
+            <div className="p-3 relative text-center">
+                <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
+                    <ArrowLeftIcon></ArrowLeftIcon>
                 </div>
-                <div className="flex">
-                    <div className="flex-1 ">
-                        <PublicationImage file={file}></PublicationImage>
+                <div>2 / 3</div>
+            </div>
+            <div className="flex">
+                <div className="">
+                    <PublicationImage file={file}></PublicationImage>
+                </div>
+                <div className="flex flex-col gap-6 p-4">
+                    <div className="flex gap-4 items-center">
+                        <div className="w-10 h-10 rounded-full bg-gray-500"></div>
+                        <div className="font-extralight text-base">{user?.name}</div>
                     </div>
-                    <div className="flex-1 flex flex-col gap-6 p-4">
-                        <div className="flex items-center justify-between px-1 font-light font-inter text-[20px] appearance-none border-b border-b-black">
+
+                    <div className="flex flex-col gap-4 text-[20px] font-lato font-normal">
+                        <div className="flex items-center justify-between px-1">
+                            <input
+                                className="placeholder:text-[#6C6C6C]"
+                                placeholder="Tytuł"
+                                type="text"
+                                value={title}
+                                onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+                            />
+                            <SmallPhotosIcon></SmallPhotosIcon>
+                        </div>
+                        <div className="flex items-center justify-between px-1  text-[20px]">
+                            <input
+                                className="font-lato font-normal placeholder:text-[#6C6C6C]"
+                                placeholder="Autor"
+                                type="text"
+                                value={author}
+                                onChange={(e: ChangeEvent<HTMLInputElement>) => setAuthor(e.target.value)}
+                            />
+                            <ProfileIcon height={24} width={24}></ProfileIcon>
+                        </div>
+                        <div className="flex items-center justify-between px-1  text-[20px]">
+                            <DropDownMenuWithSearch
+                                items={categories}
+                                setItem={setBookCategory}
+                                placeholder="Kategoria"
+                            ></DropDownMenuWithSearch>
+                            <TagIcon height={24} width={24}></TagIcon>
+                        </div>
+                        <div className="flex items-center justify-between px-1  text-[20px]">
+                            <DropDownMenuWithSearch
+                                items={languages}
+                                setItem={setBookLanguage}
+                                placeholder="Język"
+                            ></DropDownMenuWithSearch>
+                            <LanguageIcon height={24} width={24}></LanguageIcon>
+                        </div>
+                        <div className="flex items-center justify-between px-1  text-[20px]">
+                            <DropDownMenuWithSearch
+                                items={bookStates}
+                                setItem={setBookState}
+                                placeholder="Stan"
+                            ></DropDownMenuWithSearch>
+                            <LeafIcon height={24} width={24}></LeafIcon>
+                        </div>
+                        <div className="relative px-1">
+                            <textarea
+                                className="resize-none w-full max-h-[200px]"
+                                value={bookDescription}
+                                rows={4}
+                                maxLength={100}
+                                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setBookDescription(e.target.value)}
+                            ></textarea>
+                            <div className="absolute right-0 bottom-0 select-none text-sm text-[#767676] translate-y-1/2">
+                                {bookDescription.length}/100
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* <div className="flex items-center justify-between px-1 font-light font-inter text-[20px] appearance-none border-b border-b-black">
                             <input
                                 className=""
                                 placeholder="Tytuł"
@@ -234,15 +319,18 @@ function StepThree({ file, setCurrentStep }: StepThreeProps) {
                                 onChange={(e: ChangeEvent<HTMLInputElement>) => setAuthor(e.target.value)}
                             />
                             <ProfileIcon height={24} width={24}></ProfileIcon>
-                        </div>
-                    </div>
+                        </div> */}
                 </div>
-                <div className="flex justify-center p-4">
-                    <Button onClick={() => setCurrentStep(2)}>Dalej</Button>
-                </div>
+            </div>
+            <div className="flex justify-center p-4">
+                <Button onClick={() => setCurrentStep(2)}>Dalej</Button>
             </div>
         </div>
     );
+}
+
+function StepThree({ file, setCurrentStep }: StepThreeProps) {
+    return 123;
 }
 
 // import { Dispatch, FormEvent, SetStateAction, memo, useRef, useState } from "react";

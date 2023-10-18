@@ -1,6 +1,6 @@
-export default function LeafIcon() {
+export default function LeafIcon({height = 15, width = 15} : {height?: number, width?: number}) {
     return (
-        <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width={width} height={height} viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M9.86687 4.08187C6.675 5.8225 1.91687 9.8175 0 13.75H1.83687C2.34875 12.4869 3.41313 10.915 4.24375 10.0612C9.485 12.4031 15 8.32687 15 2.97188C15 2.0125 14.8112 1.01187 14.425 0C12.9581 1.94937 10.8956 0.6575 7.64313 1.01562C2.8575 1.54313 0.666875 5.26375 2.16562 8.22812C4.35687 6.09375 8.1175 4.24062 9.86687 4.08187Z"
                 fill="#434343"

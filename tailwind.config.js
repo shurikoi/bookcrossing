@@ -14,7 +14,8 @@ module.exports = {
       },
       fontFamily: {
         head: 'var(--font-head)',
-        inter: 'var(--font-inter)'
+        inter: 'var(--font-inter)',
+        lato: 'var(--font-lato)',
       },
       keyframes: {
         rotation: {

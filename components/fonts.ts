@@ -1,4 +1,4 @@
-import { Inter } from "next/font/google";
+import { Inter, Lato } from "next/font/google";
 import localFont from "next/font/local";
 
 export const eUkraine = localFont({
@@ -36,4 +36,10 @@ export const inter = Inter({
     subsets: ["latin"],
     weight: ["500", "400", "300"],
     variable: "--font-inter"
+})
+
+export const lato = Lato({
+    subsets: ["latin"],
+    weight: ["100", "300", "400", "700", "900"],
+    variable: "--font-lato"
 })

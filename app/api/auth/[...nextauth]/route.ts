@@ -37,7 +37,7 @@ export const authOptions: NextAuthOptions = {
 
                 const user = await users.findOne({ email });
                 const hashedPassword = await hashPassword(password);
-                
+
                 if (authType == "signin") {
                     if (user && user.password == hashedPassword) {
                         console.log("returned");
@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
                     if (!user) {
                         const { name, surname } = credentials as credentials;
 
-                        await users.create({ name, surname, password: hashedPassword, email, points: 0 });
+                        await users.create({ name, surname, password: hashedPassword, email, points: 1 });
 
                         return { email } as any;
                     }
@@ -70,22 +70,24 @@ export const authOptions: NextAuthOptions = {
                     email,
                     given_name: name,
                     family_name: surname,
+                    picture: avatar,
                 } = profile as {
                     given_name: string;
                     family_name: string;
                     email: string;
+                    picture: string;
                 };
 
                 await connection();
 
                 const user = await users.findOne({ email });
 
-                if (!user) {
-                    users.create({ name, surname, email, points: 0 });
-                }
-            }
+                if (!user) users.create({ name, surname, email, avatar, points: 1 });
 
-            return true;
+                return true;
+            }
+            
+            return false
         },
     },
 };

@@ -9,6 +9,7 @@ interface ModalMenuProps {
     isModalActive: boolean;
     fullMode?: boolean;
     setIsModalActive: Dispatch<SetStateAction<boolean>>;
+    ref? : React.RefObject<HTMLDivElement>
     callback? : () => void
 }
 
@@ -17,7 +18,8 @@ const ModalMenu = memo(function ModalMenu({
     children,
     isModalActive,
     setIsModalActive,
-    callback = () => null
+    callback = () => null,
+    ref
 }: ModalMenuProps) {
     const menuRef = useRef<HTMLDivElement>(null);
 
@@ -44,6 +46,7 @@ const ModalMenu = memo(function ModalMenu({
                     className={`fixed left-0 top-0 w-screen h-screen sm:flex items-center justify-center duration-300 transition-opacity ${
                         isModalActive ? "opacity-100 pointer-events-all z-10" : "opacity-0 pointer-events-none"
                     } `}
+                    ref={ref}
                 >
                     <div
                         className={`absolute top-0 left-0 w-screen h-screen bg-black/40  duration-300 transition-opacity`}
