@@ -34,7 +34,7 @@ export const eUkraineHead = localFont({
 
 export const inter = Inter({
     subsets: ["latin"],
-    weight: ["500", "400", "300"],
+    weight: ["600", "500", "400", "300"],
     variable: "--font-inter"
 })
 

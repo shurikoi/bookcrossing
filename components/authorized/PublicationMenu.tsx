@@ -1,39 +1,19 @@
-import Contact, { messenger, messengers } from "./Contact";
 import ProfileIcon from "../ui/icons/ProfileIcon";
 import TagIcon from "../ui/icons/TagIcon";
 import ModalMenu from "../ui/ModalMenu";
-import {
-    ChangeEvent,
-    Dispatch,
-    DragEvent,
-    FormEvent,
-    Fragment,
-    MouseEvent,
-    SetStateAction,
-    useEffect,
-    useLayoutEffect,
-    useRef,
-    useState,
-} from "react";
+import { ChangeEvent, Dispatch, DragEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import { bookData, publication } from "./Main";
 import LanguageIcon from "../ui/icons/LanguageIcon";
 import LeafIcon from "../ui/icons/LeafIcon";
 import { useUserData } from "../contexts/UserProviders";
-import Book from "../ui/Book";
-import CategoriesMenu from "./CategoriesMenu";
 import DropDownMenuWithSearch from "../ui/DropDownMenuWithSearch";
-import Categories from "./Categories";
-import { useScreen } from "../contexts/ScreenProvider";
-import isPublicationDataValid from "@/lib/isPublicationDataValid";
 import PhotosIcon from "../ui/icons/PhotosIcon";
-import ApplyChanges from "../ui/buttons/Button";
 import Button from "../ui/buttons/Button";
 import ArrowLeftIcon from "../ui/icons/ArrowLeftIcon";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import SmallPhotosIcon from "../ui/icons/SmallPhotosIcon";
+import books from "@/model/book";
 
-const languages = ["angielski", "polski", "ukraiński"];
-const bookStates = ["Nowa", "Jak nowa", "Bardzo dobry", "Dobry", "Przeciętny", "Zły"];
 const categories = [
     "Powieść historyczna",
     "Kryminał",
@@ -46,6 +26,10 @@ const categories = [
     "Poezja",
     "Biografia",
 ];
+
+const languages = ["Angielski", "Polski", "Ukraiński"];
+
+const bookStates = ["Bardzo dobry", "Dobry", "Akceptowany", "Zły"];
 
 // export type publicationData = {
 //     title: string;
@@ -80,11 +64,14 @@ interface StepOneProps {
 
 interface StepTwoProps {
     file: File | undefined;
+    publicationData: bookData | undefined
     setCurrentStep: Dispatch<SetStateAction<number>>;
+    setPublicationData: Dispatch<SetStateAction<bookData | undefined>>;
 }
 
 interface StepThreeProps {
     file: File | undefined;
+    publicationData: bookData | undefined;
     setCurrentStep: Dispatch<SetStateAction<number>>;
 }
 
@@ -97,31 +84,60 @@ interface PublicationMenuProps {
 export default function PublicationMenu({ setBooks, isModalActive, setIsModalActive }: PublicationMenuProps) {
     const [currentStep, setCurrentStep] = useState(0);
 
+    const [publicationData, setPublicationData] = useState<bookData>();
+
     const [file, setFile] = useState<File>();
+
+    const [isBackgroundClickPrevented, setIsBackgroundClickPrevented] = useState(false);
+    const overlayRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        setIsBackgroundClickPrevented(true);
+
+        setTimeout(() => {
+            setIsBackgroundClickPrevented(false);
+        }, 400);
+    }, [file]);
+
+    useEffect(() => {
+        setTimeout(() => setIsBackgroundClickPrevented(false), 10000);
+    }, [isBackgroundClickPrevented]);
 
     const steps = [
         <StepOne setFile={setFile} setCurrentStep={setCurrentStep}></StepOne>,
-        <StepTwo file={file} setCurrentStep={setCurrentStep}></StepTwo>,
-        <StepThree file={file} setCurrentStep={setCurrentStep}></StepThree>,
+        <StepTwo file={file} publicationData={publicationData} setPublicationData={setPublicationData} setCurrentStep={setCurrentStep}></StepTwo>,
+        <StepThree file={file} publicationData={publicationData} setCurrentStep={setCurrentStep}></StepThree>,
     ];
     const nodeRef = useRef<any>(null);
     return (
-        <ModalMenu fullMode isModalActive={isModalActive} setIsModalActive={setIsModalActive}>
-            <SwitchTransition mode="out-in">
-                <CSSTransition
-                    key={currentStep}
-                    classNames="fade"
-                    nodeRef={nodeRef}
-                    addEndListener={(done: any) => {
-                        if (nodeRef.current) {
-                            nodeRef.current.addEventListener("transitionend", done, false);
-                        }
+        <>
+            {isBackgroundClickPrevented && (
+                <div
+                    ref={overlayRef}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
                     }}
-                >
-                    <div ref={nodeRef}>{steps[currentStep]}</div>
-                </CSSTransition>
-            </SwitchTransition>
-        </ModalMenu>
+                    className="z-50 w-screen h-screen fixed top-0 left-0 preventedClick"
+                ></div>
+            )}
+            <ModalMenu fullMode isModalActive={isModalActive} setIsModalActive={setIsModalActive}>
+                <SwitchTransition mode="out-in">
+                    <CSSTransition
+                        key={currentStep}
+                        classNames="fade"
+                        nodeRef={nodeRef}
+                        addEndListener={(done: any) => {
+                            if (nodeRef.current) {
+                                nodeRef.current.addEventListener("transitionend", done, false);
+                            }
+                        }}
+                    >
+                        <div ref={nodeRef}>{steps[currentStep]}</div>
+                    </CSSTransition>
+                </SwitchTransition>
+            </ModalMenu>
+        </>
     );
 }
 
@@ -166,21 +182,23 @@ function StepOne({ setFile, setCurrentStep }: StepOneProps) {
     }
 
     return (
-        <div
-            className={`flex flex-col rounded-lg items-center w-fit gap-16 px-[110px] py-[72px] duration-200 ${
-                isWindowHovered ? "bg-[#e4e4e4]" : "bg-white"
-            }`}
-            onDragOver={(e: DragEvent) => e.preventDefault()}
-            onDrop={handleImagePush}
-        >
-            <div className="font-light text-[17px]">Opublikuj książkę</div>
-            <PhotosIcon></PhotosIcon>
-            <div className="flex flex-col items-center gap-6">
-                <div className="font-extralight text-[14px]">Przeciągnij zjęcie tutaj</div>
-                <Button onClick={openFileMenu}>Albo wybierz ręcznie</Button>
-                <input ref={fileRef} type="file" accept="image/png, image/jpeg" hidden onChange={handleImagePush} />
+        <>
+            <div
+                className={`flex flex-col rounded-lg items-center w-fit gap-16 px-[110px] py-[72px] duration-200 ${
+                    isWindowHovered ? "bg-[#e4e4e4]" : "bg-white"
+                }`}
+                onDragOver={(e: DragEvent) => e.preventDefault()}
+                onDrop={handleImagePush}
+            >
+                <div className="font-light text-[17px]">Opublikuj książkę</div>
+                <PhotosIcon></PhotosIcon>
+                <div className="flex flex-col items-center gap-6">
+                    <div className="font-extralight text-[14px]">Przeciągnij zjęcie tutaj</div>
+                    <Button onClick={openFileMenu}>Albo wybierz ręcznie</Button>
+                    <input ref={fileRef} type="file" accept="image/png, image/jpeg" hidden onChange={handleImagePush} />
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 
@@ -191,35 +209,32 @@ function PublicationImage({ file }: { file: File | undefined }) {
         if (file) setImage(URL.createObjectURL(file));
     }, [file]);
 
-    return <img className="max-w-[500px] h-[500px]" src={image} alt="" />;
+    return <img className="max-w-[500px] object-cover" src={image} alt="" />;
 }
 
-// function StepTwo({ file, setCurrentStep }: StepTwoProps) {
-//     return (
-//         <div className="flex flex-col items-center w-fit">
-//             <div>
-//                 <div className="p-3 relative text-center">
-//                     <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
-//                         <ArrowLeftIcon></ArrowLeftIcon>
-//                     </div>
-//                     <div>Przegląd</div>
-//                 </div>
-//                 <PublicationImage file={file}></PublicationImage>
-//                 <div className="flex justify-center p-4">
-//                     <Button onClick={() => setCurrentStep(2)}>Dalej</Button>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// }
+function StepTwo({ file, publicationData ,setPublicationData, setCurrentStep }: StepTwoProps) {
+    const [title, setTitle] = useState(publicationData?.title || "");
+    const [author, setAuthor] = useState(publicationData?.author || "");
+    const [bookCategory, setBookCategory] = useState(publicationData?.category || "");
+    const [bookLanguage, setBookLanguage] = useState(publicationData?.language || "");
+    const [bookState, setBookState] = useState(publicationData?.state || "");
+    const [bookDescription, setBookDescription] = useState(publicationData?.description || "");
 
-function StepTwo({ file, setCurrentStep }: StepThreeProps) {
-    const [title, setTitle] = useState("");
-    const [author, setAuthor] = useState("");
-    const [bookCategory, setBookCategory] = useState("");
-    const [bookLanguage, setBookLanguage] = useState("");
-    const [bookState, setBookState] = useState("");
-    const [bookDescription, setBookDescription] = useState("");
+    useEffect(() => {
+        setPublicationData({
+            title,
+            author,
+            description: bookDescription,
+            category: bookCategory,
+            language: bookLanguage,
+            state: bookState,
+            owner: "",
+            messenger: "Telegram",
+            messengerDescription: "",
+            date: "0",
+            image: file ? URL.createObjectURL(file) : "",
+        });
+    }, [title, author, bookCategory, bookDescription, bookLanguage, bookState]);
 
     const { user } = useUserData();
 
@@ -231,11 +246,11 @@ function StepTwo({ file, setCurrentStep }: StepThreeProps) {
                 </div>
                 <div>2 / 3</div>
             </div>
-            <div className="flex">
-                <div className="">
+            <div className="inline-flex">
+                <div className="flex">
                     <PublicationImage file={file}></PublicationImage>
                 </div>
-                <div className="flex flex-col gap-6 p-4">
+                <div className="grow-0 shrink-0 flex flex-col gap-6 p-4 w-[360px]">
                     <div className="flex gap-4 items-center">
                         <div className="w-10 h-10 rounded-full bg-gray-500"></div>
                         <div className="font-extralight text-base">{user?.name}</div>
@@ -265,22 +280,27 @@ function StepTwo({ file, setCurrentStep }: StepThreeProps) {
                         <div className="flex items-center justify-between px-1  text-[20px]">
                             <DropDownMenuWithSearch
                                 items={categories}
+                                startValue={bookCategory}
                                 setItem={setBookCategory}
                                 placeholder="Kategoria"
+                                createNewItem
                             ></DropDownMenuWithSearch>
                             <TagIcon height={24} width={24}></TagIcon>
                         </div>
                         <div className="flex items-center justify-between px-1  text-[20px]">
                             <DropDownMenuWithSearch
                                 items={languages}
+                                startValue={bookLanguage}
                                 setItem={setBookLanguage}
                                 placeholder="Język"
+                                createNewItem
                             ></DropDownMenuWithSearch>
                             <LanguageIcon height={24} width={24}></LanguageIcon>
                         </div>
                         <div className="flex items-center justify-between px-1  text-[20px]">
                             <DropDownMenuWithSearch
                                 items={bookStates}
+                                startValue={bookState}
                                 setItem={setBookState}
                                 placeholder="Stan"
                             ></DropDownMenuWithSearch>
@@ -288,9 +308,10 @@ function StepTwo({ file, setCurrentStep }: StepThreeProps) {
                         </div>
                         <div className="relative px-1">
                             <textarea
-                                className="resize-none w-full max-h-[200px]"
+                                className="resize-none w-full max-h-[200px] placeholder:text-[#6C6C6C]"
                                 value={bookDescription}
                                 rows={4}
+                                placeholder="Napisz komentarz"
                                 maxLength={100}
                                 onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setBookDescription(e.target.value)}
                             ></textarea>
@@ -299,38 +320,68 @@ function StepTwo({ file, setCurrentStep }: StepThreeProps) {
                             </div>
                         </div>
                     </div>
-
-                    {/* <div className="flex items-center justify-between px-1 font-light font-inter text-[20px] appearance-none border-b border-b-black">
-                            <input
-                                className=""
-                                placeholder="Tytuł"
-                                type="text"
-                                value={title}
-                                onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
-                            />
-                            <SmallPhotosIcon></SmallPhotosIcon>
-                        </div>
-                        <div className="flex items-center justify-between px-1 font-light font-inter text-[20px] appearance-none border-b border-b-black">
-                            <input
-                                className=""
-                                placeholder="Autor"
-                                type="text"
-                                value={author}
-                                onChange={(e: ChangeEvent<HTMLInputElement>) => setAuthor(e.target.value)}
-                            />
-                            <ProfileIcon height={24} width={24}></ProfileIcon>
-                        </div> */}
+                    <div className="ml-auto p-4">
+                        <Button onClick={() => setCurrentStep(2)}>Podgląd</Button>
+                    </div>
                 </div>
-            </div>
-            <div className="flex justify-center p-4">
-                <Button onClick={() => setCurrentStep(2)}>Dalej</Button>
             </div>
         </div>
     );
 }
 
-function StepThree({ file, setCurrentStep }: StepThreeProps) {
-    return 123;
+function StepThree({ file, publicationData, setCurrentStep }: StepThreeProps) {
+    return (
+        <div className="flex flex-col">
+            <div className="p-3 relative text-center">
+                <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
+                    <ArrowLeftIcon></ArrowLeftIcon>
+                </div>
+                <div>3 / 3</div>
+            </div>
+            <div className="flex md:w-[640px] lg:w-[800px] gap-10 md:p-6 h-[448px]">
+                <div className="flex flex-col gap-2.5 shrink-0 w-[200px]">
+                    <img src={publicationData?.image} alt="book" className="rounded-md " />
+                    <Button className="text-center">Publikuj</Button>
+                </div>
+                <div className="flex flex-col gap-8">
+                    <div className="font-head font-normal text-[20px]">{publicationData?.title}</div>
+                    <div className="grid grid-cols-2 grid-rows-2 font-extralight leading-none text-[14px] gap-y-6 gap-x-10 w-fit">
+                        <div className="flex flex-col gap-3">
+                            <div className="flex gap-3 items-center">
+                                <ProfileIcon></ProfileIcon>
+                                <div className="text-[#4E4E4E]">Autor</div>
+                            </div>
+                            <div className="py-2 px-3 w-fit bg-[#a4e94d7a] rounded-sm">{publicationData?.author}</div>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <div className="flex gap-3 items-center">
+                                <LeafIcon></LeafIcon>
+                                <div className="text-[#4E4E4E]">Stan</div>
+                            </div>
+                            <div className="py-2 px-3 w-fit bg-[#4d66e97a] rounded-sm">{publicationData?.state}</div>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <div className="flex gap-3 items-center">
+                                <TagIcon></TagIcon>
+                                <div className="text-[#4E4E4E]">Kategoria</div>
+                            </div>
+                            <div className="py-2 px-3 w-fit bg-[#e9d04d7a] rounded-sm">{publicationData?.category}</div>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <div className="flex gap-3 items-center">
+                                <LanguageIcon></LanguageIcon>
+                                <div className="text-[#4E4E4E]">Język</div>
+                            </div>
+                            <div className="py-2 px-3 w-fit bg-[#e97c4d7a] rounded-sm">{publicationData?.language}</div>
+                        </div>
+                    </div>
+                    <div className="text-[#474747] font-light font-inter text-[15px]">
+                        {publicationData?.description}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 // import { Dispatch, FormEvent, SetStateAction, memo, useRef, useState } from "react";
@@ -342,7 +393,7 @@ function StepThree({ file, setCurrentStep }: StepThreeProps) {
 // import ContentLoader from "../ui/ContentLoader";
 // import WarningIcon from "../ui/icons/WarningIcon";
 // import Contact, { messenger } from "./Contact";
-// import isPublicationDataValid from "@/lib/isPublicationDataValid";
+// import isPublicationData?Valid from "@/lib/isPublicationDataValid";
 // import { useUserData } from "../contexts/UserProviders";
 // import SubmitIcon from "../ui/icons/SubmitIcon";
 // import { useScreen } from "../contexts/ScreenProvider";

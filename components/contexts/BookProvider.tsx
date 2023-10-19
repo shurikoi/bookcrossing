@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from "react";
-import { bookData, bookQuery } from "../authorized/Main";
+import { bookData } from "../authorized/Main";
 
 interface BookContext {
     setBookId: Dispatch<SetStateAction<string>>;
@@ -43,7 +43,7 @@ function BookProvider({ children }: { children: React.ReactNode }) {
                     body: JSON.stringify({ id: bookId })
                 });
     
-                const book = await response.json();
+                const book : bookData = await response.json();
 
                 setBook(book);
             } catch (error) {

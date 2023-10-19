@@ -16,6 +16,8 @@ export interface bookData {
     category: string;
     image: string;
     messenger: messenger;
+    language: string;
+    state: string;
     messengerDescription: string;
     date: string;
 }

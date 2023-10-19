@@ -18,7 +18,7 @@ const categories = [
 
 const languages = ["Angielski", "Polski", "Ukraiński"];
 
-const bookStates = ["Nowa", "Jak nowa", "Bardzo dobry", "Dobry", "Przeciętny", "Zły"];
+const bookStates = ["Bardzo dobry", "Dobry", "Akceptowany", "Zły"];
 
 export default memo(function FilterMenu() {
     const menuRef = useRef<HTMLDivElement>(null);

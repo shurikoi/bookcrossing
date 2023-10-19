@@ -2,7 +2,7 @@ import ContentLoader from "../ui/ContentLoader";
 import Book from "../ui/Book";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { bookData, bookQuery, publication } from "./Main";
+import { publication } from "./Main";
 import { useFilter } from "../contexts/FilterProvider";
 import { useBook } from "../contexts/BookProvider";
 
