@@ -184,9 +184,8 @@ function StepOne({ setFile, setCurrentStep }: StepOneProps) {
     return (
         <>
             <div
-                className={`flex flex-col rounded-lg items-center w-fit gap-16 px-[110px] py-[72px] duration-200 ${
-                    isWindowHovered ? "bg-[#e4e4e4]" : "bg-white"
-                }`}
+                className={`flex flex-col rounded-lg items-center w-fit gap-16 px-[110px] py-[72px] duration-200 ${isWindowHovered ? "bg-[#e4e4e4]" : "bg-white"
+                    }`}
                 onDragOver={(e: DragEvent) => e.preventDefault()}
                 onDrop={handleImagePush}
             >
@@ -209,10 +208,10 @@ function PublicationImage({ file }: { file: File | undefined }) {
         if (file) setImage(URL.createObjectURL(file));
     }, [file]);
 
-    return <img className="max-w-[500px] object-cover" src={image} alt="" />;
+    return <img className="w-[400px] object-cover" src={image} alt="" />;
 }
 
-function StepTwo({ file, publicationData ,setPublicationData, setCurrentStep }: StepTwoProps) {
+function StepTwo({ file, publicationData, setPublicationData, setCurrentStep }: StepTwoProps) {
     const [title, setTitle] = useState(publicationData?.title || "");
     const [author, setAuthor] = useState(publicationData?.author || "");
     const [bookCategory, setBookCategory] = useState(publicationData?.category || "");
@@ -332,15 +331,18 @@ function StepTwo({ file, publicationData ,setPublicationData, setCurrentStep }: 
 function StepThree({ file, publicationData, setCurrentStep }: StepThreeProps) {
     return (
         <div className="flex flex-col">
-            <div className="p-3 relative text-center">
+            <div className="p-3 relative text-center border-b">
                 <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
                     <ArrowLeftIcon></ArrowLeftIcon>
                 </div>
-                <div>3 / 3</div>
+                <div>Podgląd</div>
             </div>
-            <div className="flex md:w-[640px] lg:w-[800px] gap-10 md:p-6 h-[448px]">
-                <div className="flex flex-col gap-2.5 shrink-0 w-[200px]">
-                    <img src={publicationData?.image} alt="book" className="rounded-md " />
+            <div className="flex min-w-[700px] gap-10 md:p-6 h-fit">
+                <div className="flex flex-col gap-10 shrink-0 w-[200px]">
+                    <div className="relative">
+                        <img src={publicationData?.image} alt="book" className="rounded-md aspect-[3/4] object-cover" />
+                        <div className="absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-gray-500"></div>
+                    </div>
                     <Button className="text-center">Publikuj</Button>
                 </div>
                 <div className="flex flex-col gap-8">

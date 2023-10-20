@@ -16,14 +16,14 @@ export default function BookMenu() {
     const { book, bookId, isLoading, setBookId } = useBook();
 
     const [isModalActive, setIsModalActive] = useState(false);
-    const [isContactVisible, setIsContactVisible] = useState(false);
+    const [wasButtonPressed, setWasButtonPresseed] = useState(false);
 
     function handleContactClick() {
-        if (!isContactVisible) setIsContactVisible(true);
+        if (!wasButtonPressed) setWasButtonPresseed(true);
     }
 
     useEffect(() => {
-        if (isModalActive) setIsContactVisible(false);
+        if (isModalActive) setWasButtonPresseed(false);
     }, [isModalActive, bookId, isLoading]);
 
     useEffect(() => {
@@ -44,9 +44,13 @@ export default function BookMenu() {
                                     <div className="font-inter font-medium py-2.5 border-2 active:scale-[0.99] will-change-transform text-center border-[#2B78B1] text-[#2B78B1] rounded-lg cursor-pointer hover:text-white hover:bg-[#2B78B1] duration-300 select-none">
                                         Edytuj
                                     </div>
-                                    <div className="font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer hover:text-[#CD5E4F] hover:bg-white hover:border-[#CD5E4F] duration-300 select-none">
-                                        Usuń
-                                    </div>
+                                    {
+                                        wasButtonPressed ? <div className="font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer hover:text-[#CD5E4F] hover:bg-white hover:border-[#CD5E4F] duration-300 select-none">
+                                            Potwierdź
+                                        </div> : <div onClick={() => setWasButtonPresseed(true)} className="font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer hover:text-[#CD5E4F] hover:bg-white hover:border-[#CD5E4F] duration-300 select-none">
+                                            Usuń
+                                        </div>
+                                    }
                                 </>
                             ) : (
                                 <>
@@ -54,7 +58,7 @@ export default function BookMenu() {
                                         className="font-inter font-medium py-2.5 px-2 border-2 active:scale-[0.99] will-change-transform text-center border-[#2B78B1] text-[#2B78B1] rounded-lg cursor-pointer duration-300"
                                         onClick={handleContactClick}
                                     >
-                                        {isContactVisible ? (
+                                        {wasButtonPressed ? (
                                             <div
                                                 className="flex gap-2 items-center justify-center"
                                                 title={book.messenger + " : " + book.messengerDescription}

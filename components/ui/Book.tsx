@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Loader from "./ContentLoader";
-import convertDate from "@/lib/convertDate";
+import dateConjugation from "@/lib/dateConjugation";
 import { memo } from "react";
 import { publication } from "../authorized/Main";
 
@@ -27,7 +27,7 @@ const Book = memo(({ data, handleClick }: BookProps) => {
                     isMouseOver ? "opacity-0 pointer-events-none" : "opacity-100 pointer-events-auto"
                 }`}
             >
-                <div className="text-[#CDCDCD] text-[17px] font-normal cursor-text w-fit">{convertDate(data.date)}</div>
+                <div className="text-[#CDCDCD] text-[17px] font-normal cursor-text w-fit">{dateConjugation(data.date)}</div>
                 <div>
                     <div
                         className="font-medium text-[21px] text-white overflow-hidden text-ellipsis cursor-text w-fit max-w-full whitespace-nowrap "
