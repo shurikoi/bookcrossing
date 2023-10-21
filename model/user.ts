@@ -6,8 +6,9 @@ const user = new Schema(
         surname: String,
         password: String,
         email: String,
-        avatar: String,
-        points: Number,
+        provider: {type: String, default: "credentials"},
+        avatar: { type: String, value: "/avatars/01.png" },
+        points: { type: Number, default: 1 },
     },
     { versionKey: false }
 );

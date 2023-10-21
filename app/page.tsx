@@ -1,7 +1,7 @@
 "use client";
 
 import ContentLoader from "@/components/ui/ContentLoader";
-import { useUserData } from "@/components/contexts/UserProviders";
+import { useUserData } from "@/components/contexts/UserProvider";
 import AuthorizedStartPage from "@/components/authorized/StartPage";
 import UnauthorizedStartPage from "@/components/unauthorized/StartPage";
 

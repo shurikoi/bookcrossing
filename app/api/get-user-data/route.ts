@@ -9,7 +9,7 @@ export async function POST(req: Request) {
 
     const { email } = body;
 
-    const { _id: id, name, surname, points, password } = await users.findOne({ email });
+    const { _id: id, name, surname, points, password, avatar } = await users.findOne({ email });
 
-    return NextResponse.json({ id, name, surname, email, points, isPasswordExist: !!password });
+    return NextResponse.json({ id, name, surname, email, avatar, points, isPasswordExist: !!password });
 }

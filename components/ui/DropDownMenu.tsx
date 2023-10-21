@@ -1,4 +1,4 @@
-import { Dispatch, RefObject, SetStateAction, useRef } from "react";
+import { Dispatch, RefObject, SetStateAction, memo, useRef } from "react";
 import useClickOutside from "../hooks/useClickOutside";
 
 interface DropDownMenuProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -18,7 +18,7 @@ const defaultAnimation = {
     inactive: "opacity-0 pointer-events-none",
 };
 
-export default function DropDownMenu({
+export default memo(function DropDownMenu({
     isMenuActive,
     setIsMenuActive,
     animation = defaultAnimation,
@@ -43,4 +43,4 @@ export default function DropDownMenu({
             {children}
         </div>
     );
-}
+});

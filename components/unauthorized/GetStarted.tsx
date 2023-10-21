@@ -13,11 +13,10 @@ export default function GetStarted() {
                         <Image width={60} height={60} src="/images/image 359.png" alt=""></Image>
                     </div>
                     <div className={`${eUkraine.className}`}>Oddajesz i dostajesz</div>
-                    <div className="font-light text-[15px]">
-                        Kiedy twoja książka znajdzie nowego właścicela dostajesz 1 point.
-                        <br />
-                        <br />
-                        Jeden point wymienisz na jedną książkę.
+                    <div className="leading-8 font-light text-[15px]">
+                        <div>Kiedy twoja książka znajdzie nowego właścicela dostajesz 1 point.</div>
+
+                        <div>Jeden point wymienisz na jedną książkę.</div>
                     </div>
                 </div>
             </div>

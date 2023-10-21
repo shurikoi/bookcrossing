@@ -5,7 +5,7 @@ import { ChangeEvent, Dispatch, DragEvent, SetStateAction, useEffect, useRef, us
 import { bookData, publication } from "./Main";
 import LanguageIcon from "../ui/icons/LanguageIcon";
 import LeafIcon from "../ui/icons/LeafIcon";
-import { useUserData } from "../contexts/UserProviders";
+import { useUserData } from "../contexts/UserProvider";
 import DropDownMenuWithSearch from "../ui/DropDownMenuWithSearch";
 import PhotosIcon from "../ui/icons/PhotosIcon";
 import Button from "../ui/buttons/Button";
@@ -64,7 +64,7 @@ interface StepOneProps {
 
 interface StepTwoProps {
     file: File | undefined;
-    publicationData: bookData | undefined
+    publicationData: bookData | undefined;
     setCurrentStep: Dispatch<SetStateAction<number>>;
     setPublicationData: Dispatch<SetStateAction<bookData | undefined>>;
 }
@@ -105,7 +105,12 @@ export default function PublicationMenu({ setBooks, isModalActive, setIsModalAct
 
     const steps = [
         <StepOne setFile={setFile} setCurrentStep={setCurrentStep}></StepOne>,
-        <StepTwo file={file} publicationData={publicationData} setPublicationData={setPublicationData} setCurrentStep={setCurrentStep}></StepTwo>,
+        <StepTwo
+            file={file}
+            publicationData={publicationData}
+            setPublicationData={setPublicationData}
+            setCurrentStep={setCurrentStep}
+        ></StepTwo>,
         <StepThree file={file} publicationData={publicationData} setCurrentStep={setCurrentStep}></StepThree>,
     ];
     const nodeRef = useRef<any>(null);
@@ -184,8 +189,9 @@ function StepOne({ setFile, setCurrentStep }: StepOneProps) {
     return (
         <>
             <div
-                className={`flex flex-col rounded-lg items-center w-fit gap-16 px-[110px] py-[72px] duration-200 ${isWindowHovered ? "bg-[#e4e4e4]" : "bg-white"
-                    }`}
+                className={`flex flex-col rounded-lg items-center w-fit gap-16 px-[110px] py-[72px] duration-200 ${
+                    isWindowHovered ? "bg-[#e4e4e4]" : "bg-white"
+                }`}
                 onDragOver={(e: DragEvent) => e.preventDefault()}
                 onDrop={handleImagePush}
             >
@@ -227,11 +233,17 @@ function StepTwo({ file, publicationData, setPublicationData, setCurrentStep }: 
             category: bookCategory,
             language: bookLanguage,
             state: bookState,
+            avatar: "",
             owner: "",
             messenger: "Telegram",
             messengerDescription: "",
             date: "0",
             image: file ? URL.createObjectURL(file) : "",
+            ownerData: {
+                avatar: "",
+                name: "",
+                surname: "",
+            },
         });
     }, [title, author, bookCategory, bookDescription, bookLanguage, bookState]);
 
@@ -251,7 +263,7 @@ function StepTwo({ file, publicationData, setPublicationData, setCurrentStep }: 
                 </div>
                 <div className="grow-0 shrink-0 flex flex-col gap-6 p-4 w-[360px]">
                     <div className="flex gap-4 items-center">
-                        <div className="w-10 h-10 rounded-full bg-gray-500"></div>
+                        <img className="w-10 h-10 rounded-full" src={user?.avatar} alt="" />
                         <div className="font-extralight text-base">{user?.name}</div>
                     </div>
 
@@ -329,6 +341,8 @@ function StepTwo({ file, publicationData, setPublicationData, setCurrentStep }: 
 }
 
 function StepThree({ file, publicationData, setCurrentStep }: StepThreeProps) {
+    const { user } = useUserData();
+
     return (
         <div className="flex flex-col">
             <div className="p-3 relative text-center border-b">
@@ -341,7 +355,10 @@ function StepThree({ file, publicationData, setCurrentStep }: StepThreeProps) {
                 <div className="flex flex-col gap-10 shrink-0 w-[200px]">
                     <div className="relative">
                         <img src={publicationData?.image} alt="book" className="rounded-md aspect-[3/4] object-cover" />
-                        <div className="absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-gray-500"></div>
+                        <img
+                            src={user?.avatar}
+                            className="absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-gray-500"
+                        ></img>
                     </div>
                     <Button className="text-center">Publikuj</Button>
                 </div>
@@ -396,7 +413,7 @@ function StepThree({ file, publicationData, setCurrentStep }: StepThreeProps) {
 // import WarningIcon from "../ui/icons/WarningIcon";
 // import Contact, { messenger } from "./Contact";
 // import isPublicationData?Valid from "@/lib/isPublicationDataValid";
-// import { useUserData } from "../contexts/UserProviders";
+// import { useUserData } from "../contexts/UserProvider";
 // import SubmitIcon from "../ui/icons/SubmitIcon";
 // import { useScreen } from "../contexts/ScreenProvider";
 // import PreviewMenu from "./PreviewMenu";

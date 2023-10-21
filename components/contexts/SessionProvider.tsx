@@ -1,5 +1,5 @@
 import { SessionProvider, SessionProviderProps } from "next-auth/react";
-import { UserProvider } from "./UserProviders";
+import { UserProvider } from "./UserProvider";
 
 export default function Session({ children, session }: SessionProviderProps) {
     return (

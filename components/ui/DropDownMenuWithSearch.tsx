@@ -118,7 +118,7 @@ export default function DropDownMenuWithSearch({
                 onFocus={() => setIsMenuActive(true)}
                 // onBlur={() => setIsMenuActive(false)}
                 onKeyDown={handleKeyDown}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
+                onChange={(e) => setValue(e.target.value)}
             />
 
             <DropDownMenu

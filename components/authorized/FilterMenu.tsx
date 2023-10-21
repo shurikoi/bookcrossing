@@ -90,7 +90,7 @@ export default memo(function FilterMenu() {
         <div ref={menuRef}>
             <div
                 onClick={() => setIsMenuActive((prev) => !prev)}
-                className="flex gap-16 items-center py-3 px-7 rounded-lg cursor-pointer select-none border-2 border-[#3F3A5A]"
+                className="flex gap-3 items-center py-3 px-14 rounded-lg cursor-pointer select-none border-2 border-[#3F3A5A]"
             >
                 Filtruj według
                 <ArrowDownIcon></ArrowDownIcon>

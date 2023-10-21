@@ -1,10 +1,10 @@
 import connection from "@/lib/connection";
 import hashPassword from "@/lib/hashPassword";
 import users from "@/model/user";
+import fs from "fs";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { signOut } from "next-auth/react";
 
 type credentials = {
     authType: "signin" | "signup";
@@ -12,6 +12,8 @@ type credentials = {
     surname?: string;
     email: string;
     password: string;
+    imageData: string | undefined;
+    imageName: string | undefined;
 };
 
 type user = {
@@ -31,23 +33,27 @@ export const authOptions: NextAuthOptions = {
             name: "credentials",
             credentials: {},
             async authorize(credentials) {
-                const { authType, email, password } = credentials as credentials;
+                const { authType, imageName, imageData, email, password } = credentials as credentials;
 
                 await connection();
+
+                if (imageData && imageName)
+                    fs.writeFileSync("./public/avatars/" + imageName, Buffer.from(imageData.split(",")[1], "base64"));
 
                 const user = await users.findOne({ email });
                 const hashedPassword = await hashPassword(password);
 
                 if (authType == "signin") {
                     if (user && user.password == hashedPassword) {
-                        console.log("returned");
                         return { email } as any;
                     }
                 } else if (authType == "signup") {
                     if (!user) {
                         const { name, surname } = credentials as credentials;
 
-                        await users.create({ name, surname, password: hashedPassword, email, points: 1 });
+                        const path = imageName && imageData ? "/avatars" + imageName : "/avatars/01.png";
+
+                        await users.create({ name, surname, password: hashedPassword, avatar: path, email });
 
                         return { email } as any;
                     }
@@ -82,12 +88,10 @@ export const authOptions: NextAuthOptions = {
 
                 const user = await users.findOne({ email });
 
-                if (!user) users.create({ name, surname, email, avatar, points: 1 });
-
-                return true;
+                if (!user) users.create({ name, surname, email, provider: "google", avatar });
             }
-            
-            return false
+
+            return true;
         },
     },
 };

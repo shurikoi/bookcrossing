@@ -11,6 +11,7 @@ import { BookProvider } from "../contexts/BookProvider";
 export interface bookData {
     title: string;
     owner: string;
+    avatar: string;
     author: string;
     description: string;
     category: string;
@@ -20,6 +21,11 @@ export interface bookData {
     state: string;
     messengerDescription: string;
     date: string;
+    ownerData: {
+        avatar: string;
+        name: string;
+        surname: string;
+    };
 }
 
 export interface publication {
@@ -28,6 +34,11 @@ export interface publication {
     author: string;
     title: string;
     image: string;
+    ownerData: {
+        avatar: string;
+        name: string;
+        surname: string;
+    };
 }
 
 export interface bookQuery {
@@ -54,7 +65,7 @@ export default function Main() {
     }
 
     return (
-        <div className="flex flex-col items-center pt-10 h-full ">
+        <div className="flex flex-col items-center pt-10">
             <div className="text-center text-[25px] font-normal px-6 max-w-[800px] box-content">
                 Wierzymy, że korzystanie z&nbsp;serwisu może dostarczyć wiele radości i&nbsp;wzbogacić Twoje
                 doświadczenie czytelnicze.

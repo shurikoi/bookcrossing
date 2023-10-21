@@ -43,7 +43,7 @@ const ModalMenu = memo(function ModalMenu({
                 </MobileModalMenu>
             ) : (
                 <div
-                    className={`fixed left-0 top-0 w-screen h-screen sm:flex items-center justify-center duration-300 transition-opacity ${
+                    className={`fixed left-0 top-0 w-screen h-screen sm:flex items-center justify-center duration-300 transition-opacity z-50 ${
                         isModalActive ? "opacity-100 pointer-events-all z-10" : "opacity-0 pointer-events-none"
                     } `}
                     ref={ref}

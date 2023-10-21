@@ -76,7 +76,7 @@ export function validatePassword(password: string) {
         number: false,
     };
 
-    if (password.trim().length <= 8) errors.length = true;
+    if (password.trim().length < 8) errors.length = true;
     if (!/\d/.test(password)) errors.number = true;
 
     return {

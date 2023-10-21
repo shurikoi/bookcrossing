@@ -4,14 +4,16 @@ import { bookData } from "../authorized/Main";
 interface BookContext {
     setBookId: Dispatch<SetStateAction<string>>;
     book: bookData | undefined;
+    fetchedBooks: { [key: string]: bookData };
     bookId: string;
     isLoading: boolean;
 }
 
 const BookContext = createContext<BookContext>({
     setBookId: () => {},
-    book: undefined,
+    fetchedBooks: {},
     bookId: "",
+    book: undefined,
     isLoading: true,
 });
 
@@ -19,7 +21,9 @@ function BookProvider({ children }: { children: React.ReactNode }) {
     const params = new URLSearchParams(window.location.search);
 
     const [bookId, setBookId] = useState(params.get("book") || "");
-    const [book, setBook] = useState<bookData | undefined>();
+    const [book, setBook] = useState<bookData>();
+
+    const [fetchedBooks, setFetchedBooks] = useState<{ [key: string]: bookData }>({});
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -28,11 +32,12 @@ function BookProvider({ children }: { children: React.ReactNode }) {
 
         params.set("book", bookId);
 
-        if (!bookId) params.delete("book")
+        if (!bookId) params.delete("book");
 
         history.pushState({}, "", params.size > 0 ? `/?${params}` : "/");
-        
-        if (bookId) getBook();
+
+        if (bookId && !fetchedBooks[bookId]) getBook();
+        else if (fetchedBooks[bookId]) setBook(fetchedBooks[bookId]);
 
         async function getBook() {
             setIsLoading(true);
@@ -40,21 +45,29 @@ function BookProvider({ children }: { children: React.ReactNode }) {
             try {
                 const response = await fetch("/api/get-book", {
                     method: "POST",
-                    body: JSON.stringify({ id: bookId })
+                    body: JSON.stringify({ id: bookId }),
                 });
-    
-                const book : bookData = await response.json();
+
+                const book: bookData = await response.json();
 
                 setBook(book);
+
+                setFetchedBooks((fetchedBooks) => {
+                    return { ...fetchedBooks, [bookId]: book };
+                });
             } catch (error) {
-                setBook(undefined)   
+                setBook(undefined);
             }
 
             setIsLoading(false);
         }
     }, [bookId]);
 
-    return <BookContext.Provider value={{ setBookId, book, isLoading, bookId }}>{children}</BookContext.Provider>;
+    return (
+        <BookContext.Provider value={{ setBookId, book, isLoading, bookId, fetchedBooks }}>
+            {children}
+        </BookContext.Provider>
+    );
 }
 
 function useBook() {

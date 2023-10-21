@@ -1,4 +1,4 @@
-import { FormEvent, Fragment, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import DefaultForm from "./DefaultForm";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
@@ -12,25 +12,14 @@ export default function AuthForm() {
     const { formActive, setFormActive } = useForm();
     const [currentState, setCurrentState] = useState<currentState>("default");
     const [email, setEmail] = useState("");
-
+    console.log(email);
     const states = {
-        default: (
-            <DefaultForm
-                email={email}
-                setEmail={setEmail}
-                formActive={formActive}
-                setCurrentState={setCurrentState}
-            ></DefaultForm>
-        ),
+        default: <DefaultForm email={email} setEmail={setEmail} setCurrentState={setCurrentState}></DefaultForm>,
         signin: <SignInForm email={email} setCurrentState={setCurrentState}></SignInForm>,
         signup: <SignUpForm email={email} setCurrentState={setCurrentState}></SignUpForm>,
     };
 
-    async function handleSubmit(e: FormEvent) {
-        e.preventDefault();
-    }
-
-    const nodeRef = useRef<any>(null);
+    const nodeRef = useRef<HTMLDivElement>(null);
 
     return (
         <ModalMenu isModalActive={formActive} setIsModalActive={setFormActive}>
@@ -45,15 +34,13 @@ export default function AuthForm() {
                     }}
                     nodeRef={nodeRef}
                 >
-                    <form
-                        className="text-center flex items-center flex-col gap-8 w-full md:max-w-[500px] sm px-6 py-8 sm:px-10 sm:py-14"
-                        onSubmit={handleSubmit}
-                        ref={nodeRef}
-                    >
+                    <div className="" ref={nodeRef}>
                         {states[currentState]}
-                    </form>
+                    </div>
                 </CSSTransition>
             </SwitchTransition>
         </ModalMenu>
     );
 }
+
+// flex items-center flex-col gap-8 w-full md:max-w-[500px] text-center px-6 py-8 sm:px-10 sm:py-14

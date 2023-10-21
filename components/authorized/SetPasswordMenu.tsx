@@ -3,7 +3,7 @@ import ModalMenu from "../ui/ModalMenu";
 import SettingsInput from "../ui/SettingsInput";
 import PasswordIcon from "../ui/icons/PasswordIcon";
 import { validatePassword } from "@/lib/isUserDataValid";
-import { useUserData } from "../contexts/UserProviders";
+import { useUserData } from "../contexts/UserProvider";
 import ApplyChanges from "../ui/buttons/Button";
 
 interface SetPasswordMenuProps {

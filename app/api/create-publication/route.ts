@@ -25,6 +25,7 @@ export async function POST(req: Request) {
         extension: parts.slice(-1)
     };
 
+    
     const buffer = Buffer.from(await data.image!.arrayBuffer());
 
     const date = new Date().getTime();

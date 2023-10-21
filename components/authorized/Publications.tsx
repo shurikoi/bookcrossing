@@ -66,7 +66,7 @@ export default function Publications({
 
             const data: fetchData = await response.json();
 
-            const fetchedBooks : publication[] = data.publications;
+            const fetchedBooks: publication[] = data.publications;
 
             setPage((prev) => prev + 1);
             setIsBooksLoading(false);
@@ -103,19 +103,12 @@ export default function Publications({
     }, [observerRef, observerRef.current, hasMore, isBooksLoading]);
 
     return (
-        <div className="px-28 py-10 flex w-full flex-col gap-6 items-center bg-[#f8faff] h-full">
-            <TransitionGroup className="flex gap-6 flex-wrap justify-center" exit={false}>
+        <div className="px-28 py-10 flex w-full flex-col gap-8 items-center bg-[linear-gradient(180deg,rgba(248,250,255,1)_40%,rgba(255,255,255,1)_80%)] ">
+            <TransitionGroup className="flex gap-8 flex-wrap justify-center" exit={false}>
                 {books &&
                     books.map((book, index) => (
                         <CSSTransition key={index} classNames="item" timeout={500}>
-                            <Book
-                                key={index}
-                                data={book}
-                                handleClick={() => {
-                                    console.log(book)
-                                    setBookId(book.id!);
-                                }}
-                            />
+                            <Book key={index} data={book} handleClick={() => setBookId(book.id!)} />
                         </CSSTransition>
                     ))}
                 <div ref={observerRef} className="absolute bottom-0"></div>

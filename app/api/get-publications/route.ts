@@ -1,6 +1,8 @@
 import { bookQuery } from "@/components/authorized/Main";
 import connection from "@/lib/connection";
 import books from "@/model/book";
+import { ObjectId } from "mongodb";
+import { Aggregate } from "mongoose";
 import { NextResponse } from "next/server";
 
 interface book {
@@ -38,11 +40,40 @@ export async function POST(req: Request) {
 
     const count = await books.count({});
 
-    const publications: book[] = await books
-        .find(filter, { _id: 0, id: "$_id", author: 1, title: 1, date: 1, image: 1 })
+    // const publications = await books
+    //     .find(filter, { _id: 0, id: "$_id", author: 1, title: 1, date: 1, image: 1, owner: 1 })
+    //     .sort({ date: query.sort })
+    //     .skip(skip)
+    //     .limit(limit);
+
+    const publications = await books
+        .aggregate([
+            {
+                $lookup: {
+                    from: "users", // Имя коллекции с пользователями
+                    let: {
+                        ownerID: "$owner",
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $eq: ["$_id", "$$ownerID"] },
+                            },
+                        },
+                        {
+                            $unset: ["email", "provider", "points", "_id"],
+                        },
+                    ],
+                    as: "ownerData",
+                },
+            },
+            {$unwind: "$ownerData"},
+            { $project: { _id: 0, id: "$_id", author: 1, title: 1, date: 1, image: 1, owner: 1, ownerData: 1 } },
+        ])
         .sort({ date: query.sort })
         .skip(skip)
         .limit(limit);
-
+    // const owner = await users.find({_id: {$in: publications}})
+    console.log(publications);
     return NextResponse.json({ publications, count });
 }

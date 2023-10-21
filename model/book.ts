@@ -1,10 +1,11 @@
+import { ObjectId } from "mongodb";
 import { Schema, models, model } from "mongoose";
 
 const book = new Schema(
     {
         title: String,
         category: String,
-        owner: String,
+        owner: ObjectId,
         author: String,
         image: String,
         description: String,

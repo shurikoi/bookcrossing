@@ -3,7 +3,7 @@ import UserMenu from "./UserMenu";
 import { useState, useRef, memo } from "react";
 import Image from "next/image";
 import SettingsMenu from "./SettingsMenu";
-import { useUserData } from "../contexts/UserProviders";
+import { useUserData } from "../contexts/UserProvider";
 import useClickOutside from "../hooks/useClickOutside";
 
 export default memo(function Header() {

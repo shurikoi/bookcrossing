@@ -1,5 +1,4 @@
-import { validateName } from "@/lib/isUserDataValid";
-import React, { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, memo, useRef, useState } from "react";
 import WarningIcon from "./icons/WarningIcon";
 
 interface SettingsInputProps {
@@ -16,8 +15,9 @@ interface SettingsInputProps {
     };
 }
 
-const SettingsInput = React.memo(({ value, setValue, type = "text", validator }: SettingsInputProps) => {
+const SettingsInput = memo(({ value, setValue, type = "text", validator }: SettingsInputProps) => {
     const [error, setError] = useState<string | undefined>();
+    const timerRef = useRef<NodeJS.Timer | null>(null);
 
     function handleInput(e: FormEvent<HTMLInputElement>) {
         const target = e.target as HTMLInputElement;
@@ -27,11 +27,12 @@ const SettingsInput = React.memo(({ value, setValue, type = "text", validator }:
 
             const { isValid, error } = validator(target.value);
 
-            if (isValid) setValue(target.value);
-            else setError(error);
-        } else {
-            setValue(target.value);
+            // if (isValid) setValue(target.value);
+            if (!isValid) setError(error);
         }
+        //  else {
+        // }
+        setValue(target.value.trim());
     }
 
     return (
@@ -40,6 +41,7 @@ const SettingsInput = React.memo(({ value, setValue, type = "text", validator }:
                 value={value}
                 onInput={handleInput}
                 type={type}
+                maxLength={20}
                 className="font-extralight text-[14px] p-1 bg-[#EFEFEF] border-[#BEBEBE] rounded-md border w-60"
             />
             {error && (

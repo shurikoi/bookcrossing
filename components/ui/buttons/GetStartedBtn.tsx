@@ -4,7 +4,6 @@ export default function GetStartedBtn() {
     const { setFormActive } = useForm();
 
     function handleClick() {
-        console.log("clicked");
         setFormActive((formActive: boolean) => !formActive);
     }
 
