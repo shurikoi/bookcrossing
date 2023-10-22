@@ -1,7 +1,7 @@
 import ModalMenu from "../ui/ModalMenu";
 import { Dispatch, SetStateAction, useState } from "react";
 import ProfileIcon from "../ui/icons/ProfileIcon";
-import SettingsInput from "../ui/SettingsInput";
+import SettingsInput from "./SettingsInput";
 import ChangePasswordMenu from "./ChangePasswordMenu";
 import { useUserData } from "../contexts/UserProvider";
 import SetPasswordMenu from "./SetPasswordMenu";

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import ModalMenu from "../ui/ModalMenu";
-import SettingsInput from "../ui/SettingsInput";
+import SettingsInput from "./SettingsInput";
 import PasswordIcon from "../ui/icons/PasswordIcon";
 import ApplyChanges from "../ui/buttons/Button";
 

@@ -1,9 +1,8 @@
 import { useState } from "react";
 import BookMenu from "./BookMenu";
-import PublicationMenu from "./PublicationMenu";
+import PublicationMenu, { messenger } from "./PublicationMenu";
 import AddBookBtn from "../ui/AddBookBtn";
 import FilterBar from "./FilterBar";
-import { messenger } from "./Contact";
 import Publications from "./Publications";
 import { FilterProvider, sort } from "../contexts/FilterProvider";
 import { BookProvider } from "../contexts/BookProvider";
@@ -11,7 +10,6 @@ import { BookProvider } from "../contexts/BookProvider";
 export interface bookData {
     title: string;
     owner: string;
-    avatar: string;
     author: string;
     description: string;
     category: string;

@@ -5,6 +5,7 @@ import fs from "fs";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import { signOut } from "next-auth/react";
 
 type credentials = {
     authType: "signin" | "signup";
@@ -66,10 +67,25 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
     callbacks: {
-        // async session({session}){
-        //     signOut()
-        //     return session
-        // },
+        async session({ session }) {
+            try {
+                const user = await users.findOne({ email: session.user?.email });
+
+                session.user = {
+                    id: user._id,
+                    name: user.name,
+                    surname: user.surname,
+                    email: user.email,
+                    avatar: user.avatar,
+                    points: user.points,
+                    isPasswordExist: !!user.password,
+                };
+            } catch (error) {
+                signOut()
+            }
+
+            return session;
+        },
         async signIn({ profile, account }) {
             if (account?.provider == "google") {
                 const {

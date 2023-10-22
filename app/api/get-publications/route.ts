@@ -74,6 +74,6 @@ export async function POST(req: Request) {
         .skip(skip)
         .limit(limit);
     // const owner = await users.find({_id: {$in: publications}})
-    console.log(publications);
+    // console.log(publications);
     return NextResponse.json({ publications, count });
 }

@@ -1,5 +1,5 @@
 import { Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef, useState } from "react";
-import ShowPasswordBtn from "../ui/ShowPasswordBtn";
+import ShowPasswordBtn from "../ui/buttons/ShowPasswordBtn";
 import { currentState } from "./AuthForm";
 import { signIn } from "next-auth/react";
 import ContentLoader from "../ui/ContentLoader";

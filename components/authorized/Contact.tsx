@@ -6,21 +6,7 @@ import InstagramIcon from "../ui/icons/InstagramIcon";
 import useClickOutside from "../hooks/useClickOutside";
 import DropDownMenu from "../ui/DropDownMenu";
 
-interface messengers {
-    [key: string]: {
-        name: messenger;
-        icon: JSX.Element;
-    };
-}
 
-export const messengers: messengers = {
-    Telegram: { name: "Telegram", icon: <TelegramIcon /> },
-    Snapchat: { name: "Snapchat", icon: <SnapchatIcon /> },
-    Messenger: { name: "Messenger", icon: <MessengerIcon /> },
-    Instagram: { name: "Instagram", icon: <InstagramIcon /> },
-};
-
-export type messenger = "Telegram" | "Snapchat" | "Messenger" | "Instagram";
 
 interface ContactProps {
     messenger: messenger;

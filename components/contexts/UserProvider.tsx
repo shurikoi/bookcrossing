@@ -28,14 +28,15 @@ type userData = {
 function UserProvider({ children }: { children: React.ReactNode }) {
     const { data: session, status } = useSession();
 
-    const [id, setId] = useState("");
-    const [name, setName] = useState("");
-    const [surname, setSurname] = useState("");
-    const [email, setEmail] = useState("");
-    const [avatar, setAvatar] = useState("");
-    const [points, setPoints] = useState(0);
-    const [isPasswordExist, setIsPasswordExist] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [id, setId] = useState(session?.user?.id || "");
+    const [name, setName] = useState(session?.user?.name || "");
+    const [surname, setSurname] = useState(session?.user?.surname || "");
+    const [email, setEmail] = useState(session?.user?.email || "");
+    const [avatar, setAvatar] = useState(session?.user?.avatar || "");
+    const [points, setPoints] = useState(session?.user?.points || 0);
+    const [isPasswordExist, setIsPasswordExist] = useState(session?.user?.isPasswordExist || false);
+    // const [loading, setLoading] = useState(true);
+    const loading = status == "loading";
 
     const [isDataFetched, setIsDataFetched] = useState(false);
 
@@ -60,35 +61,44 @@ function UserProvider({ children }: { children: React.ReactNode }) {
         },
     };
 
-    const userEmail = session?.user.email;
+    // const userEmail = session?.email;
 
+    // useEffect(() => {
+    //     async function fetchUser() {
+    //         const response = await fetch("/api/get-user-data", {
+    //             method: "post",
+    //             body: JSON.stringify({ email: userEmail }),
+    //         });
+
+    //         try {
+    //             const user = await response.json();
+
+    //             if (user.isPasswordExist) setIsPasswordExist(true);
+
+    //             setId(user.id);
+    //             setName(user.name);
+    //             setSurname(user.surname);
+    //             setEmail(user.email);
+    //             setPoints(user.points);
+    //             setAvatar(user.avatar);
+    //             // if (session) session.user.id = user.id;
+    //             setLoading(false);
+    //         } catch (error) {
+    //             signOut();
+    //         }
+    //     }
+
+    //     if (userEmail) fetchUser();
+    // }, [userEmail]);
     useEffect(() => {
-        async function fetchUser() {
-            const response = await fetch("/api/get-user-data", {
-                method: "post",
-                body: JSON.stringify({ email: userEmail }),
-            });
-
-            try {
-                const user = await response.json();
-
-                if (user.isPasswordExist) setIsPasswordExist(true);
-
-                setId(user.id);
-                setName(user.name);
-                setSurname(user.surname);
-                setEmail(user.email);
-                setPoints(user.points);
-                setAvatar(user.avatar);
-
-                setLoading(false);
-            } catch (error) {
-                signOut();
-            }
-        }
-
-        if (userEmail) fetchUser();
-    }, [userEmail]);
+        setId(session?.user?.id || "");
+        setName(session?.user?.name || "");
+        setSurname(session?.user?.surname || "");
+        setEmail(session?.user?.email || "");
+        setPoints(session?.user?.points || 0);
+        setAvatar(session?.user?.avatar || "");
+        setIsPasswordExist(session?.user?.isPasswordExist || false);
+    }, [session]);
 
     useMemo(() => {
         if (timerRef.current) clearTimeout(timerRef.current);

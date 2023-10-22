@@ -1,47 +1,30 @@
-import ProfileIcon from "../ui/icons/ProfileIcon";
-import TagIcon from "../ui/icons/TagIcon";
 import ModalMenu from "../ui/ModalMenu";
-import { ChangeEvent, Dispatch, DragEvent, SetStateAction, useEffect, useRef, useState } from "react";
-import { bookData, publication } from "./Main";
-import LanguageIcon from "../ui/icons/LanguageIcon";
-import LeafIcon from "../ui/icons/LeafIcon";
-import { useUserData } from "../contexts/UserProvider";
-import DropDownMenuWithSearch from "../ui/DropDownMenuWithSearch";
-import PhotosIcon from "../ui/icons/PhotosIcon";
-import Button from "../ui/buttons/Button";
-import ArrowLeftIcon from "../ui/icons/ArrowLeftIcon";
+import { Dispatch, SetStateAction, useLayoutEffect, useRef, useState } from "react";
+import { publication } from "./Main";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import SmallPhotosIcon from "../ui/icons/SmallPhotosIcon";
-import books from "@/model/book";
+import TelegramIcon from "../ui/icons/TelegramIcon";
+import SnapchatIcon from "../ui/icons/SnapchatIcon";
+import MessengerIcon from "../ui/icons/MessengerIcon";
+import InstagramIcon from "../ui/icons/InstagramIcon";
+import StepOne from "./publication_menu/StepOne";
+import StepTwo from "./publication_menu/StepTwo";
+import StepThree from "./publication_menu/StepThree";
 
-const categories = [
-    "Powieść historyczna",
-    "Kryminał",
-    "Fantastyka",
-    "Romans",
-    "Science Fiction",
-    "Horror",
-    "Literatura podróżnicza",
-    "Dramat",
-    "Poezja",
-    "Biografia",
-];
 
-const languages = ["Angielski", "Polski", "Ukraiński"];
 
-const bookStates = ["Bardzo dobry", "Dobry", "Akceptowany", "Zły"];
-
-// export type publicationData = {
-//     title: string;
-//     author: string;
-//     category: string;
-//     description: string;
-//     owner: string;
-//     imageName: string;
-//     image: File;
-//     messenger: messenger;
-//     messengerDescription: string;
-// };
+export type publicationData = {
+    title: string;
+    author: string;
+    category: string;
+    description: string;
+    language: string;
+    state: string;
+    imageName: string;
+    imageData: string;
+    messenger: messenger;
+    messengerDescription: string;
+    date: string;
+};
 
 // interface image {
 //     url: string;
@@ -57,23 +40,21 @@ const bookStates = ["Bardzo dobry", "Dobry", "Akceptowany", "Zły"];
 //     hasErrors: boolean;
 // };
 
-interface StepOneProps {
-    setFile: Dispatch<SetStateAction<File | undefined>>;
-    setCurrentStep: Dispatch<SetStateAction<number>>;
+interface messengers {
+    [key: string]: {
+        name: messenger;
+        icon: JSX.Element;
+    };
 }
 
-interface StepTwoProps {
-    file: File | undefined;
-    publicationData: bookData | undefined;
-    setCurrentStep: Dispatch<SetStateAction<number>>;
-    setPublicationData: Dispatch<SetStateAction<bookData | undefined>>;
-}
+export const messengers: messengers = {
+    Telegram: { name: "Telegram", icon: <TelegramIcon /> },
+    Snapchat: { name: "Snapchat", icon: <SnapchatIcon /> },
+    Messenger: { name: "Messenger", icon: <MessengerIcon /> },
+    Instagram: { name: "Instagram", icon: <InstagramIcon /> },
+};
 
-interface StepThreeProps {
-    file: File | undefined;
-    publicationData: bookData | undefined;
-    setCurrentStep: Dispatch<SetStateAction<number>>;
-}
+export type messenger = "Telegram" | "Snapchat" | "Messenger" | "Instagram" | string;
 
 interface PublicationMenuProps {
     setBooks: Dispatch<SetStateAction<publication[]>>;
@@ -84,24 +65,20 @@ interface PublicationMenuProps {
 export default function PublicationMenu({ setBooks, isModalActive, setIsModalActive }: PublicationMenuProps) {
     const [currentStep, setCurrentStep] = useState(0);
 
-    const [publicationData, setPublicationData] = useState<bookData>();
+    const [publicationData, setPublicationData] = useState<publicationData>();
 
     const [file, setFile] = useState<File>();
 
     const [isBackgroundClickPrevented, setIsBackgroundClickPrevented] = useState(false);
     const overlayRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setIsBackgroundClickPrevented(true);
 
         setTimeout(() => {
             setIsBackgroundClickPrevented(false);
-        }, 400);
+        }, 600);
     }, [file]);
-
-    useEffect(() => {
-        setTimeout(() => setIsBackgroundClickPrevented(false), 10000);
-    }, [isBackgroundClickPrevented]);
 
     const steps = [
         <StepOne setFile={setFile} setCurrentStep={setCurrentStep}></StepOne>,
@@ -143,263 +120,6 @@ export default function PublicationMenu({ setBooks, isModalActive, setIsModalAct
                 </SwitchTransition>
             </ModalMenu>
         </>
-    );
-}
-
-function StepOne({ setFile, setCurrentStep }: StepOneProps) {
-    const fileRef = useRef<HTMLInputElement>(null);
-
-    const [isWindowHovered, setIsWindowHovered] = useState(false);
-
-    useEffect(() => {
-        function handleDragStart() {
-            setIsWindowHovered(true);
-        }
-
-        function handleDragEnd(e: any) {
-            if (!e.relatedTarget) setIsWindowHovered(false);
-        }
-
-        window.addEventListener("dragenter", handleDragStart);
-        window.addEventListener("dragleave", handleDragEnd);
-
-        return () => {
-            window.removeEventListener("dragenter", handleDragStart);
-            window.removeEventListener("dragleave", handleDragEnd);
-        };
-    }, []);
-
-    function openFileMenu() {
-        if (fileRef.current) fileRef.current.click();
-    }
-
-    function handleImagePush(e: ChangeEvent<HTMLInputElement> | DragEvent) {
-        e.preventDefault();
-
-        const files = (e as DragEvent).dataTransfer?.files ?? (e as ChangeEvent<HTMLInputElement>).target?.files;
-
-        if (files) {
-            if (files[0]) {
-                setFile(files[0]);
-                setCurrentStep(1);
-            }
-        }
-    }
-
-    return (
-        <>
-            <div
-                className={`flex flex-col rounded-lg items-center w-fit gap-16 px-[110px] py-[72px] duration-200 ${
-                    isWindowHovered ? "bg-[#e4e4e4]" : "bg-white"
-                }`}
-                onDragOver={(e: DragEvent) => e.preventDefault()}
-                onDrop={handleImagePush}
-            >
-                <div className="font-light text-[17px]">Opublikuj książkę</div>
-                <PhotosIcon></PhotosIcon>
-                <div className="flex flex-col items-center gap-6">
-                    <div className="font-extralight text-[14px]">Przeciągnij zjęcie tutaj</div>
-                    <Button onClick={openFileMenu}>Albo wybierz ręcznie</Button>
-                    <input ref={fileRef} type="file" accept="image/png, image/jpeg" hidden onChange={handleImagePush} />
-                </div>
-            </div>
-        </>
-    );
-}
-
-function PublicationImage({ file }: { file: File | undefined }) {
-    const [image, setImage] = useState<string>();
-
-    useEffect(() => {
-        if (file) setImage(URL.createObjectURL(file));
-    }, [file]);
-
-    return <img className="w-[400px] object-cover" src={image} alt="" />;
-}
-
-function StepTwo({ file, publicationData, setPublicationData, setCurrentStep }: StepTwoProps) {
-    const [title, setTitle] = useState(publicationData?.title || "");
-    const [author, setAuthor] = useState(publicationData?.author || "");
-    const [bookCategory, setBookCategory] = useState(publicationData?.category || "");
-    const [bookLanguage, setBookLanguage] = useState(publicationData?.language || "");
-    const [bookState, setBookState] = useState(publicationData?.state || "");
-    const [bookDescription, setBookDescription] = useState(publicationData?.description || "");
-
-    useEffect(() => {
-        setPublicationData({
-            title,
-            author,
-            description: bookDescription,
-            category: bookCategory,
-            language: bookLanguage,
-            state: bookState,
-            avatar: "",
-            owner: "",
-            messenger: "Telegram",
-            messengerDescription: "",
-            date: "0",
-            image: file ? URL.createObjectURL(file) : "",
-            ownerData: {
-                avatar: "",
-                name: "",
-                surname: "",
-            },
-        });
-    }, [title, author, bookCategory, bookDescription, bookLanguage, bookState]);
-
-    const { user } = useUserData();
-
-    return (
-        <div className="flex flex-col ">
-            <div className="p-3 relative text-center">
-                <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
-                    <ArrowLeftIcon></ArrowLeftIcon>
-                </div>
-                <div>2 / 3</div>
-            </div>
-            <div className="inline-flex">
-                <div className="flex">
-                    <PublicationImage file={file}></PublicationImage>
-                </div>
-                <div className="grow-0 shrink-0 flex flex-col gap-6 p-4 w-[360px]">
-                    <div className="flex gap-4 items-center">
-                        <img className="w-10 h-10 rounded-full" src={user?.avatar} alt="" />
-                        <div className="font-extralight text-base">{user?.name}</div>
-                    </div>
-
-                    <div className="flex flex-col gap-4 text-[20px] font-lato font-normal">
-                        <div className="flex items-center justify-between px-1">
-                            <input
-                                className="placeholder:text-[#6C6C6C]"
-                                placeholder="Tytuł"
-                                type="text"
-                                value={title}
-                                onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
-                            />
-                            <SmallPhotosIcon></SmallPhotosIcon>
-                        </div>
-                        <div className="flex items-center justify-between px-1  text-[20px]">
-                            <input
-                                className="font-lato font-normal placeholder:text-[#6C6C6C]"
-                                placeholder="Autor"
-                                type="text"
-                                value={author}
-                                onChange={(e: ChangeEvent<HTMLInputElement>) => setAuthor(e.target.value)}
-                            />
-                            <ProfileIcon height={24} width={24}></ProfileIcon>
-                        </div>
-                        <div className="flex items-center justify-between px-1  text-[20px]">
-                            <DropDownMenuWithSearch
-                                items={categories}
-                                startValue={bookCategory}
-                                setItem={setBookCategory}
-                                placeholder="Kategoria"
-                                createNewItem
-                            ></DropDownMenuWithSearch>
-                            <TagIcon height={24} width={24}></TagIcon>
-                        </div>
-                        <div className="flex items-center justify-between px-1  text-[20px]">
-                            <DropDownMenuWithSearch
-                                items={languages}
-                                startValue={bookLanguage}
-                                setItem={setBookLanguage}
-                                placeholder="Język"
-                                createNewItem
-                            ></DropDownMenuWithSearch>
-                            <LanguageIcon height={24} width={24}></LanguageIcon>
-                        </div>
-                        <div className="flex items-center justify-between px-1  text-[20px]">
-                            <DropDownMenuWithSearch
-                                items={bookStates}
-                                startValue={bookState}
-                                setItem={setBookState}
-                                placeholder="Stan"
-                            ></DropDownMenuWithSearch>
-                            <LeafIcon height={24} width={24}></LeafIcon>
-                        </div>
-                        <div className="relative px-1">
-                            <textarea
-                                className="resize-none w-full max-h-[200px] placeholder:text-[#6C6C6C]"
-                                value={bookDescription}
-                                rows={4}
-                                placeholder="Napisz komentarz"
-                                maxLength={100}
-                                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setBookDescription(e.target.value)}
-                            ></textarea>
-                            <div className="absolute right-0 bottom-0 select-none text-sm text-[#767676] translate-y-1/2">
-                                {bookDescription.length}/100
-                            </div>
-                        </div>
-                    </div>
-                    <div className="ml-auto p-4">
-                        <Button onClick={() => setCurrentStep(2)}>Podgląd</Button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-function StepThree({ file, publicationData, setCurrentStep }: StepThreeProps) {
-    const { user } = useUserData();
-
-    return (
-        <div className="flex flex-col">
-            <div className="p-3 relative text-center border-b">
-                <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
-                    <ArrowLeftIcon></ArrowLeftIcon>
-                </div>
-                <div>Podgląd</div>
-            </div>
-            <div className="flex min-w-[700px] gap-10 md:p-6 h-fit">
-                <div className="flex flex-col gap-10 shrink-0 w-[200px]">
-                    <div className="relative">
-                        <img src={publicationData?.image} alt="book" className="rounded-md aspect-[3/4] object-cover" />
-                        <img
-                            src={user?.avatar}
-                            className="absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-gray-500"
-                        ></img>
-                    </div>
-                    <Button className="text-center">Publikuj</Button>
-                </div>
-                <div className="flex flex-col gap-8">
-                    <div className="font-head font-normal text-[20px]">{publicationData?.title}</div>
-                    <div className="grid grid-cols-2 grid-rows-2 font-extralight leading-none text-[14px] gap-y-6 gap-x-10 w-fit">
-                        <div className="flex flex-col gap-3">
-                            <div className="flex gap-3 items-center">
-                                <ProfileIcon></ProfileIcon>
-                                <div className="text-[#4E4E4E]">Autor</div>
-                            </div>
-                            <div className="py-2 px-3 w-fit bg-[#a4e94d7a] rounded-sm">{publicationData?.author}</div>
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            <div className="flex gap-3 items-center">
-                                <LeafIcon></LeafIcon>
-                                <div className="text-[#4E4E4E]">Stan</div>
-                            </div>
-                            <div className="py-2 px-3 w-fit bg-[#4d66e97a] rounded-sm">{publicationData?.state}</div>
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            <div className="flex gap-3 items-center">
-                                <TagIcon></TagIcon>
-                                <div className="text-[#4E4E4E]">Kategoria</div>
-                            </div>
-                            <div className="py-2 px-3 w-fit bg-[#e9d04d7a] rounded-sm">{publicationData?.category}</div>
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            <div className="flex gap-3 items-center">
-                                <LanguageIcon></LanguageIcon>
-                                <div className="text-[#4E4E4E]">Język</div>
-                            </div>
-                            <div className="py-2 px-3 w-fit bg-[#e97c4d7a] rounded-sm">{publicationData?.language}</div>
-                        </div>
-                    </div>
-                    <div className="text-[#474747] font-light font-inter text-[15px]">
-                        {publicationData?.description}
-                    </div>
-                </div>
-            </div>
-        </div>
     );
 }
 

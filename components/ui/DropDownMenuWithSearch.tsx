@@ -3,6 +3,7 @@ import {
     Dispatch,
     KeyboardEvent,
     SetStateAction,
+    memo,
     useEffect,
     useLayoutEffect,
     useRef,
@@ -19,7 +20,7 @@ interface DropDownMenuProps {
     createNewItem?: boolean;
 }
 
-export default function DropDownMenuWithSearch({
+export default memo(function DropDownMenuWithSearch({
     items,
     setItem,
     placeholder,
@@ -37,7 +38,6 @@ export default function DropDownMenuWithSearch({
     const scrollRef = useRef<HTMLDivElement>(null);
 
     useLayoutEffect(() => {
-        if (!isMenuActive && value.length > 0) setIsMenuActive(true);
         if (items.includes(value)) setIsMenuActive(false);
 
         setItem(value);
@@ -49,11 +49,6 @@ export default function DropDownMenuWithSearch({
             )
         );
     }, [value]);
-
-    // useEffect(() => {
-    //     // setSelectedItemIndex(0);
-    //     // setIsMenuActive(filteredItems.length != 0);
-    // }, [filteredItems]);
 
     function validateSelectedIndex(index: number) {
         let correctIndex = index;
@@ -115,10 +110,14 @@ export default function DropDownMenuWithSearch({
                 type="text"
                 placeholder={placeholder}
                 value={value}
+                maxLength={55}
                 onFocus={() => setIsMenuActive(true)}
                 // onBlur={() => setIsMenuActive(false)}
                 onKeyDown={handleKeyDown}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e) => {
+                    setValue(e.target.value.replace(/\s+/g, ' '));
+                    if (!isMenuActive) setIsMenuActive(true);
+                }}
             />
 
             <DropDownMenu
@@ -126,12 +125,12 @@ export default function DropDownMenuWithSearch({
                 menuRef={menuRef}
                 isMenuActive={isMenuActive}
                 setIsMenuActive={setIsMenuActive}
-                className="absolute left-0 -bottom-2 box-content translate-y-full shadow-lg rounded-lg flex flex-col bg-white min-w-full max-h-[200px] w-max overflow-auto overflow-x-hidden text-[16px]"
+                className="absolute left-0 -bottom-2 box-content translate-y-full shadow-lg rounded-lg flex flex-col bg-white min-w-full max-h-[200px] w-full overflow-auto overflow-x-hidden text-[16px] whitespace-nowrap"
             >
                 {filteredItems.map((item, index) => (
                     <div
                         key={item}
-                        className={`h-10 duration-300 cursor-pointer py-0.5 ${
+                        className={`h-10 duration-300 cursor-pointer ${
                             index == selectedItemIndex ? "bg-[#dcf5d5]" : ""
                         }`}
                         onMouseEnter={() => setSelectedItemIndex(index)}
@@ -144,16 +143,16 @@ export default function DropDownMenuWithSearch({
                 ))}
                 {createNewItem && value.length > 0 && !items.includes(value) ? (
                     <div
-                        className={`duration-300 cursor-pointer py-0.5 ${
+                        className={`duration-300 cursor-pointer ${
                             filteredItems.length == selectedItemIndex ? "bg-[#dcf5d5]" : ""
                         }`}
                         onMouseEnter={() => setSelectedItemIndex(filteredItems.length)}
                         onClick={() => setIsMenuActive(false)}
                     >
-                        <div className={`py-1.5 px-3 inline-block`}>Stwórz {value}</div>
+                        <div className={`py-1.5 px-3 inline-block max-w-full overflow-hidden text-ellipsis`}>Stwórz {value}</div>
                     </div>
                 ) : null}
             </DropDownMenu>
         </div>
     );
-}
+});

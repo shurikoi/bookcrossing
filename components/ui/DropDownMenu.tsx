@@ -37,7 +37,7 @@ export default memo(function DropDownMenu({
     return (
         <div
             ref={menuRef ? (elRef ? elRef : ref) : ref}
-            className={`${isMenuActive ? animation.active : animation.inactive} z-10 duration-200 ${className || ""}`}
+            className={`${isMenuActive ? animation.active : animation.inactive} z-40 duration-200 ${className || ""}`}
             style={style}
         >
             {children}

@@ -14,18 +14,11 @@ const Book = memo(({ data, handleClick }: BookProps) => {
     const [isImageLoading, setIsImageLoading] = useState(true);
 
     const [isMouseOver, setIsMouseOver] = useState(false);
-    console.log(data);
+
     return (
         <div className="relative">
-            <img
-                title={data.ownerData.name + " " + data.ownerData.surname}
-                src={data.ownerData.avatar}
-                className={`absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-14 h-14 rounded-full bg-gray-500 duration-[400ms] z-10 ${
-                    isMouseOver ? "opacity-0" : "opacity-100"
-                }`}
-            ></img>
             <div
-                className="relative w-60 h-72 bg-black font-inter shadow-[0px_0px_15px_1px_rgba(0,0,0,.5)] hover:scale-[1.03] hover:shadow-[0px_0px_30px_1px_rgba(0,0,0,.5)] cursor-pointer will-change-transform duration-200 flex-shrink-0"
+                className="relative w-60 h-72 bg-black font-inter shadow-[0px_0px_15px_1px_rgba(0,0,0,.5)] hover:scale-[1.04] hover:shadow-[0px_0px_30px_1px_rgba(0,0,0,.5)] cursor-pointer will-change-transform duration-200 flex-shrink-0"
                 onClick={handleClick}
                 onMouseEnter={() => setIsMouseOver(true)}
                 onMouseLeave={() => setIsMouseOver(false)}
@@ -53,14 +46,10 @@ const Book = memo(({ data, handleClick }: BookProps) => {
                         </div>
                     </div>
                     <div
-                        className={` ${
-                            isImageLoaded ? "bg-black/40" : "bg-black duration-0"
-                        }  duration-200 absolute w-full h-full left-0 top-0 text-white flex items-center justify-center z-[-1]`}
-                    >
-                        {!isImageLoaded && !isImageLoading && "No Image"}
-                    </div>
+                        className={`bg-black/40 duration-200 absolute w-full h-full left-0 top-0 text-white flex items-center justify-center z-[-1]`}
+                    ></div>
                 </div>
-                {isImageLoaded || (!isImageLoaded && isImageLoading) ? (
+                {isImageLoaded || isImageLoading ? (
                     <img
                         src={data.image || ""}
                         alt=""
@@ -75,7 +64,12 @@ const Book = memo(({ data, handleClick }: BookProps) => {
                         }}
                     />
                 ) : (
-                    <div className="w-full h-full bg-black"></div>
+                    !isImageLoaded &&
+                    !isImageLoading && (
+                        <div className="absolute text-white left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                            No Image
+                        </div>
+                    )
                 )}
                 {isImageLoading && (
                     <div className="absolute flex justify-center items-center w-full h-full top-0 left-0">
@@ -83,6 +77,13 @@ const Book = memo(({ data, handleClick }: BookProps) => {
                     </div>
                 )}
             </div>
+            <img
+                title={data.ownerData.name + " " + data.ownerData.surname}
+                src={data.ownerData.avatar}
+                className={`absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-14 h-14 rounded-full bg-gray-500 duration-300 ${
+                    isMouseOver ? "opacity-0" : "opacity-100"
+                }`}
+            ></img>
         </div>
     );
 });
