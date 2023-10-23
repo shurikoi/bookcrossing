@@ -6,7 +6,7 @@ import ProfileIcon from "@/components/ui/icons/ProfileIcon";
 import SmallPhotosIcon from "@/components/ui/icons/SmallPhotosIcon";
 import TagIcon from "@/components/ui/icons/TagIcon";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { messengers, publicationData } from "../PublicationMenu";
+import { messengers, publicationData } from "./PublicationMenu";
 import PublicationImage from "./PublicationImage";
 import LeafIcon from "@/components/ui/icons/LeafIcon";
 import DropDownMenuWithChoose from "@/components/ui/DropDownMenuWithChoose";
@@ -37,7 +37,7 @@ const languages = ["Angielski", "Polski", "Ukraiński"];
 
 const bookStates = ["Bardzo dobry", "Dobry", "Akceptowany", "Zły"];
 
-const descriptionLength = 500
+const descriptionLength = 1000;
 
 export default function StepTwo({ file, publicationData, setPublicationData, setCurrentStep }: StepTwoProps) {
     const [title, setTitle] = useState(publicationData?.title || "");
@@ -54,20 +54,19 @@ export default function StepTwo({ file, publicationData, setPublicationData, set
     const { user } = useUserData();
 
     useEffect(() => {
-        if (user)
-            setPublicationData({
-                title,
-                author,
-                description: bookDescription,
-                category: bookCategory,
-                language: bookLanguage,
-                state: bookState,
-                messenger,
-                messengerDescription,
-                date: "0",
-                imageData: file ? URL.createObjectURL(file) : "",
-                imageName: file?.name || "",
-            });
+        setPublicationData({
+            title,
+            author,
+            description: bookDescription,
+            category: bookCategory,
+            language: bookLanguage,
+            state: bookState,
+            messenger,
+            messengerDescription,
+            date: new Date(),
+            imageData: file ? URL.createObjectURL(file) : "",
+            imageName: file?.name || "",
+        });
     }, [title, author, bookCategory, bookDescription, bookLanguage, bookState, messenger, messengerDescription]);
 
     return (
@@ -99,7 +98,7 @@ export default function StepTwo({ file, publicationData, setPublicationData, set
                                 placeholder="Tytuł"
                                 type="text"
                                 value={title}
-                                onChange={(e) => setTitle(e.target.value.replace(/\s+/g, ' '))}
+                                onChange={(e) => setTitle(e.target.value.replace(/\s+/g, " "))}
                             />
                             <SmallPhotosIcon></SmallPhotosIcon>
                         </div>
@@ -113,7 +112,7 @@ export default function StepTwo({ file, publicationData, setPublicationData, set
                                 placeholder="Autor"
                                 type="text"
                                 value={author}
-                                onChange={(e) => setAuthor(e.target.value.replace(/\s+/g, ' '))}
+                                onChange={(e) => setAuthor(e.target.value.replace(/\s+/g, " "))}
                             />
                             <ProfileIcon height={24} width={24}></ProfileIcon>
                         </div>
@@ -166,7 +165,7 @@ export default function StepTwo({ file, publicationData, setPublicationData, set
                                 type="text"
                                 placeholder="Kontakt"
                                 value={messengerDescription}
-                                onChange={(e) => setMessengerDescription(e.target.value.replace(/\s+/g, ' '))}
+                                onChange={(e) => setMessengerDescription(e.target.value.replace(/\s+/g, " "))}
                                 className={`duration-200 ${
                                     errors?.messengerDescription
                                         ? "text-red-600 placeholder:text-red-600"

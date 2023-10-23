@@ -1,4 +1,4 @@
-import { publicationData } from "@/components/authorized/PublicationMenu";
+import { publicationData } from "@/components/authorized/publication_menu/PublicationMenu";
 
 export interface errors {
     title: boolean;

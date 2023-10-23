@@ -38,8 +38,12 @@ export const authOptions: NextAuthOptions = {
 
                 await connection();
 
-                if (imageData && imageName)
-                    fs.writeFileSync("./public/avatars/" + imageName, Buffer.from(imageData.split(",")[1], "base64"));
+                if (imageData && imageData != "undefined" && imageName != "undefined")
+                    fs.writeFile(
+                        "./public/avatars/" + imageName,
+                        Buffer.from(imageData.split(",")[1], "base64"),
+                        () => {}
+                    );
 
                 const user = await users.findOne({ email });
                 const hashedPassword = await hashPassword(password);
@@ -52,7 +56,7 @@ export const authOptions: NextAuthOptions = {
                     if (!user) {
                         const { name, surname } = credentials as credentials;
 
-                        const path = imageName && imageData ? "/avatars" + imageName : "/avatars/01.png";
+                        const path =  imageName != "undefined" && imageData ? "/avatars" + imageName : "/avatars/01.png";
 
                         await users.create({ name, surname, password: hashedPassword, avatar: path, email });
 
@@ -81,7 +85,7 @@ export const authOptions: NextAuthOptions = {
                     isPasswordExist: !!user.password,
                 };
             } catch (error) {
-                signOut()
+                signOut();
             }
 
             return session;

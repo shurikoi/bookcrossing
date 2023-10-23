@@ -1,4 +1,4 @@
-export default function dateConjugation(date: string) {
+export default function dateConjugation(date: Date) {
     const time = new Date(date).getTime() / 1000; // czas w sekundach
     const currentTime = new Date().getTime() / 1000; // czas w sekundach
     const timeDifference = currentTime - time;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import BookMenu from "./BookMenu";
-import PublicationMenu, { messenger } from "./PublicationMenu";
+import PublicationMenu, { messenger } from "./publication_menu/PublicationMenu";
 import AddBookBtn from "../ui/AddBookBtn";
 import FilterBar from "./FilterBar";
 import Publications from "./Publications";
@@ -18,7 +18,7 @@ export interface bookData {
     language: string;
     state: string;
     messengerDescription: string;
-    date: string;
+    date: Date;
     ownerData: {
         avatar: string;
         name: string;
@@ -28,7 +28,7 @@ export interface bookData {
 
 export interface publication {
     id?: string;
-    date: string;
+    date: Date;
     author: string;
     title: string;
     image: string;
@@ -85,16 +85,15 @@ export default function Main() {
                         setIsBooksLoading={setIsBooksLoading}
                         isBooksLoading={isBooksLoading}
                     ></Publications>
+                    <PublicationMenu
+                        isModalActive={isPublicationModalActive}
+                        setIsModalActive={setIsPublicationModalActive}
+                        setBooks={setBooks}
+                    />
                 </FilterProvider>
 
                 <BookMenu />
             </BookProvider>
-
-            <PublicationMenu
-                isModalActive={isPublicationModalActive}
-                setIsModalActive={setIsPublicationModalActive}
-                setBooks={setBooks}
-            />
 
             <AddBookBtn onClick={handleAddBookClick} />
         </div>

@@ -1,14 +1,14 @@
-import ModalMenu from "../ui/ModalMenu";
+import ModalMenu from "../../ui/ModalMenu";
 import { Dispatch, SetStateAction, useLayoutEffect, useRef, useState } from "react";
-import { publication } from "./Main";
+import { publication } from "../Main";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import TelegramIcon from "../ui/icons/TelegramIcon";
-import SnapchatIcon from "../ui/icons/SnapchatIcon";
-import MessengerIcon from "../ui/icons/MessengerIcon";
-import InstagramIcon from "../ui/icons/InstagramIcon";
-import StepOne from "./publication_menu/StepOne";
-import StepTwo from "./publication_menu/StepTwo";
-import StepThree from "./publication_menu/StepThree";
+import TelegramIcon from "../../ui/icons/TelegramIcon";
+import SnapchatIcon from "../../ui/icons/SnapchatIcon";
+import MessengerIcon from "../../ui/icons/MessengerIcon";
+import InstagramIcon from "../../ui/icons/InstagramIcon";
+import StepOne from "./StepOne";
+import StepTwo from "./StepTwo";
+import StepThree from "./StepThree";
 
 
 
@@ -23,7 +23,7 @@ export type publicationData = {
     imageData: string;
     messenger: messenger;
     messengerDescription: string;
-    date: string;
+    date: Date;
 };
 
 // interface image {
@@ -88,7 +88,7 @@ export default function PublicationMenu({ setBooks, isModalActive, setIsModalAct
             setPublicationData={setPublicationData}
             setCurrentStep={setCurrentStep}
         ></StepTwo>,
-        <StepThree file={file} publicationData={publicationData} setCurrentStep={setCurrentStep}></StepThree>,
+        <StepThree file={file} setBooks={setBooks} setPublicationData={setPublicationData} setIsModalActive={setIsModalActive} publicationData={publicationData} setCurrentStep={setCurrentStep}></StepThree>,
     ];
     const nodeRef = useRef<any>(null);
     return (

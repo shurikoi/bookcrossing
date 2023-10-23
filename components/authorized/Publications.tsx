@@ -103,7 +103,7 @@ export default function Publications({
     }, [observerRef, observerRef.current, hasMore, isBooksLoading]);
 
     return (
-        <div className="px-28 py-10 flex w-full flex-col gap-8 items-center bg-[linear-gradient(180deg,rgba(248,250,255,1)_40%,rgba(255,255,255,1)_80%)] ">
+        <div className="px-24 py-10 flex w-full flex-col gap-8 items-center bg-[linear-gradient(180deg,rgba(248,250,255,1)_40%,rgba(255,255,255,1)_80%)] ">
             <TransitionGroup className="flex gap-8 flex-wrap justify-center" exit={false}>
                 {books &&
                     books.map((book, index) => (

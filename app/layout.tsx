@@ -5,6 +5,7 @@ import { eUkraine, eUkraineHead, inter, lato } from "@/components/fonts";
 import SessionProvider from "@/components/contexts/SessionProvider";
 import { ScreenProvider } from "@/components/contexts/ScreenProvider";
 import Head from "next/head";
+import { Toaster } from "react-hot-toast";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
@@ -16,6 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         <title>Bookcrossing</title>
                     </Head>
                     <body className={`${eUkraine.className} ${eUkraineHead.variable} ${inter.variable} ${lato.variable} bg-white`}>
+                        <Toaster position="top-right"></Toaster>
                         {children}
                     </body>
                 </html>

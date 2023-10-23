@@ -10,7 +10,7 @@ interface book {
     owner: string;
     author: string;
     description: string;
-    date: string;
+    date: Date;
 }
 
 interface body {

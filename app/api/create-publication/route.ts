@@ -3,34 +3,41 @@ import fs from "fs";
 import books from "@/model/book";
 import connection from "@/lib/connection";
 import isPublicationDataValid from "@/lib/isPublicationDataValid";
-import { publicationData } from "@/components/authorized/PublicationMenu";
+import { publicationData } from "@/components/authorized/publication_menu/PublicationMenu";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import users from "@/model/user";
+import generateRandomString from "@/lib/generateRandomName";
 
 export async function POST(req: Request) {
     const body: publicationData = await req.json();
 
     const { hasErrors } = isPublicationDataValid(body);
 
-    if (hasErrors) return NextResponse.json("publication data isn't valid", { status: 400 });
+    if (hasErrors) return NextResponse.json("Dane nie są prawidłowe", { status: 400 });
 
     const session = await getServerSession(authOptions);
 
     const user = await users.findOne({ _id: session?.user?.id });
 
-    if (session && user && user.points > 0) {
+    if (session && user) {
         await connection();
 
-        const path = "/books/" + body.imageName;
+        const extension = body.imageName.split(".").at(-1);
 
-        const image = Buffer.from(body.imageData.split(",")[1], "base64")
+        const path = "/books/" + generateRandomString(30) + "." + extension;
 
-        fs.writeFile("./public" + path, image, () => {});
+        try {
+            const image = Buffer.from(body.imageData.split(",")[1], "base64");
 
-        users.updateOne({ _id: user._id }, { points: user.points - 1 });
+            fs.writeFile("./public" + path, image, () => {});
 
-        books.create({
+            // await users.updateOne({ _id: user._id }, { points: user.points - 1 });
+        } catch (error) {
+            return NextResponse.json("Coś poszło nie tak", { status: 400 });
+        }
+
+        const book = await books.create({
             title: body.title,
             owner: session?.user?.id,
             description: body.description,
@@ -41,50 +48,9 @@ export async function POST(req: Request) {
             messenger: body.messenger,
             messengerDescription: body.messengerDescription,
             image: path,
-            date: new Date(),
+            date: body.date,
         });
+        console.log(book);
+        return NextResponse.json({ id: book._id });
     } else return NextResponse.json({}, { status: 400 });
-
-    return NextResponse.json({});
-    // const body = await req.formData();
-
-    // const data: any = {};
-
-    // for (const [key, value] of body) {
-    //     data[key] = value;
-    // }
-    // const errors = isPublicationDataValid(data);
-
-    // if (errors.hasErrors) return NextResponse.json(errors);
-
-    // const parts = data.imageName.split(".");
-
-    // const image = {
-    //     name: parts.slice(0, -1).join(""),
-    //     extension: parts.slice(-1)
-    // };
-
-    // const buffer = Buffer.from(await data.image!.arrayBuffer());
-
-    // const date = new Date().getTime();
-
-    // const path = `/books/${date}_${image.name}.${image.extension}`;
-
-    // fs.writeFile("./public" + path, buffer, () => {});
-
-    // const { title, owner, description, category, author, messenger, messengerDescription } = data;
-
-    // books.create({
-    //     title,
-    //     owner,
-    //     description,
-    //     category,
-    //     author,
-    //     messenger,
-    //     messengerDescription,
-    //     image: path,
-    //     date: date,
-    // });
-
-    // return NextResponse.json({});
 }
