@@ -135,7 +135,7 @@ export default function BookMenu() {
                         </div>
                         <div className="flex flex-col gap-8">
                             <div className="font-head font-normal text-[20px]">{book.title}</div>
-                            <div className="grid grid-cols-[repeat(3,auto)] grid-rows-2 font-extralight leading-none text-[14px] gap-y-6 gap-x-10 w-fit pr-10">
+                            <div className="grid grid-cols-[repeat(2,auto)] grid-rows-2 font-extralight leading-none text-[14px] gap-y-8 gap-x-16 w-fit pr-10">
                                 <PublicationItem
                                     data={book.author}
                                     icon={<ProfileIcon />}
@@ -150,7 +150,7 @@ export default function BookMenu() {
                                     bg="bg-[#4d66e97a]"
                                 ></PublicationItem>
 
-                                <PublicationItem
+                                {/* <PublicationItem
                                     data={book.messengerDescription}
                                     icon={
                                         <div className="w-[15px] h-[15px]">
@@ -159,7 +159,7 @@ export default function BookMenu() {
                                     }
                                     title={book.messenger}
                                     bg="bg-[#4d9ee9d9]"
-                                ></PublicationItem>
+                                ></PublicationItem> */}
 
                                 <PublicationItem
                                     data={book.category}
