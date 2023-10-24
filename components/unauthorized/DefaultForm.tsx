@@ -98,7 +98,6 @@ export default function DefaultForm({ setEmail, setCurrentState, email }: Defaul
                     value={email}
                     onChange={(e) => {
                         setEmail(e.target.value.trim());
-                        console.log(e.target, e.target.value, e.target.value.trim());
                     }}
                     onKeyDown={handleKeyDown}
                 />

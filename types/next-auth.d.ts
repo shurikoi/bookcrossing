@@ -10,6 +10,7 @@ declare module "next-auth" {
             avatar?: string;
             email?: string;
             isPasswordExist?: boolean;
+            unauthenticated?: boolean;
         };
     }
 }

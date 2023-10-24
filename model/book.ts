@@ -14,7 +14,8 @@ const book = new Schema(
         language: String,
         state: String,
         date: Date,
-        isReserved: { type: Boolean, default: false },
+        reservedBy: ObjectId,
+        reservatorContact: String
     },
     { versionKey: false }
 );

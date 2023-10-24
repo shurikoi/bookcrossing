@@ -60,37 +60,10 @@ function UserProvider({ children }: { children: React.ReactNode }) {
             setAvatar,
         },
     };
-
-    // const userEmail = session?.email;
-
-    // useEffect(() => {
-    //     async function fetchUser() {
-    //         const response = await fetch("/api/get-user-data", {
-    //             method: "post",
-    //             body: JSON.stringify({ email: userEmail }),
-    //         });
-
-    //         try {
-    //             const user = await response.json();
-
-    //             if (user.isPasswordExist) setIsPasswordExist(true);
-
-    //             setId(user.id);
-    //             setName(user.name);
-    //             setSurname(user.surname);
-    //             setEmail(user.email);
-    //             setPoints(user.points);
-    //             setAvatar(user.avatar);
-    //             // if (session) session.user.id = user.id;
-    //             setLoading(false);
-    //         } catch (error) {
-    //             signOut();
-    //         }
-    //     }
-
-    //     if (userEmail) fetchUser();
-    // }, [userEmail]);
+    
     useEffect(() => {
+        if (session?.user?.unauthenticated) signOut();
+
         setId(session?.user?.id || "");
         setName(session?.user?.name || "");
         setSurname(session?.user?.surname || "");

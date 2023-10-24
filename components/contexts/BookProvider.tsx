@@ -45,7 +45,7 @@ function BookProvider({ children }: { children: React.ReactNode }) {
             setIsLoading(true);
 
             try {
-                const response = await fetch("/api/get-book", {
+                const response = await fetch("/api/get-publication", {
                     method: "POST",
                     body: JSON.stringify({ id: bookId }),
                 });

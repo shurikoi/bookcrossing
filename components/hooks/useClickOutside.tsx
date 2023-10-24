@@ -1,7 +1,7 @@
-import { useEffect, RefObject } from "react";
+import { useEffect, RefObject, useLayoutEffect } from "react";
 
 export default function useClickOutside(ref: RefObject<HTMLElement>, callback: () => void) {
-    useEffect(() => {
+    useLayoutEffect(() => {
         function checkClickOutside(e: MouseEvent) {
             const target = e.target as HTMLElement;
 

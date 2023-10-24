@@ -9,5 +9,3 @@ export default function generateRandomString(length: number = 30) {
 
     return randomString;
 }
-
-console.log(generateRandomString(30));

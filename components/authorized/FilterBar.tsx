@@ -24,11 +24,10 @@ export default function FilterBar({ booksCount, booksQueryCount, isBooksLoading,
     const filter = useFilter();
 
     useLayoutEffect(() => {
-        setIsBooksLoading(true)
-    }, [filter.query])
+        setIsBooksLoading(true);
+    }, [filter.query]);
 
     function resetFilter() {
-
         const params = new URLSearchParams(window.location.search);
 
         const sort = params.get("sort");
@@ -44,12 +43,12 @@ export default function FilterBar({ booksCount, booksQueryCount, isBooksLoading,
         <div className="mt-12 px-4 text-center md:text-left relative flex items-center justify-center gap-14 w-full py-3 shadow-[0px_0px_10px_1px_rgba(0,0,0,.1)]">
             <FilterMenu></FilterMenu>
             <div className="py-4 px-10 bg-[#FFF3E1] rounded-[5px] ">
-                {isBooksLoading ? (
+                {Object.values(filter.query.filter).every((item) => item.length == 0) ? (
+                    "Wszyskie książki"
+                ) : isBooksLoading ? (
                     <div className="w-6 h-6 relative">
                         <ContentLoader />
                     </div>
-                ) : Object.values(filter.query.filter).every((item) => item.length == 0) ? (
-                    "Wszyskie książki"
                 ) : (
                     <div className="flex gap-10">
                         <div>

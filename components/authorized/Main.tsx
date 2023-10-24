@@ -1,5 +1,5 @@
 import { useState } from "react";
-import BookMenu from "./BookMenu";
+import BookMenu from "./book_menu/BookMenu";
 import PublicationMenu, { messenger } from "./publication_menu/PublicationMenu";
 import AddBookBtn from "../ui/AddBookBtn";
 import FilterBar from "./FilterBar";
@@ -21,6 +21,11 @@ export interface bookData {
     date: Date;
     ownerData: {
         avatar: string;
+        name: string;
+        surname: string;
+    };
+    reservedBy?: string;
+    reservatorData?: {
         name: string;
         surname: string;
     };

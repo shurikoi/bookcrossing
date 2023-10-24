@@ -1,5 +1,6 @@
 import connection from "@/lib/connection";
 import hashPassword from "@/lib/hashPassword";
+import resizeImage from "@/lib/resizeImage";
 import users from "@/model/user";
 import fs from "fs";
 import NextAuth, { NextAuthOptions } from "next-auth";
@@ -38,13 +39,6 @@ export const authOptions: NextAuthOptions = {
 
                 await connection();
 
-                if (imageData && imageData != "undefined" && imageName != "undefined")
-                    fs.writeFile(
-                        "./public/avatars/" + imageName,
-                        Buffer.from(imageData.split(",")[1], "base64"),
-                        () => {}
-                    );
-
                 const user = await users.findOne({ email });
                 const hashedPassword = await hashPassword(password);
 
@@ -56,8 +50,15 @@ export const authOptions: NextAuthOptions = {
                     if (!user) {
                         const { name, surname } = credentials as credentials;
 
-                        const path =  imageName != "undefined" && imageData ? "/avatars" + imageName : "/avatars/01.png";
+                        const path = imageName ? "/avatars/" + imageName : "/avatars/01.png";
 
+                        if (imageData && imageName) {
+                            const imageBuffer = Buffer.from(imageData.split(",")[1], "base64");
+
+                            const resizedImage = await resizeImage(imageBuffer, 200, 200);
+
+                            fs.writeFile("./public/avatars/" + imageName, resizedImage, () => {});
+                        }
                         await users.create({ name, surname, password: hashedPassword, avatar: path, email });
 
                         return { email } as any;
@@ -85,7 +86,9 @@ export const authOptions: NextAuthOptions = {
                     isPasswordExist: !!user.password,
                 };
             } catch (error) {
-                signOut();
+                session.user = {
+                    unauthenticated: true
+                };
             }
 
             return session;

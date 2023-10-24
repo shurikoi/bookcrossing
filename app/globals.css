@@ -88,21 +88,25 @@ button:focus-visible {
 .item-enter {
   transform: translate(10px);
   opacity: 0;
+  transition: 300ms;
 }
 
 .item-enter-active {
   transform: translate(0%);
   opacity: 1;
+  transition: 300ms;
 }
 
 .item-exit {
   transform: translate(0%);
   opacity: 1;
+  transition: 300ms;
 }
 
 .item-exit-active {
   transform: translate(10px);
   opacity: 0;
+  transition: 300ms;
 }
 
 /* 

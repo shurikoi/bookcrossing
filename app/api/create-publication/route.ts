@@ -8,6 +8,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import users from "@/model/user";
 import generateRandomString from "@/lib/generateRandomName";
+import resizeImage from "@/lib/resizeImage";
 
 export async function POST(req: Request) {
     const body: publicationData = await req.json();
@@ -28,11 +29,11 @@ export async function POST(req: Request) {
         const path = "/books/" + generateRandomString(30) + "." + extension;
 
         try {
-            const image = Buffer.from(body.imageData.split(",")[1], "base64");
+            const imageBuffer = Buffer.from(body.imageData.split(",")[1], "base64");
+
+            const image = await resizeImage(imageBuffer)
 
             fs.writeFile("./public" + path, image, () => {});
-
-            // await users.updateOne({ _id: user._id }, { points: user.points - 1 });
         } catch (error) {
             return NextResponse.json("Coś poszło nie tak", { status: 400 });
         }
@@ -50,7 +51,7 @@ export async function POST(req: Request) {
             image: path,
             date: body.date,
         });
-        console.log(book);
-        return NextResponse.json({ id: book._id });
+
+        return NextResponse.json({ id: book._id, image: path });
     } else return NextResponse.json({}, { status: 400 });
 }

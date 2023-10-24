@@ -6,19 +6,12 @@ import ProfileIcon from "@/components/ui/icons/ProfileIcon";
 import SmallPhotosIcon from "@/components/ui/icons/SmallPhotosIcon";
 import TagIcon from "@/components/ui/icons/TagIcon";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { messengers, publicationData } from "./PublicationMenu";
+import { image, messengers, publicationData } from "./PublicationMenu";
 import PublicationImage from "./PublicationImage";
 import LeafIcon from "@/components/ui/icons/LeafIcon";
 import DropDownMenuWithChoose from "@/components/ui/DropDownMenuWithChoose";
 import Button from "@/components/ui/buttons/Button";
 import isPublicationDataValid, { errors } from "@/lib/isPublicationDataValid";
-
-interface StepTwoProps {
-    file: File | undefined;
-    publicationData: publicationData | undefined;
-    setCurrentStep: Dispatch<SetStateAction<number>>;
-    setPublicationData: Dispatch<SetStateAction<publicationData | undefined>>;
-}
 
 const categories = [
     "Powieść historyczna",
@@ -39,7 +32,14 @@ const bookStates = ["Bardzo dobry", "Dobry", "Akceptowany", "Zły"];
 
 const descriptionLength = 1000;
 
-export default function StepTwo({ file, publicationData, setPublicationData, setCurrentStep }: StepTwoProps) {
+interface StepTwoProps {
+    image: image;
+    publicationData: publicationData | undefined;
+    setCurrentStep: Dispatch<SetStateAction<number>>;
+    setPublicationData: Dispatch<SetStateAction<publicationData | undefined>>;
+}
+
+export default function StepTwo({ image, publicationData, setPublicationData, setCurrentStep }: StepTwoProps) {
     const [title, setTitle] = useState(publicationData?.title || "");
     const [author, setAuthor] = useState(publicationData?.author || "");
     const [bookCategory, setBookCategory] = useState(publicationData?.category || "");
@@ -64,8 +64,8 @@ export default function StepTwo({ file, publicationData, setPublicationData, set
             messenger,
             messengerDescription,
             date: new Date(),
-            imageData: file ? URL.createObjectURL(file) : "",
-            imageName: file?.name || "",
+            imageData: image?.data || "",
+            imageName: image?.name || "",
         });
     }, [title, author, bookCategory, bookDescription, bookLanguage, bookState, messenger, messengerDescription]);
 
@@ -78,8 +78,8 @@ export default function StepTwo({ file, publicationData, setPublicationData, set
                 <div>2 / 3</div>
             </div>
             <div className="flex">
-                <div className="flex">
-                    <PublicationImage file={file}></PublicationImage>
+                <div className="flex w-[400px] aspect-[3/4] relative">
+                    <PublicationImage image={image?.data}></PublicationImage>
                 </div>
                 <div className="grow-0 shrink-0 flex flex-col gap-6 p-4 w-[360px]">
                     <div className="flex gap-4 items-center">
@@ -174,6 +174,7 @@ export default function StepTwo({ file, publicationData, setPublicationData, set
                             />
 
                             <DropDownMenuWithChoose
+                                mode="icons"
                                 items={messengers}
                                 setItem={setMessenger}
                                 item={messenger}

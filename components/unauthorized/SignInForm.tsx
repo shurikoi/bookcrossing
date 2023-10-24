@@ -67,8 +67,6 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
                     value={password}
                     onChange={(e) => {
                         setPassword(e.target.value.trim())
-                        console.log(e.target, e.target.value, e.target.value.trim());
-
                     }}
                     onKeyDown={handleKeyDown}
                     ref={inputRef}

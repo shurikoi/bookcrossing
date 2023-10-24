@@ -121,8 +121,6 @@ export default function SignUpForm({ email, setCurrentState }: SignInFormProps) 
                             surname,
                             password,
                             email,
-                            imageData: undefined,
-                            imageName: undefined,
                             redirect: false,
                         });
                 }

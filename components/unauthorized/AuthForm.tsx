@@ -12,7 +12,7 @@ export default function AuthForm() {
     const { formActive, setFormActive } = useForm();
     const [currentState, setCurrentState] = useState<currentState>("default");
     const [email, setEmail] = useState("");
-    console.log(email);
+
     const states = {
         default: <DefaultForm email={email} setEmail={setEmail} setCurrentState={setCurrentState}></DefaultForm>,
         signin: <SignInForm email={email} setCurrentState={setCurrentState}></SignInForm>,

@@ -1,7 +1,7 @@
 import ContentLoader from "../ui/ContentLoader";
 import Book from "../ui/Book";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, memo, useEffect, useRef, useState } from "react";
 import { publication } from "./Main";
 import { useFilter } from "../contexts/FilterProvider";
 import { useBook } from "../contexts/BookProvider";
@@ -23,7 +23,7 @@ interface fetchData {
 
 const limit = 10;
 
-export default function Publications({
+export default memo(function Publications({
     setBooks,
     books,
     setBooksCount,
@@ -104,15 +104,18 @@ export default function Publications({
 
     return (
         <div className="px-24 py-10 flex w-full flex-col gap-8 items-center bg-[linear-gradient(180deg,rgba(248,250,255,1)_40%,rgba(255,255,255,1)_80%)] ">
-            <TransitionGroup className="flex gap-8 flex-wrap justify-center" exit={false}>
-                {books &&
-                    books.map((book, index) => (
-                        <CSSTransition key={index} classNames="item" timeout={500}>
-                            <Book key={index} data={book} handleClick={() => setBookId(book.id!)} />
-                        </CSSTransition>
-                    ))}
+            <div className="flex gap-8 flex-wrap justify-center">
+                {books && (
+                    <TransitionGroup component={null} exit={false}>
+                        {books.map((book, index) => (
+                            <CSSTransition key={book.id}  classNames="item" timeout={500}>
+                                <Book key={index} data={book} handleClick={() => setBookId(book.id!)} />
+                            </CSSTransition>
+                        ))}
+                    </TransitionGroup>
+                )}
                 <div ref={observerRef} className="absolute bottom-0"></div>
-            </TransitionGroup>
+            </div>
             {isBooksLoading && (
                 <div className="w-6 h-6 relative">
                     <ContentLoader></ContentLoader>
@@ -120,4 +123,4 @@ export default function Publications({
             )}
         </div>
     );
-}
+});

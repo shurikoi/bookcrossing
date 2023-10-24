@@ -1,7 +1,7 @@
 import { useUserData } from "@/components/contexts/UserProvider";
 import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon";
-import PublicationItem from "../PublicationItem";
-import { messengers, publicationData } from "./PublicationMenu";
+import PublicationItem from "../../ui/PublicationItem";
+import { image, messengers, publicationData } from "./PublicationMenu";
 import TagIcon from "@/components/ui/icons/TagIcon";
 import LanguageIcon from "@/components/ui/icons/LanguageIcon";
 import ProfileIcon from "@/components/ui/icons/ProfileIcon";
@@ -15,7 +15,9 @@ import { publication } from "../Main";
 import toast from "react-hot-toast";
 
 interface StepThreeProps {
+    image: image;
     file: File | undefined;
+    setFile: Dispatch<SetStateAction<File | undefined>>;
     publicationData: publicationData | undefined;
     setCurrentStep: Dispatch<SetStateAction<number>>;
     setBooks: Dispatch<SetStateAction<publication[]>>;
@@ -24,7 +26,9 @@ interface StepThreeProps {
 }
 
 export default function StepThree({
+    image,
     file,
+    setFile,
     publicationData,
     setBooks,
     setPublicationData,
@@ -57,7 +61,19 @@ export default function StepThree({
                         const data = await response.json();
 
                         setFetchedBooks((fetchedBooks) => {
-                            return { [data.id]: publicationData, ...fetchedBooks };
+                            return {
+                                [data.id]: {
+                                    ...publicationData,
+                                    owner: user?.id,
+                                    image: data.image,
+                                    ownerData: {
+                                        avatar: user?.avatar,
+                                        name: user?.name,
+                                        surname: user?.surname,
+                                    },
+                                },
+                                ...fetchedBooks,
+                            };
                         });
 
                         if (filter.choosenSort == "desc")
@@ -68,7 +84,7 @@ export default function StepThree({
                                         title: publicationData?.title || "",
                                         author: publicationData?.author || "",
                                         date: publicationData?.date || new Date(),
-                                        image: e.target?.result as string,
+                                        image: data.image,
                                         ownerData: {
                                             avatar: user?.avatar || "",
                                             name: user?.name || "",
@@ -80,9 +96,10 @@ export default function StepThree({
                             });
                         setPublicationData(undefined);
                         setIsModalActive(false);
-                        setCurrentStep(1);
+                        setFile(undefined);
+                        setCurrentStep(0);
                     } catch (error) {
-                        toast.error("Coś poszło nie tak")
+                        toast.error("Coś poszło nie tak");
                     }
                     setIsLoading(false);
                 }

@@ -69,8 +69,7 @@ export default memo(function DropDownMenuWithSearch({
             setSelectedItemIndex((index) => {
                 const correctIndex = validateSelectedIndex(index + 1);
                 const topMargin = correctIndex * 40;
-                if (scrollRef.current)
-                    console.log(scrollRef.current.scrollTop + 4 * 40, scrollRef.current.scrollTop, topMargin);
+                
                 if (scrollRef.current)
                     if (topMargin < scrollRef.current.scrollTop || topMargin > scrollRef.current.scrollTop + 4 * 40)
                         scrollRef.current.scrollTo({
@@ -84,8 +83,6 @@ export default memo(function DropDownMenuWithSearch({
             setSelectedItemIndex((index) => {
                 const correctIndex = validateSelectedIndex(index - 1);
                 const topMargin = correctIndex * 40;
-                if (scrollRef.current)
-                    console.log(scrollRef.current.scrollTop + 4 * 40, scrollRef.current.scrollTop, topMargin);
 
                 if (scrollRef.current)
                     if (topMargin < scrollRef.current.scrollTop || topMargin > scrollRef.current.scrollTop + 4 * 40)
@@ -104,7 +101,6 @@ export default memo(function DropDownMenuWithSearch({
     const menuRef = useRef<HTMLDivElement>(null);
     return (
         <div ref={menuRef} className={`relative`}>
-            {/* <div className="relative"> */}
             <input
                 className={inputClassName ? inputClassName : "placeholder:text-[#6C6C6C]"}
                 type="text"
@@ -112,7 +108,6 @@ export default memo(function DropDownMenuWithSearch({
                 value={value}
                 maxLength={55}
                 onFocus={() => setIsMenuActive(true)}
-                // onBlur={() => setIsMenuActive(false)}
                 onKeyDown={handleKeyDown}
                 onChange={(e) => {
                     setValue(e.target.value.replace(/\s+/g, ' '));
