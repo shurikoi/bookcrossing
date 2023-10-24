@@ -9,7 +9,7 @@ import { useBook } from "../../contexts/BookProvider";
 import ContentLoader from "../../ui/ContentLoader";
 import NotFoundIcon from "../../ui/icons/NotFoundIcon";
 import { messengers } from "../publication_menu/PublicationMenu";
-import PublicationItem from "../../ui/PublicationItem";
+import PublicationField from "../../ui/PublicationField";
 import Image from "next/image";
 import ReservationMenu from "./ReservationMenu";
 import Button from "@/components/ui/buttons/Button";
@@ -163,22 +163,22 @@ export default function BookMenu() {
                             </div>
                             <div className="flex flex-col gap-8">
                                 <div className="font-head font-normal text-[20px]">{book.title}</div>
-                                <div className="grid grid-cols-[repeat(3,auto)] grid-rows-2 font-extralight leading-none text-[14px] gap-y-6 gap-x-10 w-fit pr-10">
-                                    <PublicationItem
+                                <div className="grid grid-cols-[repeat(2,auto)] grid-rows-2 font-extralight leading-none text-[14px] gap-y-6 gap-x-10 w-fit pr-10">
+                                    <PublicationField
                                         data={book.author}
                                         icon={<ProfileIcon />}
                                         title="Autor"
                                         bg="bg-[#a4e94d7a]"
-                                    ></PublicationItem>
+                                    ></PublicationField>
 
-                                    <PublicationItem
+                                    <PublicationField
                                         data={book.state}
                                         icon={<LeafIcon />}
                                         title="Stan"
                                         bg="bg-[#4d66e97a]"
-                                    ></PublicationItem>
+                                    ></PublicationField>
 
-                                    <PublicationItem
+                                    {/* <PublicationField
                                         data={book.messengerDescription}
                                         icon={
                                             <div className="w-[15px] h-[15px]">
@@ -187,21 +187,21 @@ export default function BookMenu() {
                                         }
                                         title={book.messenger}
                                         bg="bg-[#4d9ee9d9]"
-                                    ></PublicationItem>
+                                    ></PublicationField> */}
 
-                                    <PublicationItem
+                                    <PublicationField
                                         data={book.category}
                                         icon={<TagIcon />}
                                         title="Kategoria"
                                         bg="bg-[#e9d04d7a]"
-                                    ></PublicationItem>
+                                    ></PublicationField>
 
-                                    <PublicationItem
+                                    <PublicationField
                                         data={book.language}
                                         icon={<LanguageIcon />}
                                         title="Język"
                                         bg="bg-[#e97c4d7a]"
-                                    ></PublicationItem>
+                                    ></PublicationField>
                                 </div>
                                 <div className="text-[#474747] font-light font-inter text-[15px] w-[500px] max-h-[180px] overflow-y-auto break-words">
                                     {book.description}

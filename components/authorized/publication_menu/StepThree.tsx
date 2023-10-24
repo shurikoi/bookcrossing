@@ -1,6 +1,6 @@
 import { useUserData } from "@/components/contexts/UserProvider";
 import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon";
-import PublicationItem from "../../ui/PublicationItem";
+import PublicationField from "../../ui/PublicationField";
 import { image, messengers, publicationData } from "./PublicationMenu";
 import TagIcon from "@/components/ui/icons/TagIcon";
 import LanguageIcon from "@/components/ui/icons/LanguageIcon";
@@ -148,21 +148,21 @@ export default function StepThree({
                 <div className="flex flex-col gap-8">
                     <div className="font-head font-normal text-[20px]">{publicationData?.title}</div>
                     <div className="grid grid-cols-[repeat(2,auto)] grid-rows-2 font-extralight leading-none text-[14px] gap-y-8 gap-x-16 w-fit">
-                        <PublicationItem
+                        <PublicationField
                             data={publicationData?.author}
                             icon={<ProfileIcon />}
                             title="Autor"
                             bg="bg-[#a4e94d7a]"
-                        ></PublicationItem>
+                        ></PublicationField>
 
-                        <PublicationItem
+                        <PublicationField
                             data={publicationData?.state}
                             icon={<LeafIcon />}
                             title="Stan"
                             bg="bg-[#4d66e97a]"
-                        ></PublicationItem>
+                        ></PublicationField>
 
-                        {/* <PublicationItem
+                        {/* <PublicationField
                             data={publicationData?.messengerDescription}
                             icon={
                                 <div className="w-[15px] h-[15px]">
@@ -171,21 +171,21 @@ export default function StepThree({
                             }
                             title={publicationData?.messenger}
                             bg="bg-[#4d9ee9d9]"
-                        ></PublicationItem> */}
+                        ></PublicationField> */}
 
-                        <PublicationItem
+                        <PublicationField
                             data={publicationData?.category}
                             icon={<TagIcon />}
                             title="Kategoria"
                             bg="bg-[#e9d04d7a]"
-                        ></PublicationItem>
+                        ></PublicationField>
 
-                        <PublicationItem
+                        <PublicationField
                             data={publicationData?.language}
                             icon={<LanguageIcon />}
                             title="Język"
                             bg="bg-[#e97c4d7a]"
-                        ></PublicationItem>
+                        ></PublicationField>
                     </div>
                     <div className="text-[#474747] font-light font-inter text-[15px] w-[500px] max-h-[138px] overflow-y-auto break-words">
                         {publicationData?.description}

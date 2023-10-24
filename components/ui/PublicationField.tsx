@@ -1,11 +1,11 @@
-interface PublicationItemProps {
+interface PublicationFieldProps {
     title: string | undefined;
     icon: React.ReactNode;
     data: string | undefined;
     bg: string;
 }
 
-export default function PublicationItem({ title, icon, data, bg }: PublicationItemProps) {
+export default function PublicationField({ title, icon, data, bg }: PublicationFieldProps) {
     return (
         <div className="flex flex-col gap-3 whitespace-nowrap">
             <div className="flex gap-3 items-center">
