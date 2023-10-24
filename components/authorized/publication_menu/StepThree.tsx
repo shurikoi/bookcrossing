@@ -147,7 +147,7 @@ export default function StepThree({
                 </div>
                 <div className="flex flex-col gap-8">
                     <div className="font-head font-normal text-[20px]">{publicationData?.title}</div>
-                    <div className="grid grid-cols-[repeat(3,auto)] grid-rows-2 font-extralight leading-none text-[14px] gap-y-6 gap-x-10 w-fit">
+                    <div className="grid grid-cols-[repeat(2,auto)] grid-rows-2 font-extralight leading-none text-[14px] gap-y-8 gap-x-16 w-fit">
                         <PublicationItem
                             data={publicationData?.author}
                             icon={<ProfileIcon />}
@@ -162,7 +162,7 @@ export default function StepThree({
                             bg="bg-[#4d66e97a]"
                         ></PublicationItem>
 
-                        <PublicationItem
+                        {/* <PublicationItem
                             data={publicationData?.messengerDescription}
                             icon={
                                 <div className="w-[15px] h-[15px]">
@@ -171,7 +171,7 @@ export default function StepThree({
                             }
                             title={publicationData?.messenger}
                             bg="bg-[#4d9ee9d9]"
-                        ></PublicationItem>
+                        ></PublicationItem> */}
 
                         <PublicationItem
                             data={publicationData?.category}
