@@ -25,10 +25,11 @@ const Book = memo(({ data, handleClick }: BookProps) => {
             >
                 {isImageLoaded ? (
                     <Image
-                        src={data.image || ""}
+                        src={data.image}
                         alt=""
                         fill
-                        className={`object-cover w-full h-full absolute top-0 left-0 `}
+                        quality={100}
+                        className={`object-cover`}
                         onLoad={() => {
                             setIsImageLoaded(true);
                         }}

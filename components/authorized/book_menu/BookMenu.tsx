@@ -105,9 +105,8 @@ export default function BookMenu() {
                                     <img
                                         title={book.ownerData.name + " " + book.ownerData.surname}
                                         src={book?.ownerData.avatar}
-                                        className={`absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-gray-500 cursor-pointer duration-200 ${
-                                            isImageHovered ? "opacity-0" : "opacity-100"
-                                        }`}
+                                        className={`absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-gray-500 cursor-pointer duration-200 ${isImageHovered ? "opacity-0" : "opacity-100"
+                                            }`}
                                     ></img>
                                 </div>
                                 {book.owner == user?.id ? (
@@ -152,12 +151,17 @@ export default function BookMenu() {
                                                 "Pokaż kontakt"
                                             )}
                                         </div>
-                                        <div
+                                        {book?.amIReservator ? <div
+                                            className="font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer hover:text-[#CD5E4F] hover:bg-white hover:border-[#CD5E4F] duration-300 select-none"
+                                            onClick={() => setIsReservationMenuActive(true)}
+                                        >
+                                            Cofnij rezerwację
+                                        </div> : <div
                                             className="font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#4F98CD] text-white rounded-lg cursor-pointer hover:text-[#4F98CD] hover:bg-white hover:border-[#4F98CD] duration-300 select-none"
                                             onClick={() => setIsReservationMenuActive(true)}
                                         >
                                             Zarezerwuj książkę
-                                        </div>
+                                        </div>}
                                     </div>
                                 )}
                             </div>
