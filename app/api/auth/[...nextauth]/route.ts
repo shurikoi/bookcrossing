@@ -26,7 +26,7 @@ type user = {
     points: number;
 };
 
-const date = new Date().toISOString().slice(0, 10);
+const date = new Date();
 
 export const authOptions: NextAuthOptions = {
     session: {
@@ -74,6 +74,9 @@ export const authOptions: NextAuthOptions = {
             clientId: process.env.GOOGLE_CLIENT_ID as string,
         }),
     ],
+    pages: {
+        signIn: '/'
+    },
     callbacks: {
         async session({ session }) {
             try {

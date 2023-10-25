@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         <title>Bookcrossing</title>
                     </Head>
                     <body className={`${eUkraine.className} ${eUkraineHead.variable} ${inter.variable} ${lato.variable} bg-white`}>
-                        <Toaster position="top-right"></Toaster>
+                        <Toaster position="top-center"></Toaster>
                         {children}
                     </body>
                 </html>

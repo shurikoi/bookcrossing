@@ -1,7 +1,7 @@
 import ProfileIcon from "../../ui/icons/ProfileIcon";
 import TagIcon from "../../ui/icons/TagIcon";
 import ModalMenu from "../../ui/ModalMenu";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LanguageIcon from "../../ui/icons/LanguageIcon";
 import LeafIcon from "../../ui/icons/LeafIcon";
 import { useUserData } from "../../contexts/UserProvider";
@@ -13,15 +13,17 @@ import PublicationField from "../../ui/PublicationField";
 import Image from "next/image";
 import ReservationMenu from "./ReservationMenu";
 import Button from "@/components/ui/buttons/Button";
+import toast from "react-hot-toast";
 
 export default function BookMenu() {
     const { user } = useUserData();
-    const { book, bookId, isLoading, setBookId } = useBook();
+    const { setFetchedBooks, setBook, book, bookId, isLoading, setBookId } = useBook();
 
     const [isModalActive, setIsModalActive] = useState(false);
     const [wasButtonPressed, setWasButtonPresseed] = useState(false);
 
     const [isReservationMenuActive, setIsReservationMenuActive] = useState(false);
+    const [isReservationLoading, setIsReservationLoading] = useState(false);
 
     const [isImageLoaded, setIsImageLoaded] = useState(true);
     const [isImageHovered, setIsImageHovered] = useState(false);
@@ -37,6 +39,32 @@ export default function BookMenu() {
         if (bookId) setIsModalActive(true);
     }, [bookId]);
 
+    async function cancelReservation() {
+        async function fetchData() {
+            setIsReservationLoading(true);
+
+            const response = await fetch("/api/cancel-reservation", {
+                method: "post",
+                body: JSON.stringify({ id: bookId }),
+            });
+
+            setBook((book) => {
+                if (book)
+                    return {
+                        ...book,
+                        reservedBy: undefined,
+                    };
+            });
+            setIsReservationLoading(false);
+        }
+
+        toast.promise(fetchData(), {
+            success: "Rezerwacja została anulowana",
+            loading: "Anulujemy rezerwację...",
+            error: "Nie udało się anulować rezerwację. Sprobuj ponownie",
+        });
+    }
+
     return (
         <ModalMenu
             fullMode
@@ -49,11 +77,11 @@ export default function BookMenu() {
                     <ContentLoader></ContentLoader>
                 ) : book ? (
                     <>
-                        {book.reservatorData && (
+                        {book.reservatorData && book?.owner == user?.id && (
                             <div className="flex flex-col gap-2 bg-[#EDFFE4] rounded-md p-3.5 text-[15px] font-inter">
                                 <div>
                                     <span className="border-b border-b-black/80 cursor-pointer font-normal">
-                                        {book.reservatorData.name} {book.reservatorData.surname}
+                                        {book?.reservatorData?.name} {book?.reservatorData?.surname}
                                     </span>
                                     <span className="font-inter font-light">
                                         {" "}
@@ -105,8 +133,9 @@ export default function BookMenu() {
                                     <img
                                         title={book.ownerData.name + " " + book.ownerData.surname}
                                         src={book?.ownerData.avatar}
-                                        className={`absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-gray-500 cursor-pointer duration-200 ${isImageHovered ? "opacity-0" : "opacity-100"
-                                            }`}
+                                        className={`absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-gray-500 cursor-pointer duration-200 ${
+                                            isImageHovered ? "opacity-0" : "opacity-100"
+                                        }`}
                                     ></img>
                                 </div>
                                 {book.owner == user?.id ? (
@@ -151,17 +180,31 @@ export default function BookMenu() {
                                                 "Pokaż kontakt"
                                             )}
                                         </div>
-                                        {book?.amIReservator ? <div
-                                            className="font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer hover:text-[#CD5E4F] hover:bg-white hover:border-[#CD5E4F] duration-300 select-none"
-                                            onClick={() => setIsReservationMenuActive(true)}
-                                        >
-                                            Cofnij rezerwację
-                                        </div> : <div
-                                            className="font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#4F98CD] text-white rounded-lg cursor-pointer hover:text-[#4F98CD] hover:bg-white hover:border-[#4F98CD] duration-300 select-none"
-                                            onClick={() => setIsReservationMenuActive(true)}
-                                        >
-                                            Zarezerwuj książkę
-                                        </div>}
+                                        {book?.reservedBy == user?.id ? (
+                                            <div
+                                                className={`font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer duration-300 select-none ${
+                                                    isReservationLoading
+                                                        ? "opacity-50 cursor-default"
+                                                        : "opacity-100 cursor-pointer"
+                                                }`}
+                                                onClick={cancelReservation}
+                                            >
+                                                Cofnij rezerwację
+                                            </div>
+                                        ) : (
+                                            <div
+                                                className={`font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#4F98CD] text-white rounded-lg cursor-pointer duration-300 select-none ${
+                                                    isReservationLoading
+                                                        ? "opacity-50 cursor-default"
+                                                        : "opacity-100 cursor-pointer"
+                                                }`}
+                                                onClick={() => {
+                                                    if (!isReservationLoading) setIsReservationMenuActive(true);
+                                                }}
+                                            >
+                                                Zarezerwuj książkę
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>
@@ -225,6 +268,7 @@ export default function BookMenu() {
             <ReservationMenu
                 isMenuActive={isReservationMenuActive}
                 setIsMenuActive={setIsReservationMenuActive}
+                setIsReservationLoading={setIsReservationLoading}
             ></ReservationMenu>
         </ModalMenu>
     );

@@ -27,6 +27,7 @@ export async function POST(req: Request) {
     const publications = await books
         .aggregate([
             {
+                // $match: { ...filter, reservedBy: { $exists: false } },
                 $match: filter,
             },
             {

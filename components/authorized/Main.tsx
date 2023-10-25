@@ -29,7 +29,6 @@ export interface bookData {
         name: string;
         surname: string;
     };
-    amIReservator? : boolean
 }
 
 export interface publication {

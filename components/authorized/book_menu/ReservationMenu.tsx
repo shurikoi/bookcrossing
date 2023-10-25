@@ -6,33 +6,54 @@ import DropDownMenuWithChoose from "@/components/ui/DropDownMenuWithChoose";
 import Button from "@/components/ui/buttons/Button";
 import { useBook } from "@/components/contexts/BookProvider";
 import toast from "react-hot-toast";
+import { useUserData } from "@/components/contexts/UserProvider";
 
 interface ReservationMenuProps {
     isMenuActive: boolean;
     setIsMenuActive: Dispatch<SetStateAction<boolean>>;
+    setIsReservationLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function ReservationMenu({ isMenuActive, setIsMenuActive }: ReservationMenuProps) {
+export default function ReservationMenu({
+    isMenuActive,
+    setIsMenuActive,
+    setIsReservationLoading,
+}: ReservationMenuProps) {
     const [messenger, setMessenger] = useState<messenger>("Snapchat");
     const [contact, setContact] = useState("");
 
-    const { bookId } = useBook();
+    const { bookId, setBook } = useBook();
+    const { user } = useUserData();
 
     async function reserveBook() {
         if (contact.trim().length > 0) {
-            const response = await fetch("/api/reserve-book", {
-                method: "post",
-                body: JSON.stringify({ id: bookId, contact }),
+            async function fetchData() {
+                setIsMenuActive(false);
+                setContact("");
+
+                setIsReservationLoading(true);
+
+                const response = await fetch("/api/reserve-book", {
+                    method: "post",
+                    body: JSON.stringify({ id: bookId, contact }),
+                });
+
+                setBook((book) => {
+                    if (book)
+                        return {
+                            ...book,
+                            reservedBy: user?.id,
+                        };
+                });
+
+                setIsReservationLoading(false);
+            }
+            toast.promise(fetchData(), {
+                success: "Książka została zarezerwowana",
+                error: "Nie udało się zarezerwować książkę. Sprobuj ponownie",
+                loading: "Ztaramy się zarezerwować...",
             });
-
-            const data = await response.json();
-
-            setIsMenuActive(false)
-            setContact("")
-        }
-        else {
-            toast.error("Uzupełnij pole kontaktu")
-        }
+        } else toast.error("Uzupełnij pole kontaktu");
     }
 
     return (

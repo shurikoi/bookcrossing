@@ -4,8 +4,9 @@ import { bookData } from "../authorized/Main";
 interface BookContext {
     setBookId: Dispatch<SetStateAction<string>>;
     book: bookData | undefined;
+    setBook: Dispatch<SetStateAction<bookData | undefined>>;
     fetchedBooks: { [key: string]: bookData };
-    setFetchedBooks:  Dispatch<SetStateAction<{ [key: string]: bookData }>>
+    setFetchedBooks: Dispatch<SetStateAction<{ [key: string]: bookData }>>;
     bookId: string;
     isLoading: boolean;
 }
@@ -16,6 +17,7 @@ const BookContext = createContext<BookContext>({
     setFetchedBooks: () => {},
     bookId: "",
     book: undefined,
+    setBook: () => {},
     isLoading: true,
 });
 
@@ -53,10 +55,6 @@ function BookProvider({ children }: { children: React.ReactNode }) {
                 const book: bookData = await response.json();
 
                 setBook(book);
-
-                setFetchedBooks((fetchedBooks) => {
-                    return { ...fetchedBooks, [bookId]: book };
-                });
             } catch (error) {
                 setBook(undefined);
             }
@@ -65,8 +63,15 @@ function BookProvider({ children }: { children: React.ReactNode }) {
         }
     }, [bookId]);
 
+    useEffect(() => {
+        setFetchedBooks((fetchedBooks) => {
+            if (book) return { ...fetchedBooks, [bookId]: book };
+            return fetchedBooks;
+        });
+    }, [book]);
+
     return (
-        <BookContext.Provider value={{ setBookId, book, isLoading, bookId, fetchedBooks, setFetchedBooks }}>
+        <BookContext.Provider value={{ setBookId, book, setBook, isLoading, bookId, fetchedBooks, setFetchedBooks }}>
             {children}
         </BookContext.Provider>
     );
