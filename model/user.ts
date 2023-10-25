@@ -9,6 +9,7 @@ const user = new Schema(
         provider: {type: String, default: "credentials"},
         avatar: { type: String, value: "/avatars/01.png" },
         points: { type: Number, default: 1 },
+        date: String,
     },
     { versionKey: false }
 );

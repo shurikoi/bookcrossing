@@ -15,12 +15,12 @@ export async function POST(req: Request) {
     const book = await books.findOne({ _id: id }, { _id: 0 });
     const owner = await users.findOne({ _id: book?.owner }, { avatar: 1, name: 1, surname: 1 });
 
-    if (book.reservedBy) {
+    if (book._doc.reservedBy) {
         if (session?.user?.id == book?.owner.toString()) {
             const reservator = await users.findOne({ _id: book.reservedBy }, { name: 1, surname: 1 });
 
             return NextResponse.json({ ...book._doc, ownerData: owner._doc, reservatorData: reservator._doc });
-        } else if (book.reserveBy.toString() == session?.user?.id) {
+        } else if (book.reserveBy._doc.toString() == session?.user?.id) {
             return NextResponse.json({ ...book._doc, ownerData: owner._doc, amIReservator: true});
         }
     }

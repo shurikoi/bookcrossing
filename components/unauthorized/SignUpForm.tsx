@@ -109,6 +109,7 @@ export default function SignUpForm({ email, setCurrentState }: SignInFormProps) 
                                     email,
                                     imageData: e.target.result,
                                     imageName: file?.name,
+                                    date:new Date(),
                                     redirect: false,
                                 });
                             }

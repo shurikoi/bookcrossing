@@ -26,6 +26,8 @@ type user = {
     points: number;
 };
 
+const date = new Date().toISOString().slice(0, 10);
+
 export const authOptions: NextAuthOptions = {
     session: {
         strategy: "jwt",
@@ -59,8 +61,9 @@ export const authOptions: NextAuthOptions = {
 
                             fs.writeFile("./public/avatars/" + imageName, resizedImage, () => {});
                         }
-                        await users.create({ name, surname, password: hashedPassword, avatar: path, email });
-
+                        
+                        await users.create({ name, surname, password: hashedPassword, avatar: path, email, date });
+                        
                         return { email } as any;
                     }
                 }
@@ -111,7 +114,7 @@ export const authOptions: NextAuthOptions = {
 
                 const user = await users.findOne({ email });
 
-                if (!user) users.create({ name, surname, email, provider: "google", avatar });
+                if (!user) users.create({ name, surname, email, provider: "google", avatar, date });
             }
 
             return true;
