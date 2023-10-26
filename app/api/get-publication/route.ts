@@ -11,9 +11,8 @@ export async function POST(req: Request) {
     await connection();
 
     const session = await getServerSession(authOptions);
-    console.log(id);
+
     const book = await books.findOne({ _id: id }, { _id: 0 });
-    console.log(book);
     const owner = await users.findOne({ _id: book?.owner }, { avatar: 1, name: 1, surname: 1 });
 
     // if (book?.reservedBy) {

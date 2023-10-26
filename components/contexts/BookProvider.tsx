@@ -30,7 +30,7 @@ function BookProvider({ children }: { children: React.ReactNode }) {
     const [fetchedBooks, setFetchedBooks] = useState<{ [key: string]: bookData }>({});
 
     const [isLoading, setIsLoading] = useState(false);
-    console.log(fetchedBooks)
+
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
 
@@ -40,7 +40,7 @@ function BookProvider({ children }: { children: React.ReactNode }) {
 
         history.pushState({}, "", params.size > 0 ? `/?${params}` : "/");
 
-        if (bookId && !fetchedBooks[bookId]) getBook();
+        if (!!bookId && !fetchedBooks[bookId]) getBook();
         else if (fetchedBooks[bookId]) setBook(fetchedBooks[bookId]);
 
         async function getBook() {
@@ -64,10 +64,10 @@ function BookProvider({ children }: { children: React.ReactNode }) {
     }, [bookId]);
 
     useEffect(() => {
-        setFetchedBooks((fetchedBooks) => {
-            if (book) return { ...fetchedBooks, [bookId]: book };
-            return fetchedBooks;
-        });
+        if (book && bookId)
+            setFetchedBooks((fetchedBooks) => {
+                return { ...fetchedBooks, [bookId]: book };
+            });
     }, [book]);
 
     return (

@@ -51,7 +51,7 @@ export default function ReservationMenu({
             toast.promise(fetchData(), {
                 success: "Książka została zarezerwowana",
                 error: "Nie udało się zarezerwować książkę. Sprobuj ponownie",
-                loading: "Ztaramy się zarezerwować...",
+                loading: "Rezerwujemy dla cię książkę...",
             });
         } else toast.error("Uzupełnij pole kontaktu");
     }

@@ -6,7 +6,6 @@ import fs from "fs";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { signOut } from "next-auth/react";
 
 type credentials = {
     authType: "signin" | "signup";
@@ -61,9 +60,9 @@ export const authOptions: NextAuthOptions = {
 
                             fs.writeFile("./public/avatars/" + imageName, resizedImage, () => {});
                         }
-                        
+
                         await users.create({ name, surname, password: hashedPassword, avatar: path, email, date });
-                        
+
                         return { email } as any;
                     }
                 }
@@ -75,11 +74,13 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
     pages: {
-        signIn: '/'
+        signIn: "/",
     },
     callbacks: {
         async session({ session }) {
             try {
+                await connection();
+
                 const user = await users.findOne({ email: session.user?.email });
 
                 session.user = {
@@ -93,7 +94,7 @@ export const authOptions: NextAuthOptions = {
                 };
             } catch (error) {
                 session.user = {
-                    unauthenticated: true
+                    unauthenticated: true,
                 };
             }
 

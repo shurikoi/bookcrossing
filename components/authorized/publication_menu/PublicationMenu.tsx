@@ -66,17 +66,18 @@ export default function PublicationMenu({ setBooks, isModalActive, setIsModalAct
     const [image, setImage] = useState<image>();
 
     useLayoutEffect(() => {
-        setIsBackgroundClickPrevented(true);
-
-        if (file)
+        if (file) {
+            setIsBackgroundClickPrevented(true);
+            
             setImage({
                 name: file.name,
                 data: URL.createObjectURL(file),
             });
 
-        setTimeout(() => {
-            setIsBackgroundClickPrevented(false);
-        }, 600);
+            setTimeout(() => {
+                setIsBackgroundClickPrevented(false);
+            }, 10000);
+        }
     }, [file]);
 
     const steps = [

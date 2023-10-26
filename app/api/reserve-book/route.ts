@@ -13,7 +13,7 @@ export async function POST(req: Request) {
 
         const session = await getServerSession(authOptions);
         const user = await users.findOne({ _id: session?.user?.id });
-        console.log(contact)
+
         if (session && user)
             await books.updateOne({ _id: id }, { reservedBy: user.id, reservatorContact: contact });
     } catch (error) {

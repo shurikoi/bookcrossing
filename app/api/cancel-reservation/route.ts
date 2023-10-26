@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 
         const session = await getServerSession(authOptions);
         const user = await users.findOne({ _id: session?.user?.id });
-        console.log(user);
+
         if (session && user)
             await books.updateOne(
                 { _id: id, reservedBy: user._id },

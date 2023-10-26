@@ -60,7 +60,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
             setAvatar,
         },
     };
-    
+
     useEffect(() => {
         if (session?.user?.unauthenticated) signOut();
 

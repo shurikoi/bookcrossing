@@ -17,7 +17,7 @@ import toast from "react-hot-toast";
 
 export default function BookMenu() {
     const { user } = useUserData();
-    const { setFetchedBooks, setBook, book, bookId, isLoading, setBookId } = useBook();
+    const { setBook, book, bookId, isLoading, setBookId } = useBook();
 
     const [isModalActive, setIsModalActive] = useState(false);
     const [wasButtonPressed, setWasButtonPresseed] = useState(false);
@@ -33,10 +33,12 @@ export default function BookMenu() {
             setWasButtonPresseed(false);
             setIsImageLoaded(true);
         }
+        
+
     }, [isModalActive]);
 
     useEffect(() => {
-        if (bookId) setIsModalActive(true);
+        setIsModalActive(!!bookId);
     }, [bookId]);
 
     async function cancelReservation() {
