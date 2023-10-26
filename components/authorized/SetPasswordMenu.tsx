@@ -4,7 +4,7 @@ import SettingsInput from "./SettingsInput";
 import PasswordIcon from "../ui/icons/PasswordIcon";
 import { validatePassword } from "@/lib/isUserDataValid";
 import { useUserData } from "../contexts/UserProvider";
-import ApplyChanges from "../ui/buttons/Button";
+import Button from "../ui/buttons/Button";
 
 interface SetPasswordMenuProps {
     isActive: boolean;
@@ -41,7 +41,7 @@ export default function SetPasswordMenu({ isActive, setIsActive }: SetPasswordMe
                 <PasswordIcon />
                 <div className="w-60">
                     <div className="font-light text-[17px]">Ustaw hasło</div>
-                    <div className="font-extralight text-[11px]">
+                    <div className="font-extralight text-[12px] mt-1">
                         Utwórz silne hasło składające się z kombinacji liter, cyfr i symboli
                     </div>
                 </div>
@@ -55,7 +55,7 @@ export default function SetPasswordMenu({ isActive, setIsActive }: SetPasswordMe
                         <SettingsInput value={confirmPassword} setValue={setConfirmPassword} type="password" />
                     </div>
                 </div>
-                <ApplyChanges onClick={handleSubmit} />
+                <Button onClick={handleSubmit}>Potwierdź zmiany</Button>
             </div>
         </ModalMenu>
     );

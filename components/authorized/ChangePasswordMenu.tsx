@@ -3,6 +3,7 @@ import ModalMenu from "../ui/ModalMenu";
 import SettingsInput from "./SettingsInput";
 import PasswordIcon from "../ui/icons/PasswordIcon";
 import ApplyChanges from "../ui/buttons/Button";
+import Button from "../ui/buttons/Button";
 
 interface ChangePasswordMenuProps {
     isActive: boolean;
@@ -42,7 +43,7 @@ export default function ChangePasswordMenu({ isActive, setIsActive }: ChangePass
                         <SettingsInput value={confirmPassword} setValue={setConfirmPassword} type="password" />
                     </div>
                 </div>
-                <ApplyChanges onClick={handleSubmit} />
+                <Button onClick={handleSubmit}>Potwierdź zmiany</Button>
             </div>
         </ModalMenu>
     );

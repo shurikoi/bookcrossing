@@ -30,7 +30,7 @@ function BookProvider({ children }: { children: React.ReactNode }) {
     const [fetchedBooks, setFetchedBooks] = useState<{ [key: string]: bookData }>({});
 
     const [isLoading, setIsLoading] = useState(false);
-
+    console.log(fetchedBooks)
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
 
