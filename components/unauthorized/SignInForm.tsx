@@ -50,7 +50,7 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
     return (
         <div className="flex items-center flex-col gap-8 w-full md:max-w-[500px] text-center px-6 py-8 sm:px-14">
             <div className="flex gap-3 flex-col items-center">
-                <div className="text-[20px] sm:text-[24px] w-full text-center relative flex items-center font-medium leading-none">
+                <div className="text-[20px] sm:text-[24px] w-full relative justify-center flex items-center font-medium leading-none">
                     <div className="absolute cursor-pointer -left-6" onClick={() => setCurrentState("default")}>
                         <ArrowLeftIcon></ArrowLeftIcon>
                     </div>

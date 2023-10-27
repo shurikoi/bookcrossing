@@ -40,7 +40,7 @@ export default function SortMenu() {
                 menuRef={menuRef}
                 isMenuActive={isMenuActive}
                 setIsMenuActive={setIsMenuActive}
-                className="absolute p-3 -bottom-2 right-0 w-max translate-y-full bg-white shadow-[0px_0px_49px_0px_rgba(0,0,0,0.25)] rounded-lg"
+                className="absolute p-3 -bottom-2 right-1/2 translate-x-1/2 md:translate-x-0 md:right-0 w-max translate-y-full bg-white shadow-[0px_0px_49px_0px_rgba(0,0,0,0.25)] rounded-lg"
             >
                 <div
                     className={`hover:bg-[#F0F1F9] p-2.5 duration-300 rounded-md cursor-pointer ${

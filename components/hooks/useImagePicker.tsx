@@ -39,7 +39,12 @@ export default function useImagePicker(ref: RefObject<HTMLInputElement>, callbac
             ref.current.addEventListener("click", handleClick);
         }
 
-        return () => {};
+        return () => {
+            if (ref.current) {
+                ref.current.removeEventListener("change", handleChange);
+                ref.current.removeEventListener("click", handleClick);
+            }
+        };
     }, [callback, ref.current]);
 
     if (callback) return { image, isClickPrevented };

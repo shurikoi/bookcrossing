@@ -138,7 +138,7 @@ export default function DefaultForm({ setEmail, setCurrentState, email }: Defaul
                 onClick={handleSignIn}
             >
                 <Image alt="" src="/images/google.png" width={25} height={25}></Image>
-                <div className="font-light text-[16px] text-[#525252] select-none">Kontynuuj przez Google</div>
+                <div className="font-light text-[16px] text-[#525252] select-none whitespace-nowrap">Kontynuuj przez Google</div>
             </div>
         </div>
     );

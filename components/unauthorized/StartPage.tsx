@@ -4,6 +4,7 @@ import Header from "./Header";
 import GetStarted from "./GetStarted";
 import AuthForm from "./AuthForm";
 import { FormModalProvider } from "../contexts/FormModalProvider";
+import Head from "next/head";
 
 export default function StartPage() {
     return (

@@ -7,29 +7,51 @@ import hashPassword from "@/lib/hashPassword";
 import { validatePassword } from "@/lib/isUserDataValid";
 
 interface body {
-    password: string;
+    password?: string;
+    newPassword?: string;
+    currentPassword?: string;
 }
 
 export async function POST(req: Request) {
     await connection();
 
-    const { password }: body = await req.json();
+    const { newPassword, currentPassword, password }: body = await req.json();
 
-    const isPasswordValid = validatePassword(password);
+    const session = await getServerSession(authOptions);
+    if (!session) return NextResponse.json({}, { status: 400 });
 
-    if (!isPasswordValid.isValid)
-        return NextResponse.json(
-            {
-                isValid: false,
-            },
-            { status: 400 }
-        );
+    if (password) {
+        const isPasswordValid = validatePassword(password);
 
-    const { user } = (await getServerSession(authOptions)) as { user: { email: string } };
+        if (!isPasswordValid.isValid)
+            return NextResponse.json(
+                {
+                    isValid: false,
+                },
+                { status: 400 }
+            );
 
-    const hashedPassword = await hashPassword(password);
+        const hashedPassword = await hashPassword(password);
 
-    await users.updateOne({ email: user.email }, { password: hashedPassword });
+        await users.updateOne({ _id: session?.user?.id }, { password: hashedPassword });
 
-    return NextResponse.json({}, { status: 200 });
+        return NextResponse.json({ isValid: true }, { status: 200 });
+    }
+
+    if (newPassword && currentPassword) {
+        const user = await users.findOne({ _id: session?.user?.id }, { password: 1 });
+        console.log(user.password, await hashPassword(currentPassword));
+        if (user.password != (await hashPassword(currentPassword)))
+            return NextResponse.json({ isValid: false }, { status: 400 });
+
+        const isNewPasswordValid = validatePassword(newPassword);
+        console.log(isNewPasswordValid, newPassword);
+        if (!isNewPasswordValid.isValid) return NextResponse.json({ isValid: false }, { status: 400 });
+
+        const hashedPassword = await hashPassword(newPassword);
+
+        await users.updateOne({ _id: session?.user?.id }, { password: hashedPassword });
+
+        return NextResponse.json({ isValid: true }, { status: 200 });
+    }
 }

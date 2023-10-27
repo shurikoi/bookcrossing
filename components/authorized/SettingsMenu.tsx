@@ -86,8 +86,8 @@ function ProfilePage() {
                         </div>
                     </div>
                     <ChangePasswordMenu
-                        isActive={isChangePasswordMenuActive}
-                        setIsActive={setIsChangePasswordMenuActive}
+                        isMenuActive={isChangePasswordMenuActive}
+                        setIsMenuActive={setIsChangePasswordMenuActive}
                     />
                 </>
             ) : (
@@ -102,8 +102,8 @@ function ProfilePage() {
                         </div>
                     </div>
                     <SetPasswordMenu
-                        isActive={isSetPasswordMenuActive}
-                        setIsActive={setIsSetPasswordMenuActive}
+                        isMenuActive={isSetPasswordMenuActive}
+                        setIsMenuActive={setIsSetPasswordMenuActive}
                     />
                 </>
             )}
