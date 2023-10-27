@@ -76,7 +76,7 @@ export default function PublicationMenu({ setBooks, isModalActive, setIsModalAct
 
             setTimeout(() => {
                 setIsBackgroundClickPrevented(false);
-            }, 10000);
+            }, 600);
         }
     }, [file]);
 

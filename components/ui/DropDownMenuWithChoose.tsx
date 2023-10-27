@@ -64,6 +64,7 @@ export default memo(function DropDownMenuWithChoose({ items, mode, setItem, item
                         .filter(([key, value]) => key != item)
                         .map((item) => (
                             <div
+                                key={item[0]}
                                 className="cursor-pointer w-6 h-6 py-1.5 box-content"
                                 onClick={() => {
                                     setItem(item[0]);

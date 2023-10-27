@@ -1,85 +1,147 @@
+import { useBook } from "@/components/contexts/BookProvider";
 import { useUserData } from "@/components/contexts/UserProvider";
-import DropDownMenuWithSearch from "@/components/ui/DropDownMenuWithSearch";
 import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon";
-import LanguageIcon from "@/components/ui/icons/LanguageIcon";
-import ProfileIcon from "@/components/ui/icons/ProfileIcon";
+import isPublicationDataValid, { errors } from "@/lib/isPublicationDataValid";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import PublicationImage from "../publication_menu/PublicationImage";
+import { BookMenuMode } from "./BookMenu";
 import SmallPhotosIcon from "@/components/ui/icons/SmallPhotosIcon";
+import DropDownMenuWithSearch from "@/components/ui/DropDownMenuWithSearch";
+import ProfileIcon from "@/components/ui/icons/ProfileIcon";
+import { bookStates, categories, languages } from "../publication_menu/StepTwo";
 import TagIcon from "@/components/ui/icons/TagIcon";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { image, messengers, publicationData } from "./PublicationMenu";
-import PublicationImage from "./PublicationImage";
+import LanguageIcon from "@/components/ui/icons/LanguageIcon";
 import LeafIcon from "@/components/ui/icons/LeafIcon";
 import DropDownMenuWithChoose from "@/components/ui/DropDownMenuWithChoose";
+import { messengers } from "../publication_menu/PublicationMenu";
 import Button from "@/components/ui/buttons/Button";
-import isPublicationDataValid, { errors } from "@/lib/isPublicationDataValid";
+import toast from "react-hot-toast";
+import { bookData } from "../Main";
 
-export const categories = [
-    "Powieść historyczna",
-    "Kryminał",
-    "Fantastyka",
-    "Romans",
-    "Science Fiction",
-    "Horror",
-    "Literatura podróżnicza",
-    "Dramat",
-    "Poezja",
-    "Biografia",
-];
-
-export const languages = ["Angielski", "Polski", "Ukraiński"];
-
-export const bookStates = ["Bardzo dobry", "Dobry", "Akceptowany", "Zły"];
+interface EditModeProps {
+    setMode: Dispatch<SetStateAction<BookMenuMode>>;
+}
 
 const descriptionLength = 1000;
 
-interface StepTwoProps {
-    image: image;
-    publicationData: publicationData | undefined;
-    setCurrentStep: Dispatch<SetStateAction<number>>;
-    setPublicationData: Dispatch<SetStateAction<publicationData | undefined>>;
-}
+export default function EditMode({ setMode }: EditModeProps) {
+    const { user } = useUserData();
+    const { bookId, book, setBook } = useBook();
 
-export default function StepTwo({ image, publicationData, setPublicationData, setCurrentStep }: StepTwoProps) {
-    const [title, setTitle] = useState(publicationData?.title || "");
-    const [author, setAuthor] = useState(publicationData?.author || "");
-    const [bookCategory, setBookCategory] = useState(publicationData?.category || "");
-    const [bookLanguage, setBookLanguage] = useState(publicationData?.language || "");
-    const [bookState, setBookState] = useState(publicationData?.state || "");
-    const [bookDescription, setBookDescription] = useState(publicationData?.description || "");
-    const [messenger, setMessenger] = useState(publicationData?.messenger || "Snapchat");
-    const [messengerDescription, setMessengerDescription] = useState(publicationData?.messengerDescription || "");
+    const [title, setTitle] = useState(book?.title || "");
+    const [author, setAuthor] = useState(book?.author || "");
+    const [bookCategory, setBookCategory] = useState(book?.category || "");
+    const [bookLanguage, setBookLanguage] = useState(book?.language || "");
+    const [bookState, setBookState] = useState(book?.state || "");
+    const [bookDescription, setBookDescription] = useState(book?.description || "");
+    const [messenger, setMessenger] = useState(book?.messenger || "");
+    const [messengerDescription, setMessengerDescription] = useState(book?.messengerDescription || "");
 
     const [errors, setErrors] = useState<errors>();
 
-    const { user } = useUserData();
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const newData = {
+        title,
+        author,
+        description: bookDescription,
+        category: bookCategory,
+        language: bookLanguage,
+        state: bookState,
+        messenger,
+        messengerDescription,
+        date: book?.date || new Date()
+    };
+
+    function handleSubmit() {
+        if (isLoading) return;
+
+        if (book) {
+            const errors = isPublicationDataValid({
+                ...newData,
+                imageName: "",
+                imageData: "",
+            });
+
+            if (errors.hasErrors) setErrors(errors);
+            else saveChanges();
+        }
+    }
+
+    function saveChanges() {
+        if (book) {
+            const newBook: bookData = {
+                ...book,
+                ...newData,
+            };
+            console.log(newBook, book)
+            if (JSON.stringify(newBook) == JSON.stringify(book)) {
+                setMode("view");
+                toast.success("Dane zostały takie same");
+                return;
+            }
+        }
+
+        async function updatePublication() {
+            return await new Promise(async (resolve, reject) => {
+                try {
+                    setIsLoading(true);
+
+                    const response = await fetch("/api/update-publication", {
+                        method: "post",
+                        body: JSON.stringify({
+                            id: bookId,
+                            ...newData,
+                        }),
+                    });
+
+                    if (!response.ok) throw new Error("error");
+
+                    setIsLoading(false);
+
+                    setMode("view");
+
+                    resolve(null);
+                } catch (error) {
+                    reject();
+                }
+            });
+        }
+
+        toast.promise(updatePublication(), {
+            error: "Nie udało się zaktualizować dane",
+            loading: "Aktualizujemy dane...",
+            success: "Dane zostały zaktualizowane",
+        });
+
+        setBook((book) => {
+            if (book)
+                return {
+                    ...book,
+                    ...newData,
+                };
+        });
+    }
 
     useEffect(() => {
-        setPublicationData({
-            title,
-            author,
-            description: bookDescription,
-            category: bookCategory,
-            language: bookLanguage,
-            state: bookState,
-            messenger,
-            messengerDescription,
-            date: new Date(),
-            imageData: image?.data || "",
-            imageName: image?.name || "",
-        });
-    }, [title, author, bookCategory, bookDescription, bookLanguage, bookState, messenger, messengerDescription]);
+        const textarea = textareaRef.current;
+
+        if (textarea) textarea.style.height = textarea.scrollHeight + "px";
+    }, []);
 
     return (
         <div className="flex flex-col ">
             <div className="p-3 relative text-center">
-                <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
+                <div className="absolute cursor-pointer w-fit" onClick={() => setMode("view")}>
                     <ArrowLeftIcon></ArrowLeftIcon>
                 </div>
-                <div>2 / 3</div>
+                <div>Edytowanie</div>
             </div>
             <div className="flex">
-                <div className="flex w-[400px] aspect-[3/4] relative">
-                    <PublicationImage image={image?.data}></PublicationImage>
+                <div className="flex w-[400px] h-fit aspect-[3/4] relative">
+                    <PublicationImage image={book?.image}></PublicationImage>
                 </div>
                 <div className="grow-0 shrink-0 flex flex-col gap-6 p-4 w-[360px]">
                     <div className="flex gap-4 items-center">
@@ -186,6 +248,7 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
                                 value={bookDescription}
                                 placeholder="Napisz komentarz"
                                 maxLength={descriptionLength}
+                                ref={textareaRef}
                                 onChange={(e) => {
                                     const value = e.target.value;
                                     e.target.style.height = 0 + "px";
@@ -201,18 +264,12 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
                             </div>
                         </div>
                     </div>
-                    <div className="ml-auto p-4">
+                    <div className="ml-auto">
                         <Button
-                            onClick={() => {
-                                if (publicationData) {
-                                    const errors = isPublicationDataValid(publicationData);
-
-                                    if (errors.hasErrors) setErrors(errors);
-                                    else setCurrentStep((step) => step + 1);
-                                }
-                            }}
+                            className={`${isLoading ? "opacity-50 cursor-default" : "opacity-100"}`}
+                            onClick={handleSubmit}
                         >
-                            Podgląd
+                            Zapisz
                         </Button>
                     </div>
                 </div>

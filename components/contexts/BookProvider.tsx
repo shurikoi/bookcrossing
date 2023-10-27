@@ -40,10 +40,10 @@ function BookProvider({ children }: { children: React.ReactNode }) {
 
         history.pushState({}, "", params.size > 0 ? `/?${params}` : "/");
 
-        if (!!bookId && !fetchedBooks[bookId]) getBook();
+        if (!!bookId && !fetchedBooks[bookId]) getBook(bookId);
         else if (fetchedBooks[bookId]) setBook(fetchedBooks[bookId]);
 
-        async function getBook() {
+        async function getBook(bookId : string) {
             setIsLoading(true);
 
             try {

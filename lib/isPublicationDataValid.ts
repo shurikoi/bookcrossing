@@ -10,6 +10,8 @@ export interface errors {
     hasErrors: boolean;
 }
 
+const possibleStates = ["Bardzo dobry", "Dobry", "Akceptowany", "Zły"];
+
 export default function isPublicationDataValid(publicationData: publicationData) {
     const { title, author, category, state, language, messengerDescription } = publicationData;
 
@@ -22,12 +24,12 @@ export default function isPublicationDataValid(publicationData: publicationData)
         messengerDescription: false,
         hasErrors: false,
     };
-
+    console.log(state)
     if (title.trim().length < 2 || title.trim().length > 55) errors.title = true;
     if (author.trim().length < 2 || author.trim().length > 55) errors.author = true;
     if (category.trim().length == 0) errors.category = true;
     if (language.trim().length == 0) errors.language = true;
-    if (state.trim().length == 0) errors.state = true;
+    if (!possibleStates.includes(state)) errors.state = true;
     if (messengerDescription.trim().length < 2 || messengerDescription.trim().length > 55)
         errors.messengerDescription = true;
     // if (description.trim().length == 0) errors.description = true;

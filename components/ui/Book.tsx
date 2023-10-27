@@ -39,7 +39,7 @@ const Book = memo(({ data, handleClick }: BookProps) => {
                     />
                 ) : (
                     <div className="absolute text-white left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                        No Image
+                        Nie ma zdjęcia
                     </div>
                 )}
 

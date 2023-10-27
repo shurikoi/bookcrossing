@@ -13,10 +13,9 @@ export default function PublicationImage({ image }: { image: string | undefined 
                 </div>
             )}
             <Image
-                className="object-cover w-full h-full"
+                className="object-cover"
                 onLoadingComplete={() => setIsLoading(false)}
-                width={0}
-                height={0}
+                fill
                 src={image || ""}
                 alt=""
             />
