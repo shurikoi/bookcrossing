@@ -1,3 +1,4 @@
+import useImagePicker from "@/components/hooks/useImagePicker";
 import Button from "@/components/ui/buttons/Button";
 import PhotosIcon from "@/components/ui/icons/PhotosIcon";
 import { ChangeEvent, Dispatch, DragEvent, SetStateAction, useEffect, useRef, useState } from "react";
@@ -34,10 +35,21 @@ export default function StepOne({ setFile, setCurrentStep }: StepOneProps) {
         if (fileRef.current) fileRef.current.click();
     }
 
-    function handleImagePush(e: ChangeEvent<HTMLInputElement> | DragEvent) {
+    useImagePicker(fileRef, (e) => {
         e.preventDefault();
 
-        const files = (e as DragEvent).dataTransfer?.files ?? (e as ChangeEvent<HTMLInputElement>).target?.files;
+        const files = e.target.files;
+
+        if (files) {
+            if (files[0]) {
+                setFile(files[0]);
+                setCurrentStep(1);
+            }
+        }
+    });
+
+    function handleDrop(e: DragEvent) {
+        const files = e.dataTransfer.files;
 
         if (files) {
             if (files[0]) {
@@ -47,6 +59,19 @@ export default function StepOne({ setFile, setCurrentStep }: StepOneProps) {
         }
     }
 
+    // function handleImagePush(e: ChangeEvent<HTMLInputElement> | DragEvent) {
+    //     e.preventDefault();
+
+    //     const files = (e as DragEvent).dataTransfer?.files ?? (e as ChangeEvent<HTMLInputElement>).target?.files;
+
+    //     if (files) {
+    //         if (files[0]) {
+    //             setFile(files[0]);
+    //             setCurrentStep(1);
+    //         }
+    //     }
+    // }
+
     return (
         <>
             <div
@@ -54,14 +79,14 @@ export default function StepOne({ setFile, setCurrentStep }: StepOneProps) {
                     isWindowHovered ? "bg-[#e4e4e4]" : "bg-white"
                 }`}
                 onDragOver={(e) => e.preventDefault()}
-                onDrop={handleImagePush}
+                onDrop={handleDrop}
             >
                 <div className="font-light text-[17px]">Opublikuj książkę</div>
                 <PhotosIcon></PhotosIcon>
                 <div className="flex flex-col items-center gap-6">
                     <div className="font-extralight text-[14px]">Przeciągnij zjęcie tutaj</div>
                     <Button onClick={openFileMenu}>Albo wybierz ręcznie</Button>
-                    <input ref={fileRef} type="file" accept="image/png, image/jpeg" hidden onChange={handleImagePush} />
+                    <input ref={fileRef} type="file" accept="image/png, image/jpeg" hidden />
                 </div>
             </div>
         </>

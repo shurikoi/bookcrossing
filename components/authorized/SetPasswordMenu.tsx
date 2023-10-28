@@ -49,7 +49,7 @@ export default function SetPasswordMenu({ isMenuActive, setIsMenuActive }: SetPa
                 if (user) user.setIsPasswordExist(true);
 
                 resolve(1);
-
+                
                 setIsMenuActive(false);
             } catch (error) {
                 reject(error);

@@ -60,23 +60,16 @@ export default function PublicationMenu({ setBooks, isModalActive, setIsModalAct
 
     const [file, setFile] = useState<File>();
 
-    const [isBackgroundClickPrevented, setIsBackgroundClickPrevented] = useState(false);
     const overlayRef = useRef<HTMLDivElement>(null);
 
     const [image, setImage] = useState<image>();
 
     useLayoutEffect(() => {
         if (file) {
-            setIsBackgroundClickPrevented(true);
-            
             setImage({
                 name: file.name,
                 data: URL.createObjectURL(file),
             });
-
-            setTimeout(() => {
-                setIsBackgroundClickPrevented(false);
-            }, 600);
         }
     }, [file]);
 
@@ -102,16 +95,6 @@ export default function PublicationMenu({ setBooks, isModalActive, setIsModalAct
     const nodeRef = useRef<any>(null);
     return (
         <>
-            {isBackgroundClickPrevented && (
-                <div
-                    ref={overlayRef}
-                    onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }}
-                    className="z-50 w-screen h-screen fixed top-0 left-0 preventedClick"
-                ></div>
-            )}
             <ModalMenu fullMode isModalActive={isModalActive} setIsModalActive={setIsModalActive}>
                 <SwitchTransition mode="out-in">
                     <CSSTransition
