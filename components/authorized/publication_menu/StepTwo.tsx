@@ -5,7 +5,7 @@ import LanguageIcon from "@/components/ui/icons/LanguageIcon";
 import ProfileIcon from "@/components/ui/icons/ProfileIcon";
 import SmallPhotosIcon from "@/components/ui/icons/SmallPhotosIcon";
 import TagIcon from "@/components/ui/icons/TagIcon";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { image, messengers, publicationData } from "./PublicationMenu";
 import PublicationImage from "./PublicationImage";
 import LeafIcon from "@/components/ui/icons/LeafIcon";
@@ -51,6 +51,8 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
 
     const [errors, setErrors] = useState<errors>();
 
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
     const { user } = useUserData();
 
     useEffect(() => {
@@ -69,25 +71,31 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
         });
     }, [title, author, bookCategory, bookDescription, bookLanguage, bookState, messenger, messengerDescription]);
 
+    useEffect(() => {
+        const textarea = textareaRef.current;
+
+        if (textarea) textarea.style.height = textarea.scrollHeight + "px";
+    }, []);
+
     return (
-        <div className="flex flex-col ">
+        <div className="flex flex-col h-full md:max-h-[610px]">
             <div className="p-3 relative text-center">
                 <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
                     <ArrowLeftIcon></ArrowLeftIcon>
                 </div>
                 <div>2 / 3</div>
             </div>
-            <div className="flex">
-                <div className="flex w-[400px] aspect-[3/4] relative">
+            <div className="flex h-full overflow-y-auto">
+                <div className="hidden md:flex w-[400px] aspect-[3/4] relative">
                     <PublicationImage image={image?.data}></PublicationImage>
                 </div>
-                <div className="grow-0 shrink-0 flex flex-col gap-6 p-4 w-[360px]">
+                <div className="flex flex-col gap-6 p-4 w-full md:w-[360px]">
                     <div className="flex gap-4 items-center">
                         <img className="w-10 h-10 rounded-full" src={user?.avatar} alt="" />
                         <div className="font-extralight text-base">{user?.name}</div>
                     </div>
 
-                    <div className="flex flex-col gap-4 text-[20px] font-lato font-normal max-h-[370px] overflow-y-auto">
+                    <div className="flex flex-col gap-4 text-[20px] font-lato font-normal overflow-y-auto flex-grow flex-shrink">
                         <div className="flex items-center justify-between px-1">
                             <input
                                 className={`duration-200 ${
@@ -185,6 +193,7 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
                                 className="resize-none w-full placeholder:text-[#6C6C6C]"
                                 value={bookDescription}
                                 placeholder="Napisz komentarz"
+                                ref={textareaRef}
                                 maxLength={descriptionLength}
                                 onChange={(e) => {
                                     const value = e.target.value;
@@ -201,6 +210,7 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
                             </div>
                         </div>
                     </div>
+
                     <div className="ml-auto p-4">
                         <Button
                             onClick={() => {

@@ -107,7 +107,7 @@ export default function PublicationMenu({ setBooks, isModalActive, setIsModalAct
                             }
                         }}
                     >
-                        <div ref={nodeRef}>{steps[currentStep]}</div>
+                        <div className="h-full md:h-auto" ref={nodeRef}>{steps[currentStep]}</div>
                     </CSSTransition>
                 </SwitchTransition>
             </ModalMenu>

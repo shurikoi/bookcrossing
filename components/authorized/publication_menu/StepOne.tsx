@@ -59,23 +59,10 @@ export default function StepOne({ setFile, setCurrentStep }: StepOneProps) {
         }
     }
 
-    // function handleImagePush(e: ChangeEvent<HTMLInputElement> | DragEvent) {
-    //     e.preventDefault();
-
-    //     const files = (e as DragEvent).dataTransfer?.files ?? (e as ChangeEvent<HTMLInputElement>).target?.files;
-
-    //     if (files) {
-    //         if (files[0]) {
-    //             setFile(files[0]);
-    //             setCurrentStep(1);
-    //         }
-    //     }
-    // }
-
     return (
         <>
             <div
-                className={`flex flex-col rounded-lg items-center w-fit gap-16 px-[110px] py-[72px] duration-200 ${
+                className={`flex flex-col rounded-lg items-center gap-16 justify-center h-full w-full md:w-fit md:px-[110px] md:py-[72px] duration-200 ${
                     isWindowHovered ? "bg-[#e4e4e4]" : "bg-white"
                 }`}
                 onDragOver={(e) => e.preventDefault()}
