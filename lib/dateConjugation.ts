@@ -13,8 +13,8 @@ export default function dateConjugation(date: Date) {
         if (daysFromPublication.toString()[1] == "1") return `${daysFromPublication} dzień temu`;
         else return `${daysFromPublication} dni temu`;
     else if (daysFromPublication > 30) {
-        if (monthsCount == 1) return `${monthsCount} miesiąc`
-        else if (monthsCount <= 4) return `${monthsCount} miesiące`
-        else if (monthsCount >= 5) return `${monthsCount} miesięcy`
+        if (monthsCount == 1) return `${monthsCount} miesiąc temu`
+        else if (monthsCount <= 4) return `${monthsCount} miesiące temu`
+        else if (monthsCount >= 5) return `${monthsCount} miesięcy temu`
     }
 }

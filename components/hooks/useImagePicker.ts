@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { RefObject, useEffect } from "react";
 
 export default function useImagePicker(ref: RefObject<HTMLInputElement>, callback?: (e: any) => void) {
     useEffect(() => {
@@ -7,14 +7,19 @@ export default function useImagePicker(ref: RefObject<HTMLInputElement>, callbac
         div.className = "preventedClick z-50 opacity-0 fixed top-0 left-0 w-screen h-screen";
 
         function handleChange(e: any) {
-            
+            setTimeout(() => {
+                div.remove();
+            }, 1000);
+
             if (callback) callback(e);
         }
 
         function handleClick(e: any) {
-            window.addEventListener("focus", handleFocus);
+            if (window.innerWidth >= 768) {
+                window.addEventListener("focus", handleFocus);
 
-            document.body.appendChild(div);
+                document.body.appendChild(div);
+            }
         }
 
         function handleFocus(e: any) {

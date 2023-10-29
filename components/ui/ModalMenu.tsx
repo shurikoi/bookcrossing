@@ -38,6 +38,7 @@ const ModalMenu = memo(function ModalMenu({
                     isModalActive={isModalActive}
                     setIsModalActive={setIsModalActive}
                     menuRef={menuRef}
+                    callback={callback}
                 >
                     {children}
                 </MobileModalMenu>

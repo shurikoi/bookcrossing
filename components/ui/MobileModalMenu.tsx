@@ -6,6 +6,7 @@ interface ModalMenuProps extends HTMLAttributes<HTMLDivElement> {
     isModalActive: boolean;
     setIsModalActive: Dispatch<SetStateAction<boolean>>;
     fullMode?: boolean;
+    callback?: () => void;
     menuRef: React.RefObject<HTMLDivElement>;
 }
 
@@ -15,6 +16,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
     setIsModalActive,
     fullMode = false,
     menuRef,
+    callback = () => null,
 }: ModalMenuProps) {
     const [menuYPosition, setMenuYPosition] = useState(0);
     const [startPosition, setStartPosition] = useState(0);
@@ -62,13 +64,14 @@ const MobileModalMenu = memo(function MobileModalMenu({
             menuRef.current?.removeEventListener("touchend", handleTouchEnd);
         };
     }, [startPosition, menuYPosition, window]);
-
+    console.log(isModalActive);
     useEffect(() => {
+        console.log(isModalActive);
         if (isModalActive) {
             setMenuYPosition(0);
 
             document.body.style.overflow = "hidden";
-        } else document.body.style.removeProperty("overflow");
+        } else if (!isModalActive) document.body.style.overflow = "auto";
     }, [isModalActive]);
 
     return (
@@ -80,21 +83,28 @@ const MobileModalMenu = memo(function MobileModalMenu({
             ></div>
 
             <div
-                className={`${isModalActive ? "bottom-0 " : "bottom-[-100%] touch-auto"} ${
+                className={`${isModalActive ? "bottom-0" : "bottom-[-100%]"} ${
                     fullMode ? "h-full" : "rounded-t-xl"
-                } fixed w-full bottom-0 left-0 bg-white duration-200 z-10`}
+                } fixed left-0 w-full bg-white duration-200 z-10`}
                 ref={menuRef}
                 style={{ transform: `translateY(${menuYPosition}px)` }}
             >
-                <div className="flex flex-col gap-5 h-full justify-center">{children}</div>
-
-                {fullMode ? (
-                    <div className="absolute right-4 top-4  " onClick={() => setIsModalActive(false)}>
-                        X
-                    </div>
-                ) : (
-                    <div className="absolute top-2 left-1/2 -translate-x-1/2 w-1/4 bg-gray-400 rounded-full h-1"></div>
-                )}
+                <div className="flex flex-col gap-5 h-full w-full overflow-y-auto ">
+                    {children}
+                    {fullMode ? (
+                        <div
+                            className="absolute right-6 top-3 select-none cursor-pointer"
+                            onClick={() => {
+                                callback();
+                                setIsModalActive(false);
+                            }}
+                        >
+                            X
+                        </div>
+                    ) : (
+                        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-1/4 bg-gray-400 rounded-full h-1"></div>
+                    )}
+                </div>
             </div>
         </>
     );

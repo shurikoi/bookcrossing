@@ -71,7 +71,7 @@ export default function StepOne({ setFile, setCurrentStep }: StepOneProps) {
                 <div className="font-light text-[17px]">Opublikuj książkę</div>
                 <PhotosIcon></PhotosIcon>
                 <div className="flex flex-col items-center gap-6">
-                    <div className="font-extralight text-[14px]">Przeciągnij zjęcie tutaj</div>
+                    <div className="font-extralight text-[14px]">Przeciągnij zdjęcie tutaj</div>
                     <Button onClick={openFileMenu}>Albo wybierz ręcznie</Button>
                     <input ref={fileRef} type="file" accept="image/png, image/jpeg" hidden />
                 </div>

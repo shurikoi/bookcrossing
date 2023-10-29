@@ -44,7 +44,7 @@ export default function FilterBar({ booksCount, booksQueryCount, isBooksLoading,
             <FilterMenu></FilterMenu>
             <div className="py-4 px-10 bg-[#FFF3E1] rounded-[5px] ">
                 {Object.values(filter.query.filter).every((item) => item.length == 0) ? (
-                    "Wszyskie książki"
+                    "Wszystkie książki"
                 ) : isBooksLoading ? (
                     <div className="w-6 h-6 relative">
                         <ContentLoader />
