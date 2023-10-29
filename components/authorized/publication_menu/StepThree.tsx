@@ -51,61 +51,75 @@ export default function StepThree({
             const reader = new FileReader();
 
             reader.onload = async (e) => {
-                if (e.target) {
-                    try {
-                        const response = await fetch("/api/create-publication", {
-                            method: "POST",
-                            body: JSON.stringify({
-                                ...publicationData,
-                                imageData: e.target.result,
-                            }),
-                        });
-
-                        const data = await response.json();
-
-                        setFetchedBooks((fetchedBooks) => {
-                            return {
-                                [data.id]: {
+                const submitPromise = new Promise(async (resolve, reject) => {
+                    if (e.target) {
+                        try {
+                            const response = await fetch("/api/create-publication", {
+                                method: "POST",
+                                body: JSON.stringify({
                                     ...publicationData,
-                                    owner: user?.id,
-                                    image: data.image,
-                                    ownerData: {
-                                        avatar: user?.avatar,
-                                        name: user?.name,
-                                        surname: user?.surname,
-                                    },
-                                },
-                                ...fetchedBooks,
-                            };
-                        });
+                                    imageData: e.target.result,
+                                }),
+                            });
 
-                        if (filter.choosenSort == "desc")
-                            setBooks((books) => {
-                                return [
-                                    {
-                                        id: data.id as string,
-                                        title: publicationData?.title || "",
-                                        author: publicationData?.author || "",
-                                        date: publicationData?.date || new Date(),
+                            if (!response.ok) throw new Error();
+
+                            const data = await response.json();
+
+                            setFetchedBooks((fetchedBooks) => {
+                                return {
+                                    [data.id]: {
+                                        ...publicationData,
+                                        owner: user?.id,
                                         image: data.image,
                                         ownerData: {
-                                            avatar: user?.avatar || "",
-                                            name: user?.name || "",
-                                            surname: user?.surname || "",
+                                            avatar: user?.avatar,
+                                            name: user?.name,
+                                            surname: user?.surname,
                                         },
                                     },
-                                    ...books,
-                                ];
+                                    ...fetchedBooks,
+                                };
                             });
-                        setPublicationData(undefined);
-                        setIsModalActive(false);
-                        setFile(undefined);
-                        setCurrentStep(0);
-                    } catch (error) {
-                        toast.error("Coś poszło nie tak");
+
+                            if (filter.choosenSort == "desc")
+                                setBooks((books) => {
+                                    return [
+                                        {
+                                            id: data.id as string,
+                                            title: publicationData?.title || "",
+                                            author: publicationData?.author || "",
+                                            date: publicationData?.date || new Date(),
+                                            image: data.image,
+                                            ownerData: {
+                                                avatar: user?.avatar || "",
+                                                name: user?.name || "",
+                                                surname: user?.surname || "",
+                                            },
+                                        },
+                                        ...books,
+                                    ];
+                                });
+
+                            setPublicationData(undefined);
+                            setIsModalActive(false);
+                            setFile(undefined);
+                            setCurrentStep(0);
+
+                            resolve(1);
+                        } catch (error) {
+                            reject();
+                        }
+
+                        setIsLoading(false);
                     }
-                    setIsLoading(false);
-                }
+                });
+
+                toast.promise(submitPromise, {
+                    error: "Nie udało się opublikować książkę",
+                    loading: "Publikujemy książkę...",
+                    success: "Książka została opublikowana",
+                });
             };
 
             reader.readAsDataURL(file);
@@ -197,7 +211,7 @@ export default function StepThree({
                     </div>
                     {isSmallScreen && (
                         <Button
-                            className="text-center"
+                            className="text-center w-full md:w-auto"
                             onClick={() => {
                                 if (!isLoading) handleSubmit();
                             }}
