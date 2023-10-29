@@ -79,6 +79,7 @@ export default memo(function DropDownMenuWithChoose({ items, mode, setItem, item
                         .filter(([key, value]) => key != item)
                         .map((item) => (
                             <div
+                                key={item[0]}
                                 className="cursor-pointer w-6 h-6 py-1.5 box-content"
                                 onClick={() => {
                                     setItem(item[0]);
@@ -93,6 +94,7 @@ export default memo(function DropDownMenuWithChoose({ items, mode, setItem, item
                         .filter(([key, value]) => key != item)
                         .map((item) => (
                             <div
+                                key={item[0]}
                                 className="cursor-pointer flex py-1.5 px-1.5 gap-4 duration-200 hover:bg-[#EDFFE4]"
                                 onClick={() => {
                                     setItem(item[0]);
