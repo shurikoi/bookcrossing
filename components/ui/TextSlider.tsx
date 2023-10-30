@@ -8,7 +8,7 @@ type textSlider = {
     height?: number;
 };
 
-export default function TextSlider({ text, duration = 2000, height = 36 }: textSlider) {
+export default function TextSlider({ text, duration = 1000, height = 36 }: textSlider) {
     const [selectedText, setSelectedText] = useState(0);
     const [isEnd, setIsEnd] = useState(false);
 
@@ -23,16 +23,21 @@ export default function TextSlider({ text, duration = 2000, height = 36 }: textS
                 return selectedText + 1;
             });
         }, duration);
+
+        return () => {
+            clearInterval(interval)
+        }
+
     }, []);
 
     useEffect(() => {
         if (isEnd) {
-            setTimeout(() => {
+            // setTimeout(() => {
                 setIsEnd(false);
                 setSelectedText((selectedText) => {
                     return selectedText + 1;
                 });
-            }, 1);
+            // }, 1);
         }
     }, [isEnd]);
 

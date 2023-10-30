@@ -10,7 +10,7 @@ export default function Header() {
                 <div className="text-3xl text-white font-head">BookCrossing</div>
                 <GetStartedBtn></GetStartedBtn>
             </div>
-            <TextSlider text={heroText} duration={2000}></TextSlider>
+            <TextSlider text={heroText} duration={1000}></TextSlider>
             <div className="flex justify-center sm:justify-end">
                 <div className="flex gap-1">
                     <span className="text-white/40">zdjęcie</span>

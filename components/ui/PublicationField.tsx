@@ -7,7 +7,7 @@ interface PublicationFieldProps {
 
 export default function PublicationField({ title, icon, data, bg }: PublicationFieldProps) {
     return (
-        <div className="flex flex-col gap-3 whitespace-nowrap items-center md:items-left">
+        <div className="flex flex-col gap-3 whitespace-nowrap items-center md:items-start">
             <div className="flex gap-3 items-center">
                 {icon}
                 <div className="text-[#4E4E4E]">{title}</div>

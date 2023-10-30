@@ -62,6 +62,7 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
                 <input
                     type={isPasswordVisible ? "text" : "password"}
                     name="password"
+                    autoCapitalize="off"
                     placeholder="Wprowadź hasło"
                     className="w-full"
                     value={password}

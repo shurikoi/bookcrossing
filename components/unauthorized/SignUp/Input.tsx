@@ -32,6 +32,7 @@ export default function Input({
                 placeholder={placeholder}
                 className="w-full"
                 value={value}
+                autoCapitalize="off"
                 onChange={(e) => setValue(e.target.value.trim())}
                 onKeyDown={props.onKeyDown}
             />

@@ -91,6 +91,7 @@ export default function DefaultForm({ setEmail, setCurrentState, email }: Defaul
                 <input
                     type="text"
                     autoComplete="email"
+                    autoCapitalize="off"
                     name="email"
                     autoCorrect="off"
                     placeholder="myemail@example.com"
