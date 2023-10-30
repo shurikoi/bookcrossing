@@ -27,11 +27,6 @@ const MobileModalMenu = memo(function MobileModalMenu({
     const scrollRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        // if (fullMode) return;
-        scrollRef?.current?.scrollTo({
-            top: 0,
-        });
-
         function updateMenuPosition(e: TouchEvent) {
             if (scrollRef?.current?.scrollTop != 0) return;
 
@@ -66,9 +61,9 @@ const MobileModalMenu = memo(function MobileModalMenu({
         }
 
         if (menuRef.current) {
-            menuRef.current?.addEventListener("touchstart", updateStartPosition);
-            menuRef.current?.addEventListener("touchmove", updateMenuPosition);
-            menuRef.current?.addEventListener("touchend", handleTouchEnd);
+            menuRef.current?.addEventListener("touchstart", updateStartPosition, { passive: true });
+            menuRef.current?.addEventListener("touchmove", updateMenuPosition, { passive: true });
+            menuRef.current?.addEventListener("touchend", handleTouchEnd, { passive: true });
         }
 
         return () => {
