@@ -89,7 +89,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
                 ref={menuRef}
                 style={{ transform: `translateY(${menuYPosition}px)` }}
             >
-                <div className="flex flex-col gap-5 h-full w-full">
+                <div className="flex flex-col gap-5 h-full w-full overflow-y-auto">
                     {children}
                     {fullMode ? (
                         <div
