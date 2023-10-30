@@ -152,9 +152,9 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                         </div>
                     </>
                 ) : (
-                    <div className="flex flex-col items-center w-full gap-6">
+                    <div className="flex flex-col items-center justify-center md:justify-start flex-1 md:h-auto w-full gap-6">
                         <div className="text-2xl">Takiej książki nie ma</div>
-                        <div className="w-3/4 h-3/4">
+                        <div className="w-3/4">
                             <NotFoundIcon></NotFoundIcon>
                         </div>
                     </div>

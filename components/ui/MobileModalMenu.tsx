@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, memo, useState, useEffect, HTMLAttributes, useRef } from "react";
 import CloseBtn from "./CloseBtn";
+import { useBook } from "../contexts/BookProvider";
 
 interface ModalMenuProps extends HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
@@ -21,10 +22,19 @@ const MobileModalMenu = memo(function MobileModalMenu({
     const [menuYPosition, setMenuYPosition] = useState(0);
     const [startPosition, setStartPosition] = useState(0);
 
+    const { bookId } = useBook();
+
+    const scrollRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
-        if (fullMode) return;
+        // if (fullMode) return;
+        scrollRef?.current?.scrollTo({
+            top: 0,
+        });
 
         function updateMenuPosition(e: TouchEvent) {
+            if (scrollRef?.current?.scrollTop != 0) return;
+
             const clientY = e.touches[0].clientY - startPosition;
 
             if (menuRef.current) {
@@ -35,6 +45,8 @@ const MobileModalMenu = memo(function MobileModalMenu({
         }
 
         function updateStartPosition(e: TouchEvent) {
+            if (scrollRef?.current?.scrollTop != 0) return;
+
             const clientY = e.touches[0].clientY;
 
             menuRef.current?.classList.remove("duration-200");
@@ -45,8 +57,9 @@ const MobileModalMenu = memo(function MobileModalMenu({
         function handleTouchEnd(e: TouchEvent) {
             menuRef.current?.classList.add("duration-200");
 
-            if (menuRef.current && menuYPosition > 100) {
+            if (menuYPosition > 100) {
                 setIsModalActive(false);
+                callback();
             } else {
                 setMenuYPosition(0);
             }
@@ -64,14 +77,14 @@ const MobileModalMenu = memo(function MobileModalMenu({
             menuRef.current?.removeEventListener("touchend", handleTouchEnd);
         };
     }, [startPosition, menuYPosition, window]);
-    console.log(isModalActive);
-    useEffect(() => {
-        console.log(isModalActive);
-        if (isModalActive) {
-            setMenuYPosition(0);
 
-            document.body.style.overflow = "hidden";
-        } else if (!isModalActive) document.body.style.overflow = "auto";
+    useEffect(() => {
+        if (!!bookId) document.body.style.overflow = "hidden";
+        else if (!bookId) document.body.style.overflow = "auto";
+    }, [bookId]);
+
+    useEffect(() => {
+        if (isModalActive) setMenuYPosition(0);
     }, [isModalActive]);
 
     return (
@@ -89,21 +102,25 @@ const MobileModalMenu = memo(function MobileModalMenu({
                 ref={menuRef}
                 style={{ transform: `translateY(${menuYPosition}px)` }}
             >
-                <div className="flex flex-col gap-5 h-full w-full overflow-y-auto">
-                    {children}
+                <div className="flex flex-col h-full w-full ">
                     {fullMode ? (
-                        <div
-                            className="absolute right-6 top-3 select-none cursor-pointer"
-                            onClick={() => {
-                                callback();
-                                setIsModalActive(false);
-                            }}
-                        >
-                            X
+                        <div className="flex justify-end w-full select-none p-3">
+                            <div
+                                className="cursor-pointer"
+                                onClick={() => {
+                                    callback();
+                                    setIsModalActive(false);
+                                }}
+                            >
+                                X
+                            </div>
                         </div>
                     ) : (
                         <div className="absolute top-2 left-1/2 -translate-x-1/2 w-1/4 bg-gray-400 rounded-full h-1"></div>
                     )}
+                    <div className="overflow-y-auto" ref={scrollRef}>
+                        {children}
+                    </div>
                 </div>
             </div>
         </>
