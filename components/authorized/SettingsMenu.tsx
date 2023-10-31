@@ -56,7 +56,7 @@ function ProfilePage() {
     const { user } = useUserData();
 
     const [isChangePasswordMenuActive, setIsChangePasswordMenuActive] = useState(false);
-    const [isSetPasswordMenuActive, setIsSetPasswordMenuActive] = useState(true);
+    const [isSetPasswordMenuActive, setIsSetPasswordMenuActive] = useState(false);
 
     return (
         <div className="flex flex-col gap-6">

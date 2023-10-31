@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, memo, useState, useEffect, HTMLAttributes, useRef } from "react";
+import { Dispatch, SetStateAction, memo, useState, useEffect, HTMLAttributes, useRef, useLayoutEffect } from "react";
 import CloseBtn from "./CloseBtn";
 import { useBook } from "../contexts/BookProvider";
 
@@ -22,15 +22,17 @@ const MobileModalMenu = memo(function MobileModalMenu({
     const [menuYPosition, setMenuYPosition] = useState(0);
     const [startPosition, setStartPosition] = useState(0);
 
-    const { bookId } = useBook();
-
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
+        if (menuYPosition) scrollRef?.current?.scrollTo({ top: 0 });
+
         function updateMenuPosition(e: TouchEvent) {
-            if (scrollRef?.current?.scrollTop != 0) return;
+            if (scrollRef?.current?.scrollTop != 0 || startPosition == 0) return;
 
             const clientY = e.touches[0].clientY - startPosition;
+
+            menuRef.current?.classList.remove("duration-200");
 
             if (menuRef.current) {
                 if (menuRef.current.clientHeight - menuYPosition <= menuRef.current.clientHeight && clientY > 0)
@@ -53,9 +55,13 @@ const MobileModalMenu = memo(function MobileModalMenu({
             menuRef.current?.classList.add("duration-200");
 
             if (menuYPosition > 100) {
-                setIsModalActive(false);
                 callback();
+                setIsModalActive(false);
+                setTimeout(() => {
+                    document.body.style.overflow = "auto";
+                }, 100);
             } else {
+                setStartPosition(0);
                 setMenuYPosition(0);
             }
         }
@@ -73,13 +79,17 @@ const MobileModalMenu = memo(function MobileModalMenu({
         };
     }, [startPosition, menuYPosition, window]);
 
-    useEffect(() => {
-        if (!!bookId) document.body.style.overflow = "hidden";
-        else if (!bookId) document.body.style.overflow = "auto";
-    }, [bookId]);
+    // useEffect(() => {
+    //     if (!!bookId) document.body.style.overflow = "hidden";
+    //     else if (!bookId) document.body.style.overflow = "auto";
+    // }, [bookId]);
 
     useEffect(() => {
-        if (isModalActive) setMenuYPosition(0);
+        console.log(isModalActive, menuRef);
+        if (isModalActive) {
+            setMenuYPosition(0);
+            document.body.style.overflow = "hidden";
+        }
     }, [isModalActive]);
 
     return (
@@ -92,8 +102,8 @@ const MobileModalMenu = memo(function MobileModalMenu({
 
             <div
                 className={`${isModalActive ? "bottom-0" : "bottom-[-100%]"} ${
-                    fullMode ? "h-full" : "rounded-t-xl"
-                } fixed left-0 w-full bg-white duration-200 z-10`}
+                    fullMode ? "h-[100dvh]" : "rounded-t-xl"
+                } fixed left-0 w-full bg-white duration-200 z-20 `}
                 ref={menuRef}
                 style={{ transform: `translateY(${menuYPosition}px)` }}
             >
@@ -105,6 +115,9 @@ const MobileModalMenu = memo(function MobileModalMenu({
                                 onClick={() => {
                                     callback();
                                     setIsModalActive(false);
+                                    setTimeout(() => {
+                                        document.body.style.overflow = "auto";
+                                    }, 100);
                                 }}
                             >
                                 X

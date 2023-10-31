@@ -9,8 +9,8 @@ interface ModalMenuProps {
     isModalActive: boolean;
     fullMode?: boolean;
     setIsModalActive: Dispatch<SetStateAction<boolean>>;
-    ref? : React.RefObject<HTMLDivElement>
-    callback? : () => void
+    ref?: React.RefObject<HTMLDivElement>;
+    callback?: () => void;
 }
 
 const ModalMenu = memo(function ModalMenu({
@@ -19,16 +19,22 @@ const ModalMenu = memo(function ModalMenu({
     isModalActive,
     setIsModalActive,
     callback = () => null,
-    ref
+    ref,
 }: ModalMenuProps) {
     const menuRef = useRef<HTMLDivElement>(null);
 
     const { isSmallScreen } = useScreen();
 
     useClickOutside(menuRef, () => {
-        callback()
+        callback();
         setIsModalActive(false);
+        document.body.style.overflow = "auto";
     });
+
+    // useEffect(() => {
+    //     if (isModalActive) document.body.style.overflow = "hidden";
+    //     else document.body.style.overflow = "auto";
+    // }, [isModalActive]);
 
     return (
         <>
