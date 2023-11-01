@@ -7,7 +7,7 @@ import { publicationData } from "@/components/authorized/publication_menu/Public
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import users from "@/model/user";
-import generateRandomString from "@/lib/generateRandomName";
+import generateRandomString from "@/lib/generateRandomString";
 import resizeImage from "@/lib/resizeImage";
 
 export async function POST(req: Request) {

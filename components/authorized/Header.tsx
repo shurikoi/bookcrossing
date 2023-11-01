@@ -2,7 +2,7 @@ import BellIcon from "../ui/icons/BellIcon";
 import UserMenu from "./UserMenu";
 import { useState, useRef, memo } from "react";
 import Image from "next/image";
-import SettingsMenu from "./SettingsMenu";
+import SettingsMenu from "./settings_menu/SettingsMenu";
 import { useUserData } from "../contexts/UserProvider";
 import useClickOutside from "../hooks/useClickOutside";
 

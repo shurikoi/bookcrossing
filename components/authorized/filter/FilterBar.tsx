@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction, useLayoutEffect } from "react";
 import FilterMenu from "./FilterMenu";
-import ContentLoader from "../ui/ContentLoader";
-import ResetIcon from "../ui/icons/ResetIcon";
-import { useFilter } from "../contexts/FilterProvider";
+import ContentLoader from "../../ui/ContentLoader";
+import ResetIcon from "../../ui/icons/ResetIcon";
+import { useFilter } from "../../contexts/FilterProvider";
 import SortMenu from "./SortMenu";
 
 interface FilterBarProps {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import BookMenu from "./book_menu/BookMenu";
 import PublicationMenu, { messenger } from "./publication_menu/PublicationMenu";
 import AddBookBtn from "../ui/AddBookBtn";
-import FilterBar from "./FilterBar";
+import FilterBar from "./filter/FilterBar";
 import Publications from "./Publications";
 import { FilterProvider, sort } from "../contexts/FilterProvider";
 import { BookProvider } from "../contexts/BookProvider";

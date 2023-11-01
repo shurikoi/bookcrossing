@@ -1,7 +1,7 @@
 import { ChangeEvent, memo, useRef, useState } from "react";
-import DropDownMenu from "../ui/DropDownMenu";
-import { useFilter } from "../contexts/FilterProvider";
-import ArrowDownIcon from "../ui/icons/ArrowDownIcon";
+import DropDownMenu from "../../ui/DropDownMenu";
+import { useFilter } from "../../contexts/FilterProvider";
+import ArrowDownIcon from "../../ui/icons/ArrowDownIcon";
 
 const categories = [
     "Powieść historyczna",

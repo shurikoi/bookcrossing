@@ -8,17 +8,12 @@ import { authOptions } from "../auth/[...nextauth]/route";
 export async function POST(req: Request) {
     const { id, contact }: { id: string; contact: string } = await req.json();
 
-    try {
-        await connection();
+    await connection();
 
-        const session = await getServerSession(authOptions);
-        const user = await users.findOne({ _id: session?.user?.id });
+    const session = await getServerSession(authOptions);
+    const user = await users.findOne({ _id: session?.user?.id });
 
-        if (session && user)
-            await books.updateOne({ _id: id }, { reservedBy: user.id, reservatorContact: contact });
-    } catch (error) {
-        return NextResponse.json(error, { status: 400 });
-    }
+    if (session && user) await books.updateOne({ _id: id }, { reservedBy: user.id, reservatorContact: contact });
 
     return NextResponse.json({}, { status: 200 });
 }

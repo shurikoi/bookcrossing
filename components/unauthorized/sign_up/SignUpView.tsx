@@ -9,7 +9,15 @@ import UploadIcon from "../../ui/icons/UploadIcon";
 import Input from "./Input";
 import { currentState } from "../AuthForm";
 
-interface SignUpProps {
+interface SignUpViewProps {
+    name: string;
+    surname: string;
+    password: string;
+    confirmPassword: string;
+    setName: Dispatch<SetStateAction<string>>;
+    setSurname: Dispatch<SetStateAction<string>>;
+    setPassword: Dispatch<SetStateAction<string>>;
+    setConfirmPassword: Dispatch<SetStateAction<string>>;
     email: string;
     setFile: Dispatch<SetStateAction<File | undefined>>;
     file: File | undefined;
@@ -17,7 +25,21 @@ interface SignUpProps {
     setCurrentState: Dispatch<SetStateAction<currentState>>;
 }
 
-export default function SignUp({ file, email, setFile, setIsImagePreviewActive, setCurrentState }: SignUpProps) {
+export default function SignUpView({
+    name,
+    surname,
+    password,
+    confirmPassword,
+    file,
+    setName,
+    setSurname,
+    setPassword,
+    setConfirmPassword,
+    email,
+    setFile,
+    setIsImagePreviewActive,
+    setCurrentState,
+}: SignUpViewProps) {
     const [isLoading, setIsLoading] = useState(false);
 
     const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(true);
@@ -41,11 +63,6 @@ export default function SignUp({ file, email, setFile, setIsImagePreviewActive, 
         hasErrors: false,
     });
 
-    const [name, setName] = useState("");
-    const [surname, setSurname] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    console.log(inputRef, inputRef.current)
     useImagePicker(inputRef, (e) => {
         const files = e.target.files;
 

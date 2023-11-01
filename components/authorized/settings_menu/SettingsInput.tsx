@@ -1,5 +1,5 @@
 import { Dispatch, FormEvent, SetStateAction, memo, useRef, useState } from "react";
-import WarningIcon from "../ui/icons/WarningIcon";
+import WarningIcon from "../../ui/icons/WarningIcon";
 
 interface SettingsInputProps {
     value: string;

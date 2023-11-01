@@ -1,4 +1,5 @@
 import connection from "@/lib/connection";
+import generateRandomString from "@/lib/generateRandomString";
 import hashPassword from "@/lib/hashPassword";
 import resizeImage from "@/lib/resizeImage";
 import users from "@/model/user";
@@ -13,8 +14,8 @@ type credentials = {
     surname?: string;
     email: string;
     password: string;
-    imageData: string | undefined;
-    imageName: string | undefined;
+    imageData?: string;
+    imageName?: string;
 };
 
 type user = {
@@ -36,13 +37,17 @@ export const authOptions: NextAuthOptions = {
             name: "credentials",
             credentials: {},
             async authorize(credentials) {
-                const { authType, imageName, imageData, email, password } = credentials as credentials;
+                const { authType, imageData, imageName, email, password } = credentials as credentials;
 
                 await connection();
 
+                // const extension = body.imageName.split(".").at(-1);
+
+                // const path = "/books/" + generateRandomString() + "." + extension;
+                
                 const user = await users.findOne({ email });
                 const hashedPassword = await hashPassword(password);
-
+                
                 if (authType == "signin") {
                     if (user && user.password == hashedPassword) {
                         return { email } as any;
@@ -51,14 +56,15 @@ export const authOptions: NextAuthOptions = {
                     if (!user) {
                         const { name, surname } = credentials as credentials;
 
-                        const path = imageName ? "/avatars/" + imageName : "/avatars/01.png";
+                        const randomName = generateRandomString() + "." + imageName?.split(".").at(-1);
+                        const path = imageName ? "/avatars/" + randomName : "/avatars/01.png";
 
                         if (imageData && imageName) {
                             const imageBuffer = Buffer.from(imageData.split(",")[1], "base64");
 
                             const resizedImage = await resizeImage(imageBuffer, 200, 200);
 
-                            fs.writeFile("./public/avatars/" + imageName, resizedImage, () => {});
+                            fs.writeFile("./public/avatars/" + randomName, resizedImage, () => {});
                         }
 
                         await users.create({ name, surname, password: hashedPassword, avatar: path, email, date });

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import DefaultForm from "./DefaultForm";
 import SignInForm from "./SignInForm";
-import SignUpForm from "./SignUpForm";
+import SignUpForm from "./sign_up/SignUpForm";
 import ModalMenu from "../ui/ModalMenu";
 import { useForm } from "../contexts/FormModalProvider";
 import { CSSTransition, SwitchTransition } from "react-transition-group";

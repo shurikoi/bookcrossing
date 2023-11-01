@@ -1,6 +1,8 @@
-import { RefObject, useEffect } from "react";
+import { RefObject, useEffect, useState } from "react";
 
 export default function useImagePicker(ref: RefObject<HTMLInputElement>, callback?: (e: any) => void) {
+    const [file, setFile] = useState<File>()
+
     useEffect(() => {
         const div = document.createElement("div");
 
@@ -10,6 +12,8 @@ export default function useImagePicker(ref: RefObject<HTMLInputElement>, callbac
             setTimeout(() => {
                 div.remove();
             }, 1000);
+
+            setFile(e.target.files[0])
 
             if (callback) callback(e);
         }
@@ -42,4 +46,6 @@ export default function useImagePicker(ref: RefObject<HTMLInputElement>, callbac
             }
         };
     }, [ref, ref.current]);
+
+    return file
 }
