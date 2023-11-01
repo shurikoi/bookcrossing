@@ -6,9 +6,10 @@ const user = new Schema(
         surname: String,
         password: String,
         email: String,
-        provider: {type: String, default: "credentials"},
+        provider: { type: String, default: "credentials" },
         avatar: { type: String, value: "/avatars/01.png" },
         points: { type: Number, default: 1 },
+        contact: { Telegram: String, Snapchat: String, Messenger: String, Instagram: String },
         date: Date,
     },
     { versionKey: false }

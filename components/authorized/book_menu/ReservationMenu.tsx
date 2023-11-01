@@ -22,6 +22,8 @@ export default function ReservationMenu({
     const [messenger, setMessenger] = useState<messenger>("Snapchat");
     const [contact, setContact] = useState("");
 
+    const [addToProfile, setAddToProfile] = useState(false);
+
     const { bookId, setBook } = useBook();
     const { user } = useUserData();
 
@@ -30,12 +32,13 @@ export default function ReservationMenu({
             async function fetchData() {
                 setIsMenuActive(false);
                 setContact("");
-
+                setAddToProfile(false);
+                
                 setIsReservationLoading(true);
 
                 const response = await fetch("/api/reserve-book", {
                     method: "post",
-                    body: JSON.stringify({ id: bookId, contact }),
+                    body: JSON.stringify({ id: bookId, contact, messenger, addToProfile }),
                 });
 
                 setBook((book) => {
@@ -77,6 +80,18 @@ export default function ReservationMenu({
                     placeholder="Kontakt"
                     className="font-inter placeholder:text-black font-regular text-[17px] border-b border-b-black"
                 />
+                <div className="flex font-extralight text-sm select-none">
+                    <input
+                        type="checkbox"
+                        className="cursor-pointer"
+                        id="contact"
+                        checked={addToProfile}
+                        onChange={(e) => setAddToProfile((prev) => !prev)}
+                    />
+                    <label htmlFor="contact" className="pl-3 cursor-pointer ">
+                        Dodaj do profilu
+                    </label>
+                </div>
                 <Button onClick={reserveBook}>Zarezerwuj książkę</Button>
             </div>
         </ModalMenu>

@@ -21,6 +21,8 @@ export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<
     }, [bookId]);
 
     async function cancelReservation() {
+        if (isReservationLoading) return;
+
         async function fetchData() {
             setIsReservationLoading(true);
 

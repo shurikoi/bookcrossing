@@ -25,7 +25,7 @@ export default memo(function DropDownMenuWithChoose({ items, mode, setItem, item
 
     const menuRef = useRef<HTMLDivElement>(null);
     return (
-        <div ref={menuRef} className={`relative text-[15px] font-light`}>
+        <div ref={menuRef} className={`relative text-[15px] font-light select-none`}>
             <div className="flex gap-2 items-center cursor-pointer" onClick={() => setIsMenuActive((prev) => !prev)}>
                 {mode != "text&icons" && (
                     <svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -55,7 +55,7 @@ export default memo(function DropDownMenuWithChoose({ items, mode, setItem, item
                 menuRef={menuRef}
                 isMenuActive={isMenuActive}
                 setIsMenuActive={setIsMenuActive}
-                className={`absolute -bottom-2 bg-white translate-y-full flex flex-col ${
+                className={`absolute -bottom-2 bg-white translate-y-full flex flex-col  ${
                     mode == "text&icons" ? "left-0" : "right-0"
                 }`}
             >

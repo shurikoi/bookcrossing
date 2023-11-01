@@ -5,15 +5,26 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
 
+interface body {
+    id: string;
+    contact: string;
+    messenger: string;
+    addToProfile: boolean;
+}
+
 export async function POST(req: Request) {
-    const { id, contact }: { id: string; contact: string } = await req.json();
+    const { id, contact, addToProfile, messenger }: body = await req.json();
 
     await connection();
 
     const session = await getServerSession(authOptions);
     const user = await users.findOne({ _id: session?.user?.id });
 
-    if (session && user) await books.updateOne({ _id: id }, { reservedBy: user.id, reservatorContact: contact });
+    if (!session || !user) return NextResponse.json({}, { status: 404 });
+
+    if (addToProfile) await users.updateOne({ _id: user.id }, { contact: { ...user.contact, [messenger]: contact } });
+
+    await books.updateOne({ _id: id }, { reservedBy: user.id, reservatorContact: contact });
 
     return NextResponse.json({}, { status: 200 });
 }
