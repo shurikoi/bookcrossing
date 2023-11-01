@@ -12,6 +12,7 @@ import LeafIcon from "@/components/ui/icons/LeafIcon";
 import DropDownMenuWithChoose from "@/components/ui/DropDownMenuWithChoose";
 import Button from "@/components/ui/buttons/Button";
 import isPublicationDataValid, { errors } from "@/lib/isPublicationDataValid";
+import Image from "next/image";
 
 export const categories = [
     "Powieść historyczna",
@@ -85,13 +86,13 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
                 </div>
                 <div>2 / 3</div>
             </div>
-            <div className="flex h-full overflow-y-auto">
-                <div className="hidden md:flex w-[400px] aspect-[3/4] relative">
+            <div className="flex flex-col md:flex-row h-full ">
+                <div className="flex w-[400px] aspect-[3/4] relative shrink-0">
                     <PublicationImage image={image?.data}></PublicationImage>
                 </div>
                 <div className="flex flex-col gap-6 p-4 w-full md:w-[360px]">
                     <div className="flex gap-4 items-center">
-                        <img className="w-10 h-10 rounded-full" src={user?.avatar} alt="" />
+                        <Image alt="" className="rounded-full" width={40} height={40} src={user?.avatar || ""} />
                         <div className="font-extralight text-base">{user?.name}</div>
                     </div>
 

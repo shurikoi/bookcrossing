@@ -60,9 +60,8 @@ export default function StepOne({ setFile, setCurrentStep }: StepOneProps) {
     }
 
     return (
-        <>
             <div
-                className={`flex flex-col rounded-lg items-center gap-16 justify-center h-full w-full md:w-fit md:px-[110px] md:py-[72px] duration-200 ${
+                className={`flex flex-col rounded-lg items-center gap-16 justify-center top-0 h-screen absolute md:h-full md:relative w-full md:w-fit md:px-[110px] md:py-[72px] duration-200 ${
                     isWindowHovered ? "bg-[#e4e4e4]" : "bg-white"
                 }`}
                 onDragOver={(e) => e.preventDefault()}
@@ -76,6 +75,5 @@ export default function StepOne({ setFile, setCurrentStep }: StepOneProps) {
                     <input ref={fileRef} type="file" accept="image/png, image/jpeg" hidden />
                 </div>
             </div>
-        </>
     );
 }

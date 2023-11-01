@@ -1,6 +1,4 @@
-import { Dispatch, SetStateAction, memo, useState, useEffect, HTMLAttributes, useRef, useLayoutEffect } from "react";
-import CloseBtn from "./CloseBtn";
-import { useBook } from "../contexts/BookProvider";
+import { Dispatch, SetStateAction, memo, useState, useEffect, HTMLAttributes, useRef } from "react";
 
 interface ModalMenuProps extends HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
@@ -24,25 +22,27 @@ const MobileModalMenu = memo(function MobileModalMenu({
 
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    useLayoutEffect(() => {
-        if (menuYPosition) scrollRef?.current?.scrollTo({ top: 0 });
-
+    useEffect(() => {
         function updateMenuPosition(e: TouchEvent) {
-            if (scrollRef?.current?.scrollTop != 0 || startPosition == 0) return;
+            if ((scrollRef.current && scrollRef.current.scrollTop > 0) || startPosition == 0) return;
 
             const clientY = e.touches[0].clientY - startPosition;
-
-            menuRef.current?.classList.remove("duration-200");
+            if (scrollRef.current && clientY > 1) scrollRef.current.style.overflow = "hidden";
 
             if (menuRef.current) {
-                if (menuRef.current.clientHeight - menuYPosition <= menuRef.current.clientHeight && clientY > 0)
-                    setMenuYPosition(clientY);
+                if (clientY > 0) setMenuYPosition(clientY);
                 else setMenuYPosition(0);
             }
         }
 
         function updateStartPosition(e: TouchEvent) {
-            if (scrollRef?.current?.scrollTop != 0) return;
+            if (scrollRef.current && scrollRef.current.scrollTop > 0) return;
+
+            if (scrollRef.current)
+                scrollRef.current.onscroll = (e) => {
+                    setStartPosition(0);
+                    if (scrollRef.current) scrollRef.current.onscroll = null;
+                };
 
             const clientY = e.touches[0].clientY;
 
@@ -53,6 +53,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
 
         function handleTouchEnd(e: TouchEvent) {
             menuRef.current?.classList.add("duration-200");
+            if (scrollRef.current) scrollRef.current.style.removeProperty("overflow");
 
             if (menuYPosition > 100) {
                 callback();
@@ -109,9 +110,9 @@ const MobileModalMenu = memo(function MobileModalMenu({
             >
                 <div className="flex flex-col h-full w-full ">
                     {fullMode ? (
-                        <div className="flex justify-end w-full select-none p-3">
+                        <div className="flex justify-end w-full select-none z-10">
                             <div
-                                className="cursor-pointer"
+                                className="cursor-pointer p-3"
                                 onClick={() => {
                                     callback();
                                     setIsModalActive(false);
@@ -126,7 +127,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
                     ) : (
                         <div className="absolute top-2 left-1/2 -translate-x-1/2 w-1/4 bg-gray-400 rounded-full h-1"></div>
                     )}
-                    <div className="overflow-y-auto" ref={scrollRef}>
+                    <div className="overflow-y-auto h-full" ref={scrollRef}>
                         {children}
                     </div>
                 </div>

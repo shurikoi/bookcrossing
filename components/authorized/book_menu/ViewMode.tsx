@@ -81,7 +81,7 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                                                     fill={true}
                                                     src={book.image}
                                                     alt=""
-                                                    className={`md:rounded-md object-cover`}
+                                                    className={`object-cover`}
                                                     onLoad={() => {
                                                         setIsImageLoaded(true);
                                                     }}
@@ -92,7 +92,7 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                                             </>
                                         ) : (
                                             !isImageLoaded && (
-                                                <div className="bg-black text-white flex items-center h-full justify-center rounded-md">
+                                                <div className="bg-black text-white flex items-center h-full justify-center">
                                                     Nie ma zdjęcia
                                                 </div>
                                             )
@@ -143,8 +143,10 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                                         bg="bg-[#e97c4d7a]"
                                     ></PublicationField>
                                 </div>
-                                <div className="text-[#474747] font-light font-inter text-[15px] md:w-[500px] max-h-[180px] overflow-y-auto break-all
-                                ">
+                                <div
+                                    className="text-[#474747] font-light font-inter text-[15px] md:w-[500px] max-h-[180px] overflow-y-auto break-all
+                                "
+                                >
                                     {book.description}
                                 </div>
                                 {isSmallScreen && <Buttons setMode={setMode}></Buttons>}

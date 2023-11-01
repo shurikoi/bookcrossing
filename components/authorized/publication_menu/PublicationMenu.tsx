@@ -1,5 +1,5 @@
 import ModalMenu from "../../ui/ModalMenu";
-import { Dispatch, SetStateAction, useLayoutEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { publication } from "../Main";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import TelegramIcon from "../../ui/icons/TelegramIcon";
@@ -60,11 +60,9 @@ export default function PublicationMenu({ setBooks, isModalActive, setIsModalAct
 
     const [file, setFile] = useState<File>();
 
-    const overlayRef = useRef<HTMLDivElement>(null);
-
     const [image, setImage] = useState<image>();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (file) {
             setImage({
                 name: file.name,
@@ -94,23 +92,23 @@ export default function PublicationMenu({ setBooks, isModalActive, setIsModalAct
     ];
     const nodeRef = useRef<any>(null);
     return (
-        <>
-            <ModalMenu fullMode isModalActive={isModalActive} setIsModalActive={setIsModalActive}>
-                <SwitchTransition mode="out-in">
-                    <CSSTransition
-                        key={currentStep}
-                        classNames="fade"
-                        nodeRef={nodeRef}
-                        addEndListener={(done: any) => {
-                            if (nodeRef.current) {
-                                nodeRef.current.addEventListener("transitionend", done, false);
-                            }
-                        }}
-                    >
-                        <div className="h-full md:h-auto" ref={nodeRef}>{steps[currentStep]}</div>
-                    </CSSTransition>
-                </SwitchTransition>
-            </ModalMenu>
-        </>
+        <ModalMenu fullMode isModalActive={isModalActive} setIsModalActive={setIsModalActive}>
+            <SwitchTransition mode="out-in">
+                <CSSTransition
+                    key={currentStep}
+                    classNames="fade"
+                    nodeRef={nodeRef}
+                    addEndListener={(done: any) => {
+                        if (nodeRef.current) {
+                            nodeRef.current.addEventListener("transitionend", done, false);
+                        }
+                    }}
+                >
+                    <div className="h-full md:h-auto" ref={nodeRef}>
+                        {steps[currentStep]}
+                    </div>
+                </CSSTransition>
+            </SwitchTransition>
+        </ModalMenu>
     );
 }

@@ -22,10 +22,11 @@ const ModalMenu = memo(function ModalMenu({
     ref,
 }: ModalMenuProps) {
     const menuRef = useRef<HTMLDivElement>(null);
-
+    
     const { isSmallScreen } = useScreen();
-
+    
     useClickOutside(menuRef, () => {
+        if (!isModalActive) return
         callback();
         setIsModalActive(false);
         document.body.style.overflow = "auto";

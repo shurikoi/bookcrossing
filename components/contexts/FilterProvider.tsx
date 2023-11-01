@@ -4,6 +4,12 @@ import { bookQuery } from "../authorized/Main";
 export type sort = "asc" | "desc";
 
 interface FilterContext {
+    categories: string[];
+    setCategories: Dispatch<SetStateAction<string[]>>;
+    languages: string[];
+    setLanguages: Dispatch<SetStateAction<string[]>>;
+    states: string[];
+    setStates: Dispatch<SetStateAction<string[]>>;
     choosenCategories: string[];
     choosenLanguages: string[];
     choosenStates: string[];
@@ -17,6 +23,12 @@ interface FilterContext {
 }
 
 const FilterContext = createContext<FilterContext>({
+    categories: [],
+    setCategories: () => [],
+    languages: [],
+    setLanguages: () => [],
+    states: [],
+    setStates: () => [],
     choosenCategories: [],
     choosenLanguages: [],
     choosenStates: [],
@@ -43,6 +55,10 @@ const FilterContext = createContext<FilterContext>({
 function FilterProvider({ children }: { children: React.ReactNode }) {
     const params = new URLSearchParams(window.location.search);
 
+    const [categories, setCategories] = useState<string[]>([]);
+    const [languages, setLanguages] = useState<string[]>([]);
+    const [states, setStates] = useState<string[]>([]);
+
     const [choosenCategories, setChoosenCategories] = useState(params.get("categories")?.split(",") || []);
     const [choosenLanguages, setChoosenLanguages] = useState(params.get("languages")?.split(",") || []);
     const [choosenStates, setChoosenStates] = useState(params.get("states")?.split(",") || []);
@@ -61,6 +77,18 @@ function FilterProvider({ children }: { children: React.ReactNode }) {
         const sort = params.get("sort");
 
         if (sort != "desc" && sort != "asc") setChoosenSort("desc");
+
+        getFilters();
+
+        async function getFilters() {
+            const response = await fetch("/api/get-filters", { method: "post" });
+
+            const filters = await response.json()
+
+            setCategories(filters.categories)
+            setLanguages(filters.languages)
+            setStates(filters.states)
+        }
     }, []);
 
     useEffect(() => {
@@ -77,6 +105,12 @@ function FilterProvider({ children }: { children: React.ReactNode }) {
     return (
         <FilterContext.Provider
             value={{
+                categories,
+                setCategories,
+                languages,
+                setLanguages,
+                states,
+                setStates,
                 choosenCategories,
                 choosenLanguages,
                 choosenStates,

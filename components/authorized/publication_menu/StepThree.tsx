@@ -140,7 +140,7 @@ export default function StepThree({
                         <img
                             src={publicationData?.imageData}
                             alt="book"
-                            className="rounded-md w-full h-full object-cover"
+                            className="w-full h-full object-cover"
                         />
                         <img
                             src={user?.avatar}

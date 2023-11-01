@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, SetStateAction, memo, useEffect, useRef, useState } from "react";
+import { ChangeEvent, memo, useRef, useState } from "react";
 import DropDownMenu from "../ui/DropDownMenu";
 import { useFilter } from "../contexts/FilterProvider";
 import ArrowDownIcon from "../ui/icons/ArrowDownIcon";
@@ -104,7 +104,7 @@ export default memo(function FilterMenu() {
                 <div className="text-left pl-[30%] md:pl-0 font-inter text-[#3F3A5A] text-[16px] w-full md:w-auto md:px-0">
                     <div className="font-semibold mb-3">Kategoria</div>
                     <div className="">
-                        {categories.map((category) => (
+                        {filter.categories.map((category) => (
                             <label
                                 htmlFor={category}
                                 key={category}
@@ -127,7 +127,7 @@ export default memo(function FilterMenu() {
                 <div className="text-left pl-[30%] md:pl-0 font-inter text-[#3F3A5A] text-[16px] w-full md:w-auto md:px-0">
                     <div className="font-semibold mb-3">Języki</div>
                     <div className="">
-                        {languages.map((language) => (
+                        {filter.languages.map((language) => (
                             <label
                                 htmlFor={language}
                                 key={language}
@@ -150,7 +150,7 @@ export default memo(function FilterMenu() {
                 <div className="text-left pl-[30%] md:pl-0 font-inter text-[#3F3A5A] text-[16px] w-full md:w-auto md:px-0">
                     <div className="font-semibold mb-3">Stan</div>
                     <div className="">
-                        {bookStates.map((bookState) => (
+                        {filter.states.map((bookState) => (
                             <label
                                 htmlFor={bookState}
                                 className="flex gap-2 items-center select-none cursor-pointer w-full"
