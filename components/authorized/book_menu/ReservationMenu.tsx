@@ -22,7 +22,7 @@ export default function ReservationMenu({
     const [messenger, setMessenger] = useState<messenger>("Snapchat");
     const [contact, setContact] = useState("");
 
-    const [addToProfile, setAddToProfile] = useState(false);
+    const [addToProfile, setAddToProfile] = useState(true);
 
     const { bookId, setBook } = useBook();
     const { user } = useUserData();
