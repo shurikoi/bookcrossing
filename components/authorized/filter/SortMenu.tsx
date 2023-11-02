@@ -28,7 +28,7 @@ export default function SortMenu() {
     }
 
     return (
-        <div ref={menuRef} className="relative">
+        <div ref={menuRef} className="relative hidden md:block">
             <div
                 className="flex gap-3 items-center py-3 px-5 rounded-lg cursor-pointer select-none border border-[#A39EBE] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.15)]"
                 onClick={() => setIsMenuActive((prev) => !prev)}

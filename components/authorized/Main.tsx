@@ -69,7 +69,7 @@ export default function Main() {
 
     return (
         <div className="flex flex-col items-center pt-10">
-            <div className="text-center text-[25px] font-normal px-6 max-w-[800px] box-content">
+            <div className="text-center font-light text-[18px] md:text-[23px] max-w-[800px] px-6 box-content">
                 Wierzymy, że korzystanie z&nbsp;serwisu może dostarczyć wiele radości i&nbsp;wzbogacić Twoje
                 doświadczenie czytelnicze.
             </div>
