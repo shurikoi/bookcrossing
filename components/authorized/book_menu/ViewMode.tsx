@@ -100,12 +100,12 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                                     </div>
                                     <Image
                                         quality={100}
-                                        height={56}
-                                        width={56}
+                                        height={64}
+                                        width={64}
                                         alt=""
                                         title={book.ownerData.name + " " + book.ownerData.surname}
                                         src={book?.ownerData.avatar}
-                                        className={`absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 rounded-full bg-gray-500 cursor-pointer duration-200 ${
+                                        className={`absolute bottom-0 w-16 h-16 left-1/2 translate-y-1/2 -translate-x-1/2 rounded-full bg-gray-500 cursor-pointer duration-200 ${
                                             isImageHovered ? "opacity-0" : "opacity-100"
                                         }`}
                                     ></Image>

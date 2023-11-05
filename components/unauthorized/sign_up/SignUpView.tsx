@@ -8,6 +8,7 @@ import ArrowLeftIcon from "../../ui/icons/ArrowLeftIcon";
 import UploadIcon from "../../ui/icons/UploadIcon";
 import Input from "./Input";
 import { currentState } from "../AuthForm";
+import { useForm } from "@/components/contexts/FormModalProvider";
 
 interface SignUpViewProps {
     name: string;

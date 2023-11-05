@@ -74,9 +74,8 @@ const Book = memo(({ data, handleClick }: BookProps) => {
                 title={data.ownerData.name + " " + data.ownerData.surname}
                 src={data.ownerData.avatar}
                 width={56}
-                quality={100}
-
                 height={56}
+                quality={100}
                 alt=""
                 className={`absolute top-0 right-0 -translate-y-1/2 w-14 h-14 translate-x-1/2 rounded-full bg-gray-500 duration-300 ${
                     isMouseOver ? "opacity-0" : "opacity-100"

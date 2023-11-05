@@ -7,6 +7,7 @@ import CloseBtn from "../ui/CloseBtn";
 import WarningIcon from "../ui/icons/WarningIcon";
 import Button from "../ui/buttons/Button";
 import ArrowLeftIcon from "../ui/icons/ArrowLeftIcon";
+import { useForm } from "../contexts/FormModalProvider";
 
 type SignInForm = {
     email: string;
@@ -67,7 +68,7 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
                     className="w-full"
                     value={password}
                     onChange={(e) => {
-                        setPassword(e.target.value.trim())
+                        setPassword(e.target.value.trim());
                     }}
                     onKeyDown={handleKeyDown}
                     ref={inputRef}

@@ -17,6 +17,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
     menuRef,
     callback = () => null,
 }: ModalMenuProps) {
+    console.log(isModalActive);
     const [menuYPosition, setMenuYPosition] = useState(0);
     const [startPosition, setStartPosition] = useState(0);
 
@@ -90,6 +91,8 @@ const MobileModalMenu = memo(function MobileModalMenu({
         if (isModalActive) {
             setMenuYPosition(0);
             document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
         }
     }, [isModalActive]);
 
