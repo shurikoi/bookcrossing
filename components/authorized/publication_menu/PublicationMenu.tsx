@@ -41,7 +41,6 @@ export const messengers: messengers = {
 export type messenger = "Telegram" | "Snapchat" | "Messenger" | "Instagram" | string;
 
 interface PublicationMenuProps {
-    setBooks: Dispatch<SetStateAction<publication[]>>;
     isModalActive: boolean;
     setIsModalActive: Dispatch<SetStateAction<boolean>>;
 }
@@ -53,7 +52,7 @@ export type image =
       }
     | undefined;
 
-export default function PublicationMenu({ setBooks, isModalActive, setIsModalActive }: PublicationMenuProps) {
+export default function PublicationMenu({ isModalActive, setIsModalActive }: PublicationMenuProps) {
     const [currentStep, setCurrentStep] = useState(0);
 
     const [publicationData, setPublicationData] = useState<publicationData>();
@@ -83,7 +82,6 @@ export default function PublicationMenu({ setBooks, isModalActive, setIsModalAct
             image={image}
             file={file}
             setFile={setFile}
-            setBooks={setBooks}
             setPublicationData={setPublicationData}
             setIsModalActive={setIsModalActive}
             publicationData={publicationData}

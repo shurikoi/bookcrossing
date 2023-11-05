@@ -7,11 +7,9 @@ import { useFilter } from "../contexts/FilterProvider";
 import { useBook } from "../contexts/BookProvider";
 
 interface PublicationsProps {
-    setBooks: Dispatch<SetStateAction<publication[]>>;
     setBooksCount: Dispatch<SetStateAction<number>>;
     setBooksQueryCount: Dispatch<SetStateAction<number>>;
     setIsBooksLoading: Dispatch<SetStateAction<boolean>>;
-    books: publication[];
     isBooksLoading: boolean;
 }
 
@@ -24,8 +22,6 @@ interface fetchData {
 const limit = 10;
 
 export default memo(function Publications({
-    setBooks,
-    books,
     setBooksCount,
     setBooksQueryCount,
     setIsBooksLoading,
@@ -33,7 +29,7 @@ export default memo(function Publications({
 }: PublicationsProps) {
     const filter = useFilter();
 
-    const { setBookId } = useBook();
+    const { setBookId, setBooks, books } = useBook();
 
     const timerRef = useRef<NodeJS.Timer | null>(null);
 
@@ -108,7 +104,7 @@ export default memo(function Publications({
                 {books && (
                     <TransitionGroup component={null} exit={false}>
                         {books.map((book, index) => (
-                            <CSSTransition key={book.id}  classNames="item" timeout={500}>
+                            <CSSTransition key={book.id} classNames="item" timeout={500}>
                                 <Book key={index} data={book} handleClick={() => setBookId(book.id!)} />
                             </CSSTransition>
                         ))}

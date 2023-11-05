@@ -6,9 +6,14 @@ import { useBook } from "@/components/contexts/BookProvider";
 import toast from "react-hot-toast";
 import { messengers } from "../publication_menu/PublicationMenu";
 import { useUserData } from "@/components/contexts/UserProvider";
+import ModalMenu from "@/components/ui/ModalMenu";
+import DeleteMenu from "./DeleteMenu";
 
 export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<BookMenuMode>> }) {
     const [wasButtonPressed, setWasButtonPresseed] = useState(false);
+    
+    const [isDeleteMenuActive, setIsDeleteMenuActive] = useState(false);
+
     const [isReservationMenuActive, setIsReservationMenuActive] = useState(false);
     const [isReservationLoading, setIsReservationLoading] = useState(false);
 
@@ -19,7 +24,7 @@ export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<
     useEffect(() => {
         setWasButtonPresseed(false);
     }, [bookId]);
-
+    
     async function cancelReservation() {
         if (isReservationLoading) return;
 
@@ -63,12 +68,18 @@ export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<
                             Potwierdź
                         </div>
                     ) : (
-                        <div
-                            onClick={() => setWasButtonPresseed(true)}
-                            className="font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer hover:text-[#CD5E4F] hover:bg-white hover:border-[#CD5E4F] duration-300 select-none"
-                        >
-                            Usuń
-                        </div>
+                        <>
+                            <div
+                                onClick={() => setIsDeleteMenuActive(true)}
+                                className="font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer hover:text-[#CD5E4F] hover:bg-white hover:border-[#CD5E4F] duration-300 select-none"
+                            >
+                                Usuń
+                            </div>
+                            <DeleteMenu
+                                isDeleteMenuActive={isDeleteMenuActive}
+                                setIsDeleteMenuActive={setIsDeleteMenuActive}
+                            ></DeleteMenu>
+                        </>
                     )}
                 </div>
             ) : (

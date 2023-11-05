@@ -12,7 +12,6 @@ export default function BookMenu() {
 
     useEffect(() => {
         setMode("view")
-        console.log(bookId)
         setIsModalActive(!!bookId);
     }, [bookId]);
 

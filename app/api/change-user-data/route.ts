@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
 
-interface userData {
+interface body {
     email: string;
     name: string;
     surname: string;
@@ -13,11 +13,13 @@ interface userData {
 export async function POST(req: Request) {
     await connection();
 
-    const { email, name, surname }: userData = await req.json();
+    const { email, name, surname }: body = await req.json();
 
-    const { user } = (await getServerSession(authOptions)) as { user: { email: string } };
+    const session = await getServerSession(authOptions);
 
-    await users.updateOne({ email: user.email }, { email, name, surname });
+    if (!session) return NextResponse.json({}, { status: 404 });
+
+    await users.updateOne({ email: session.user?.email }, { email, name, surname });
 
     return NextResponse.json({}, { status: 200 });
 }

@@ -8,6 +8,7 @@ import { FilterProvider, sort } from "../contexts/FilterProvider";
 import { BookProvider } from "../contexts/BookProvider";
 
 export interface bookData {
+    _id: string;
     title: string;
     owner: string;
     author: string;
@@ -32,7 +33,7 @@ export interface bookData {
 }
 
 export interface publication {
-    id?: string;
+    id: string;
     date: Date;
     author: string;
     title: string;
@@ -56,8 +57,6 @@ export interface bookQuery {
 export default function Main() {
     const [isPublicationModalActive, setIsPublicationModalActive] = useState(false);
 
-    const [books, setBooks] = useState<publication[]>([]);
-
     const [booksCount, setBooksCount] = useState(0);
     const [booksQueryCount, setBooksQueryCount] = useState(0);
 
@@ -73,8 +72,8 @@ export default function Main() {
                 Wierzymy, że korzystanie z&nbsp;serwisu może dostarczyć wiele radości i&nbsp;wzbogacić Twoje
                 doświadczenie czytelnicze.
             </div>
-            <BookProvider>
-                <FilterProvider>
+            <FilterProvider>
+                <BookProvider>
                     <FilterBar
                         setIsBooksLoading={setIsBooksLoading}
                         isBooksLoading={isBooksLoading}
@@ -83,8 +82,6 @@ export default function Main() {
                     ></FilterBar>
 
                     <Publications
-                        setBooks={setBooks}
-                        books={books}
                         setBooksQueryCount={setBooksQueryCount}
                         setBooksCount={setBooksCount}
                         setIsBooksLoading={setIsBooksLoading}
@@ -93,12 +90,11 @@ export default function Main() {
                     <PublicationMenu
                         isModalActive={isPublicationModalActive}
                         setIsModalActive={setIsPublicationModalActive}
-                        setBooks={setBooks}
                     />
-                </FilterProvider>
 
-                <BookMenu />
-            </BookProvider>
+                    <BookMenu />
+                </BookProvider>
+            </FilterProvider>
 
             <AddBookBtn onClick={handleAddBookClick} />
         </div>
