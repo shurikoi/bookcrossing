@@ -51,19 +51,17 @@ function BookProvider({ children }: { children: React.ReactNode }) {
         async function getBook(id: string) {
             setIsLoading(true);
 
-            try {
-                const response = await fetch("/api/get-publication", {
-                    method: "POST",
-                    body: JSON.stringify({ id }),
-                });
+            const response = await fetch("/api/get-publication", {
+                method: "POST",
+                body: JSON.stringify({ id }),
+            });
 
+            if (response.ok) {
                 const book: bookData = await response.json();
-                console.log(book);
-                setBook(book);
-            } catch (error) {
-                setBook(undefined);
-            }
 
+                setBook(book);
+            }
+            
             setIsLoading(false);
         }
     }, [bookId]);

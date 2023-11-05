@@ -35,18 +35,18 @@ const MobileModalMenu = memo(function MobileModalMenu({
     }
 
     function updateMenuPosition(e: TouchEvent) {
+        console.log(scrollRef.current?.scrollTop, startPosition, e.touches[0].clientY - startPosition);
         if ((scrollRef.current && scrollRef.current.scrollTop > 0) || startPosition == 0) return;
 
         const clientY = e.touches[0].clientY - startPosition;
 
-        if(clientY > 0) e.preventDefault() // fixed address bar issue
+        if (clientY > 0 && e.cancelable) {
+            e.preventDefault();
 
-        if (scrollRef.current && clientY > 1) scrollRef.current.style.overflow = "hidden";
+            if (scrollRef.current) scrollRef.current.style.overflow = "hidden";
 
-        if (menuRef.current) {
-            if (clientY > 0) setMenuYPosition(clientY);
-            else setMenuYPosition(0);
-        }
+            setMenuYPosition(clientY);
+        } else setMenuYPosition(0);
     }
 
     function handleTouchEnd() {

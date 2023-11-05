@@ -37,7 +37,7 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
             setIsImageLoaded(true);
         }
     }, [isModalActive]);
-
+    console.log(book)
     return (
         <>
             <div className="flex flex-col w-full md:min-w-[700px] min-h-[400px] gap-4 md:p-6 h-fit">
