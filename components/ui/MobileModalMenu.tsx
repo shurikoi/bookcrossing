@@ -35,9 +35,11 @@ const MobileModalMenu = memo(function MobileModalMenu({
     }
 
     function updateMenuPosition(e: TouchEvent) {
+        if ((scrollRef.current && scrollRef.current.scrollTop > 0) || startPosition == 0) return;
+
         const clientY = e.touches[0].clientY - startPosition;
 
-        if ((scrollRef.current && scrollRef.current.scrollTop > 0) || startPosition == 0) return;
+        if(clientY > 0) e.preventDefault() // fixed address bar issue
 
         if (scrollRef.current && clientY > 1) scrollRef.current.style.overflow = "hidden";
 
