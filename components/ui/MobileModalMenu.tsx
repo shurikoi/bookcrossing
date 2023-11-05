@@ -22,68 +22,66 @@ const MobileModalMenu = memo(function MobileModalMenu({
 
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        function updateMenuPosition(e: TouchEvent) {
-            if ((scrollRef.current && scrollRef.current.scrollTop > 0) || startPosition == 0) return;
+    function updateStartPosition(e: TouchEvent) {
+        if (scrollRef.current && scrollRef.current.scrollTop > 0) return;
 
-            const clientY = e.touches[0].clientY - startPosition;
-            if (scrollRef.current && clientY > 1) scrollRef.current.style.overflow = "hidden";
+        const clientY = e.touches[0].clientY;
 
-            if (menuRef.current) {
-                if (clientY > 0) setMenuYPosition(clientY);
-                else setMenuYPosition(0);
-            }
-        }
+        document.body.style.overflow = "hidden";
 
-        function updateStartPosition(e: TouchEvent) {
-            if (scrollRef.current && scrollRef.current.scrollTop > 0) return;
+        menuRef.current?.classList.remove("duration-200");
 
-            if (scrollRef.current)
-                scrollRef.current.onscroll = (e) => {
-                    setStartPosition(0);
-                    if (scrollRef.current) scrollRef.current.onscroll = null;
-                };
+        setStartPosition(clientY);
+    }
 
-            const clientY = e.touches[0].clientY;
+    function updateMenuPosition(e: TouchEvent) {
+        if ((scrollRef.current && scrollRef.current.scrollTop > 0) || startPosition == 0) return;
 
-            menuRef.current?.classList.remove("duration-200");
+        const clientY = e.touches[0].clientY - startPosition;
 
-            setStartPosition(clientY);
-        }
-
-        function handleTouchEnd(e: TouchEvent) {
-            menuRef.current?.classList.add("duration-200");
-            if (scrollRef.current) scrollRef.current.style.removeProperty("overflow");
-
-            if (menuYPosition > 100) {
-                callback();
-                setIsModalActive(false);
-                setTimeout(() => {
-                    document.body.style.overflow = "auto";
-                }, 100);
-            } else {
-                setStartPosition(0);
-                setMenuYPosition(0);
-            }
-        }
+        if (scrollRef.current && clientY > 1) scrollRef.current.style.overflow = "hidden";
 
         if (menuRef.current) {
-            menuRef.current?.addEventListener("touchstart", updateStartPosition, { passive: true });
-            menuRef.current?.addEventListener("touchmove", updateMenuPosition, { passive: true });
-            menuRef.current?.addEventListener("touchend", handleTouchEnd, { passive: true });
+            if (clientY > 0) setMenuYPosition(clientY);
+            else setMenuYPosition(0);
         }
+    }
+
+    function handleTouchEnd() {
+        menuRef.current?.classList.add("duration-200");
+        if (scrollRef.current) scrollRef.current.style.removeProperty("overflow");
+
+        if (menuYPosition > 100) {
+            callback();
+
+            setIsModalActive(false);
+
+            setTimeout(() => {
+                document.body.style.overflow = "auto";
+            }, 100);
+        } else {
+            setStartPosition(0);
+            setMenuYPosition(0);
+        }
+    }
+
+    useEffect(() => {
+        menuRef.current?.addEventListener("touchstart", updateStartPosition, { passive: true });
+        menuRef.current?.addEventListener("touchmove", updateMenuPosition, { passive: true });
 
         return () => {
             menuRef.current?.removeEventListener("touchstart", updateStartPosition);
             menuRef.current?.removeEventListener("touchmove", updateMenuPosition);
+        };
+    }, [startPosition, menuRef, menuRef.current]);
+
+    useEffect(() => {
+        menuRef.current?.addEventListener("touchend", handleTouchEnd, { passive: true });
+
+        return () => {
             menuRef.current?.removeEventListener("touchend", handleTouchEnd);
         };
-    }, [startPosition, menuYPosition, window]);
-
-    // useEffect(() => {
-    //     if (!!bookId) document.body.style.overflow = "hidden";
-    //     else if (!bookId) document.body.style.overflow = "auto";
-    // }, [bookId]);
+    }, [menuYPosition]);
 
     useEffect(() => {
         console.log(isModalActive, menuRef);
@@ -103,7 +101,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
 
             <div
                 className={`${isModalActive ? "bottom-0" : "bottom-[-100%]"} ${
-                    fullMode ? "h-[100dvh]" : "rounded-t-xl"
+                    fullMode ? "h-[100svh]" : "rounded-t-xl"
                 } fixed left-0 w-full bg-white duration-200 z-20 `}
                 ref={menuRef}
                 style={{ transform: `translateY(${menuYPosition}px)` }}

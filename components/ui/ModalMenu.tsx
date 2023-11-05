@@ -13,7 +13,7 @@ interface ModalMenuProps {
     callback?: () => void;
 }
 
-const ModalMenu = memo(function ModalMenu({
+const ModalMenu = function ModalMenu({
     fullMode = false,
     children,
     isModalActive,
@@ -26,16 +26,11 @@ const ModalMenu = memo(function ModalMenu({
     const { isSmallScreen } = useScreen();
     
     useClickOutside(menuRef, () => {
-        if (!isModalActive) return
+        if (!isModalActive) return;
         callback();
         setIsModalActive(false);
         document.body.style.overflow = "auto";
     });
-
-    // useEffect(() => {
-    //     if (isModalActive) document.body.style.overflow = "hidden";
-    //     else document.body.style.overflow = "auto";
-    // }, [isModalActive]);
 
     return (
         <>
@@ -70,6 +65,6 @@ const ModalMenu = memo(function ModalMenu({
             )}
         </>
     );
-});
+};
 
 export default ModalMenu;

@@ -86,7 +86,7 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
                 </div>
                 <div>2 / 3</div>
             </div>
-            <div className="flex flex-col md:flex-row h-full ">
+            <div className="flex flex-col md:flex-row h-full">
                 <div className="flex w-full md:w-[400px] aspect-[3/4] relative shrink-0">
                     <PublicationImage image={image?.data}></PublicationImage>
                 </div>
@@ -96,7 +96,7 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
                         <div className="font-extralight text-base">{user?.name}</div>
                     </div>
 
-                    <div className="flex flex-col gap-4 text-[20px] font-lato font-normal overflow-y-auto">
+                    <div className="flex flex-col gap-4 text-[20px] font-lato font-normal md:max-h-[380px] md:overflow-y-auto flex-grow flex-shrink">
                         <div className="flex items-center justify-between px-1">
                             <input
                                 className={`duration-200 ${

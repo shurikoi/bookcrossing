@@ -132,24 +132,24 @@ export default function EditMode({ setMode }: EditModeProps) {
     }, []);
 
     return (
-        <div className="flex flex-col ">
+        <div className="flex flex-col h-full md:max-h-[610px]">
             <div className="p-3 relative text-center">
                 <div className="absolute cursor-pointer w-fit" onClick={() => setMode("view")}>
                     <ArrowLeftIcon></ArrowLeftIcon>
                 </div>
                 <div>Edytowanie</div>
             </div>
-            <div className="flex">
-                <div className="flex w-[400px] h-fit aspect-[3/4] relative">
+            <div className="flex flex-col md:flex-row h-full">
+                <div className="flex w-full md:w-[400px] aspect-[3/4] relative shrink-0">
                     <PublicationImage image={book?.image}></PublicationImage>
                 </div>
-                <div className="grow-0 shrink-0 flex flex-col gap-6 p-4 w-[360px]">
+                <div className="flex flex-col gap-6 p-4 w-full h-full md:w-[360px]">
                     <div className="flex gap-4 items-center">
                         <img className="w-10 h-10 rounded-full" src={user?.avatar} alt="" />
                         <div className="font-extralight text-base">{user?.name}</div>
                     </div>
 
-                    <div className="flex flex-col gap-4 text-[20px] font-lato font-normal max-h-[370px] overflow-y-auto">
+                    <div className="flex flex-col gap-4 text-[20px] font-lato font-normal md:max-h-[380px] md:overflow-y-auto flex-grow flex-shrink">
                         <div className="flex items-center justify-between px-1">
                             <input
                                 className={`duration-200 ${
