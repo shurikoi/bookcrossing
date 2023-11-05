@@ -11,7 +11,7 @@ import DeleteMenu from "./DeleteMenu";
 
 export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<BookMenuMode>> }) {
     const [wasButtonPressed, setWasButtonPresseed] = useState(false);
-    
+
     const [isDeleteMenuActive, setIsDeleteMenuActive] = useState(false);
 
     const [isReservationMenuActive, setIsReservationMenuActive] = useState(false);
@@ -24,7 +24,7 @@ export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<
     useEffect(() => {
         setWasButtonPresseed(false);
     }, [bookId]);
-    
+
     async function cancelReservation() {
         if (isReservationLoading) return;
 
@@ -63,24 +63,16 @@ export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<
                     >
                         Edytuj
                     </div>
-                    {wasButtonPressed ? (
-                        <div className="font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer hover:text-[#CD5E4F] hover:bg-white hover:border-[#CD5E4F] duration-300 select-none">
-                            Potwierdź
-                        </div>
-                    ) : (
-                        <>
-                            <div
-                                onClick={() => setIsDeleteMenuActive(true)}
-                                className="font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer hover:text-[#CD5E4F] hover:bg-white hover:border-[#CD5E4F] duration-300 select-none"
-                            >
-                                Usuń
-                            </div>
-                            <DeleteMenu
-                                isDeleteMenuActive={isDeleteMenuActive}
-                                setIsDeleteMenuActive={setIsDeleteMenuActive}
-                            ></DeleteMenu>
-                        </>
-                    )}
+                    <div
+                        onClick={() => setIsDeleteMenuActive(true)}
+                        className="font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer hover:text-[#CD5E4F] hover:bg-white hover:border-[#CD5E4F] duration-300 select-none"
+                    >
+                        Usuń
+                    </div>
+                    <DeleteMenu
+                        isDeleteMenuActive={isDeleteMenuActive}
+                        setIsDeleteMenuActive={setIsDeleteMenuActive}
+                    ></DeleteMenu>
                 </div>
             ) : (
                 <div className="flex flex-col gap-2.5 w-full">
@@ -88,6 +80,15 @@ export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<
                         className="font-inter font-medium py-2.5 px-2 border-2 active:scale-[0.99] will-change-transform text-center border-[#2B78B1] text-[#2B78B1] rounded-lg cursor-pointer duration-300"
                         onClick={() => {
                             if (!wasButtonPressed) setWasButtonPresseed(true);
+                            else {
+                                try{
+                                    navigator.clipboard.writeText(book?.messengerDescription || "");
+
+                                    toast.success("Skopiowane") 
+                                }catch(err){
+                                    toast.error("Nie udało się skopiować")
+                                }
+                            }
                         }}
                     >
                         {wasButtonPressed ? (
@@ -98,6 +99,7 @@ export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<
                                 <div className="w-6 h-6 shrink-0">
                                     <div>{messengers[book?.messenger || 0].icon}</div>
                                 </div>
+
                                 <div className="text-ellipsis overflow-hidden whitespace-nowrap">
                                     {book?.messengerDescription}
                                 </div>

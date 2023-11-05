@@ -41,7 +41,7 @@ export default function StepThree({
     const { isSmallScreen } = useScreen();
     const { setFetchedBooks } = useBook();
     const { setBooks } = useBook();
-    
+
     const filter = useFilter();
 
     function handleSubmit() {
@@ -144,18 +144,14 @@ export default function StepThree({
                     </div>
                     {!isSmallScreen && (
                         <Button
-                            className="text-center"
+                            className={`text-center w-full md:w-auto ${
+                                isLoading ? "opacity-50 cursor-default" : "opacity-100 cursor-pointer"
+                            }`}
                             onClick={() => {
                                 if (!isLoading) handleSubmit();
                             }}
                         >
-                            {isLoading ? (
-                                <div className="h-[1em]">
-                                    <ContentLoader></ContentLoader>
-                                </div>
-                            ) : (
-                                "Publikuj"
-                            )}
+                            Publikuj
                         </Button>
                     )}
                 </div>
@@ -206,18 +202,14 @@ export default function StepThree({
                     </div>
                     {isSmallScreen && (
                         <Button
-                            className="text-center w-full md:w-auto"
+                            className={`text-center w-full md:w-auto ${
+                                isLoading ? "opacity-50 cursor-default" : "opacity-100 cursor-pointer"
+                            }`}
                             onClick={() => {
                                 if (!isLoading) handleSubmit();
                             }}
                         >
-                            {isLoading ? (
-                                <div className="h-[1em]">
-                                    <ContentLoader></ContentLoader>
-                                </div>
-                            ) : (
-                                "Publikuj"
-                            )}
+                            Publikuj
                         </Button>
                     )}
                 </div>

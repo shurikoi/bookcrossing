@@ -87,16 +87,16 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
                 <div>2 / 3</div>
             </div>
             <div className="flex flex-col md:flex-row h-full ">
-                <div className="flex w-[400px] aspect-[3/4] relative shrink-0">
+                <div className="flex w-full md:w-[400px] aspect-[3/4] relative shrink-0">
                     <PublicationImage image={image?.data}></PublicationImage>
                 </div>
-                <div className="flex flex-col gap-6 p-4 w-full md:w-[360px]">
+                <div className="flex flex-col gap-6 p-4 w-full h-full md:w-[360px]">
                     <div className="flex gap-4 items-center">
                         <Image alt="" className="rounded-full" width={40} height={40} src={user?.avatar || ""} />
                         <div className="font-extralight text-base">{user?.name}</div>
                     </div>
 
-                    <div className="flex flex-col gap-4 text-[20px] font-lato font-normal overflow-y-auto flex-grow flex-shrink">
+                    <div className="flex flex-col gap-4 text-[20px] font-lato font-normal overflow-y-auto">
                         <div className="flex items-center justify-between px-1">
                             <input
                                 className={`duration-200 ${
