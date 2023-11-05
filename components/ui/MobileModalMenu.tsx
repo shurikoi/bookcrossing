@@ -35,9 +35,9 @@ const MobileModalMenu = memo(function MobileModalMenu({
     }
 
     function updateMenuPosition(e: TouchEvent) {
-        if ((scrollRef.current && scrollRef.current.scrollTop > 0) || startPosition == 0) return;
-
         const clientY = e.touches[0].clientY - startPosition;
+
+        if ((scrollRef.current && scrollRef.current.scrollTop > 0) || startPosition == 0) return;
 
         if (scrollRef.current && clientY > 1) scrollRef.current.style.overflow = "hidden";
 
@@ -49,6 +49,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
 
     function handleTouchEnd() {
         menuRef.current?.classList.add("duration-200");
+
         if (scrollRef.current) scrollRef.current.style.removeProperty("overflow");
 
         if (menuYPosition > 100) {
@@ -66,14 +67,14 @@ const MobileModalMenu = memo(function MobileModalMenu({
     }
 
     useEffect(() => {
-        menuRef.current?.addEventListener("touchstart", updateStartPosition, { passive: true });
-        menuRef.current?.addEventListener("touchmove", updateMenuPosition, { passive: true });
+        menuRef.current?.addEventListener("touchstart", updateStartPosition);
+        menuRef.current?.addEventListener("touchmove", updateMenuPosition);
 
         return () => {
             menuRef.current?.removeEventListener("touchstart", updateStartPosition);
             menuRef.current?.removeEventListener("touchmove", updateMenuPosition);
         };
-    }, [startPosition, menuRef, menuRef.current]);
+    }, [startPosition, menuRef.current]);
 
     useEffect(() => {
         menuRef.current?.addEventListener("touchend", handleTouchEnd, { passive: true });
@@ -84,7 +85,6 @@ const MobileModalMenu = memo(function MobileModalMenu({
     }, [menuYPosition]);
 
     useEffect(() => {
-        console.log(isModalActive, menuRef);
         if (isModalActive) {
             setMenuYPosition(0);
             document.body.style.overflow = "hidden";
@@ -101,8 +101,8 @@ const MobileModalMenu = memo(function MobileModalMenu({
 
             <div
                 className={`${isModalActive ? "bottom-0" : "bottom-[-100%]"} ${
-                    fullMode ? "h-[100svh]" : "rounded-t-xl"
-                } fixed left-0 w-full bg-white duration-200 z-20 `}
+                    fullMode ? "h-[100dvh]" : "rounded-t-xl"
+                } fixed left-0 w-full bg-white duration-200 z-10`}
                 ref={menuRef}
                 style={{ transform: `translateY(${menuYPosition}px)` }}
             >

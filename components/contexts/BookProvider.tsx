@@ -74,7 +74,7 @@ function BookProvider({ children }: { children: React.ReactNode }) {
                 return { ...fetchedBooks, [book?._id]: book };
             });
     }, [book]);
-console.log(fetchedBooks)
+
     return (
         <BookContext.Provider
             value={{ setBookId, book, setBook, isLoading, bookId, fetchedBooks, setFetchedBooks, books, setBooks }}
