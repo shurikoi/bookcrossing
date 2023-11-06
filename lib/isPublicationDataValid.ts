@@ -24,7 +24,7 @@ export default function isPublicationDataValid(publicationData: publicationData)
         messengerDescription: false,
         hasErrors: false,
     };
-    console.log(state)
+
     if (title.trim().length < 2 || title.trim().length > 55) errors.title = true;
     if (author.trim().length < 2 || author.trim().length > 55) errors.author = true;
     if (category.trim().length == 0) errors.category = true;

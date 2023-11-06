@@ -53,8 +53,8 @@ export default function ProfilePage() {
     }, [file]);
 
     return (
-        <div className="flex flex-col gap-6">
-            <div className="font-head text-[18px] whitespace-nowrap">Mój profil</div>
+        <div className="flex flex-col gap-6 items-center md:items-start">
+            <div className="font-head text-[18px] whitespace-nowrap hidden md:block">Mój profil</div>
             <div className="flex flex-col gap-1">
                 <div className="font-extralight text-[14px]">Preferowane imię</div>
                 <SettingsInput value={user!.name} setValue={user!.setName} validator={validateName} />
@@ -83,7 +83,7 @@ export default function ProfilePage() {
                     <div className="flex flex-col gap-1">
                         <div className="font-extralight text-[14px]">Hasło</div>
                         <div
-                            className="border-[#BEBEBE] border w-fit p-2 px-4 font-extralight text-[14px] rounded-md cursor-pointer"
+                            className="border-[#BEBEBE] border w-fit p-2 px-4 font-extralight text-[14px] rounded-md cursor-pointer select-none"
                             onClick={() => setIsChangePasswordMenuActive(true)}
                         >
                             Zmień hasło
@@ -99,7 +99,7 @@ export default function ProfilePage() {
                     <div className="flex flex-col gap-1">
                         <div className="font-extralight text-[14px]">Hasło</div>
                         <div
-                            className="border-[#BEBEBE] border w-fit p-2 px-4 font-extralight text-[14px] rounded-md cursor-pointer"
+                            className="border-[#BEBEBE] border w-fit p-2 px-4 font-extralight text-[14px] rounded-md cursor-pointer select-none"
                             onClick={() => setIsSetPasswordMenuActive(true)}
                         >
                             Ustaw hasło

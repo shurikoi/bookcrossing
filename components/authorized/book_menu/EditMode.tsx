@@ -76,7 +76,7 @@ export default function EditMode({ setMode }: EditModeProps) {
                 ...book,
                 ...newData,
             };
-            console.log(newBook, book)
+            
             if (JSON.stringify(newBook) == JSON.stringify(book)) {
                 setMode("view");
                 toast.success("Dane zostały takie same");

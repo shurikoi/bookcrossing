@@ -17,7 +17,6 @@ const MobileModalMenu = memo(function MobileModalMenu({
     menuRef,
     callback = () => null,
 }: ModalMenuProps) {
-    console.log(isModalActive);
     const [menuYPosition, setMenuYPosition] = useState(0);
     const [startPosition, setStartPosition] = useState(0);
 
@@ -36,7 +35,6 @@ const MobileModalMenu = memo(function MobileModalMenu({
     }
 
     function updateMenuPosition(e: TouchEvent) {
-        console.log(scrollRef.current?.scrollTop, startPosition, e.touches[0].clientY - startPosition);
         if ((scrollRef.current && scrollRef.current.scrollTop > 0) || startPosition == 0) return;
 
         const clientY = e.touches[0].clientY - startPosition;

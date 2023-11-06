@@ -113,6 +113,5 @@ export async function POST(req: Request) {
         ])
         .sort({ date: query.sort });
 
-    console.log({ publications: [...reservedBooks, ...publications] });
     return NextResponse.json({ publications: [...reservedBooks, ...publications], count });
 }

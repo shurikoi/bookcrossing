@@ -40,12 +40,12 @@ export async function POST(req: Request) {
 
     if (newPassword && currentPassword) {
         const user = await users.findOne({ _id: session?.user?.id }, { password: 1 });
-        console.log(user.password, await hashPassword(currentPassword));
+        
         if (user.password != (await hashPassword(currentPassword)))
             return NextResponse.json({ isValid: false }, { status: 400 });
 
         const isNewPasswordValid = validatePassword(newPassword);
-        console.log(isNewPasswordValid, newPassword);
+        
         if (!isNewPasswordValid.isValid) return NextResponse.json({ isValid: false }, { status: 400 });
 
         const hashedPassword = await hashPassword(newPassword);
