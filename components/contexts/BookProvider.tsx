@@ -61,7 +61,7 @@ function BookProvider({ children }: { children: React.ReactNode }) {
 
                 setBook(book);
             }
-            
+
             setIsLoading(false);
         }
     }, [bookId]);

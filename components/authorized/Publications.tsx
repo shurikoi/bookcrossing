@@ -5,6 +5,7 @@ import { Dispatch, SetStateAction, memo, useEffect, useRef, useState } from "rea
 import { publication } from "./Main";
 import { useFilter } from "../contexts/FilterProvider";
 import { useBook } from "../contexts/BookProvider";
+import { useUserData } from "../contexts/UserProvider";
 
 interface PublicationsProps {
     setBooksCount: Dispatch<SetStateAction<number>>;

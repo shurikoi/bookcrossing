@@ -8,6 +8,7 @@ import { messengers } from "../publication_menu/PublicationMenu";
 import { useUserData } from "@/components/contexts/UserProvider";
 import ModalMenu from "@/components/ui/ModalMenu";
 import DeleteMenu from "./DeleteMenu";
+import { useFilter } from "@/components/contexts/FilterProvider";
 
 export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<BookMenuMode>> }) {
     const [wasButtonPressed, setWasButtonPresseed] = useState(false);
@@ -17,9 +18,11 @@ export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<
     const [isReservationMenuActive, setIsReservationMenuActive] = useState(false);
     const [isReservationLoading, setIsReservationLoading] = useState(false);
 
-    const { bookId, book, setBook } = useBook();
+    const { bookId, book, setBook, setBooks } = useBook();
 
     const { user } = useUserData();
+
+    const { choosenSort } = useFilter();
 
     useEffect(() => {
         setWasButtonPresseed(false);
@@ -28,25 +31,53 @@ export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<
     async function cancelReservation() {
         if (isReservationLoading) return;
 
-        async function fetchData() {
+        const cancelReservationPromise = new Promise(async (resolve, reject) => {
             setIsReservationLoading(true);
 
-            const response = await fetch("/api/cancel-reservation", {
-                method: "post",
-                body: JSON.stringify({ id: bookId }),
-            });
+            try {
+                const response = await fetch("/api/cancel-reservation", {
+                    method: "post",
+                    body: JSON.stringify({ id: bookId }),
+                });
 
-            setBook((book) => {
-                if (book)
-                    return {
-                        ...book,
-                        reservedBy: undefined,
-                    };
-            });
+                if (!response.ok) throw new Error();
+
+                setBook((book) => {
+                    if (book)
+                        return {
+                            ...book,
+                            isReserved: false,
+                        };
+                });
+
+                setBooks((books) => {
+                    const reservedBook = books.find((book) => book.id == bookId);
+
+                    if (reservedBook) {
+                        reservedBook.isReserved = false;
+
+                        books.sort((a, b) => {
+                            if (choosenSort == "desc") return Number(new Date(b.date)) - Number(new Date(a.date));
+
+                            return Number(new Date(a.date)) - Number(new Date(b.date));
+                        });
+
+                        books.sort((a, b) => {
+                            return Number(!!b.isReserved) - Number(!!a.isReserved);
+                        });
+                    }
+
+                    return books;
+                });
+
+                resolve(1);
+            } catch (error) {
+                reject();
+            }
             setIsReservationLoading(false);
-        }
+        });
 
-        toast.promise(fetchData(), {
+        toast.promise(cancelReservationPromise, {
             success: "Rezerwacja została anulowana",
             loading: "Anulujemy rezerwację...",
             error: "Nie udało się anulować rezerwację. Sprobuj ponownie",
@@ -81,12 +112,12 @@ export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<
                         onClick={() => {
                             if (!wasButtonPressed) setWasButtonPresseed(true);
                             else {
-                                try{
+                                try {
                                     navigator.clipboard.writeText(book?.messengerDescription || "");
 
-                                    toast.success("Skopiowane") 
-                                }catch(err){
-                                    toast.error("Nie udało się skopiować")
+                                    toast.success("Skopiowane");
+                                } catch (err) {
+                                    toast.error("Nie udało się skopiować");
                                 }
                             }
                         }}
@@ -108,7 +139,7 @@ export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<
                             "Pokaż kontakt"
                         )}
                     </div>
-                    {book?.reservedBy == user?.id ? (
+                    {book?.isReserved ? (
                         <div
                             className={`font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer duration-300 select-none ${
                                 isReservationLoading ? "opacity-50 cursor-default" : "opacity-100 cursor-pointer"

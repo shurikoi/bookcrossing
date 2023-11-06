@@ -43,7 +43,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
 
         if (clientY > 0 && e.cancelable) {
             e.preventDefault();
-
+            e.stopPropagation()
             if (scrollRef.current) scrollRef.current.style.overflow = "hidden";
 
             setMenuYPosition(clientY);

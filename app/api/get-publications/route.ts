@@ -1,7 +1,10 @@
 import { bookQuery } from "@/components/authorized/Main";
 import connection from "@/lib/connection";
 import books from "@/model/book";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/route";
+import { ObjectId } from "mongodb";
 
 interface body {
     page: number;
@@ -11,6 +14,10 @@ interface body {
 
 export async function POST(req: Request) {
     const { page, limit, query }: body = await req.json();
+
+    const session = await getServerSession(authOptions);
+
+    if (!session) return NextResponse.json({}, { status: 404 });
 
     const skip = page * limit;
 
@@ -27,8 +34,7 @@ export async function POST(req: Request) {
     const publications = await books
         .aggregate([
             {
-                // $match: { ...filter, reservedBy: { $exists: false } },
-                $match: filter,
+                $match: { ...filter, reservedBy: { $exists: false } },
             },
             {
                 $lookup: {
@@ -56,5 +62,57 @@ export async function POST(req: Request) {
         .skip(skip)
         .limit(limit);
 
-    return NextResponse.json({ publications, count });
+    const reservedBooks = await books
+        .aggregate([
+            {
+                $match: {
+                    $or: [
+                        { $and: [{ owner: new ObjectId(session.user?.id) }, { reservedBy: { $exists: true } }] },
+                        { reservedBy: new ObjectId(session.user?.id) },
+                    ],
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    let: {
+                        ownerID: "$owner",
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $eq: ["$_id", "$$ownerID"] },
+                            },
+                        },
+                        {
+                            $unset: ["email", "provider", "points", "_id"],
+                        },
+                    ],
+                    as: "ownerData",
+                },
+            },
+            {
+                $addFields: {
+                    isReserved: true,
+                },
+            },
+            { $unwind: "$ownerData" },
+            {
+                $project: {
+                    _id: 0,
+                    id: "$_id",
+                    author: 1,
+                    title: 1,
+                    date: 1,
+                    image: 1,
+                    owner: 1,
+                    ownerData: 1,
+                    isReserved: 1,
+                },
+            },
+        ])
+        .sort({ date: query.sort });
+
+    console.log({ publications: [...reservedBooks, ...publications] });
+    return NextResponse.json({ publications: [...reservedBooks, ...publications], count });
 }

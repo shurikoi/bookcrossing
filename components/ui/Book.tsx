@@ -4,6 +4,7 @@ import dateConjugation from "@/lib/dateConjugation";
 import { memo } from "react";
 import { publication } from "../authorized/Main";
 import Image from "next/image";
+import { useUserData } from "../contexts/UserProvider";
 
 interface BookProps {
     data: publication;
@@ -18,7 +19,9 @@ const Book = memo(({ data, handleClick }: BookProps) => {
     return (
         <div className="relative">
             <div
-                className="relative w-60 aspect-[3/4] bg-black font-inter shadow-[0px_0px_15px_1px_rgba(0,0,0,.5)] hover:scale-[1.04] hover:shadow-[0px_0px_30px_1px_rgba(0,0,0,.5)] cursor-pointer duration-200 will-change-transform flex-shrink-0"
+                className={`relative w-60 aspect-[3/4] bg-black font-inter shadow-[0px_0px_15px_1px_rgba(0,0,0,.5)] hover:scale-[1.04] hover:shadow-[0px_0px_30px_1px_rgba(0,0,0,.5)] cursor-pointer duration-200 will-change-transform flex-shrink-0 ${
+                    data.isReserved ? "border-8 border-red-600" : ""
+                }`}
                 onClick={handleClick}
                 onMouseEnter={() => setIsMouseOver(true)}
                 onMouseLeave={() => setIsMouseOver(false)}

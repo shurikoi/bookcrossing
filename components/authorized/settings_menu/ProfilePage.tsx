@@ -67,7 +67,7 @@ export default function ProfilePage() {
             <div>
                 <input hidden type="file" accept="image/png, image/jpeg" ref={inputRef} />
                 <div
-                    className="border-[#BEBEBE] border w-fit p-2 px-4 font-extralight text-[14px] rounded-md cursor-pointer"
+                    className="border-[#BEBEBE] border w-fit p-2 px-4 font-extralight text-[14px] rounded-md cursor-pointer select-none"
                     onClick={() => inputRef.current?.click()}
                 >
                     Zmień zdjęcie profilowe

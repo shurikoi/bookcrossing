@@ -19,12 +19,12 @@ export default memo(function Header() {
 
     return (
         <>
-            <header className="bg-black z-10 flex items-center flex-col md:flex-row py-4 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(/images/header.png)]">
+            <header className="bg-black z-10 flex items-center flex-col md:flex-row gap-4 md:gap-0 py-4 px-10 relative box-border bg-no-repeat bg-cover bg-center bg-[url(/images/header.png)]">
                 <div className="flex items-center justify-between md:mr-auto">
                     <div className="text-2xl text-white font-head">BookCrossing</div>
                 </div>
-                <div className="flex items-center gap-[30px]">
-                    <div className="hidden md:flex md:items-center md:gap-[30px]">
+                <div className="flex flex-col md:flex-row items-center gap-4 md:gap-[30px]">
+                    <div className="flex items-center gap-[30px]">
                         <div className="p-2 bg-white rounded-full shadow-md shadow-black/30 cursor-pointer hover:-translate-y-0.5 duration-200">
                             <BellIcon></BellIcon>
                         </div>

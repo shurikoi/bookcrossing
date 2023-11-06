@@ -25,7 +25,9 @@ export interface bookData {
         name: string;
         surname: string;
     };
-    reservedBy?: string;
+
+    isReserved: boolean;
+
     reservatorData?: {
         name: string;
         surname: string;
@@ -38,6 +40,7 @@ export interface publication {
     author: string;
     title: string;
     image: string;
+    isReserved?: boolean;
     ownerData: {
         avatar: string;
         name: string;

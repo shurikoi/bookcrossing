@@ -24,34 +24,56 @@ export default function ReservationMenu({
 
     const [addToProfile, setAddToProfile] = useState(true);
 
-    const { bookId, setBook } = useBook();
-    const { user } = useUserData();
+    const { bookId, setBook, setBooks } = useBook();
 
-    async function reserveBook() {
+    function reserveBook() {
         if (contact.trim().length > 0) {
-            async function fetchData() {
-                setIsMenuActive(false);
-                setContact("");
-                setAddToProfile(false);
-                
-                setIsReservationLoading(true);
+            const reservationPromise = new Promise(async (resolve, reject) => {
+                try {
+                    setIsMenuActive(false);
+                    setContact("");
+                    setAddToProfile(false);
 
-                const response = await fetch("/api/reserve-book", {
-                    method: "post",
-                    body: JSON.stringify({ id: bookId, contact, messenger, addToProfile }),
-                });
+                    setIsReservationLoading(true);
 
-                setBook((book) => {
-                    if (book)
-                        return {
-                            ...book,
-                            reservedBy: user?.id,
-                        };
-                });
+                    const response = await fetch("/api/reserve-book", {
+                        method: "post",
+                        body: JSON.stringify({ id: bookId, contact, messenger, addToProfile }),
+                    });
+
+                    if (!response.ok) throw new Error();
+
+                    setBook((book) => {
+                        if (book)
+                            return {
+                                ...book,
+                                isReserved: true,
+                            };
+                    });
+
+                    setBooks((books) => {
+                        const reservedBook = books.find((book) => book.id == bookId);
+
+                        if (reservedBook) {
+                            reservedBook.isReserved = true;
+
+                            return books.sort((a, b) => {
+                                return Number(!!b.isReserved) - Number(!!a.isReserved);
+                            });
+                        }
+
+                        return books;
+                    });
+
+                    resolve(1);
+                } catch (error) {
+                    reject();
+                }
 
                 setIsReservationLoading(false);
-            }
-            toast.promise(fetchData(), {
+            });
+
+            toast.promise(reservationPromise, {
                 success: "Książka została zarezerwowana",
                 error: "Nie udało się zarezerwować książkę. Sprobuj ponownie",
                 loading: "Rezerwujemy dla cię książkę...",
