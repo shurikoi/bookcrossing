@@ -23,11 +23,11 @@ export default memo(function Header() {
                 <div className="flex items-center justify-between md:mr-auto">
                     <div className="text-2xl text-white font-head">BookCrossing</div>
                 </div>
-                <div className="flex flex-col md:flex-row items-center gap-4 md:gap-[30px]">
+                <div className="flex flex-col-reverse md:flex-row items-center gap-4 md:gap-[30px]">
                     <div className="flex items-center gap-[30px]">
-                        <div className="p-2 bg-white rounded-full shadow-md shadow-black/30 cursor-pointer hover:-translate-y-0.5 duration-200">
+                        {/* <div className="p-2 bg-white rounded-full shadow-md shadow-black/30 cursor-pointer hover:-translate-y-0.5 duration-200">
                             <BellIcon></BellIcon>
-                        </div>
+                        </div> */}
                         <div className="flex items-center gap-6 bg-white border-[#DFDFE0] border-[3px] rounded-full px-3 py-1">
                             <Image src="/images/image 1359.png" alt="" width={20} height={20}></Image>
                             <div className="text-lg font-normal">{user?.points}</div>
