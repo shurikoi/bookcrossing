@@ -136,7 +136,9 @@ export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<
                                 </div>
                             </div>
                         ) : (
-                            "Pokaż kontakt"
+                            <div onClick={() => fetch("/api/increase-contact-count", {method: "POST", body: JSON.stringify({bookId})})}>
+                                Pokaż kontakt
+                            </div>
                         )}
                     </div>
                     {book?.isReserved ? (

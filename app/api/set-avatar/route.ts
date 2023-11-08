@@ -1,5 +1,4 @@
 import connection from "@/lib/connection";
-import books from "@/model/book";
 import users from "@/model/user";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
