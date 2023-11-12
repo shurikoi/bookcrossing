@@ -18,8 +18,7 @@ export type publicationData = {
     description: string;
     language: string;
     state: string;
-    imageName: string;
-    imageData: string;
+    image: string;
     messenger: messenger;
     messengerDescription: string;
     date: Date;

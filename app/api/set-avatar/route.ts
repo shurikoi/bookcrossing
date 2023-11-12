@@ -7,6 +7,7 @@ import generateRandomString from "@/lib/generateRandomString";
 import fs from "fs";
 import getExtension from "@/lib/getExtension";
 import { allowedImageTypes } from "@/lib/variables";
+import resizeImage from "@/lib/resizeImage";
 
 export async function POST(req: Request) {
     const { avatar }: { avatar: string } = await req.json();
@@ -21,11 +22,14 @@ export async function POST(req: Request) {
     if (!session || !user || (extension && !allowedImageTypes.includes(extension))) return NextResponse.json({}, { status: 404 });
 
     const randomName = generateRandomString() + "." + extension;
-    const buffer = Buffer.from(avatar.split(",")[1], "base64");
+    const imageBuffer = Buffer.from(avatar.split(",")[1], "base64");
+
+    const resizedImage = await resizeImage(imageBuffer, 200, 200);
+
     const path = "/avatars/" + randomName;
 
-    fs.unlink("./public" + user.avatar, () => {});
-    fs.writeFile("./public" + path, buffer, () => {});
+    fs.unlinkSync("./public" + user.avatar);
+    fs.writeFile("./public" + path, resizedImage, () => {});
 
     await users.updateOne({ _id: user.id }, { avatar: path });
 

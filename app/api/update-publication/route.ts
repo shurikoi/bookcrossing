@@ -1,9 +1,12 @@
 import connection from "@/lib/connection";
 import books from "@/model/book";
-import users from "@/model/user";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
+import fs from "fs";
+import getExtension from "@/lib/getExtension";
+import generateRandomString from "@/lib/generateRandomString";
+import resizeImage from "@/lib/resizeImage";
 
 export async function POST(req: Request) {
     const { id, ...updatedData } = await req.json();
@@ -13,8 +16,22 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions);
 
     const book = await books.findOne({ _id: id });
-    
-    if (book.owner.toString() == session?.user?.id) await books.updateOne({ _id: id }, updatedData);
+
+    if (book.owner.toString() == session?.user?.id) {
+        await books.findOneAndUpdate({ _id: id }, updatedData);
+
+        const extension = getExtension(updatedData.image, true);
+
+        const randomName = "/books/" + generateRandomString() + "." + extension;
+
+        const imageBuffer = Buffer.from(updatedData.image.split(",")[1], "base64");
+
+        const resizedImage = await resizeImage(imageBuffer)
+
+        fs.writeFile("./public" + randomName, resizedImage, () => {});
+
+        fs.unlinkSync("./public" + book.image);
+    }
 
     return NextResponse.json({}, { status: 200 });
 }

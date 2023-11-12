@@ -130,8 +130,7 @@ console.log(extension)
                                 surname,
                                 password,
                                 email,
-                                imageData: e.target.result,
-                                imageName: file?.name,
+                                image: e.target.result,
                                 date: new Date(),
                                 redirect: false,
                             });

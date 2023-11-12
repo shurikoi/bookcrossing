@@ -67,8 +67,7 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
             messenger,
             messengerDescription,
             date: new Date(),
-            imageData: image?.data || "",
-            imageName: image?.name || "",
+            image: image?.data || "",
         });
     }, [title, author, bookCategory, bookDescription, bookLanguage, bookState, messenger, messengerDescription]);
 

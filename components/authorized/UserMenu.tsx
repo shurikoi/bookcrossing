@@ -16,7 +16,7 @@ export default function UserMenu({ isMenuActive, setIsSettingsMenuActive, setMen
             isMenuActive={isMenuActive}
             setIsMenuActive={setMenuActive}
             menuRef={menuRef}
-            className="absolute right-1/2 translate-x-1/2  sm:translate-x-0 -bottom-3 translate-y-[100%] sm:right-0 shadow-lg rounded-lg flex flex-col gap-4 bg-white pt-5 py-3.5 md:py-6 px-12 md:px-4 z-10 text-center sm:text-left"
+            className="absolute right-1/2 translate-x-1/2  sm:translate-x-0 -bottom-3 translate-y-[100%] sm:right-0 shadow-lg rounded-lg flex flex-col gap-4 bg-white pt-5 py-3.5 md:py-6 w-[80vw] md:w-auto md:px-4 z-10 text-center sm:text-left"
         >
             <div className="flex flex-col px-3">
                 <div className="font-normal whitespace-pre">

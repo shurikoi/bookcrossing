@@ -57,7 +57,7 @@ export default function StepThree({
                                 method: "POST",
                                 body: JSON.stringify({
                                     ...publicationData,
-                                    imageData: e.target.result,
+                                    image: e.target.result,
                                 }),
                             });
 
@@ -146,7 +146,7 @@ export default function StepThree({
             <div className="flex flex-col md:flex-row w-full md:min-w-[700px] min-h-[400px] gap-10 md:p-6 h-fit">
                 <div className="flex flex-col gap-10 shrink-0 md:w-[200px]">
                     <div className="relative aspect-[3/4]">
-                        <img src={publicationData?.imageData} alt="book" className="w-full h-full object-cover" />
+                        <img src={publicationData?.image} alt="book" className="w-full h-full object-cover" />
                         <img
                             src={user?.avatar}
                             className="absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-gray-500"

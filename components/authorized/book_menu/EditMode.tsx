@@ -17,6 +17,10 @@ import { messengers } from "../publication_menu/PublicationMenu";
 import Button from "@/components/ui/buttons/Button";
 import toast from "react-hot-toast";
 import { bookData } from "../Main";
+import PencilIcon from "@/components/ui/icons/PencilIcon";
+import useImagePicker from "@/components/hooks/useImagePicker";
+import { allowedImageTypes } from "@/lib/variables";
+import getExtension from "@/lib/getExtension";
 
 interface EditModeProps {
     setMode: Dispatch<SetStateAction<BookMenuMode>>;
@@ -26,7 +30,7 @@ const descriptionLength = 1000;
 
 export default function EditMode({ setMode }: EditModeProps) {
     const { user } = useUserData();
-    const { bookId, book, setBook } = useBook();
+    const { bookId, book, setBook, setBooks } = useBook();
 
     const [title, setTitle] = useState(book?.title || "");
     const [author, setAuthor] = useState(book?.author || "");
@@ -37,9 +41,13 @@ export default function EditMode({ setMode }: EditModeProps) {
     const [messenger, setMessenger] = useState(book?.messenger || "");
     const [messengerDescription, setMessengerDescription] = useState(book?.messengerDescription || "");
 
+    const [file, setFile] = useState<File>();
+    const [image, setImage] = useState(book?.image || "");
+
     const [errors, setErrors] = useState<errors>();
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const fileRef = useRef<HTMLInputElement>(null);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -52,8 +60,29 @@ export default function EditMode({ setMode }: EditModeProps) {
         state: bookState,
         messenger,
         messengerDescription,
-        date: book?.date || new Date()
+        date: book?.date || new Date(),
     };
+
+    function openFileMenu() {
+        if (fileRef.current) fileRef.current.click();
+    }
+
+    useImagePicker(fileRef, (e) => {
+        e.preventDefault();
+
+        const files = e.target.files;
+
+        if (files[0]) {
+            const extension = getExtension(files[0].name);
+
+            if (extension && allowedImageTypes.includes(extension)) {
+                setFile(files[0]);
+                setImage(URL.createObjectURL(files[0]));
+            } else {
+                toast.error("Wybierz format .png lub .jpeg");
+            }
+        }
+    });
 
     function handleSubmit() {
         if (isLoading) return;
@@ -61,8 +90,7 @@ export default function EditMode({ setMode }: EditModeProps) {
         if (book) {
             const errors = isPublicationDataValid({
                 ...newData,
-                imageName: "",
-                imageData: "",
+                image: book.image,
             });
 
             if (errors.hasErrors) setErrors(errors);
@@ -75,8 +103,9 @@ export default function EditMode({ setMode }: EditModeProps) {
             const newBook: bookData = {
                 ...book,
                 ...newData,
+                image: image || "",
             };
-            
+
             if (JSON.stringify(newBook) == JSON.stringify(book)) {
                 setMode("view");
                 toast.success("Dane zostały takie same");
@@ -86,27 +115,50 @@ export default function EditMode({ setMode }: EditModeProps) {
 
         async function updatePublication() {
             return await new Promise(async (resolve, reject) => {
-                try {
-                    setIsLoading(true);
+                setIsLoading(true);
+                const reader = new FileReader();
 
-                    const response = await fetch("/api/update-publication", {
-                        method: "post",
-                        body: JSON.stringify({
-                            id: bookId,
-                            ...newData,
-                        }),
-                    });
+                if (file) reader.readAsDataURL(file);
 
-                    if (!response.ok) throw new Error("error");
+                reader.onload = async (e) => {
+                    try {
+                        const response = await fetch("/api/update-publication", {
+                            method: "post",
+                            body: JSON.stringify({
+                                id: bookId,
+                                ...newData,
+                                image: e.target?.result,
+                            }),
+                        });
 
-                    setIsLoading(false);
+                        if (!response.ok) throw new Error();
 
-                    setMode("view");
+                        setMode("view");
 
-                    resolve(null);
-                } catch (error) {
-                    reject();
-                }
+                        setBook((book) => {
+                            if (book)
+                                return {
+                                    ...book,
+                                    ...newData,
+                                    image,
+                                };
+                        });
+
+                        setBooks((books) => {
+                            const updatedBook = books.find((book) => book.id == bookId);
+
+                            if (updatedBook?.image) updatedBook.image = image
+
+                            return books;
+                        });
+
+                        resolve(1);
+                    } catch (error) {
+                        reject();
+                    }
+                };
+
+                setIsLoading(false);
             });
         }
 
@@ -114,14 +166,6 @@ export default function EditMode({ setMode }: EditModeProps) {
             error: "Nie udało się zaktualizować dane",
             loading: "Aktualizujemy dane...",
             success: "Dane zostały zaktualizowane",
-        });
-
-        setBook((book) => {
-            if (book)
-                return {
-                    ...book,
-                    ...newData,
-                };
         });
     }
 
@@ -141,7 +185,15 @@ export default function EditMode({ setMode }: EditModeProps) {
             </div>
             <div className="flex flex-col md:flex-row h-full">
                 <div className="flex w-full md:w-[400px] aspect-[3/4] relative shrink-0">
-                    <PublicationImage image={book?.image}></PublicationImage>
+                    <PublicationImage image={image}></PublicationImage>
+                    <div
+                        className="flex items-center justify-center cursor-pointer bg-black/40 gap-2.5 text-white w-full h-full absolute top-0 left-0"
+                        onClick={openFileMenu}
+                    >
+                        <input ref={fileRef} type="file" accept="image/png, image/jpeg" hidden />
+                        <PencilIcon color="white"></PencilIcon>
+                        <div>Zmień zdjęcie</div>
+                    </div>
                 </div>
                 <div className="flex flex-col gap-6 p-4 w-full h-full md:w-[360px]">
                     <div className="flex gap-4 items-center">

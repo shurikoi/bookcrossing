@@ -1,5 +1,6 @@
 import connection from "@/lib/connection";
 import generateRandomString from "@/lib/generateRandomString";
+import getExtension from "@/lib/getExtension";
 import hashPassword from "@/lib/hashPassword";
 import resizeImage from "@/lib/resizeImage";
 import users from "@/model/user";
@@ -14,8 +15,7 @@ type credentials = {
     surname?: string;
     email: string;
     password: string;
-    imageData?: string;
-    imageName?: string;
+    image?: string;
 };
 
 type user = {
@@ -37,17 +37,13 @@ export const authOptions: NextAuthOptions = {
             name: "credentials",
             credentials: {},
             async authorize(credentials) {
-                const { authType, imageData, imageName, email, password } = credentials as credentials;
+                const { authType, image, email, password } = credentials as credentials;
 
                 await connection();
 
-                // const extension = body.imageName.split(".").at(-1);
-
-                // const path = "/books/" + generateRandomString() + "." + extension;
-                
                 const user = await users.findOne({ email });
                 const hashedPassword = await hashPassword(password);
-                
+
                 if (authType == "signin") {
                     if (user && user.password == hashedPassword) {
                         return { email } as any;
@@ -56,11 +52,15 @@ export const authOptions: NextAuthOptions = {
                     if (!user) {
                         const { name, surname } = credentials as credentials;
 
-                        const randomName = generateRandomString() + "." + imageName?.split(".").at(-1);
-                        const path = imageName ? "/avatars/" + randomName : "/avatars/01.png";
+                        let path = "/avatars/01.png";
 
-                        if (imageData && imageName) {
-                            const imageBuffer = Buffer.from(imageData.split(",")[1], "base64");
+                        if (image) {
+                            const extension = getExtension(image, true);
+                            const randomName = generateRandomString() + "." + extension;
+
+                            path = "/avatars/" + randomName;
+
+                            const imageBuffer = Buffer.from(image.split(",")[1], "base64");
 
                             const resizedImage = await resizeImage(imageBuffer, 200, 200);
 

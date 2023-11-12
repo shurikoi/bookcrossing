@@ -9,6 +9,7 @@ import { authOptions } from "../auth/[...nextauth]/route";
 import users from "@/model/user";
 import generateRandomString from "@/lib/generateRandomString";
 import resizeImage from "@/lib/resizeImage";
+import getExtension from "@/lib/getExtension";
 
 export async function POST(req: Request) {
     const body: publicationData = await req.json();
@@ -20,20 +21,20 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions);
 
     const user = await users.findOne({ _id: session?.user?.id });
-
+    console.log(body)
     if (session && user) {
         await connection();
 
-        const extension = body.imageName.split(".").at(-1);
+        const extension = getExtension(body.image, true);
 
         const path = "/books/" + generateRandomString(30) + "." + extension;
 
         try {
-            const imageBuffer = Buffer.from(body.imageData.split(",")[1], "base64");
+            const imageBuffer = Buffer.from(body.image.split(",")[1], "base64");
 
-            const image = await resizeImage(imageBuffer)
+            const resizedImage = await resizeImage(imageBuffer)
 
-            fs.writeFile("./public" + path, image, () => {});
+            fs.writeFile("./public" + path, resizedImage, () => {});
         } catch (error) {
             return NextResponse.json("Coś poszło nie tak", { status: 400 });
         }
