@@ -1,0 +1,1 @@
+export const allowedImageTypes = ["jfif", "jpeg", "jpg", "png"] 

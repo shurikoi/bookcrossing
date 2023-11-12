@@ -5,6 +5,8 @@ import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
 import generateRandomString from "@/lib/generateRandomString";
 import fs from "fs";
+import getExtension from "@/lib/getExtension";
+import { allowedImageTypes } from "@/lib/variables";
 
 export async function POST(req: Request) {
     const { avatar }: { avatar: string } = await req.json();
@@ -13,10 +15,10 @@ export async function POST(req: Request) {
 
     const session = await getServerSession(authOptions);
     const user = await users.findOne({ _id: session?.user?.id });
+    
+    const extension = getExtension(avatar, true); // type between / and ;
 
-    if (!session || !user) return NextResponse.json({}, { status: 404 });
-
-    const extension = avatar.match(/\/([^;]+);/)![1]; // type between / and ;
+    if (!session || !user || (extension && !allowedImageTypes.includes(extension))) return NextResponse.json({}, { status: 404 });
 
     const randomName = generateRandomString() + "." + extension;
     const buffer = Buffer.from(avatar.split(",")[1], "base64");

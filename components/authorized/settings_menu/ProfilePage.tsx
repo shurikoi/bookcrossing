@@ -55,6 +55,7 @@ export default function ProfilePage() {
     return (
         <div className="flex flex-col gap-6 items-center md:items-stretch">
             <div className="font-head text-[18px] whitespace-nowrap hidden md:block">Mój profil</div>
+            <hr className="md:hidden w-full"/>
             <div className="flex flex-col gap-1">
                 <div className="font-extralight text-[14px]">Preferowane imię</div>
                 <SettingsInput value={user!.name} setValue={user!.setName} validator={validateName} />
@@ -63,7 +64,7 @@ export default function ProfilePage() {
                 <div className="font-extralight text-[14px]">Preferowane nazwisko</div>
                 <SettingsInput value={user!.surname} setValue={user!.setSurname} validator={validateSurname} />
             </div>
-            <hr />
+            <hr className="w-full"/>
             <div>
                 <input hidden type="file" accept="image/png, image/jpeg" ref={inputRef} />
                 <div
@@ -73,7 +74,7 @@ export default function ProfilePage() {
                     Zmień zdjęcie profilowe
                 </div>
             </div>
-            <hr />
+            <hr className="w-full"/>
             {user?.isPasswordExist ? (
                 <>
                     <div className="flex flex-col gap-1">

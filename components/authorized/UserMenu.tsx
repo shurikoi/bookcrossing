@@ -24,7 +24,7 @@ export default function UserMenu({ isMenuActive, setIsSettingsMenuActive, setMen
                 </div>
                 <div className="font-extralight">{user?.email}</div>
             </div>
-            <div className="flex flex-col ">
+            <div className="flex flex-col select-none">
                 <div
                     className="p-3 sm:pr-48 cursor-pointer duration-200 font-normal rounded-md hover:bg-[#F2F9F0]"
                     onClick={() => {

@@ -9,6 +9,9 @@ import UploadIcon from "../../ui/icons/UploadIcon";
 import Input from "./Input";
 import { currentState } from "../AuthForm";
 import { useForm } from "@/components/contexts/FormModalProvider";
+import getExtension from "@/lib/getExtension";
+import toast from "react-hot-toast";
+import { allowedImageTypes } from "@/lib/variables";
 
 interface SignUpViewProps {
     name: string;
@@ -67,9 +70,15 @@ export default function SignUpView({
     useImagePicker(inputRef, (e) => {
         const files = e.target.files;
 
-        if (files) {
-            setFile(files[0]);
-            setIsImagePreviewActive(true);
+        if (files[0]) {
+            const extension = getExtension(files[0].name);
+console.log(extension)
+            if (extension && allowedImageTypes.includes(extension)) {
+                setFile(files[0]);
+                setIsImagePreviewActive(true);
+            } else {
+                toast.error("Wybierz format .png lub .jpeg");
+            }
         }
     });
 
