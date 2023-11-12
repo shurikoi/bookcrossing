@@ -53,7 +53,7 @@ export default function ProfilePage() {
     }, [file]);
 
     return (
-        <div className="flex flex-col gap-6 items-center md:items-start">
+        <div className="flex flex-col gap-6 items-center md:items-stretch">
             <div className="font-head text-[18px] whitespace-nowrap hidden md:block">Mój profil</div>
             <div className="flex flex-col gap-1">
                 <div className="font-extralight text-[14px]">Preferowane imię</div>

@@ -9,6 +9,7 @@ import InstagramIcon from "../../ui/icons/InstagramIcon";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
+import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon";
 
 export type publicationData = {
     title: string;
@@ -70,6 +71,16 @@ export default function PublicationMenu({ isModalActive, setIsModalActive }: Pub
         }
     }, [file]);
 
+    const header =
+        currentStep > 0 ? (
+            <div className="w-full p-3 relative text-center">
+                <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
+                    <ArrowLeftIcon></ArrowLeftIcon>
+                </div>
+                <div>{currentStep == 1 ? `${currentStep + 1} / 3` : "Podgląd"}</div>
+            </div>
+        ) : undefined;
+
     const steps = [
         <StepOne setFile={setFile} setCurrentStep={setCurrentStep}></StepOne>,
         <StepTwo
@@ -89,8 +100,9 @@ export default function PublicationMenu({ isModalActive, setIsModalActive }: Pub
         ></StepThree>,
     ];
     const nodeRef = useRef<any>(null);
+
     return (
-        <ModalMenu fullMode isModalActive={isModalActive} setIsModalActive={setIsModalActive}>
+        <ModalMenu fullMode isModalActive={isModalActive} header={header} setIsModalActive={setIsModalActive}>
             <SwitchTransition mode="out-in">
                 <CSSTransition
                     key={currentStep}

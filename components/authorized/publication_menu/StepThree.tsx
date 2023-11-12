@@ -90,6 +90,7 @@ export default function StepThree({
                                             author: publicationData?.author || "",
                                             date: publicationData?.date || new Date(),
                                             image: data.image,
+                                            isReserved: false,
                                             ownerData: {
                                                 avatar: user?.avatar || "",
                                                 name: user?.name || "",
@@ -97,7 +98,16 @@ export default function StepThree({
                                             },
                                         },
                                         ...books,
-                                    ];
+                                    ]
+                                        .sort((a, b) => {
+                                            if (filter.choosenSort == "desc")
+                                                return Number(new Date(b.date)) - Number(new Date(a.date));
+
+                                            return Number(new Date(a.date)) - Number(new Date(b.date));
+                                        })
+                                        .sort((a, b) => {
+                                            return Number(!!b.isReserved) - Number(!!a.isReserved);
+                                        });
                                 });
 
                             setPublicationData(undefined);
@@ -127,7 +137,7 @@ export default function StepThree({
 
     return (
         <div className="flex flex-col">
-            <div className="p-3 relative text-center border-b">
+            <div className="hidden md:block p-3 relative text-center border-b">
                 <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
                     <ArrowLeftIcon></ArrowLeftIcon>
                 </div>

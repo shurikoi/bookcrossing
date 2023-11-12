@@ -80,7 +80,7 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
 
     return (
         <div className="flex flex-col h-full md:max-h-[610px]">
-            <div className="p-3 relative text-center">
+            <div className="hidden md:block p-3 relative text-center">
                 <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
                     <ArrowLeftIcon></ArrowLeftIcon>
                 </div>

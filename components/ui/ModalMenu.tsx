@@ -8,6 +8,7 @@ interface ModalMenuProps {
     children: React.ReactNode;
     isModalActive: boolean;
     fullMode?: boolean;
+    header?: React.ReactNode;
     setIsModalActive: Dispatch<SetStateAction<boolean>>;
     ref?: React.RefObject<HTMLDivElement>;
     callback?: () => void;
@@ -18,6 +19,7 @@ const ModalMenu = function ModalMenu({
     children,
     isModalActive,
     setIsModalActive,
+    header,
     callback = () => null,
     ref,
 }: ModalMenuProps) {
@@ -39,6 +41,7 @@ const ModalMenu = function ModalMenu({
                     fullMode={fullMode}
                     isModalActive={isModalActive}
                     setIsModalActive={setIsModalActive}
+                    header={header}
                     menuRef={menuRef}
                     callback={callback}
                 >

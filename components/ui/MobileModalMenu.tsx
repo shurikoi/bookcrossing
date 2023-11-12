@@ -4,6 +4,7 @@ interface ModalMenuProps extends HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
     isModalActive: boolean;
     setIsModalActive: Dispatch<SetStateAction<boolean>>;
+    header?: React.ReactNode;
     fullMode?: boolean;
     callback?: () => void;
     menuRef: React.RefObject<HTMLDivElement>;
@@ -13,6 +14,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
     children,
     isModalActive,
     setIsModalActive,
+    header,
     fullMode = false,
     menuRef,
     callback = () => null,
@@ -21,6 +23,16 @@ const MobileModalMenu = memo(function MobileModalMenu({
     const [startPosition, setStartPosition] = useState(0);
 
     const scrollRef = useRef<HTMLDivElement>(null);
+
+    function handleClose() {
+        callback();
+
+        setIsModalActive(false);
+
+        setTimeout(() => {
+            document.body.style.overflow = "auto";
+        }, 100);
+    }
 
     function updateStartPosition(e: TouchEvent) {
         if (scrollRef.current && scrollRef.current.scrollTop > 0) return;
@@ -41,7 +53,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
 
         if (clientY > 0 && e.cancelable) {
             e.preventDefault();
-            e.stopPropagation()
+            e.stopPropagation();
             if (scrollRef.current) scrollRef.current.style.overflow = "hidden";
 
             setMenuYPosition(clientY);
@@ -54,13 +66,7 @@ const MobileModalMenu = memo(function MobileModalMenu({
         if (scrollRef.current) scrollRef.current.style.removeProperty("overflow");
 
         if (menuYPosition > 100) {
-            callback();
-
-            setIsModalActive(false);
-
-            setTimeout(() => {
-                document.body.style.overflow = "auto";
-            }, 100);
+            handleClose()
         } else {
             setStartPosition(0);
             setMenuYPosition(0);
@@ -111,17 +117,9 @@ const MobileModalMenu = memo(function MobileModalMenu({
             >
                 <div className="flex flex-col h-full w-full ">
                     {fullMode ? (
-                        <div className="flex justify-end w-full select-none z-10">
-                            <div
-                                className="cursor-pointer p-3"
-                                onClick={() => {
-                                    callback();
-                                    setIsModalActive(false);
-                                    setTimeout(() => {
-                                        document.body.style.overflow = "auto";
-                                    }, 100);
-                                }}
-                            >
+                        <div className="flex items-center justify-center w-full select-none z-10 p-3 h-[3em]">
+                            {header && <>{header}</>}
+                            <div className="absolute right-3 cursor-pointer p-3" onClick={handleClose}>
                                 X
                             </div>
                         </div>

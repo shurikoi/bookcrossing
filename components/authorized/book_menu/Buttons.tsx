@@ -59,6 +59,8 @@ export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<
                         books.sort((a, b) => {
                             if (choosenSort == "desc") return Number(new Date(b.date)) - Number(new Date(a.date));
 
+                            
+
                             return Number(new Date(a.date)) - Number(new Date(b.date));
                         });
 
