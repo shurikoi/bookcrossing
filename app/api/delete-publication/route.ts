@@ -18,7 +18,11 @@ export async function POST(req: Request) {
 
     const { image } = await books.findOneAndDelete({ _id: id });
 
-    fs.unlinkSync("./public" + image);
+    try {
+        fs.unlinkSync("./public" + image);
+    } catch (error) {
+
+    }
 
     return NextResponse.json({}, { status: 200 });
 }
