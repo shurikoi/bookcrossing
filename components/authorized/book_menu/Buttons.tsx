@@ -9,6 +9,8 @@ import { useUserData } from "@/components/contexts/UserProvider";
 import ModalMenu from "@/components/ui/ModalMenu";
 import DeleteMenu from "./DeleteMenu";
 import { useFilter } from "@/components/contexts/FilterProvider";
+import ShareIcon from "@/components/ui/icons/ShareIcon";
+import ShareButton from "./ShareButton";
 
 export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<BookMenuMode>> }) {
     const [wasButtonPressed, setWasButtonPresseed] = useState(false);
@@ -59,7 +61,7 @@ export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<
                         books.sort((a, b) => {
                             if (choosenSort == "desc") return Number(new Date(b.date)) - Number(new Date(a.date));
 
-                            
+
 
                             return Number(new Date(a.date)) - Number(new Date(b.date));
                         });
@@ -138,30 +140,31 @@ export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<
                                 </div>
                             </div>
                         ) : (
-                            <div onClick={() => fetch("/api/increase-contact-count", {method: "POST", body: JSON.stringify({bookId})})}>
+                            <div onClick={() => fetch("/api/increase-contact-count", { method: "POST", body: JSON.stringify({ bookId }) })}>
                                 Pokaż kontakt
                             </div>
                         )}
                     </div>
                     {book?.isReserved ? (
                         <div
-                            className={`font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer duration-300 select-none ${
-                                isReservationLoading ? "opacity-50 cursor-default" : "opacity-100 cursor-pointer"
-                            }`}
+                            className={`font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#CD5E4F] text-white rounded-lg cursor-pointer duration-300 select-none ${isReservationLoading ? "opacity-50 cursor-default" : "opacity-100 cursor-pointer"
+                                }`}
                             onClick={cancelReservation}
                         >
                             Cofnij rezerwację
                         </div>
                     ) : (
-                        <div
-                            className={`font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#4F98CD] text-white rounded-lg cursor-pointer duration-300 select-none ${
-                                isReservationLoading ? "opacity-50 cursor-default" : "opacity-100 cursor-pointer"
-                            }`}
-                            onClick={() => {
-                                if (!isReservationLoading) setIsReservationMenuActive(true);
-                            }}
-                        >
-                            Zarezerwuj książkę
+                        <div className="flex gap-1">
+                            <div
+                                className={`w-full font-inter font-medium py-2.5 text-center border-2 active:scale-[0.99] will-change-transform border-transparent bg-[#4F98CD] text-white rounded-lg cursor-pointer duration-300 select-none ${isReservationLoading ? "opacity-50 cursor-default" : "opacity-100 cursor-pointer"
+                                    }`}
+                                onClick={() => {
+                                    if (!isReservationLoading) setIsReservationMenuActive(true);
+                                }}
+                            >
+                                Zarezerwuj książkę
+                            </div>
+                            <ShareButton />
                         </div>
                     )}
                 </div>

@@ -72,7 +72,7 @@ export default function ViewMode({
               </div>
             )}
             <div className="flex flex-col md:flex-row gap-10">
-              <div className="flex flex-col gap-10 shrink-0 md:w-[200px]">
+              <div className="flex flex-col gap-10 shrink-0 md:w-[220px]">
                 <div className="relative shrink-0">
                   <div
                     className="relative w-full aspect-[3/4]"
