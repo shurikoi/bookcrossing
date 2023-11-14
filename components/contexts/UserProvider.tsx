@@ -79,13 +79,8 @@ function UserProvider({ children }: { children: React.ReactNode }) {
         timerRef.current = setTimeout(async () => {
             if (!validateUserData({ name, surname, email }).hasErrors && !isDataFetched) setIsDataFetched(true);
 
-            if (isDataFetched && !validateUserData({ name, surname, email }).hasErrors) {
+            if (isDataFetched && !validateUserData({ name, surname, email }).hasErrors)
                 fetch("/api/change-user-data", { method: "post", body: JSON.stringify({ name, surname, email }) });
-
-                update({
-                
-                })
-            }
         }, 250);
     }, [name, surname, email]);
 
