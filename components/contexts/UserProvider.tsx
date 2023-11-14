@@ -26,7 +26,7 @@ type userData = {
 };
 
 function UserProvider({ children }: { children: React.ReactNode }) {
-    const { data: session, status } = useSession();
+    const { data: session, update, status } = useSession();
 
     const [id, setId] = useState(session?.user?.id || "");
     const [name, setName] = useState(session?.user?.name || "");
@@ -76,11 +76,16 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     useMemo(() => {
         if (timerRef.current) clearTimeout(timerRef.current);
 
-        timerRef.current = setTimeout(() => {
+        timerRef.current = setTimeout(async () => {
             if (!validateUserData({ name, surname, email }).hasErrors && !isDataFetched) setIsDataFetched(true);
 
-            if (isDataFetched && !validateUserData({ name, surname, email }).hasErrors)
+            if (isDataFetched && !validateUserData({ name, surname, email }).hasErrors) {
                 fetch("/api/change-user-data", { method: "post", body: JSON.stringify({ name, surname, email }) });
+
+                update({
+                
+                })
+            }
         }, 250);
     }, [name, surname, email]);
 

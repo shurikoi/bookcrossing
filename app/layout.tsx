@@ -16,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </head>
                 <html lang="en">
                     <body
+                        style={{ overflow: "hidden" }}
                         className={`${eUkraine.className} ${eUkraineHead.variable} ${inter.variable} ${lato.variable} bg-white`}
                     >
                         <Toaster position="top-center"></Toaster>

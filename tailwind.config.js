@@ -18,6 +18,11 @@ module.exports = {
         lato: 'var(--font-lato)',
       },
       keyframes: {
+        backgroundScrolling: {
+          '0%': { backgroundPosition: "left" },
+          '50%': {backgroundPosition: "right"},
+          '100%': { backgroundPosition: "left" }
+        },
         rotation: {
           '0%': { transform: 'rotate(0deg)' },
           '100%': { transform: 'rotate(360deg)' }
@@ -28,7 +33,8 @@ module.exports = {
         },
       },
       animation: {
-        rotation: 'rotation 750ms ease-in-out infinite',
+        backgroundScrolling: 'backgroundScrolling 3s ease-in-out infinite',
+        rotation: 'rotation 750ms linear infinite',
         scaling: 'scaling 2s ease-in-out infinite',
         'scaling-1s': "scaling 2s ease-in-out infinite 1s"
       },
@@ -37,7 +43,7 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
-      
+
     },
   },
   plugins: [],

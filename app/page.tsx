@@ -1,17 +1,21 @@
 "use client";
 
-import ContentLoader from "@/components/ui/ContentLoader";
 import { useUserData } from "@/components/contexts/UserProvider";
 import AuthorizedStartPage from "@/components/authorized/StartPage";
 import UnauthorizedStartPage from "@/components/unauthorized/StartPage";
+import PageLoader from "@/components/ui/PageLoader";
+import { useEffect } from "react";
 
 export default function Home() {
     const { user, loading } = useUserData();
     
-    if (loading) return <ContentLoader></ContentLoader>;
+    useEffect(() => {
+        if (!loading) document.body.style.overflow = "auto";
+    }, [loading]);
 
-    if (user)
-        return <AuthorizedStartPage></AuthorizedStartPage>;
+    if (loading) return <PageLoader></PageLoader>;
+
+    if (user) return <AuthorizedStartPage></AuthorizedStartPage>;
 
     return <UnauthorizedStartPage></UnauthorizedStartPage>;
 }
