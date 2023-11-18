@@ -37,8 +37,6 @@ function BookProvider({ children }: { children: React.ReactNode }) {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-
         params.set("book", bookId);
 
         if (!bookId) params.delete("book");

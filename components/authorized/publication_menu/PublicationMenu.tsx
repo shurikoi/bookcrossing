@@ -1,6 +1,5 @@
 import ModalMenu from "../../ui/ModalMenu";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { publication } from "../Main";
+import { Dispatch, SetStateAction, useLayoutEffect, useRef, useState } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import TelegramIcon from "../../ui/icons/TelegramIcon";
 import SnapchatIcon from "../../ui/icons/SnapchatIcon";
@@ -61,7 +60,7 @@ export default function PublicationMenu({ isModalActive, setIsModalActive }: Pub
 
     const [image, setImage] = useState<image>();
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (file) {
             setImage({
                 name: file.name,
@@ -81,14 +80,16 @@ export default function PublicationMenu({ isModalActive, setIsModalActive }: Pub
         ) : undefined;
 
     const steps = [
-        <StepOne setFile={setFile} setCurrentStep={setCurrentStep}></StepOne>,
+        <StepOne key={"StepOne"} setFile={setFile} setCurrentStep={setCurrentStep}></StepOne>,
         <StepTwo
+            key={"StepTwo"}
             image={image}
             publicationData={publicationData}
             setPublicationData={setPublicationData}
             setCurrentStep={setCurrentStep}
         ></StepTwo>,
         <StepThree
+            key={"StepThree"}
             image={image}
             file={file}
             setFile={setFile}

@@ -8,7 +8,7 @@ export default function SortMenu() {
 
     const filter = useFilter();
 
-    const menuRef = useRef<HTMLDivElement>(null);
+    const triggerRef = useRef<HTMLDivElement>(null);
 
     const params = new URLSearchParams(window.location.search);
 
@@ -28,7 +28,7 @@ export default function SortMenu() {
     }
 
     return (
-        <div ref={menuRef} className="relative hidden md:block">
+        <div ref={triggerRef} className="relative hidden md:block">
             <div
                 className="flex gap-3 items-center py-3 px-5 rounded-lg cursor-pointer select-none border border-[#A39EBE] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.15)]"
                 onClick={() => setIsMenuActive((prev) => !prev)}
@@ -37,7 +37,7 @@ export default function SortMenu() {
                 <ArrowDownIcon></ArrowDownIcon>
             </div>
             <DropDownMenu
-                menuRef={menuRef}
+                triggerRef={triggerRef}
                 isMenuActive={isMenuActive}
                 setIsMenuActive={setIsMenuActive}
                 className="absolute p-3 -bottom-2 right-1/2 translate-x-1/2 md:translate-x-0 md:right-0 w-max translate-y-full bg-white shadow-[0px_0px_49px_0px_rgba(0,0,0,0.25)] rounded-lg"

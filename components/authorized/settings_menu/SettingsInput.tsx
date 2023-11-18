@@ -58,4 +58,6 @@ const SettingsInput = memo(({ value, setValue, type = "text", validator }: Setti
     );
 });
 
+SettingsInput.displayName = "SettingsInput"
+
 export default SettingsInput;

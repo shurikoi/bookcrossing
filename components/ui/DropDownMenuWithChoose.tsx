@@ -20,12 +20,13 @@ type DropDownMenuWithChooseProps = ConditionalProps & {
     item: string;
 };
 
-export default memo(function DropDownMenuWithChoose({ items, mode, setItem, item }: DropDownMenuWithChooseProps) {
+const DropDownMenuWithChoose = memo(({ items, mode, setItem, item }: DropDownMenuWithChooseProps) => {
     const [isMenuActive, setIsMenuActive] = useState(false);
 
-    const menuRef = useRef<HTMLDivElement>(null);
+    const triggerRef = useRef<HTMLDivElement>(null);
+    
     return (
-        <div ref={menuRef} className={`relative text-[15px] font-light select-none`}>
+        <div ref={triggerRef} className={`relative text-[15px] font-light select-none`}>
             <div className="flex gap-2 items-center cursor-pointer" onClick={() => setIsMenuActive((prev) => !prev)}>
                 {mode != "text&icons" && (
                     <svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -52,7 +53,7 @@ export default memo(function DropDownMenuWithChoose({ items, mode, setItem, item
                 )}
             </div>
             <DropDownMenu
-                menuRef={menuRef}
+                triggerRef={triggerRef}
                 isMenuActive={isMenuActive}
                 setIsMenuActive={setIsMenuActive}
                 className={`absolute -bottom-2 bg-white translate-y-full flex flex-col  ${
@@ -109,3 +110,7 @@ export default memo(function DropDownMenuWithChoose({ items, mode, setItem, item
         </div>
     );
 });
+
+DropDownMenuWithChoose.displayName = "DropDownMenuWithChoose"
+
+export default DropDownMenuWithChoose

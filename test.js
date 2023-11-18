@@ -29,7 +29,7 @@ async function getUsers(){
 
     mongoose.connection.close()
 
-    console.log(allUsers)
+    // console.log(allUsers)
 }
 
 getUsers()

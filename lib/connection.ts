@@ -1,8 +1,7 @@
-import { connect, connection } from "mongoose";
+import { connect, connection as connectionToDatabase } from "mongoose";
 
-export default async function connectionToDatabase() {
+export default async function connection() {
     const connectURI = process.env.MONGO_URI as string;
 
-    if (connection.readyState != 1 && connection.readyState != 2) 
-    return connect(connectURI);
+    if (connectionToDatabase.readyState != 1 && connectionToDatabase.readyState != 2) return connect(connectURI);
 }

@@ -9,7 +9,7 @@ interface DropDownMenuProps extends React.HTMLAttributes<HTMLDivElement> {
         inactive: string;
     };
     children: React.ReactNode;
-    menuRef?: RefObject<HTMLDivElement>;
+    triggerRef: RefObject<HTMLDivElement>;
     elRef?: RefObject<HTMLDivElement>;
 }
 
@@ -18,29 +18,35 @@ const defaultAnimation = {
     inactive: "opacity-0 pointer-events-none",
 };
 
-export default memo(function DropDownMenu({
-    isMenuActive,
-    setIsMenuActive,
-    animation = defaultAnimation,
-    menuRef,
-    children,
-    className,
-    style,
-    elRef,
-}: DropDownMenuProps) {
-    const ref = menuRef || useRef<HTMLDivElement>(null);
+const DropDownMenu = memo(
+    ({
+        isMenuActive,
+        setIsMenuActive,
+        animation = defaultAnimation,
+        triggerRef,
+        children,
+        className,
+        style,
+        elRef,
+    }: DropDownMenuProps) => {
+        useClickOutside(triggerRef, () => {
+            setIsMenuActive(false);
+        });
 
-    useClickOutside(ref, () => {
-        setIsMenuActive(false);
-    });
+        return (
+            <div
+                ref={triggerRef ? (elRef ? elRef : triggerRef) : triggerRef}
+                className={`${isMenuActive ? animation.active : animation.inactive} z-40 duration-200 ${
+                    className || ""
+                }`}
+                style={style}
+            >
+                {children}
+            </div>
+        );
+    }
+);
 
-    return (
-        <div
-            ref={menuRef ? (elRef ? elRef : ref) : ref}
-            className={`${isMenuActive ? animation.active : animation.inactive} z-40 duration-200 ${className || ""}`}
-            style={style}
-        >
-            {children}
-        </div>
-    );
-});
+DropDownMenu.displayName = "DropDownMenu"
+
+export default DropDownMenu

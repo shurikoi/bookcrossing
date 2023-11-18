@@ -23,11 +23,11 @@ const ModalMenu = function ModalMenu({
     callback = () => null,
     ref,
 }: ModalMenuProps) {
-    const menuRef = useRef<HTMLDivElement>(null);
+    const triggerRef = useRef<HTMLDivElement>(null);
     
     const { isSmallScreen } = useScreen();
     
-    useClickOutside(menuRef, () => {
+    useClickOutside(triggerRef, () => {
         if (!isModalActive) return;
         callback();
         setIsModalActive(false);
@@ -42,7 +42,7 @@ const ModalMenu = function ModalMenu({
                     isModalActive={isModalActive}
                     setIsModalActive={setIsModalActive}
                     header={header}
-                    menuRef={menuRef}
+                    triggerRef={triggerRef}
                     callback={callback}
                 >
                     {children}
@@ -58,7 +58,7 @@ const ModalMenu = function ModalMenu({
                         className={`absolute top-0 left-0 w-screen h-screen bg-black/40  duration-300 transition-opacity`}
                     ></div>
                     <div
-                        ref={menuRef}
+                        ref={triggerRef}
                         className={`relative bg-white shadow-sm rounded-lg duration-300 transition-opacity `}
                     >
                         <CloseBtn onClick={() => setIsModalActive(false)}></CloseBtn>

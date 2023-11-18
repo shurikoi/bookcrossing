@@ -96,9 +96,9 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
                     </div>
 
                     <div className="flex flex-col gap-4 text-[20px] font-lato font-normal md:max-h-[380px] md:overflow-y-auto flex-grow flex-shrink">
-                        <div className="flex items-center justify-between px-1">
+                        <div className="flex items-center gap-2 px-1">
                             <input
-                                className={`duration-200 ${
+                                className={`duration-200 w-full ${
                                     errors?.title
                                         ? "text-red-600 placeholder:text-red-600"
                                         : "text-black placeholder:text-[#6C6C6C]"
@@ -110,9 +110,9 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
                             />
                             <SmallPhotosIcon></SmallPhotosIcon>
                         </div>
-                        <div className="flex items-center justify-between px-1">
+                        <div className="flex items-center gap-2 px-1">
                             <input
-                                className={`duration-200 ${
+                                className={`duration-200 w-full ${
                                     errors?.author
                                         ? "text-red-600 placeholder:text-red-600"
                                         : "text-black placeholder:text-[#6C6C6C]"
@@ -124,13 +124,13 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
                             />
                             <ProfileIcon height={24} width={24}></ProfileIcon>
                         </div>
-                        <div className="flex items-center justify-between px-1">
+                        <div className="flex items-center gap-2 px-1">
                             <DropDownMenuWithSearch
                                 items={categories}
                                 startValue={bookCategory}
                                 setItem={setBookCategory}
                                 placeholder="Kategoria"
-                                inputClassName={`duration-200 ${
+                                inputClassName={`duration-200 w-full ${
                                     errors?.category
                                         ? "text-red-600 placeholder:text-red-600"
                                         : "text-black placeholder:text-[#6C6C6C]"
@@ -139,13 +139,13 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
                             ></DropDownMenuWithSearch>
                             <TagIcon height={24} width={24}></TagIcon>
                         </div>
-                        <div className="flex items-center justify-between px-1">
+                        <div className="flex items-center gap-2 px-1">
                             <DropDownMenuWithSearch
                                 items={languages}
                                 startValue={bookLanguage}
                                 setItem={setBookLanguage}
                                 placeholder="Język"
-                                inputClassName={`duration-200 ${
+                                inputClassName={`duration-200 w-full ${
                                     errors?.language
                                         ? "text-red-600 placeholder:text-red-600"
                                         : "text-black placeholder:text-[#6C6C6C]"
@@ -154,13 +154,13 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
                             ></DropDownMenuWithSearch>
                             <LanguageIcon height={24} width={24}></LanguageIcon>
                         </div>
-                        <div className="flex items-center justify-between px-1">
+                        <div className="flex items-center gap-2 px-1">
                             <DropDownMenuWithSearch
                                 items={bookStates}
                                 startValue={bookState}
                                 setItem={setBookState}
                                 placeholder="Stan"
-                                inputClassName={`duration-200 ${
+                                inputClassName={`duration-200 w-full ${
                                     errors?.state
                                         ? "text-red-600 placeholder:text-red-600"
                                         : "text-black placeholder:text-[#6C6C6C]"
@@ -168,13 +168,13 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
                             ></DropDownMenuWithSearch>
                             <LeafIcon height={24} width={24}></LeafIcon>
                         </div>
-                        <div className="flex items-center justify-between px-1">
+                        <div className="flex items-center gap-2 px-1">
                             <input
                                 type="text"
                                 placeholder="Kontakt"
                                 value={messengerDescription}
                                 onChange={(e) => setMessengerDescription(e.target.value.replace(/\s+/g, " "))}
-                                className={`duration-200 ${
+                                className={`duration-200 w-full ${
                                     errors?.messengerDescription
                                         ? "text-red-600 placeholder:text-red-600"
                                         : "text-black placeholder:text-[#6C6C6C]"

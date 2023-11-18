@@ -3,25 +3,8 @@ import DropDownMenu from "../../ui/DropDownMenu";
 import { useFilter } from "../../contexts/FilterProvider";
 import ArrowDownIcon from "../../ui/icons/ArrowDownIcon";
 
-const categories = [
-    "Powieść historyczna",
-    "Kryminał",
-    "Fantastyka",
-    "Romans",
-    "Science Fiction",
-    "Horror",
-    "Literatura podróżnicza",
-    "Dramat",
-    "Poezja",
-    "Biografia",
-];
-
-const languages = ["Angielski", "Polski", "Ukraiński"];
-
-const bookStates = ["Bardzo dobry", "Dobry", "Akceptowany", "Zły"];
-
-export default memo(function FilterMenu() {
-    const menuRef = useRef<HTMLDivElement>(null);
+const FilterMenu = memo(() => {
+    const triggerRef = useRef<HTMLDivElement>(null);
 
     const [isMenuActive, setIsMenuActive] = useState(false);
 
@@ -87,7 +70,7 @@ export default memo(function FilterMenu() {
     }
 
     return (
-        <div ref={menuRef}>
+        <div ref={triggerRef}>
             <div
                 onClick={() => setIsMenuActive((prev) => !prev)}
                 className="flex gap-3 items-center py-3 px-14 rounded-lg cursor-pointer select-none border-2 border-[#3F3A5A]"
@@ -98,7 +81,7 @@ export default memo(function FilterMenu() {
             <DropDownMenu
                 isMenuActive={isMenuActive}
                 setIsMenuActive={setIsMenuActive}
-                menuRef={menuRef}
+                triggerRef={triggerRef}
                 className="flex flex-col md:flex-row justify-center gap-20 left-0 top-full w-full absolute h-fit p-6 bg-white shadow-[0px_5px_5px_1px_rgba(0,0,0,.1)]"
             >
                 <div className="text-left pl-[30%] md:pl-0 font-inter text-[#3F3A5A] text-[16px] w-full md:w-auto md:px-0">
@@ -174,3 +157,7 @@ export default memo(function FilterMenu() {
         </div>
     );
 });
+
+FilterMenu.displayName = "FilterMenu"
+
+export default FilterMenu

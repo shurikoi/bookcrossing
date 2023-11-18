@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions);
 
     const user = await users.findOne({ _id: session?.user?.id });
-    console.log(body)
+    
     if (session && user) {
         await connection();
 

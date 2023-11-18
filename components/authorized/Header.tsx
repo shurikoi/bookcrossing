@@ -6,14 +6,14 @@ import SettingsMenu from "./settings_menu/SettingsMenu";
 import { useUserData } from "../contexts/UserProvider";
 import useClickOutside from "../hooks/useClickOutside";
 
-export default memo(function Header() {
+const Header = memo(() => {
     const { user } = useUserData();
     const [isMenuActive, setIsMenuActive] = useState(false);
     const [isSettingsMenuActive, setIsSettingsMenuActive] = useState(false);
 
-    const menuRef = useRef<HTMLDivElement>(null);
+    const triggerRef = useRef<HTMLDivElement>(null);
 
-    useClickOutside(menuRef, () => {
+    useClickOutside(triggerRef, () => {
         setIsMenuActive(false);
     });
 
@@ -33,7 +33,7 @@ export default memo(function Header() {
                             <div className="text-lg font-normal">{user?.points}</div>
                         </div>
                     </div>
-                    <div className="relative" ref={menuRef}>
+                    <div className="relative" ref={triggerRef}>
                         <div
                             className="flex items-center gap-2 text-xl font-normal text-white cursor-pointer"
                             onClick={() => setIsMenuActive((menuActive) => !menuActive)}
@@ -54,7 +54,7 @@ export default memo(function Header() {
                             isMenuActive={isMenuActive}
                             setIsSettingsMenuActive={setIsSettingsMenuActive}
                             setMenuActive={setIsMenuActive}
-                            menuRef={menuRef}
+                            triggerRef={triggerRef}
                         />
                     </div>
                 </div>
@@ -63,3 +63,7 @@ export default memo(function Header() {
         </>
     );
 });
+
+Header.displayName = "Header"
+
+export default Header

@@ -1,5 +1,4 @@
 "use client";
-
 import { validateUserData } from "@/lib/isUserDataValid";
 import { signOut, useSession } from "next-auth/react";
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
@@ -76,7 +75,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     useMemo(() => {
         if (timerRef.current) clearTimeout(timerRef.current);
 
-        timerRef.current = setTimeout(async () => {
+        timerRef.current = setTimeout(() => {
             if (!validateUserData({ name, surname, email }).hasErrors && !isDataFetched) setIsDataFetched(true);
 
             if (isDataFetched && !validateUserData({ name, surname, email }).hasErrors)
@@ -85,7 +84,15 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     }, [name, surname, email]);
 
     return (
-        <UserContext.Provider value={status == "unauthenticated" ? { loading: false, user: undefined } : userData}>
+        <UserContext.Provider
+            value={
+                status == "unauthenticated"
+                    ? { loading: false, user: undefined }
+                    : status == "loading"
+                    ? { loading: true, user: undefined }
+                    : userData
+            }
+        >
             {children}
         </UserContext.Provider>
     );

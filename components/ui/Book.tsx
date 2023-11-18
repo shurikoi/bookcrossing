@@ -88,4 +88,6 @@ const Book = memo(({ data, handleClick }: BookProps) => {
     );
 });
 
+Book.displayName = "Book"
+
 export default Book;

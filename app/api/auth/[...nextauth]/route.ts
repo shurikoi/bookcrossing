@@ -1,9 +1,11 @@
+import clientPromise from "@/lib/clientPromise";
 import connection from "@/lib/connection";
 import generateRandomString from "@/lib/generateRandomString";
 import getExtension from "@/lib/getExtension";
 import hashPassword from "@/lib/hashPassword";
 import resizeImage from "@/lib/resizeImage";
 import users from "@/model/user";
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import fs from "fs";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -16,14 +18,6 @@ type credentials = {
     email: string;
     password: string;
     image?: string;
-};
-
-type user = {
-    _id: string;
-    name: string;
-    surname: string;
-    email: string;
-    points: number;
 };
 
 const date = new Date();
@@ -83,13 +77,13 @@ export const authOptions: NextAuthOptions = {
         signIn: "/",
     },
     callbacks: {
-        async session({ session }) {
-            try {
-                await connection();
+        async jwt({ token }) {
+            await connection();
 
-                const user = await users.findOne({ email: session.user?.email });
+            const user = await users.findOne({ email: token.email });
 
-                session.user = {
+            if (user) {
+                token.user = {
                     id: user._id,
                     name: user.name,
                     surname: user.surname,
@@ -98,27 +92,28 @@ export const authOptions: NextAuthOptions = {
                     points: user.points,
                     isPasswordExist: !!user.password,
                 };
-            } catch (error) {
-                session.user = {
+            } else {
+                token.user = {
                     unauthenticated: true,
                 };
             }
 
+            // users.findOne({ email: token.email }).then((data) => console.log(data));
+
+            return token;
+        },
+        async session({ session, token }) {
+            try {
+                session.user = token.user;
+
+                return session;
+            } catch (error) {}
+
             return session;
         },
         async signIn({ profile, account }) {
-            if (account?.provider == "google") {
-                const {
-                    email,
-                    given_name: name,
-                    family_name: surname,
-                    picture: avatar,
-                } = profile as {
-                    given_name: string;
-                    family_name: string;
-                    email: string;
-                    picture: string;
-                };
+            if (account?.provider == "google" && profile) {
+                const { email, given_name: name, family_name: surname, picture: avatar } = profile;
 
                 await connection();
 

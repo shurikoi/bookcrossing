@@ -22,12 +22,12 @@ interface fetchData {
 
 const limit = 10;
 
-export default memo(function Publications({
+const Publications = memo(({
     setBooksCount,
     setBooksQueryCount,
     setIsBooksLoading,
     isBooksLoading,
-}: PublicationsProps) {
+}: PublicationsProps) => {
     const filter = useFilter();
 
     const { setBookId, setBooks, books } = useBook();
@@ -121,3 +121,7 @@ export default memo(function Publications({
         </div>
     );
 });
+
+Publications.displayName = "Publications"
+
+export default Publications

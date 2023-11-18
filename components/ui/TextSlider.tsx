@@ -25,19 +25,16 @@ export default function TextSlider({ text, duration = 1000, height = 36 }: textS
         }, duration);
 
         return () => {
-            clearInterval(interval)
-        }
-
+            clearInterval(interval);
+        };
     }, []);
 
     useEffect(() => {
         if (isEnd) {
-            // setTimeout(() => {
-                setIsEnd(false);
-                setSelectedText((selectedText) => {
-                    return selectedText + 1;
-                });
-            // }, 1);
+            setIsEnd(false);
+            setSelectedText((selectedText) => {
+                return selectedText + 1;
+            });
         }
     }, [isEnd]);
 

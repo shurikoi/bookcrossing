@@ -8,10 +8,10 @@ import { useEffect } from "react";
 
 export default function Home() {
     const { user, loading } = useUserData();
-    
     useEffect(() => {
-        if (!loading) document.body.style.overflow = "auto";
-    }, [loading]);
+        console.log(user, loading)
+    if (user && !loading) document.body.style.overflow = "auto";
+    }, [loading, user]);
 
     if (loading) return <PageLoader></PageLoader>;
 

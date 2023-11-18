@@ -18,19 +18,21 @@ export async function POST(req: Request) {
     const book = await books.findOne({ _id: id });
 
     if (book.owner.toString() == session?.user?.id) {
-        await books.findOneAndUpdate({ _id: id }, updatedData);
-
         const extension = getExtension(updatedData.image, true);
 
         const randomName = "/books/" + generateRandomString() + "." + extension;
 
         const imageBuffer = Buffer.from(updatedData.image.split(",")[1], "base64");
 
-        const resizedImage = await resizeImage(imageBuffer)
+        const resizedImage = await resizeImage(imageBuffer);
 
         fs.writeFile("./public" + randomName, resizedImage, () => {});
 
-        fs.unlinkSync("./public" + book.image);
+        await books.findOneAndUpdate({ _id: id }, { image: randomName });
+
+        try {
+            fs.unlinkSync("./public" + book.image);
+        } catch (error) {}
     }
 
     return NextResponse.json({}, { status: 200 });
