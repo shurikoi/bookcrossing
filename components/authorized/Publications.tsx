@@ -1,7 +1,7 @@
 import ContentLoader from "../ui/loaders/ContentLoader";
 import Book from "../ui/Book";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { Dispatch, SetStateAction, memo, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, memo, useLayoutEffect, useEffect, useRef, useState } from "react";
 import { publication } from "./Main";
 import { useFilter } from "../contexts/FilterProvider";
 import { useBook } from "../contexts/BookProvider";
@@ -41,10 +41,12 @@ const Publications = memo(
         useEffect(() => {
             setPage(0);
             setHasMore(true);
+            setIsBooksLoading(false )
+            setIsIntersecting(true)
             setBooks([]);
         }, [filter.query]);
 
-        useEffect(() => {
+        useLayoutEffect(() => {
             if (isIntersecting && !isBooksLoading && hasMore) getPublications();
 
             async function getPublications() {
