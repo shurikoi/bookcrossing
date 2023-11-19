@@ -20,7 +20,7 @@ module.exports = {
       keyframes: {
         backgroundScrolling: {
           '0%': { backgroundPosition: "left" },
-          '50%': {backgroundPosition: "right"},
+          '50%': { backgroundPosition: "right" },
           '100%': { backgroundPosition: "left" }
         },
         rotation: {
@@ -31,12 +31,17 @@ module.exports = {
           '0%, 100%': { transform: 'scale(1)' },
           '50%': { transform: 'scale(2)' },
         },
+        "skeleton-loading": {
+          '0%': { backgroundPosition: '0%' },
+          '100%': { backgroundPosition: '110%' }
+        }
       },
       animation: {
         backgroundScrolling: 'backgroundScrolling 3s ease-in-out infinite',
         rotation: 'rotation 750ms linear infinite',
         scaling: 'scaling 2s ease-in-out infinite',
-        'scaling-1s': "scaling 2s ease-in-out infinite 1s"
+        'scaling-1s': "scaling 2s ease-in-out infinite 1s",
+        skeletonLoading: "skeleton-loading 2s infinite linear"
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

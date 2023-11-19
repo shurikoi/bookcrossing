@@ -3,14 +3,14 @@
 import { useUserData } from "@/components/contexts/UserProvider";
 import AuthorizedStartPage from "@/components/authorized/StartPage";
 import UnauthorizedStartPage from "@/components/unauthorized/StartPage";
-import PageLoader from "@/components/ui/PageLoader";
+import PageLoader from "@/components/ui/loaders/PageLoader";
 import { useEffect } from "react";
 
 export default function Home() {
     const { user, loading } = useUserData();
+    
     useEffect(() => {
-        console.log(user, loading)
-    if (user && !loading) document.body.style.overflow = "auto";
+        if (user && !loading) document.body.style.overflow = "auto";
     }, [loading, user]);
 
     if (loading) return <PageLoader></PageLoader>;

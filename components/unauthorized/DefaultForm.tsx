@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { currentState } from "./AuthForm";
 import { Dispatch, KeyboardEvent, SetStateAction, useState } from "react";
-import ContentLoader from "../ui/ContentLoader";
+import ContentLoader from "../ui/loaders/ContentLoader";
 import WarningIcon from "../ui/icons/WarningIcon";
 import { validateEmail } from "@/lib/isUserDataValid";
 

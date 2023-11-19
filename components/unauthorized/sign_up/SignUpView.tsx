@@ -2,7 +2,7 @@ import { errors, validateUserData } from "@/lib/isUserDataValid";
 import { signIn } from "next-auth/react";
 import { Dispatch, KeyboardEvent, SetStateAction, useRef, useState } from "react";
 import useImagePicker from "../../hooks/useImagePicker";
-import ContentLoader from "../../ui/ContentLoader";
+import ContentLoader from "../../ui/loaders/ContentLoader";
 import Button from "../../ui/buttons/Button";
 import ArrowLeftIcon from "../../ui/icons/ArrowLeftIcon";
 import UploadIcon from "../../ui/icons/UploadIcon";

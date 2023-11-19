@@ -8,7 +8,7 @@ import ProfileIcon from "@/components/ui/icons/ProfileIcon";
 import LeafIcon from "@/components/ui/icons/LeafIcon";
 import Button from "@/components/ui/buttons/Button";
 import { Dispatch, SetStateAction, useState } from "react";
-import ContentLoader from "@/components/ui/ContentLoader";
+import ContentLoader from "@/components/ui/loaders/ContentLoader";
 import { useFilter } from "@/components/contexts/FilterProvider";
 import { useBook } from "@/components/contexts/BookProvider";
 import { publication } from "../Main";

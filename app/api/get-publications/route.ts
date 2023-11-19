@@ -30,6 +30,7 @@ export async function POST(req: Request) {
     await connection();
 
     const count = await books.count({});
+    const queryCount = await books.count(filter);
 
     const publications = await books
         .aggregate([
@@ -113,5 +114,9 @@ export async function POST(req: Request) {
         ])
         .sort({ date: query.sort });
 
-    return NextResponse.json({ publications: [...reservedBooks, ...publications], count });
+    return NextResponse.json({
+        publications: [...reservedBooks, ...publications],
+        count,
+        queryCount,
+    });
 }

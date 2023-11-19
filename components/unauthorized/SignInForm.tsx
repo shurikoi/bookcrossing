@@ -2,7 +2,7 @@ import { Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef, useState } 
 import ShowPasswordBtn from "../ui/buttons/ShowPasswordBtn";
 import { currentState } from "./AuthForm";
 import { signIn } from "next-auth/react";
-import ContentLoader from "../ui/ContentLoader";
+import ContentLoader from "../ui/loaders/ContentLoader";
 import CloseBtn from "../ui/CloseBtn";
 import WarningIcon from "../ui/icons/WarningIcon";
 import Button from "../ui/buttons/Button";

@@ -6,7 +6,7 @@ import { errors, validateUserData } from "@/lib/isUserDataValid";
 import WarningIcon from "../../ui/icons/WarningIcon";
 import { signIn } from "next-auth/react";
 import Button from "../../ui/buttons/Button";
-import ContentLoader from "../../ui/ContentLoader";
+import ContentLoader from "../../ui/loaders/ContentLoader";
 import UploadIcon from "../../ui/icons/UploadIcon";
 import ArrowLeftIcon from "../../ui/icons/ArrowLeftIcon";
 import { CSSTransition, SwitchTransition, TransitionGroup } from "react-transition-group";

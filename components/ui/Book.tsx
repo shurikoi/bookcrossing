@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Loader from "./ContentLoader";
+import Loader from "./loaders/ContentLoader";
 import dateConjugation from "@/lib/dateConjugation";
 import { memo } from "react";
 import { publication } from "../authorized/Main";
@@ -19,7 +19,7 @@ const Book = memo(({ data, handleClick }: BookProps) => {
     return (
         <div className="relative">
             <div
-                className={`rounded-md overflow-hidden relative w-60 aspect-[3/4] bg-black font-inter shadow-[0px_0px_15px_1px_rgba(0,0,0,.5)] hover:scale-[1.04] hover:shadow-[0px_0px_30px_1px_rgba(0,0,0,.5)] cursor-pointer duration-200 will-change-transform flex-shrink-0 ${
+                className={`rounded-md overflow-hidden relative w-60 aspect-[3/4] skeleton font-inter shadow-[0px_0px_15px_1px_rgba(0,0,0,.5)] hover:scale-[1.04] hover:shadow-[0px_0px_30px_1px_rgba(0,0,0,.5)] cursor-pointer duration-200 will-change-transform flex-shrink-0 ${
                     data.isReserved ? "border-[7px] border-purple-400" : ""
                 }`}
                 onClick={handleClick}

@@ -1,4 +1,4 @@
-import ContentLoader from "@/components/ui/ContentLoader";
+import ContentLoader from "@/components/ui/loaders/ContentLoader";
 import Image from "next/image";
 import { useState } from "react";
 

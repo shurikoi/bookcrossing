@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useLayoutEffect } from "react";
 import FilterMenu from "./FilterMenu";
-import ContentLoader from "../../ui/ContentLoader";
+import ContentLoader from "../../ui/loaders/ContentLoader";
 import ResetIcon from "../../ui/icons/ResetIcon";
 import { useFilter } from "../../contexts/FilterProvider";
 import SortMenu from "./SortMenu";

@@ -42,6 +42,24 @@ button:focus-visible {
   border-radius: 8px;
 }
 
+.skeleton {
+  animation: skeleton-loading 3s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: #919195;
+  }
+
+  50% {
+    background-color: rgb(194, 199, 199)
+  }
+
+  100% {
+    background-color: #919195;
+  }
+}
+
 @media (max-width: 768px) {
 
   /* Hide scrollbar for Chrome, Safari and Opera */

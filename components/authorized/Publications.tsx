@@ -1,4 +1,4 @@
-import ContentLoader from "../ui/ContentLoader";
+import ContentLoader from "../ui/loaders/ContentLoader";
 import Book from "../ui/Book";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { Dispatch, SetStateAction, memo, useEffect, useRef, useState } from "react";
@@ -6,6 +6,7 @@ import { publication } from "./Main";
 import { useFilter } from "../contexts/FilterProvider";
 import { useBook } from "../contexts/BookProvider";
 import { useUserData } from "../contexts/UserProvider";
+import PublicationsLoader from "../ui/loaders/skeleton/PublicationsLoader";
 
 interface PublicationsProps {
     setBooksCount: Dispatch<SetStateAction<number>>;
@@ -20,108 +21,98 @@ interface fetchData {
     queryCount: number;
 }
 
-const limit = 10;
+const limit = 20;
 
-const Publications = memo(({
-    setBooksCount,
-    setBooksQueryCount,
-    setIsBooksLoading,
-    isBooksLoading,
-}: PublicationsProps) => {
-    const filter = useFilter();
+const Publications = memo(
+    ({ setBooksCount, setBooksQueryCount, setIsBooksLoading, isBooksLoading }: PublicationsProps) => {
+        const filter = useFilter();
 
-    const { setBookId, setBooks, books } = useBook();
+        const { setBookId, setBooks, books } = useBook();
 
-    const timerRef = useRef<NodeJS.Timer | null>(null);
+        const timerRef = useRef<NodeJS.Timer | null>(null);
+        const observer = useRef<IntersectionObserver | null>(null);
 
-    const [hasMore, setHasMore] = useState(true);
-    const [page, setPage] = useState(0);
+        const [isIntersecting, setIsIntersecting] = useState(true);
+        const [hasMore, setHasMore] = useState(true);
+        const [page, setPage] = useState(0);
 
-    const observerRef = useRef<HTMLDivElement>(null);
+        const observerRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        setPage(0);
-        setHasMore(true);
-        setBooks([]);
-    }, [filter.query]);
+        useEffect(() => {
+            setPage(0);
+            setHasMore(true);
+            setBooks([]);
+        }, [filter.query]);
 
-    useEffect(() => {
-        if (isBooksLoading && hasMore) {
-            if (timerRef.current) clearTimeout(timerRef.current);
-            timerRef.current = setTimeout(() => getPublications(), 500);
-        }
+        useEffect(() => {
+            if (isIntersecting && !isBooksLoading && hasMore) getPublications();
 
-        async function getPublications() {
-            const response = await fetch("/api/get-publications", {
-                method: "POST",
-                body: JSON.stringify({
-                    limit,
-                    page,
-                    query: filter.query,
-                }),
-            });
+            async function getPublications() {
+                setIsBooksLoading(true);
 
-            const data: fetchData = await response.json();
+                const response = await fetch("/api/get-publications", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        limit,
+                        page,
+                        query: filter.query,
+                    }),
+                });
 
-            const fetchedBooks: publication[] = data.publications;
+                const data: fetchData = await response.json();
 
-            setPage((prev) => prev + 1);
-            setIsBooksLoading(false);
+                const fetchedBooks: publication[] = data.publications;
 
-            if (fetchedBooks.length === 0 || fetchedBooks.length < limit) {
-                setHasMore(false);
-                setPage((prev) => prev - 1);
-            }
+                setPage((prev) => prev + 1);
+                setIsBooksLoading(false);
 
-            setBooks((books) => [...books, ...fetchedBooks]);
-
-            setBooksCount(data.count);
-            setBooksQueryCount(fetchedBooks.length);
-        }
-    }, [isBooksLoading, hasMore, filter.query]);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting) {
-                    setIsBooksLoading(true);
+                if (fetchedBooks.length === 0 || fetchedBooks.length < limit) {
+                    setHasMore(false);
+                    setPage((prev) => prev - 1);
                 }
-            },
-            {
-                rootMargin: "100px",
+
+                setBooks((books) => [...books, ...fetchedBooks]);
+
+                setBooksCount(data.count);
+                setBooksQueryCount(data.queryCount);
             }
-        );
+        }, [isBooksLoading, hasMore, filter.query, isIntersecting]);
 
-        if (observerRef.current && hasMore) observer.observe(observerRef.current);
+        useEffect(() => {
+            observer.current = new IntersectionObserver(
+                (entries) => {
+                    if (entries[0].isIntersecting) setIsIntersecting(true);
+                    else setIsIntersecting(false);
+                },
+                {
+                    rootMargin: "480px",
+                }
+            );
+        }, []);
 
-        return () => {
-            if (observerRef.current) observer.disconnect();
-        };
-    }, [observerRef, observerRef.current, hasMore, isBooksLoading]);
+        useEffect(() => {
+            if (observerRef.current && hasMore && observer.current) observer.current.observe(observerRef.current);
 
-    return (
-        <div className="px-24 py-10 flex w-full flex-col gap-8 items-center bg-[linear-gradient(180deg,rgba(248,250,255,1)_40%,rgba(255,255,255,1)_80%)] ">
-            <div className="flex gap-8 flex-wrap justify-center">
-                {books && (
-                    <TransitionGroup component={null} exit={false}>
-                        {books.map((book, index) => (
-                            <CSSTransition key={book.id} classNames="item" timeout={500}>
-                                <Book key={index} data={book} handleClick={() => setBookId(book.id!)} />
-                            </CSSTransition>
+            return () => {
+                if (observerRef.current && observer.current) observer.current.disconnect();
+            };
+        }, [observerRef, observerRef, observer, hasMore, isBooksLoading]);
+
+        return (
+            <div className="px-24 py-10 flex w-full flex-col gap-8 items-center bg-[linear-gradient(180deg,rgba(248,250,255,1)_40%,rgba(255,255,255,1)_80%)] ">
+                <div className="relative flex gap-8 flex-wrap justify-center">
+                    {books &&
+                        books.map((book, index) => (
+                            <Book key={index} data={book} handleClick={() => setBookId(book.id!)} />
                         ))}
-                    </TransitionGroup>
-                )}
-                <div ref={observerRef} className="absolute bottom-0"></div>
-            </div>
-            {isBooksLoading && (
-                <div className="w-6 h-6 relative">
-                    <ContentLoader></ContentLoader>
+                    {isBooksLoading && <PublicationsLoader></PublicationsLoader>}
+                    <div ref={observerRef} className="absolute bottom-0"></div>
                 </div>
-            )}
-        </div>
-    );
-});
+            </div>
+        );
+    }
+);
 
-Publications.displayName = "Publications"
+Publications.displayName = "Publications";
 
-export default Publications
+export default Publications;
