@@ -63,7 +63,7 @@ export default function Main() {
     const [booksCount, setBooksCount] = useState(0);
     const [booksQueryCount, setBooksQueryCount] = useState(0);
 
-    const [isBooksLoading, setIsBooksLoading] = useState(false);
+    const [isBooksLoading, setIsBooksLoading] = useState(true);
 
     function handleAddBookClick() {
         setIsPublicationModalActive(true);

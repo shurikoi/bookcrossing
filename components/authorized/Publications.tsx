@@ -29,28 +29,31 @@ const Publications = memo(
 
         const { setBookId, setBooks, books } = useBook();
 
-        const timerRef = useRef<NodeJS.Timer | null>(null);
         const observer = useRef<IntersectionObserver | null>(null);
 
-        const [isIntersecting, setIsIntersecting] = useState(true);
+        const timerRef = useRef<NodeJS.Timer | null>();
+
+        const [wasDataFetched, setWasDataFetched] = useState(true);
         const [hasMore, setHasMore] = useState(true);
         const [page, setPage] = useState(0);
 
         const observerRef = useRef<HTMLDivElement>(null);
 
-        useEffect(() => {
+        useLayoutEffect(() => {
             setPage(0);
             setHasMore(true);
-            setIsBooksLoading(false )
-            setIsIntersecting(true)
             setBooks([]);
         }, [filter.query]);
 
         useLayoutEffect(() => {
-            if (isIntersecting && !isBooksLoading && hasMore) getPublications();
+            if (timerRef.current) clearTimeout(timerRef?.current);
 
+            if (wasDataFetched && isBooksLoading && hasMore)
+                if (page > 0) getPublications();
+                else timerRef.current = setTimeout(getPublications, 500);
+            
             async function getPublications() {
-                setIsBooksLoading(true);
+                setWasDataFetched(false);
 
                 const response = await fetch("/api/get-publications", {
                     method: "POST",
@@ -64,9 +67,10 @@ const Publications = memo(
                 const data: fetchData = await response.json();
 
                 const fetchedBooks: publication[] = data.publications;
+                setWasDataFetched(true);
+                setIsBooksLoading(false);
 
                 setPage((prev) => prev + 1);
-                setIsBooksLoading(false);
 
                 if (fetchedBooks.length === 0 || fetchedBooks.length < limit) {
                     setHasMore(false);
@@ -78,13 +82,12 @@ const Publications = memo(
                 setBooksCount(data.count);
                 setBooksQueryCount(data.queryCount);
             }
-        }, [isBooksLoading, hasMore, filter.query, isIntersecting]);
+        }, [isBooksLoading, hasMore, wasDataFetched, filter.query, timerRef]);
 
         useEffect(() => {
             observer.current = new IntersectionObserver(
                 (entries) => {
-                    if (entries[0].isIntersecting) setIsIntersecting(true);
-                    else setIsIntersecting(false);
+                    if (entries[0].isIntersecting) setIsBooksLoading(true);
                 },
                 {
                     rootMargin: "480px",
@@ -98,7 +101,7 @@ const Publications = memo(
             return () => {
                 if (observerRef.current && observer.current) observer.current.disconnect();
             };
-        }, [observerRef, observerRef, observer, hasMore, isBooksLoading]);
+        }, [observerRef, observer, hasMore, isBooksLoading, wasDataFetched]);
 
         return (
             <div className="px-24 py-10 flex w-full flex-col gap-8 items-center bg-[linear-gradient(180deg,rgba(248,250,255,1)_40%,rgba(255,255,255,1)_80%)] ">

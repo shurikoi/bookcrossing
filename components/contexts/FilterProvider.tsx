@@ -77,17 +77,17 @@ function FilterProvider({ children }: { children: React.ReactNode }) {
         const sort = params.get("sort");
 
         if (sort != "desc" && sort != "asc") setChoosenSort("desc");
-
+        else setChoosenSort(sort);
         getFilters();
 
         async function getFilters() {
             const response = await fetch("/api/get-filters", { method: "post" });
 
-            const filters = await response.json()
+            const filters = await response.json();
 
-            setCategories(filters.categories)
-            setLanguages(filters.languages)
-            setStates(filters.states)
+            setCategories(filters.categories);
+            setLanguages(filters.languages);
+            setStates(filters.states);
         }
     }, []);
 
