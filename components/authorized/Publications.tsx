@@ -25,7 +25,7 @@ const limit = 20;
 
 const Publications = memo(
     ({ setBooksCount, setBooksQueryCount, setIsBooksLoading, isBooksLoading }: PublicationsProps) => {
-        const filter = useFilter();
+        const { query } = useFilter();
 
         const { setBookId, setBooks, books } = useBook();
 
@@ -43,7 +43,7 @@ const Publications = memo(
             setPage(0);
             setHasMore(true);
             setBooks([]);
-        }, [filter.query]);
+        }, [query]);
 
         useLayoutEffect(() => {
             if (timerRef.current) clearTimeout(timerRef?.current);
@@ -51,17 +51,13 @@ const Publications = memo(
             if (wasDataFetched && isBooksLoading && hasMore)
                 if (page > 0) getPublications();
                 else timerRef.current = setTimeout(getPublications, 500);
-            
+
             async function getPublications() {
                 setWasDataFetched(false);
 
                 const response = await fetch("/api/get-publications", {
                     method: "POST",
-                    body: JSON.stringify({
-                        limit,
-                        page,
-                        query: filter.query,
-                    }),
+                    body: JSON.stringify({ limit, page, query }),
                 });
 
                 const data: fetchData = await response.json();
@@ -82,7 +78,7 @@ const Publications = memo(
                 setBooksCount(data.count);
                 setBooksQueryCount(data.queryCount);
             }
-        }, [isBooksLoading, hasMore, wasDataFetched, filter.query, timerRef]);
+        }, [isBooksLoading, hasMore, wasDataFetched, query, timerRef]);
 
         useEffect(() => {
             observer.current = new IntersectionObserver(

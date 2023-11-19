@@ -92,6 +92,18 @@ function FilterProvider({ children }: { children: React.ReactNode }) {
     }, []);
 
     useEffect(() => {
+        // const params = new URLSearchParams(window.location.search);
+
+        // const categories = params.get("categories")?.split(",") || [];
+        // const languages = params.get("languages")?.split(",") || [];
+        // const states = params.get("states")?.split(",") || [];
+
+        // console.log(categories, choosenCategories);
+
+        // if (categories.length != choosenCategories.length) setChoosenCategories(categories);
+        // if (languages.length != choosenLanguages.length) setChoosenLanguages(languages);
+        // if (states.length != choosenStates.length) setChoosenStates(states);
+        
         setQuery({
             filter: {
                 category: choosenCategories,

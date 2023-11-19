@@ -1,7 +1,7 @@
 "use client";
 import { validateUserData } from "@/lib/isUserDataValid";
 import { signOut, useSession } from "next-auth/react";
-import { Dispatch, SetStateAction, createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { Dispatch, SetStateAction, createContext, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 const UserContext = createContext<any>(null);
 
@@ -60,7 +60,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
         },
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (session?.user?.unauthenticated) signOut();
 
         setId(session?.user?.id || "");

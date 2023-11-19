@@ -52,7 +52,7 @@ button:focus-visible {
   }
 
   50% {
-    background-color: rgb(194, 199, 199)
+    background-color: #ccc;
   }
 
   100% {
