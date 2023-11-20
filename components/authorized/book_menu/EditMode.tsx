@@ -75,7 +75,7 @@ export default function EditMode({ setMode }: EditModeProps) {
         if (files[0]) {
             const extension = getExtension(files[0].name);
 
-            if (extension && allowedImageTypes.includes(extension)) {
+            if (extension && allowedImageTypes.includes(extension.toLowerCase())) {
                 setFile(files[0]);
                 setImage(URL.createObjectURL(files[0]));
             } else {
@@ -119,6 +119,33 @@ export default function EditMode({ setMode }: EditModeProps) {
                 const reader = new FileReader();
 
                 if (file) reader.readAsDataURL(file);
+                else {
+                    try {
+                        const response = await fetch("/api/update-publication", {
+                            method: "post",
+                            body: JSON.stringify({
+                                id: bookId,
+                                ...newData,
+                            }),
+                        });
+
+                        if (!response.ok) throw new Error();
+
+                        setMode("view");
+
+                        setBook((book) => {
+                            if (book)
+                                return {
+                                    ...book,
+                                    ...newData,
+                                };
+                        });
+
+                        resolve(1);
+                    } catch (error) {
+                        reject();
+                    }
+                }
 
                 reader.onload = async (e) => {
                     try {
@@ -147,7 +174,7 @@ export default function EditMode({ setMode }: EditModeProps) {
                         setBooks((books) => {
                             const updatedBook = books.find((book) => book.id == bookId);
 
-                            if (updatedBook?.image) updatedBook.image = image
+                            if (updatedBook?.image) updatedBook.image = image;
 
                             return books;
                         });
@@ -156,8 +183,9 @@ export default function EditMode({ setMode }: EditModeProps) {
                     } catch (error) {
                         reject();
                     }
+                    
                 };
-
+                
                 setIsLoading(false);
             });
         }
@@ -195,13 +223,13 @@ export default function EditMode({ setMode }: EditModeProps) {
                         <div>Zmień zdjęcie</div>
                     </div>
                 </div>
-                <div className="flex flex-col gap-6 p-4 w-full h-full md:w-[360px]">
+                <div className="flex flex-col gap-6 p-4 w-full md:w-[360px]">
                     <div className="flex gap-4 items-center">
                         <img className="w-10 h-10 rounded-full" src={user?.avatar} alt="" />
                         <div className="font-extralight text-base">{user?.name}</div>
                     </div>
 
-                    <div className="flex flex-col gap-4 text-[20px] font-lato font-normal md:max-h-[380px] md:overflow-y-auto flex-grow flex-shrink">
+                    <div className="flex flex-col gap-4 text-[20px] font-lato font-normal md:h-[380px] md:overflow-y-auto flex-grow flex-shrink">
                         <div className="flex items-center justify-between px-1">
                             <input
                                 className={`duration-200 ${

@@ -15,6 +15,7 @@ import toast from "react-hot-toast"
 import { BookMenuMode } from "./BookMenu"
 import { useScreen } from "@/components/contexts/ScreenProvider"
 import Buttons from "./Buttons"
+import BookMenuLoader from "@/components/ui/loaders/skeleton/BookMenuLoader"
 
 interface ViewModeProps {
   isModalActive: boolean
@@ -46,7 +47,7 @@ export default function ViewMode({
     <>
       <div className="flex flex-col w-full md:min-w-[700px] min-h-[400px] gap-4 md:p-6 h-fit">
         {isLoading ? (
-          <ContentLoader></ContentLoader>
+          <BookMenuLoader></BookMenuLoader>
         ) : book ? (
           <>
             {book.reservatorData && book?.owner == user?.id && (
@@ -56,7 +57,6 @@ export default function ViewMode({
                     {book?.reservatorData?.name} {book?.reservatorData?.surname}
                   </span>
                   <span className="font-light">
-                    {" "}
                     chce Twoją książkę. Kiedy potwierdzisz wymianę dostaniesz 1
                     punkt.
                   </span>
@@ -117,7 +117,7 @@ export default function ViewMode({
                 </div>
                 {!isSmallScreen && <Buttons setMode={setMode}></Buttons>}
               </div>
-              <div className="flex flex-col gap-8 items-center text-center md:items-start md:text-left pb-10 px-14 md:p-0">
+              <div className="flex flex-col gap-8 items-center text-center md:items-start md:text-left pb-10 px-6 md:px-14 md:p-0">
                 <div className="font-head font-normal text-[20px]">
                   {book.title}
                 </div>

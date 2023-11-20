@@ -42,7 +42,7 @@ export default function StepOne({ setFile, setCurrentStep }: StepOneProps) {
         if (files[0]) {
             const extension = getExtension(files[0].name);
 
-            if (extension && allowedImageTypes.includes(extension)) {
+            if (extension && allowedImageTypes.includes(extension.toLowerCase())) {
                 setFile(files[0]);
                 setCurrentStep(1);
             } else {

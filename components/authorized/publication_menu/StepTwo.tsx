@@ -87,7 +87,9 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
             </div>
             <div className="flex flex-col md:flex-row h-full">
                 <div className="flex w-full md:w-[400px] aspect-[3/4] relative shrink-0">
-                    <PublicationImage image={image?.data}></PublicationImage>
+                    <img src={image?.data} className="object-cover w-full h-full" alt="" />
+                    {/* <Image fill src={image?.data || ""} className="object-cover" priority quality={100} loading="eager" alt="" /> */}
+                    {/* <PublicationImage image={image?.data}></PublicationImage> */}
                 </div>
                 <div className="flex flex-col gap-6 p-4 w-full h-full md:w-[360px]">
                     <div className="flex gap-4 items-center">

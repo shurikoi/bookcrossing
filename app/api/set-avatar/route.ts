@@ -16,10 +16,11 @@ export async function POST(req: Request) {
 
     const session = await getServerSession(authOptions);
     const user = await users.findOne({ _id: session?.user?.id });
-    
+
     const extension = getExtension(avatar, true); // type between / and ;
 
-    if (!session || !user || (extension && !allowedImageTypes.includes(extension))) return NextResponse.json({}, { status: 404 });
+    if (!session || !user || (extension && !allowedImageTypes.includes(extension.toLowerCase())))
+        return NextResponse.json({}, { status: 404 });
 
     const randomName = generateRandomString() + "." + extension;
     const imageBuffer = Buffer.from(avatar.split(",")[1], "base64");

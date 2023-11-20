@@ -3,16 +3,16 @@ import ModalMenu from "@/components/ui/ModalMenu";
 import { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
 
-interface DeleteMenuProps {
-    isDeleteMenuActive: boolean;
-    setIsDeleteMenuActive: Dispatch<SetStateAction<boolean>>;
+interface RemoveBookMenuProps {
+    isRemoveBookMenuActive: boolean;
+    setIsRemoveBookMenuActive: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function DeleteMenu({ isDeleteMenuActive, setIsDeleteMenuActive }: DeleteMenuProps) {
+export default function RemoveBookMenu({ isRemoveBookMenuActive, setIsRemoveBookMenuActive }: RemoveBookMenuProps) {
     const { setBookId, bookId, setFetchedBooks, setBooks } = useBook();
 
-    function deleteBook() {
-        const deletePromise = new Promise(async (resolve, reject) => {
+    function removeBook() {
+        const removePromise = new Promise(async (resolve, reject) => {
             try {
                 const response = await fetch("/api/delete-publication", {
                     method: "post",
@@ -35,7 +35,7 @@ export default function DeleteMenu({ isDeleteMenuActive, setIsDeleteMenuActive }
             }
         });
 
-        toast.promise(deletePromise, {
+        toast.promise(removePromise, {
             success: "Książka została usunięta",
             loading: "Usuwamy książkę...",
             error: "Nie udało się usunąć książkę. Sprobuj ponownie",
@@ -43,7 +43,7 @@ export default function DeleteMenu({ isDeleteMenuActive, setIsDeleteMenuActive }
     }
 
     return (
-        <ModalMenu isModalActive={isDeleteMenuActive} setIsModalActive={setIsDeleteMenuActive}>
+        <ModalMenu isModalActive={isRemoveBookMenuActive} setIsModalActive={setIsRemoveBookMenuActive}>
             <div className="px-16 py-8 text-center flex flex-col gap-4">
                 <div className="text-[18px]">Usunąć książkę?</div>
                 <div className="font-extralight text-[14px]">
@@ -54,14 +54,14 @@ export default function DeleteMenu({ isDeleteMenuActive, setIsDeleteMenuActive }
             <div>
                 <div
                     className="text-center py-2.5 select-none cursor-pointer border-t border-t-black/15 text-[#CD5E4F]"
-                    onClick={deleteBook}
+                    onClick={removeBook}
                 >
                     Usuń
                 </div>
                 <div
                     className="text-center py-2.5 select-none cursor-pointer border-t border-t-black/15"
                     onClick={() => {
-                        setIsDeleteMenuActive(false);
+                        setIsRemoveBookMenuActive(false);
                     }}
                 >
                     Odrzuć

@@ -18,21 +18,25 @@ export async function POST(req: Request) {
     const book = await books.findOne({ _id: id });
 
     if (book.owner.toString() == session?.user?.id) {
-        const extension = getExtension(updatedData.image, true);
+        if (updatedData.image) {
+            const extension = getExtension(updatedData.image, true);
 
-        const randomName = "/books/" + generateRandomString() + "." + extension;
+            const randomName = "/books/" + generateRandomString() + "." + extension;
 
-        const imageBuffer = Buffer.from(updatedData.image.split(",")[1], "base64");
+            const imageBuffer = Buffer.from(updatedData.image.split(",")[1], "base64");
 
-        const resizedImage = await resizeImage(imageBuffer);
+            const resizedImage = await resizeImage(imageBuffer);
 
-        fs.writeFile("./public" + randomName, resizedImage, () => {});
+            fs.writeFile("./public" + randomName, resizedImage, () => {});
 
-        await books.findOneAndUpdate({ _id: id }, { image: randomName });
+            await books.findOneAndUpdate({ _id: id }, { ...updatedData, image: randomName });
 
-        try {
-            fs.unlinkSync("./public" + book.image);
-        } catch (error) {}
+            try {
+                fs.unlinkSync("./public" + book.image);
+            } catch (error) {}
+        } else {
+            await books.findOneAndUpdate({ _id: id }, updatedData);
+        }
     }
 
     return NextResponse.json({}, { status: 200 });

@@ -1,5 +1,5 @@
 import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef, useState } from "react";
-import ShowPasswordBtn from "../../ui/buttons/ShowPasswordBtn";
+import ShowPasswordBtn from "../../ui/buttons/ShowPasswordButton";
 import { currentState } from "../AuthForm";
 import CloseBtn from "../../ui/CloseBtn";
 import { errors, validateUserData } from "@/lib/isUserDataValid";

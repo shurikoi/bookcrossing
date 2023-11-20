@@ -19,7 +19,7 @@ interface fetchData {
     queryCount: number;
 }
 
-const limit = 300;
+const limit = 20;
 
 const Publications = memo(({ setBooksCount, setBooksQueryCount }: PublicationsProps) => {
     const { query } = useFilter();

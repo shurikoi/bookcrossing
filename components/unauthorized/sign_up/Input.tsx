@@ -1,4 +1,4 @@
-import ShowPasswordBtn from "@/components/ui/buttons/ShowPasswordBtn";
+import ShowPasswordBtn from "@/components/ui/buttons/ShowPasswordButton";
 import WarningIcon from "@/components/ui/icons/WarningIcon";
 import { Dispatch, SetStateAction, useState } from "react";
 

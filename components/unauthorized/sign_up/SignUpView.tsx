@@ -73,7 +73,7 @@ export default function SignUpView({
         if (files[0]) {
             const extension = getExtension(files[0].name);
  
-            if (extension && allowedImageTypes.includes(extension)) {
+            if (extension && allowedImageTypes.includes(extension.toLowerCase())) {
                 setFile(files[0]);
                 setIsImagePreviewActive(true);
             } else {

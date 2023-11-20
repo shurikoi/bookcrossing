@@ -115,6 +115,8 @@ export default function StepThree({
                             setFile(undefined);
                             setCurrentStep(0);
 
+                            if (image?.data) URL.revokeObjectURL(image.data);
+
                             resolve(1);
                         } catch (error) {
                             reject();

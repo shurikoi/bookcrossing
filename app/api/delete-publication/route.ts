@@ -16,13 +16,13 @@ export async function POST(req: Request) {
 
     if (!session || !user) return NextResponse.json({}, { status: 404 });
 
-    const { image } = await books.findOneAndDelete({ _id: id });
+    if (session.user?.id == user.id.toString()) {
+        const { image } = await books.findOneAndDelete({ _id: id });
 
-    try {
-        fs.unlinkSync("./public" + image);
-    } catch (error) {
-
-    }
+        try {
+            fs.unlinkSync("./public" + image);
+        } catch (error) {}
+    } else return NextResponse.json({}, { status: 404 });
 
     return NextResponse.json({}, { status: 200 });
 }
