@@ -63,8 +63,6 @@ export default function Main() {
     const [booksCount, setBooksCount] = useState(0);
     const [booksQueryCount, setBooksQueryCount] = useState(0);
 
-    const [isBooksLoading, setIsBooksLoading] = useState(true);
-
     function handleAddBookClick() {
         setIsPublicationModalActive(true);
     }
@@ -78,8 +76,6 @@ export default function Main() {
             <FilterProvider>
                 <BookProvider>
                     <FilterBar
-                        setIsBooksLoading={setIsBooksLoading}
-                        isBooksLoading={isBooksLoading}
                         booksCount={booksCount}
                         booksQueryCount={booksQueryCount}
                     ></FilterBar>
@@ -87,8 +83,6 @@ export default function Main() {
                     <Publications
                         setBooksQueryCount={setBooksQueryCount}
                         setBooksCount={setBooksCount}
-                        setIsBooksLoading={setIsBooksLoading}
-                        isBooksLoading={isBooksLoading}
                     ></Publications>
                     <PublicationMenu
                         isModalActive={isPublicationModalActive}

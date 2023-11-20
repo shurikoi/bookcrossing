@@ -2,6 +2,7 @@ import { ChangeEvent, memo, useRef, useState } from "react";
 import DropDownMenu from "../../ui/DropDownMenu";
 import { useFilter } from "../../contexts/FilterProvider";
 import ArrowDownIcon from "../../ui/icons/ArrowDownIcon";
+import { useBook } from "@/components/contexts/BookProvider";
 
 const FilterMenu = memo(() => {
     const triggerRef = useRef<HTMLDivElement>(null);
@@ -9,6 +10,8 @@ const FilterMenu = memo(() => {
     const [isMenuActive, setIsMenuActive] = useState(false);
 
     const params = new URLSearchParams(window.location.search);
+
+    const { isBooksLoading, setIsBooksLoading } = useBook();
 
     const filter = useFilter();
 
@@ -82,75 +85,81 @@ const FilterMenu = memo(() => {
                 isMenuActive={isMenuActive}
                 setIsMenuActive={setIsMenuActive}
                 triggerRef={triggerRef}
-                className="flex flex-col md:flex-row justify-center gap-20 left-0 top-full w-full absolute h-fit p-6 bg-white shadow-[0px_5px_5px_1px_rgba(0,0,0,.1)]"
+                className="absolute w-full left-0 top-full bg-white"
             >
-                <div className="text-left pl-[30%] md:pl-0 font-inter text-[#3F3A5A] text-[16px] w-full md:w-auto md:px-0">
-                    <div className="font-semibold mb-3">Kategoria</div>
-                    <div className="">
-                        {filter.categories.map((category) => (
-                            <label
-                                htmlFor={category}
-                                key={category}
-                                className="flex gap-2 items-center select-none cursor-pointer"
-                            >
-                                <input
-                                    className="border-2 border-[#747474] bg-white w-[15px] h-[15px] rounded-sm appearance-none checked:bg-[#2D50AA] checked:border-[#2D50AA] duration-200 cursor-pointer"
-                                    type="checkbox"
-                                    checked={filter.choosenCategories?.includes(category)}
-                                    id={category}
-                                    onChange={setCategories}
-                                />
-                                <label className="cursor-pointer" htmlFor={category}>
-                                    {category}
+                <div
+                    className={`flex flex-col md:flex-row justify-center gap-20 p-6 bg-white shadow-[0px_5px_5px_1px_rgba(0,0,0,.1)] ${
+                        isBooksLoading ? "opacity-50 pointer-events-none" : ""
+                    }`}
+                >
+                    <div className="text-left pl-[30%] md:pl-0 font-inter text-[#3F3A5A] text-[16px] w-full md:w-auto md:px-0">
+                        <div className="font-semibold mb-3">Kategoria</div>
+                        <div className="">
+                            {filter.categories.map((category) => (
+                                <label
+                                    htmlFor={category}
+                                    key={category}
+                                    className="flex gap-2 items-center select-none cursor-pointer"
+                                >
+                                    <input
+                                        className="border-2 border-[#747474] bg-white w-[15px] h-[15px] rounded-sm appearance-none checked:bg-[#2D50AA] checked:border-[#2D50AA] duration-200 cursor-pointer"
+                                        type="checkbox"
+                                        checked={filter.choosenCategories?.includes(category)}
+                                        id={category}
+                                        onChange={setCategories}
+                                    />
+                                    <label className="cursor-pointer" htmlFor={category}>
+                                        {category}
+                                    </label>
                                 </label>
-                            </label>
-                        ))}
+                            ))}
+                        </div>
                     </div>
-                </div>
-                <div className="text-left pl-[30%] md:pl-0 font-inter text-[#3F3A5A] text-[16px] w-full md:w-auto md:px-0">
-                    <div className="font-semibold mb-3">Języki</div>
-                    <div className="">
-                        {filter.languages.map((language) => (
-                            <label
-                                htmlFor={language}
-                                key={language}
-                                className="flex gap-2 items-center select-none cursor-pointer"
-                            >
-                                <input
-                                    className="border-2 border-[#747474] bg-white w-[15px] h-[15px] rounded-sm appearance-none checked:bg-[#2D50AA] checked:border-[#2D50AA] duration-200 cursor-pointer"
-                                    type="checkbox"
-                                    checked={filter.choosenLanguages?.includes(language)}
-                                    id={language}
-                                    onChange={setLanguages}
-                                />
-                                <label htmlFor={language} className="select-none cursor-pointer">
-                                    {language}
+                    <div className="text-left pl-[30%] md:pl-0 font-inter text-[#3F3A5A] text-[16px] w-full md:w-auto md:px-0">
+                        <div className="font-semibold mb-3">Języki</div>
+                        <div className="">
+                            {filter.languages.map((language) => (
+                                <label
+                                    htmlFor={language}
+                                    key={language}
+                                    className="flex gap-2 items-center select-none cursor-pointer"
+                                >
+                                    <input
+                                        className="border-2 border-[#747474] bg-white w-[15px] h-[15px] rounded-sm appearance-none checked:bg-[#2D50AA] checked:border-[#2D50AA] duration-200 cursor-pointer"
+                                        type="checkbox"
+                                        checked={filter.choosenLanguages?.includes(language)}
+                                        id={language}
+                                        onChange={setLanguages}
+                                    />
+                                    <label htmlFor={language} className="select-none cursor-pointer">
+                                        {language}
+                                    </label>
                                 </label>
-                            </label>
-                        ))}
+                            ))}
+                        </div>
                     </div>
-                </div>
-                <div className="text-left pl-[30%] md:pl-0 font-inter text-[#3F3A5A] text-[16px] w-full md:w-auto md:px-0">
-                    <div className="font-semibold mb-3">Stan</div>
-                    <div className="">
-                        {filter.states.map((bookState) => (
-                            <label
-                                htmlFor={bookState}
-                                className="flex gap-2 items-center select-none cursor-pointer w-full"
-                                key={bookState}
-                            >
-                                <input
-                                    className="border-2 border-[#747474] bg-white w-[15px] h-[15px] rounded-sm appearance-none checked:bg-[#2D50AA] checked:border-[#2D50AA] duration-200 cursor-pointer"
-                                    type="checkbox"
-                                    checked={filter.choosenStates?.includes(bookState)}
-                                    id={bookState}
-                                    onChange={setStates}
-                                />
-                                <label htmlFor={bookState} className="select-none cursor-pointer">
-                                    {bookState}
+                    <div className="text-left pl-[30%] md:pl-0 font-inter text-[#3F3A5A] text-[16px] w-full md:w-auto md:px-0">
+                        <div className="font-semibold mb-3">Stan</div>
+                        <div className="">
+                            {filter.states.map((bookState) => (
+                                <label
+                                    htmlFor={bookState}
+                                    className="flex gap-2 items-center select-none cursor-pointer w-full"
+                                    key={bookState}
+                                >
+                                    <input
+                                        className="border-2 border-[#747474] bg-white w-[15px] h-[15px] rounded-sm appearance-none checked:bg-[#2D50AA] checked:border-[#2D50AA] duration-200 cursor-pointer"
+                                        type="checkbox"
+                                        checked={filter.choosenStates?.includes(bookState)}
+                                        id={bookState}
+                                        onChange={setStates}
+                                    />
+                                    <label htmlFor={bookState} className="select-none cursor-pointer">
+                                        {bookState}
+                                    </label>
                                 </label>
-                            </label>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
             </DropDownMenu>
@@ -158,6 +167,6 @@ const FilterMenu = memo(() => {
     );
 });
 
-FilterMenu.displayName = "FilterMenu"
+FilterMenu.displayName = "FilterMenu";
 
-export default FilterMenu
+export default FilterMenu;

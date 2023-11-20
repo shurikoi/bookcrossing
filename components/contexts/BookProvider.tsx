@@ -11,6 +11,8 @@ interface BookContext {
     setFetchedBooks: Dispatch<SetStateAction<{ [key: string]: bookData }>>;
     bookId: string;
     isLoading: boolean;
+    isBooksLoading: boolean;
+    setIsBooksLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 const BookContext = createContext<BookContext>({
@@ -23,6 +25,8 @@ const BookContext = createContext<BookContext>({
     book: undefined,
     setBook: () => {},
     isLoading: true,
+    isBooksLoading: true,
+    setIsBooksLoading: () => {},
 });
 
 function BookProvider({ children }: { children: React.ReactNode }) {
@@ -35,6 +39,7 @@ function BookProvider({ children }: { children: React.ReactNode }) {
     const [fetchedBooks, setFetchedBooks] = useState<{ [key: string]: bookData }>({});
 
     const [isLoading, setIsLoading] = useState(false);
+    const [isBooksLoading, setIsBooksLoading] = useState(true);
 
     useEffect(() => {
         params.set("book", bookId);
@@ -73,7 +78,19 @@ function BookProvider({ children }: { children: React.ReactNode }) {
 
     return (
         <BookContext.Provider
-            value={{ setBookId, book, setBook, isLoading, bookId, fetchedBooks, setFetchedBooks, books, setBooks }}
+            value={{
+                setBookId,
+                book,
+                setBook,
+                isLoading,
+                bookId,
+                fetchedBooks,
+                setFetchedBooks,
+                books,
+                setBooks,
+                isBooksLoading,
+                setIsBooksLoading,
+            }}
         >
             {children}
         </BookContext.Provider>

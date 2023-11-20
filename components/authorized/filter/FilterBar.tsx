@@ -4,12 +4,11 @@ import ContentLoader from "../../ui/loaders/ContentLoader";
 import ResetIcon from "../../ui/icons/ResetIcon";
 import { useFilter } from "../../contexts/FilterProvider";
 import SortMenu from "./SortMenu";
+import { useBook } from "@/components/contexts/BookProvider";
 
 interface FilterBarProps {
     booksCount: number;
     booksQueryCount: number;
-    isBooksLoading: boolean;
-    setIsBooksLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 function bookConjugation(booksCount: number) {
@@ -20,8 +19,10 @@ function bookConjugation(booksCount: number) {
     else if (lastDigit == 0 || lastDigit >= 5) return "książek";
 }
 
-export default function FilterBar({ booksCount, booksQueryCount, isBooksLoading, setIsBooksLoading }: FilterBarProps) {
+export default function FilterBar({ booksCount, booksQueryCount }: FilterBarProps) {
     const filter = useFilter();
+
+    const { isBooksLoading, setIsBooksLoading, books } = useBook();
 
     useLayoutEffect(() => {
         setIsBooksLoading(true);
@@ -43,7 +44,7 @@ export default function FilterBar({ booksCount, booksQueryCount, isBooksLoading,
         <div className="mt-12 px-4 text-center md:text-left relative flex flex-col md:flex-row gap-4 items-center justify-center md:gap-14 w-full py-3 shadow-[0px_0px_10px_1px_rgba(0,0,0,.1)]">
             <FilterMenu></FilterMenu>
             <div className="py-4 px-10 bg-[#FFF3E1] rounded-[5px] ">
-                {Object.values(filter.query.filter).every((item) => item.length == 0) ? (
+                {Object.values(filter.query.filter).every((item) => item.length == 0)? (
                     "Wszystkie książki"
                 ) : isBooksLoading ? (
                     <div className="w-6 h-6 relative">
