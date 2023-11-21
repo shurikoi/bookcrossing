@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react";
 import BookMenu from "./book_menu/BookMenu";
 import PublicationMenu, { messenger } from "./publication_menu/PublicationMenu";

@@ -1,3 +1,5 @@
+"use client"
+
 import { useRef, useState } from "react";
 import DefaultForm from "./DefaultForm";
 import SignInForm from "./SignInForm";

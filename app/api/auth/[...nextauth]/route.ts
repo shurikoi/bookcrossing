@@ -7,7 +7,7 @@ import resizeImage from "@/lib/resizeImage";
 import users from "@/model/user";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import fs from "fs";
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth, { NextAuthOptions, getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -128,5 +128,7 @@ export const authOptions: NextAuthOptions = {
 };
 
 const AuthHandler = NextAuth(authOptions);
+
+export const getUserSession = () => getServerSession(authOptions)
 
 export { AuthHandler as GET, AuthHandler as POST };

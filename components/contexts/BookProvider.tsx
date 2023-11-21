@@ -1,106 +1,108 @@
+"use client";
+
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useRef, useState } from "react";
 import { bookData, publication } from "../authorized/Main";
 
 interface BookContext {
-    setBookId: Dispatch<SetStateAction<string>>;
-    book: bookData | undefined;
-    setBook: Dispatch<SetStateAction<bookData | undefined>>;
-    books: publication[];
-    setBooks: Dispatch<SetStateAction<publication[]>>;
-    fetchedBooks: { [key: string]: bookData };
-    setFetchedBooks: Dispatch<SetStateAction<{ [key: string]: bookData }>>;
-    bookId: string;
-    isLoading: boolean;
-    isBooksLoading: boolean;
-    setIsBooksLoading: Dispatch<SetStateAction<boolean>>;
+  setBookId: Dispatch<SetStateAction<string>>;
+  book: bookData | undefined;
+  setBook: Dispatch<SetStateAction<bookData | undefined>>;
+  books: publication[];
+  setBooks: Dispatch<SetStateAction<publication[]>>;
+  fetchedBooks: { [key: string]: bookData };
+  setFetchedBooks: Dispatch<SetStateAction<{ [key: string]: bookData }>>;
+  bookId: string;
+  isLoading: boolean;
+  isBooksLoading: boolean;
+  setIsBooksLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 const BookContext = createContext<BookContext>({
-    setBookId: () => {},
-    fetchedBooks: {},
-    setFetchedBooks: () => {},
-    books: [],
-    setBooks: () => {},
-    bookId: "",
-    book: undefined,
-    setBook: () => {},
-    isLoading: true,
-    isBooksLoading: true,
-    setIsBooksLoading: () => {},
+  setBookId: () => {},
+  fetchedBooks: {},
+  setFetchedBooks: () => {},
+  books: [],
+  setBooks: () => {},
+  bookId: "",
+  book: undefined,
+  setBook: () => {},
+  isLoading: true,
+  isBooksLoading: true,
+  setIsBooksLoading: () => {},
 });
 
 function BookProvider({ children }: { children: React.ReactNode }) {
-    const params = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(typeof window !== "undefined" ? window?.location.search : "");
 
-    const [bookId, setBookId] = useState(params.get("book") || "");
-    const [book, setBook] = useState<bookData>();
+  const [bookId, setBookId] = useState(params.get("book") || "");
+  const [book, setBook] = useState<bookData>();
 
-    const [books, setBooks] = useState<publication[]>([]);
-    const [fetchedBooks, setFetchedBooks] = useState<{ [key: string]: bookData }>({});
+  const [books, setBooks] = useState<publication[]>([]);
+  const [fetchedBooks, setFetchedBooks] = useState<{ [key: string]: bookData }>({});
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [isBooksLoading, setIsBooksLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isBooksLoading, setIsBooksLoading] = useState(true);
 
-    useEffect(() => {
-        params.set("book", bookId);
+  useEffect(() => {
+    params.set("book", bookId);
 
-        if (!bookId) params.delete("book");
+    if (!bookId) params.delete("book");
 
-        history.pushState({}, "", params.size > 0 ? `/?${params}` : "/");
+    history.pushState({}, "", params.size > 0 ? `/?${params}` : "/");
 
-        if (!!bookId && !fetchedBooks[bookId]) getBook(bookId);
-        else if (fetchedBooks[bookId]) setBook(fetchedBooks[bookId]);
+    if (!!bookId && !fetchedBooks[bookId]) getBook(bookId);
+    else if (fetchedBooks[bookId]) setBook(fetchedBooks[bookId]);
 
-        async function getBook(id: string) {
-            setIsLoading(true);
+    async function getBook(id: string) {
+      setIsLoading(true);
 
-            const response = await fetch("/api/get-publication", {
-                method: "POST",
-                body: JSON.stringify({ id }),
-            });
+      const response = await fetch("/api/get-publication", {
+        method: "POST",
+        body: JSON.stringify({ id }),
+      });
 
-            if (response.ok) {
-                const book: bookData = await response.json();
+      if (response.ok) {
+        const book: bookData = await response.json();
 
-                setBook(book);
-            }
+        setBook(book);
+      }
 
-            setIsLoading(false);
-        }
-    }, [bookId]);
+      setIsLoading(false);
+    }
+  }, [bookId]);
 
-    useEffect(() => {
-        if (book)
-            setFetchedBooks((fetchedBooks) => {
-                return { ...fetchedBooks, [book?._id]: book };
-            });
-    }, [book]);
+  useEffect(() => {
+    if (book)
+      setFetchedBooks((fetchedBooks) => {
+        return { ...fetchedBooks, [book?._id]: book };
+      });
+  }, [book]);
 
-    return (
-        <BookContext.Provider
-            value={{
-                setBookId,
-                book,
-                setBook,
-                isLoading,
-                bookId,
-                fetchedBooks,
-                setFetchedBooks,
-                books,
-                setBooks,
-                isBooksLoading,
-                setIsBooksLoading,
-            }}
-        >
-            {children}
-        </BookContext.Provider>
-    );
+  return (
+    <BookContext.Provider
+      value={{
+        setBookId,
+        book,
+        setBook,
+        isLoading,
+        bookId,
+        fetchedBooks,
+        setFetchedBooks,
+        books,
+        setBooks,
+        isBooksLoading,
+        setIsBooksLoading,
+      }}
+    >
+      {children}
+    </BookContext.Provider>
+  );
 }
 
 function useBook() {
-    const book = useContext(BookContext);
+  const book = useContext(BookContext);
 
-    return book;
+  return book;
 }
 
 export { useBook, BookProvider };

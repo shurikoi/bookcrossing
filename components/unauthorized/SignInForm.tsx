@@ -1,7 +1,7 @@
 import { Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import ShowPasswordBtn from "../ui/buttons/ShowPasswordButton";
 import { currentState } from "./AuthForm";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import ContentLoader from "../ui/loaders/ContentLoader";
 import CloseBtn from "../ui/CloseBtn";
 import WarningIcon from "../ui/icons/WarningIcon";
@@ -15,6 +15,8 @@ type SignInForm = {
 };
 
 export default function SignInForm({ email, setCurrentState }: SignInForm) {
+    const {update} = useSession()
+
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [password, setPassword] = useState("");
@@ -36,6 +38,7 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
             .then(async (data) => {
                 if (data.isValid) {
                     signIn("credentials", { authType: "signin", email, password, redirect: false });
+                    update()
                     return;
                 }
 
@@ -94,7 +97,7 @@ export default function SignInForm({ email, setCurrentState }: SignInForm) {
                     </div>
                 )}
             </div>
-            <Button onClick={handleSubmit}>Zaloguj</Button>
+            <Button isLoading={isLoading} onClick={handleSubmit}>Zaloguj</Button>
         </div>
     );
 }

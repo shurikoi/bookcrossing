@@ -36,7 +36,7 @@ export default function UserMenu({ isMenuActive, setIsSettingsMenuActive, setMen
                 </div>
                 <div
                     className="p-3 sm:pr-48 cursor-pointer duration-200 font-normal rounded-md hover:bg-[#F2F9F0]"
-                    onClick={() => signOut({ redirect: false })}
+                    onClick={() => signOut({redirect: false})}
                 >
                     Wyloguj
                 </div>

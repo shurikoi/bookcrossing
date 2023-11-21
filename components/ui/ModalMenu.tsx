@@ -1,4 +1,6 @@
-import { Dispatch, SetStateAction, useRef, memo, useState, useEffect } from "react";
+"use client"
+
+import { Dispatch, SetStateAction, useRef } from "react";
 import CloseBtn from "./CloseBtn";
 import useClickOutside from "../hooks/useClickOutside";
 import MobileModalMenu from "./MobileModalMenu";

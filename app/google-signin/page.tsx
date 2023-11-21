@@ -1,19 +1,20 @@
 "use client";
-
 import ContentLoader from "@/components/ui/loaders/ContentLoader";
-import { signIn, useSession } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useEffect } from "react";
+// import { useEffect } from "react";
 
 export default function GoogleSignin() {
-    const { status } = useSession();
+  async function checkSession() {
+    const session = await getSession();
 
-    useEffect(() => {
-        signIn("google");
-    }, []);
+    if (!session) signIn("google");
+    else window.close();
+  }
 
-    useEffect(() => {
-        if (status == "authenticated") window.close();
-    }, [status]);
+  useEffect(() => {
+    checkSession();
+  }, []);
 
-    return <ContentLoader></ContentLoader>;
+  return <ContentLoader></ContentLoader>;
 }

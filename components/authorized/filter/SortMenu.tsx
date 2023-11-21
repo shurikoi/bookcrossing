@@ -10,20 +10,17 @@ export default function SortMenu() {
 
     const triggerRef = useRef<HTMLDivElement>(null);
 
-    const params = new URLSearchParams(window.location.search);
-
     function setSort(e: MouseEvent<HTMLDivElement>) {
         const sort = e.currentTarget.dataset.sort;
 
         if (sort == "asc" || sort == "desc") {
-            const newParams = new URLSearchParams(Array.from(params.entries()));
-
+            const params = new URLSearchParams(typeof window !== "undefined" ? window?.location.search : "");
             filter.setChoosenSort(sort);
-            newParams.set("sort", sort);
+            params.set("sort", sort);
 
             setIsMenuActive(false);
 
-            history.pushState({}, "", `/?${newParams}`);
+            history.pushState({}, "", `/?${params}`);
         }
     }
 
