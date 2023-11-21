@@ -43,9 +43,11 @@ const DropDownMenuWithSearch = memo(
                         item.toLowerCase().includes(value.toLowerCase()) && item.toLowerCase() != value.toLowerCase()
                 )
             );
-
-            if (isMenuActive) triggerRef.current?.parentElement?.nextElementSibling?.querySelector("input")?.focus()
         }, [value]);
+
+        function focusNextInput() {
+            if (isMenuActive) triggerRef.current?.parentElement?.nextElementSibling?.querySelector("input")?.focus();
+        }
 
         function validateSelectedIndex(index: number) {
             let correctIndex = index;
@@ -92,6 +94,7 @@ const DropDownMenuWithSearch = memo(
                 });
             else if (e.key == "Enter") {
                 setValue(filteredItems[selectedItemIndex] || value);
+                focusNextInput();
             }
         }
 
@@ -129,6 +132,7 @@ const DropDownMenuWithSearch = memo(
                             onMouseEnter={() => setSelectedItemIndex(index)}
                             onClick={() => {
                                 setValue(item);
+                                focusNextInput();
                             }}
                         >
                             <div className={`py-1.5 px-3 inline-block`}>{item}</div>
@@ -140,7 +144,10 @@ const DropDownMenuWithSearch = memo(
                                 filteredItems.length == selectedItemIndex ? "bg-[#dcf5d5]" : ""
                             }`}
                             onMouseEnter={() => setSelectedItemIndex(filteredItems.length)}
-                            onClick={() => setIsMenuActive(false)}
+                            onClick={() => {
+                                setIsMenuActive(false);
+                                focusNextInput();
+                            }}
                         >
                             <div className={`py-1.5 px-3 inline-block max-w-full overflow-hidden text-ellipsis`}>
                                 Stwórz {value}

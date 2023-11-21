@@ -213,7 +213,7 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
                         </div>
                     </div>
 
-                    <div className="ml-auto p-4">
+                    <div className="ml-auto">
                         <Button
                             onClick={() => {
                                 if (publicationData) {

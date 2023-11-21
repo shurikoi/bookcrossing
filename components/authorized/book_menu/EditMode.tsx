@@ -205,12 +205,6 @@ export default function EditMode({ setMode }: EditModeProps) {
 
     return (
         <div className="flex flex-col h-full md:max-h-[610px]">
-            <div className="p-3 relative text-center">
-                <div className="absolute cursor-pointer w-fit" onClick={() => setMode("view")}>
-                    <ArrowLeftIcon></ArrowLeftIcon>
-                </div>
-                <div>Edytowanie</div>
-            </div>
             <div className="flex flex-col md:flex-row h-full">
                 <div className="flex w-full md:w-[400px] aspect-[3/4] relative shrink-0">
                     <PublicationImage image={image}></PublicationImage>

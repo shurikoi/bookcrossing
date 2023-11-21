@@ -1,47 +1,43 @@
-import { useBook } from "@/components/contexts/BookProvider"
-import { useUserData } from "@/components/contexts/UserProvider"
-import PublicationField from "@/components/ui/PublicationField"
-import LanguageIcon from "@/components/ui/icons/LanguageIcon"
-import LeafIcon from "@/components/ui/icons/LeafIcon"
-import NotFoundIcon from "@/components/ui/icons/NotFoundIcon"
-import ProfileIcon from "@/components/ui/icons/ProfileIcon"
-import TagIcon from "@/components/ui/icons/TagIcon"
-import Image from "next/image"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
-import ReservationMenu from "./ReservationMenu"
-import { messengers } from "../publication_menu/PublicationMenu"
-import ContentLoader from "@/components/ui/loaders/ContentLoader"
-import toast from "react-hot-toast"
-import { BookMenuMode } from "./BookMenu"
-import { useScreen } from "@/components/contexts/ScreenProvider"
-import Buttons from "./Buttons"
-import BookMenuLoader from "@/components/ui/loaders/skeleton/BookMenuLoader"
+import { useBook } from "@/components/contexts/BookProvider";
+import { useUserData } from "@/components/contexts/UserProvider";
+import PublicationField from "@/components/ui/PublicationField";
+import LanguageIcon from "@/components/ui/icons/LanguageIcon";
+import LeafIcon from "@/components/ui/icons/LeafIcon";
+import NotFoundIcon from "@/components/ui/icons/NotFoundIcon";
+import ProfileIcon from "@/components/ui/icons/ProfileIcon";
+import TagIcon from "@/components/ui/icons/TagIcon";
+import Image from "next/image";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import ReservationMenu from "./ReservationMenu";
+import { messengers } from "../publication_menu/PublicationMenu";
+import ContentLoader from "@/components/ui/loaders/ContentLoader";
+import toast from "react-hot-toast";
+import { BookMenuMode } from "./BookMenu";
+import { useScreen } from "@/components/contexts/ScreenProvider";
+import Buttons from "./Buttons";
+import BookMenuLoader from "@/components/ui/loaders/skeleton/BookMenuLoader";
 
 interface ViewModeProps {
-  isModalActive: boolean
-  setIsModalActive: Dispatch<SetStateAction<boolean>>
-  setMode: Dispatch<SetStateAction<BookMenuMode>>
+  isModalActive: boolean;
+  setIsModalActive: Dispatch<SetStateAction<boolean>>;
+  setMode: Dispatch<SetStateAction<BookMenuMode>>;
 }
 
-export default function ViewMode({
-  isModalActive,
-  setIsModalActive,
-  setMode,
-}: ViewModeProps) {
-  const { user } = useUserData()
+export default function ViewMode({ isModalActive, setIsModalActive, setMode }: ViewModeProps) {
+  const { user } = useUserData();
 
-  const { book, isLoading } = useBook()
+  const { book, isLoading } = useBook();
 
-  const [isImageLoaded, setIsImageLoaded] = useState(true)
-  const [isImageHovered, setIsImageHovered] = useState(false)
+  const [isImageLoaded, setIsImageLoaded] = useState(true);
+  const [isImageHovered, setIsImageHovered] = useState(false);
 
-  const { isSmallScreen } = useScreen()
+  const { isSmallScreen } = useScreen();
 
   useEffect(() => {
     if (isModalActive) {
-      setIsImageLoaded(true)
+      setIsImageLoaded(true);
     }
-  }, [isModalActive])
+  }, [isModalActive]);
 
   return (
     <>
@@ -56,10 +52,7 @@ export default function ViewMode({
                   <span className="border-b border-b-black/80 cursor-pointer font-normal">
                     {book?.reservatorData?.name} {book?.reservatorData?.surname}
                   </span>
-                  <span className="font-light">
-                    chce Twoją książkę. Kiedy potwierdzisz wymianę dostaniesz 1
-                    punkt.
-                  </span>
+                  <span className="font-light">chce Twoją książkę. Kiedy potwierdzisz wymianę dostaniesz 1 punkt.</span>
                 </div>
                 <div className="flex justify-start items-center gap-2">
                   <div className="p-1.5 px-4 rounded-full bg-[#61C558] text-white font-normal cursor-pointer">
@@ -118,9 +111,7 @@ export default function ViewMode({
                 {!isSmallScreen && <Buttons setMode={setMode}></Buttons>}
               </div>
               <div className="flex flex-col gap-8 items-center text-center md:items-start md:text-left pb-10 px-6 md:px-14 md:p-0">
-                <div className="font-head font-normal text-[20px]">
-                  {book.title}
-                </div>
+                <div className="font-head font-normal text-[20px]">{book.title}</div>
                 <div className="grid grid-cols-[repeat(2,auto)] grid-rows-2 font-extralight leading-none text-[14px] gap-y-6 gap-x-10 w-fit md:pr-10">
                   <PublicationField
                     data={book.author}
@@ -170,5 +161,5 @@ export default function ViewMode({
         )}
       </div>
     </>
-  )
+  );
 }
