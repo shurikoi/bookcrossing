@@ -24,7 +24,7 @@ const limit = 20;
 const Publications = memo(({ setBooksCount, setBooksQueryCount }: PublicationsProps) => {
   const { query } = useFilter();
 
-  const { setBookId, setBooks, books, isBooksLoading, setIsBooksLoading } = useBook();
+  const { setBookId, setBooks, books, book, isBooksLoading, setIsBooksLoading } = useBook();
 
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -103,7 +103,7 @@ const Publications = memo(({ setBooksCount, setBooksQueryCount }: PublicationsPr
 
   const memoizedBooks = useMemo(
     () => books && books.map((book, index) => <Book key={index} data={book} handleClick={() => setBookId(book.id!)} />),
-    [books]
+    [books, book]
   );
 
   return (
