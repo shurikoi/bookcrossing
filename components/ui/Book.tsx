@@ -30,7 +30,6 @@ const Book = memo(({ data, handleClick }: BookProps) => {
             fill
             quality={100}
             className={`object-cover`}
-            sizes="100vw"
             onLoad={() => {
               setIsImageLoaded(true);
             }}

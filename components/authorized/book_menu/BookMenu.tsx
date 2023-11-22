@@ -8,7 +8,7 @@ import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon";
 
 export type BookMenuMode = "edit" | "view";
 
-export default function BookMenu() {
+export default function BookMenu(props : any) {
   const { setBookId, bookId } = useBook();
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function BookMenu() {
   const nodeRef = useRef<HTMLDivElement>(null);
 
   const editModeHeader = mode == "edit" && (
-    <div className="p-3 relative text-center">
+    <div className="p-3 relative text-center w-full">
       <div className="absolute cursor-pointer w-fit" onClick={() => setMode("view")}>
         <ArrowLeftIcon></ArrowLeftIcon>
       </div>

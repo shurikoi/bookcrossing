@@ -110,7 +110,7 @@ const MobileModalMenu = memo(
                 ></div>
 
                 <div
-                    className={`${isModalActive ? "bottom-0" : "bottom-[-100%]"} ${
+                    className={`${isModalActive ? "bottom-0" : "-bottom-full"} ${
                         fullMode ? "h-[100dvh]" : "rounded-t-xl"
                     } fixed left-0 w-full bg-white duration-200 z-10`}
                     ref={triggerRef}

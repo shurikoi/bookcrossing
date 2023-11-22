@@ -97,7 +97,7 @@ export const authOptions: NextAuthOptions = {
                     unauthenticated: true,
                 };
             }
-
+        
             // users.findOne({ email: token.email }).then((data) => console.log(data));
 
             return token;
