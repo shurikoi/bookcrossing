@@ -4,7 +4,6 @@ import ModalMenu from "../../ui/ModalMenu";
 import ProfileIcon from "../../ui/icons/ProfileIcon";
 import ProfilePage from "./ProfilePage";
 import Image from "next/image";
-import { useScreen } from "@/components/contexts/ScreenProvider";
 
 interface SettingsMenuProps {
     isMenuActive: boolean;

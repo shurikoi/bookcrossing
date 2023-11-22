@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 type textSlider = {
     text: string[];
@@ -12,7 +12,7 @@ export default function TextSlider({ text, duration = 1000, height = 36 }: textS
     const [selectedText, setSelectedText] = useState(0);
     const [isEnd, setIsEnd] = useState(false);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const interval = setInterval(() => {
             setSelectedText((selectedText) => {
                 if (selectedText == text.length) {
@@ -29,7 +29,7 @@ export default function TextSlider({ text, duration = 1000, height = 36 }: textS
         };
     }, []);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (isEnd) {
             setIsEnd(false);
             setSelectedText((selectedText) => {

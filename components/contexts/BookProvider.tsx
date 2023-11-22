@@ -1,6 +1,4 @@
-"use client";
-
-import { Dispatch, SetStateAction, createContext, useContext, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
 import { bookData, publication } from "../authorized/Main";
 
 interface BookContext {
@@ -15,6 +13,10 @@ interface BookContext {
   isLoading: boolean;
   isBooksLoading: boolean;
   setIsBooksLoading: Dispatch<SetStateAction<boolean>>;
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
+  hasMore: boolean;
+  setHasMore: Dispatch<SetStateAction<boolean>>;
 }
 
 const BookContext = createContext<BookContext>({
@@ -29,6 +31,10 @@ const BookContext = createContext<BookContext>({
   isLoading: true,
   isBooksLoading: true,
   setIsBooksLoading: () => {},
+  page: 0,
+  setPage: () => {},
+  hasMore: true,
+  setHasMore: () => {},
 });
 
 function BookProvider({ children }: { children: React.ReactNode }) {
@@ -43,7 +49,10 @@ function BookProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isBooksLoading, setIsBooksLoading] = useState(true);
 
-  useEffect(() => {
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+
+  useLayoutEffect(() => {
     params.set("book", bookId);
 
     if (!bookId) params.delete("book");
@@ -71,7 +80,7 @@ function BookProvider({ children }: { children: React.ReactNode }) {
     }
   }, [bookId]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (book)
       setFetchedBooks((fetchedBooks) => {
         return { ...fetchedBooks, [book?._id]: book };
@@ -92,6 +101,10 @@ function BookProvider({ children }: { children: React.ReactNode }) {
         setBooks,
         isBooksLoading,
         setIsBooksLoading,
+        page,
+        setPage,
+        hasMore,
+        setHasMore,
       }}
     >
       {children}

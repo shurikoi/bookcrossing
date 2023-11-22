@@ -3,7 +3,6 @@ import DropDownMenu from "../../ui/DropDownMenu";
 import { useFilter } from "../../contexts/FilterProvider";
 import ArrowDownIcon from "../../ui/icons/ArrowDownIcon";
 import { useBook } from "@/components/contexts/BookProvider";
-import { useSearchParams } from "next/navigation";
 
 const FilterMenu = memo(() => {
     const triggerRef = useRef<HTMLDivElement>(null);
@@ -11,7 +10,7 @@ const FilterMenu = memo(() => {
     const [isMenuActive, setIsMenuActive] = useState(false);
     
     const params = new URLSearchParams(typeof window !== "undefined" ? window?.location.search : "");
-    console.log(Array.from(params.entries()))
+    
     const { isBooksLoading, setIsBooksLoading } = useBook();
 
     const filter = useFilter();

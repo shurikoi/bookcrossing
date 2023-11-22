@@ -1,6 +1,4 @@
-"use client"
-
-import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
 import { bookQuery } from "../authorized/Main";
 
 export type sort = "asc" | "desc";
@@ -55,15 +53,13 @@ const FilterContext = createContext<FilterContext>({
 });
 
 function FilterProvider({ children }: { children: React.ReactNode }) {
-  const params = new URLSearchParams(typeof window !== "undefined" ? window?.location.search : "");
-
   const [categories, setCategories] = useState<string[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
   const [states, setStates] = useState<string[]>([]);
 
-  const [choosenCategories, setChoosenCategories] = useState(params.get("categories")?.split(",") || []);
-  const [choosenLanguages, setChoosenLanguages] = useState(params.get("languages")?.split(",") || []);
-  const [choosenStates, setChoosenStates] = useState(params.get("states")?.split(",") || []);
+  const [choosenCategories, setChoosenCategories] = useState<string[]>([]);
+  const [choosenLanguages, setChoosenLanguages] = useState<string[]>([]);
+  const [choosenStates, setChoosenStates] = useState<string[]>([]);
   const [choosenSort, setChoosenSort] = useState<sort>("desc");
 
   const [query, setQuery] = useState<bookQuery>({
@@ -75,11 +71,8 @@ function FilterProvider({ children }: { children: React.ReactNode }) {
     sort: choosenSort,
   });
 
-  useEffect(() => {
-    const sort = params.get("sort");
-
-    if (sort != "desc" && sort != "asc") setChoosenSort("desc");
-    else setChoosenSort(sort);
+  useLayoutEffect(() => {
+    init();
     getFilters();
 
     async function getFilters() {
@@ -93,7 +86,22 @@ function FilterProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  useEffect(() => {
+  function init() {
+    console.log(query.filter, Object.values(query.filter).every((item) => item.length == 0));
+
+    const params = new URLSearchParams(window?.location.search);
+
+    const sort = params.get("sort");
+
+    if (sort != "desc" && sort != "asc") setChoosenSort("desc");
+    else setChoosenSort(sort);
+
+    setChoosenCategories(params.get("categories")?.split(",") || []);
+    setChoosenLanguages(params.get("languages")?.split(",") || []);
+    setChoosenStates(params.get("states")?.split(",") || []);
+  }
+
+  useLayoutEffect(() => {
     // const params = new URLSearchParams(window.location.search);
 
     // const categories = params.get("categories")?.split(",") || [];

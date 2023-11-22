@@ -4,7 +4,6 @@ import { ScreenProvider } from "@/components/contexts/ScreenProvider";
 import { Toaster } from "react-hot-toast";
 import { getUserSession } from "./api/auth/[...nextauth]/route";
 import SessionProvider from "@/components/contexts/SessionProvider";
-import { cloneElement } from "react";
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await getUserSession();
@@ -16,7 +15,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
       </head>
       <body
-        style={{ overflow: "hidden" }}
         className={`${eUkraine.className} ${eUkraineHead.variable} ${inter.variable} ${lato.variable} bg-white`}
       >
         <SessionProvider session={JSON.parse(JSON.stringify(session))}>

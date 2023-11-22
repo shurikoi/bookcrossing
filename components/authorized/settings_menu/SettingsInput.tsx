@@ -27,11 +27,9 @@ const SettingsInput = memo(({ value, setValue, type = "text", validator }: Setti
 
             const { isValid, error } = validator(target.value);
 
-            // if (isValid) setValue(target.value);
             if (!isValid) setError(error);
         }
-        //  else {
-        // }
+
         setValue(target.value.trim());
     }
 

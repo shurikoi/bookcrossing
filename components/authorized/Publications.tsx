@@ -23,29 +23,25 @@ const limit = 20;
 
 const Publications = memo(({ setBooksCount, setBooksQueryCount }: PublicationsProps) => {
   const { query } = useFilter();
-
-  const { setBookId, setBooks, books, book, isBooksLoading, setIsBooksLoading } = useBook();
+  const { setBookId, setBooks, books, book, isBooksLoading, setIsBooksLoading, page, hasMore, setPage, setHasMore } = useBook();
 
   const observer = useRef<IntersectionObserver | null>(null);
 
   const timerRef = useRef<NodeJS.Timer | null>();
 
   const [wasDataFetched, setWasDataFetched] = useState(true);
-  const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(0);
 
   const observerRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    console.log("fetching");
     if (isBooksLoading) return;
     setIsBooksLoading(false);
 
     if (timerRef.current) clearTimeout(timerRef?.current);
 
     timerRef.current = setTimeout(() => {
-      setPage(0);
-      setHasMore(true);
+      setPage(0)
+      setHasMore(true)
       setBooks([]);
       setIsBooksLoading(true);
     }, 500);
