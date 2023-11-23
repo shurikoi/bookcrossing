@@ -29,8 +29,7 @@ export async function POST(req: Request) {
 
   await connection();
 
-  const count = await books.count({});
-  const queryCount = await books.count(filter);
+  const queryBooksCount = await books.count(filter);
 
   const publications = await books
     .aggregate([
@@ -50,7 +49,7 @@ export async function POST(req: Request) {
               },
             },
             {
-              $unset: ["email", "provider", "points", "_id"],
+              $unset: ["email", "provider", "points", "_id", "date", "password", "contact"],
             },
           ],
           as: "ownerData",
@@ -87,7 +86,7 @@ export async function POST(req: Request) {
                 },
               },
               {
-                $unset: ["email", "provider", "points", "_id"],
+                $unset: ["email", "provider", "points", "_id", "date", "password", "contact"],
               },
             ],
             as: "ownerData",
@@ -117,14 +116,12 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       publications: [...reservedBooks, ...publications],
-      count,
-      queryCount,
+      queryBooksCount,
     });
   }
 
   return NextResponse.json({
     publications,
-    count,
-    queryCount,
+    queryBooksCount,
   });
 }

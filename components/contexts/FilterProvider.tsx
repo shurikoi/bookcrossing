@@ -20,6 +20,7 @@ interface FilterContext {
   setChoosenLanguages: Dispatch<SetStateAction<string[]>>;
   setChoosenStates: Dispatch<SetStateAction<string[]>>;
   setQuery: Dispatch<SetStateAction<bookQuery>>;
+  getFilters: () => void;
 }
 
 const FilterContext = createContext<FilterContext>({
@@ -50,6 +51,7 @@ const FilterContext = createContext<FilterContext>({
     languages: [],
     states: [],
   }),
+  getFilters: () => {}
 });
 
 function FilterProvider({ children }: { children: React.ReactNode }) {
@@ -71,24 +73,22 @@ function FilterProvider({ children }: { children: React.ReactNode }) {
     sort: choosenSort,
   });
 
+  async function getFilters() {
+    const response = await fetch("/api/get-filters", { method: "post" });
+
+    const filters = await response.json();
+
+    setCategories(filters.categories);
+    setLanguages(filters.languages);
+    setStates(filters.states);
+  }
+
   useLayoutEffect(() => {
     init();
     getFilters();
-
-    async function getFilters() {
-      const response = await fetch("/api/get-filters", { method: "post" });
-
-      const filters = await response.json();
-
-      setCategories(filters.categories);
-      setLanguages(filters.languages);
-      setStates(filters.states);
-    }
   }, []);
 
   function init() {
-    console.log(query.filter, Object.values(query.filter).every((item) => item.length == 0));
-
     const params = new URLSearchParams(window?.location.search);
 
     const sort = params.get("sort");
@@ -143,6 +143,7 @@ function FilterProvider({ children }: { children: React.ReactNode }) {
         setChoosenStates,
         query,
         setQuery,
+        getFilters
       }}
     >
       {children}

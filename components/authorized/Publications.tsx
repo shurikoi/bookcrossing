@@ -1,29 +1,33 @@
-import ContentLoader from "../ui/loaders/ContentLoader";
 import Book from "../ui/Book";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { Dispatch, SetStateAction, memo, useLayoutEffect, useEffect, useRef, useState, useMemo } from "react";
+import { memo, useLayoutEffect, useEffect, useRef, useState, useMemo } from "react";
 import { publication } from "./Main";
 import { useFilter } from "../contexts/FilterProvider";
 import { useBook } from "../contexts/BookProvider";
-import { useUserData } from "../contexts/UserProvider";
 import PublicationsLoader from "../ui/loaders/skeleton/PublicationsLoader";
-
-interface PublicationsProps {
-  setBooksCount: Dispatch<SetStateAction<number>>;
-  setBooksQueryCount: Dispatch<SetStateAction<number>>;
-}
 
 interface fetchData {
   publications: publication[];
-  count: number;
-  queryCount: number;
+  queryBooksCount : number;
 }
 
 const limit = 20;
 
-const Publications = memo(({ setBooksCount, setBooksQueryCount }: PublicationsProps) => {
+const Publications = memo(() => {
   const { query } = useFilter();
-  const { setBookId, setBooks, books, book, isBooksLoading, setIsBooksLoading, page, hasMore, setPage, setHasMore } = useBook();
+
+  const {
+    setBookId,
+    setBooks,
+    books,
+    book,
+    isBooksLoading,
+    setIsBooksLoading,
+    page,
+    hasMore,
+    setPage,
+    setHasMore,
+    setQueryBooksCount,
+  } = useBook();
 
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -40,8 +44,8 @@ const Publications = memo(({ setBooksCount, setBooksQueryCount }: PublicationsPr
     if (timerRef.current) clearTimeout(timerRef?.current);
 
     timerRef.current = setTimeout(() => {
-      setPage(0)
-      setHasMore(true)
+      setPage(0);
+      setHasMore(true);
       setBooks([]);
       setIsBooksLoading(true);
     }, 500);
@@ -61,6 +65,7 @@ const Publications = memo(({ setBooksCount, setBooksQueryCount }: PublicationsPr
       const data: fetchData = await response.json();
 
       const fetchedBooks: publication[] = data.publications;
+
       setWasDataFetched(true);
       setIsBooksLoading(false);
 
@@ -72,9 +77,7 @@ const Publications = memo(({ setBooksCount, setBooksQueryCount }: PublicationsPr
       }
 
       setBooks((books) => [...books, ...fetchedBooks]);
-
-      setBooksCount(data.count);
-      setBooksQueryCount(data.queryCount);
+      setQueryBooksCount(data.queryBooksCount);
     }
   }, [isBooksLoading, hasMore, wasDataFetched, query, timerRef]);
 

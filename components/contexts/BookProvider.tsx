@@ -17,6 +17,8 @@ interface BookContext {
   setPage: Dispatch<SetStateAction<number>>;
   hasMore: boolean;
   setHasMore: Dispatch<SetStateAction<boolean>>;
+  queryBooksCount: number;
+  setQueryBooksCount: Dispatch<SetStateAction<number>>;
 }
 
 const BookContext = createContext<BookContext>({
@@ -35,6 +37,8 @@ const BookContext = createContext<BookContext>({
   setPage: () => {},
   hasMore: true,
   setHasMore: () => {},
+  queryBooksCount: 0,
+  setQueryBooksCount: () => {},
 });
 
 function BookProvider({ children }: { children: React.ReactNode }) {
@@ -52,13 +56,15 @@ function BookProvider({ children }: { children: React.ReactNode }) {
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
+  const [queryBooksCount, setQueryBooksCount] = useState(0);
+
   useLayoutEffect(() => {
     params.set("book", bookId);
 
     if (!bookId) params.delete("book");
 
     history.pushState({}, "", params.size > 0 ? `/?${params}` : "/");
-
+    console.log(fetchedBooks)
     if (!!bookId && !fetchedBooks[bookId]) getBook(bookId);
     else if (fetchedBooks[bookId]) setBook(fetchedBooks[bookId]);
 
@@ -81,10 +87,12 @@ function BookProvider({ children }: { children: React.ReactNode }) {
   }, [bookId]);
 
   useLayoutEffect(() => {
-    if (book)
+    if (book && !Object.keys(fetchedBooks).some((fetchedBook) => fetchedBook == bookId))
       setFetchedBooks((fetchedBooks) => {
-        return { ...fetchedBooks, [book?._id]: book };
+        return { ...fetchedBooks, [book?.id]: book };
       });
+    console.log(book)
+
   }, [book]);
 
   return (
@@ -105,6 +113,8 @@ function BookProvider({ children }: { children: React.ReactNode }) {
         setPage,
         hasMore,
         setHasMore,
+        queryBooksCount,
+        setQueryBooksCount,
       }}
     >
       {children}

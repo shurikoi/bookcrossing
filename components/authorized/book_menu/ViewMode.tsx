@@ -106,7 +106,7 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                 </div>
                 {!isSmallScreen && <Buttons setMode={setMode}></Buttons>}
               </div>
-              <div className="flex flex-col gap-8 items-center text-center md:items-start md:text-left pb-10 px-6 md:px-14 md:p-0">
+              <div className="flex flex-col gap-8 items-center text-center md:items-start md:text-left px-6 md:p-0">
                 <div className="font-head font-normal text-[20px]">{book.title}</div>
                 <div className="grid grid-cols-[repeat(2,auto)] grid-rows-2 font-extralight leading-none text-[14px] gap-y-6 gap-x-10 w-fit md:pr-10">
                   <PublicationField

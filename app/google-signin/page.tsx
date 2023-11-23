@@ -16,5 +16,5 @@ export default function GoogleSignin() {
     checkSession();
   }, []);
 
-  return <ContentLoader></ContentLoader>;
+  return <></>;
 }
