@@ -1,17 +1,18 @@
 import TextSlider from "@/components/ui/TextSlider";
 import GetStartedButton from "../ui/buttons/GetStartedButton";
 import Image from "next/image";
+import { Dispatch, SetStateAction } from "react";
 
-export default function Header() {
+export default function Header({ setIsFormActive }: { setIsFormActive: Dispatch<SetStateAction<boolean>> }) {
   const heroText: string[] = ["Czytaj", "Odkrywaj", "Doświadczaj", "Opiniuj", "Wymieniaj się", "Przyjaźniaj się"];
 
   return (
     <header className="flex flex-col gap-[210px] pt-9 px-10 pb-4 relative box-border">
       <div className="flex flex-col gap-6 sm:flex-row sm:gap-0 items-center justify-between">
         <div className="text-3xl text-white font-head">BookCrossing</div>
-        <GetStartedButton></GetStartedButton>
+        <GetStartedButton setIsFormActive={setIsFormActive}></GetStartedButton>
       </div>
-      <TextSlider text={heroText} duration={1000}></TextSlider>
+      <TextSlider text={heroText}></TextSlider>
       <div className="flex justify-center sm:justify-end">
         <div className="flex gap-1">
           <span className="text-white/40">zdjęcie</span>

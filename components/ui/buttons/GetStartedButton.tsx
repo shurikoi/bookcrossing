@@ -1,12 +1,8 @@
-"use client";
+import { Dispatch, SetStateAction } from "react";
 
-import { useForm } from "@/components/contexts/FormModalProvider";
-
-export default function GetStartedBtn() {
-  const { setFormActive } = useForm();
-
+export default function GetStartedButton({ setIsFormActive }: { setIsFormActive: Dispatch<SetStateAction<boolean>> }) {
   function handleClick() {
-    setFormActive((formActive: boolean) => !formActive);
+    setIsFormActive((formActive: boolean) => !formActive);
   }
 
   return (

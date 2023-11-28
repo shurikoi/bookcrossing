@@ -72,15 +72,16 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                       <>
                         <Image
                           quality={100}
-                          fill={true}
+                          fill
                           src={book.image}
                           alt=""
                           className={`object-cover`}
+                          priority
                           onLoad={() => {
-                            setIsImageLoaded(true)
+                            setIsImageLoaded(true);
                           }}
                           onError={() => {
-                            setIsImageLoaded(false)
+                            setIsImageLoaded(false);
                           }}
                         />
                       </>

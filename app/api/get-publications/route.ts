@@ -1,10 +1,10 @@
-import { bookQuery } from "@/components/authorized/Main";
 import connection from "@/lib/connection";
 import books from "@/model/book";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { ObjectId } from "mongodb";
+import { bookQuery } from "@/components/contexts/FilterProvider";
 
 interface body {
   page: number;
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
               },
             },
             {
-              $unset: ["email", "provider", "points", "_id", "date", "password", "contact"],
+              $unset: ["points", "_id", "date", "password", "contact"],
             },
           ],
           as: "ownerData",

@@ -1,22 +1,28 @@
 import { NextResponse } from "next/server";
 import connection from "@/lib/connection";
 import users from "@/model/user";
+import hashPassword from "@/lib/hashPassword";
 
 export async function POST(req: Request) {
-    await connection();
+  const { login, password } = await req.json();
 
-    const body: { email: string } = await req.json();
+  await connection();
 
-    const email = body.email;
+  const userData = {
+    isValid: false,
+    isExist: false,
+  };
 
-    const user = await users.findOne({ email });
+  const user = await users.findOne({ login });
+  if (user) {
+    userData.isExist = true;
 
-    if (user)
-        return NextResponse.json({
-            isExist: true,
-        });
+    const hashedPassword = await hashPassword(password);
+    console.log(password, hashedPassword, user.password)
+    if (hashedPassword == user.password) {
+      userData.isValid = true;
+    }
+  }
 
-    return NextResponse.json({
-        isExist: false,
-    });
+  return NextResponse.json(userData);
 }

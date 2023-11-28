@@ -12,12 +12,8 @@ export default function UserField() {
 
   const [isMenuActive, setIsMenuActive] = useState(false);
   const [isSettingsMenuActive, setIsSettingsMenuActive] = useState(false);
-
+  
   const triggerRef = useRef<HTMLDivElement>(null);
-
-  useClickOutside(triggerRef, () => {
-    setIsMenuActive(false);
-  });
 
   return (
     <>

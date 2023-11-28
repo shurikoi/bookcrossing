@@ -1,25 +1,22 @@
 import connection from "@/lib/connection";
 import users from "@/model/user";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { getUserSession } from "../auth/[...nextauth]/route";
 
 interface body {
-    email: string;
-    name: string;
-    surname: string;
+  login: string;
 }
 
 export async function POST(req: Request) {
-    await connection();
+  await connection();
 
-    const { email, name, surname }: body = await req.json();
+  const { login }: body = await req.json();
 
-    const session = await getServerSession(authOptions);
+  const session = await getUserSession();
 
-    if (!session) return NextResponse.json({}, { status: 404 });
+  if (!session) return NextResponse.json({}, { status: 404 });
 
-    await users.updateOne({ email: session.user?.email }, { email, name, surname });
+  await users.updateOne({ login: session.user?.login }, { login });
 
-    return NextResponse.json({}, { status: 200 });
+  return NextResponse.json({}, { status: 200 });
 }

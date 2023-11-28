@@ -1,7 +1,15 @@
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
-import { bookQuery } from "../authorized/Main";
 
 export type sort = "asc" | "desc";
+
+export interface bookQuery {
+  filter: {
+    category: string[];
+    language: string[];
+    state: string[];
+  };
+  sort: sort;
+}
 
 interface FilterContext {
   categories: string[];
@@ -51,10 +59,11 @@ const FilterContext = createContext<FilterContext>({
     languages: [],
     states: [],
   }),
-  getFilters: () => {}
+  getFilters: () => {},
 });
 
-function FilterProvider({ children }: { children: React.ReactNode }) {
+function FilterProvider({ children, sort }: { children: React.ReactNode; sort: sort}) {
+  console.log(sort)
   const [categories, setCategories] = useState<string[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
   const [states, setStates] = useState<string[]>([]);
@@ -62,7 +71,7 @@ function FilterProvider({ children }: { children: React.ReactNode }) {
   const [choosenCategories, setChoosenCategories] = useState<string[]>([]);
   const [choosenLanguages, setChoosenLanguages] = useState<string[]>([]);
   const [choosenStates, setChoosenStates] = useState<string[]>([]);
-  const [choosenSort, setChoosenSort] = useState<sort>("desc");
+  const [choosenSort, setChoosenSort] = useState<sort>(sort);
 
   const [query, setQuery] = useState<bookQuery>({
     filter: {
@@ -90,7 +99,6 @@ function FilterProvider({ children }: { children: React.ReactNode }) {
 
   function init() {
     const params = new URLSearchParams(window?.location.search);
-
     const sort = params.get("sort");
 
     if (sort != "desc" && sort != "asc") setChoosenSort("desc");
@@ -102,18 +110,7 @@ function FilterProvider({ children }: { children: React.ReactNode }) {
   }
 
   useLayoutEffect(() => {
-    // const params = new URLSearchParams(window.location.search);
-
-    // const categories = params.get("categories")?.split(",") || [];
-    // const languages = params.get("languages")?.split(",") || [];
-    // const states = params.get("states")?.split(",") || [];
-
-    // console.log(categories, choosenCategories);
-
-    // if (categories.length != choosenCategories.length) setChoosenCategories(categories);
-    // if (languages.length != choosenLanguages.length) setChoosenLanguages(languages);
-    // if (states.length != choosenStates.length) setChoosenStates(states);
-
+    console.log(choosenSort);
     setQuery({
       filter: {
         category: choosenCategories,
@@ -143,7 +140,7 @@ function FilterProvider({ children }: { children: React.ReactNode }) {
         setChoosenStates,
         query,
         setQuery,
-        getFilters
+        getFilters,
       }}
     >
       {children}

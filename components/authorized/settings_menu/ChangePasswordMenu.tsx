@@ -83,7 +83,7 @@ export default function ChangePasswordMenu({ isMenuActive, setIsMenuActive }: Ch
                         <SettingsInput value={confirmPassword} setValue={setConfirmPassword} type="password" />
                     </div>
                 </div>
-                <Button isLoading={isLoading} onClick={handleSubmit}>
+                <Button disabled={isLoading} onClick={handleSubmit}>
                     Potwierdź zmiany
                 </Button>
             </div>

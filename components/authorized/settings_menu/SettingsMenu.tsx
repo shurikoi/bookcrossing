@@ -22,18 +22,18 @@ const settings = {
 
 export default function SettingsMenu({ isMenuActive, setIsMenuActive }: SettingsMenuProps) {
     const { user } = useUserData();
-
+  
     const [currentPage, setCurrentPage] = useState<pages>("profile");
 
     return (
         <ModalMenu
             fullMode
-            isModalActive={isMenuActive}
             header={<div className="font-normal text-[15px] text-[#5F5F5F]">Ustawienia</div>}
+            isModalActive={isMenuActive}
             setIsModalActive={setIsMenuActive}
         >
             <div className="flex flex-col items-center text-center md:text-left md:items-start md:flex-row md:w-[900px] md:min-h-[600px]">
-                <div className="md:bg-[#F1F1F1] flex flex-col gap-8 md:py-6 rounded-tl-lg rounded-bl-lg md:min-h-[inherit]">
+                <div className="md:bg-[#F1F1F1] min-w-[200px] flex flex-col gap-8 md:py-6 rounded-tl-lg rounded-bl-lg md:min-h-[inherit]">
                     <div className="flex flex-col gap-6 px-6 items-center md:items-start">
                         <div className="hidden md:block font-normal text-[15px] text-[#5F5F5F]">Ustawienia</div>
                         <Image
@@ -46,9 +46,9 @@ export default function SettingsMenu({ isMenuActive, setIsMenuActive }: Settings
                         ></Image>
                         <div>
                             <div className="font-normal">
-                                {user?.name} {user?.surname}
+                                {user?.name}&nbsp;{user?.surname}
                             </div>
-                            <div className="font-extralight text-[#575757]">{user?.email}</div>
+                            <div className="font-extralight text-[#575757]">{user?.login}</div>
                         </div>
                     </div>
                     <div className="hidden md:block">

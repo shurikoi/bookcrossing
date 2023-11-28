@@ -1,16 +1,15 @@
-import { MouseEventHandler, useState } from "react";
 import OpenedEye from "../icons/OpenedEyeIcon";
 import ClosedEye from "../icons/ClosedEyeIcon";
 
 interface ShowPasswordBtn {
-    isPasswordVisible: boolean;
-    onClick: MouseEventHandler;
+  isPasswordVisible: boolean;
+  onClick?: React.HTMLAttributes<HTMLDivElement>["onClick"]
 }
 
 export default function ShowPasswordBtn({ isPasswordVisible, onClick }: ShowPasswordBtn) {
-    return (
-        <div className="cursor-pointer" onClick={onClick}>
-            {isPasswordVisible ? <OpenedEye></OpenedEye> : <ClosedEye></ClosedEye>}
-        </div>
-    );
+  return (
+    <div className="cursor-pointer" onClick={onClick}>
+      {isPasswordVisible ? <OpenedEye></OpenedEye> : <ClosedEye></ClosedEye>}
+    </div>
+  );
 }

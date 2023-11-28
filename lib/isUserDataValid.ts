@@ -47,6 +47,15 @@ export function validateUserData(userData: userDataProps) {
     return errors;
 }
 
+export function validateLogin(login : string){
+  {
+    return {
+        error: "Niestety, pole musi się składać z 2-20 znaków",
+        isValid: login.trim().length >= 2 && login.trim().length <= 20,
+    };
+}
+}
+
 export function validateEmail(email: string) {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/;
 

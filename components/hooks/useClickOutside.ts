@@ -1,17 +1,35 @@
-import { useEffect, RefObject, useLayoutEffect } from "react";
+import { useEffect, RefObject } from "react";
 
 export default function useClickOutside(ref: RefObject<HTMLElement>, callback: () => void) {
-    useLayoutEffect(() => {
-        function checkClickOutside(e: MouseEvent) {
-            const target = e.target as HTMLElement;
+  useEffect(() => {
+    let mouseUpTarget: any, mouseDownTarget: any, isLeftButton: any;
 
-            if (!ref.current?.contains(target) && !target.classList.contains("preventedClick")) callback();
-        }
+    function checkClickOutside(e: MouseEvent) {
+      mouseDownTarget = e.target as HTMLElement;
+      isLeftButton = e.button == 0;
 
-        document.addEventListener("mouseup", checkClickOutside);
+      document.addEventListener("mouseup", handleMouseUp);
+    }
 
-        return () => {
-            document.removeEventListener("mouseup", checkClickOutside);
-        };
-    }, [callback, ref]);
+    function handleMouseUp(e: MouseEvent) {
+      mouseUpTarget = e.target as HTMLElement;
+
+      if (
+        isLeftButton &&
+        !ref.current?.contains(mouseUpTarget) &&
+        !ref.current?.contains(mouseDownTarget) &&
+        !mouseDownTarget.classList.contains("preventedClick")
+      ) {
+        callback();
+        document.removeEventListener("mouseup", handleMouseUp);
+      }
+    }
+
+    document.addEventListener("mousedown", checkClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", checkClickOutside);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [callback, ref]);
 }

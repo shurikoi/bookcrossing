@@ -1,18 +1,16 @@
 import connection from "@/lib/connection";
 import books from "@/model/book";
 import users from "@/model/user";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import { authOptions } from "../auth/[...nextauth]/route";
-import { ObjectId } from "mongodb";
+import { getUserSession } from "../auth/[...nextauth]/route";
 
 export async function POST(req: Request) {
-    const { id }: { id: string; contact: string } = await req.json();
+    const { id }: { id: string } = await req.json();
 
     try {
         await connection();
 
-        const session = await getServerSession(authOptions);
+        const session = await getUserSession();
         const user = await users.findOne({ _id: session?.user?.id });
 
         if (session && user)

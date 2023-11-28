@@ -36,7 +36,7 @@ const DropDownMenu = memo(
         return (
             <div
                 ref={triggerRef ? (elRef ? elRef : triggerRef) : triggerRef}
-                className={`${isMenuActive ? animation.active : animation.inactive} z-40 duration-200 ${
+                className={`${isMenuActive ? animation.active : animation.inactive} z-40 duration-200 transition-opacity ${
                     className || ""
                 }`}
                 style={style}

@@ -46,7 +46,7 @@ export default function SetPasswordMenu({ isMenuActive, setIsMenuActive }: SetPa
 
                 if (!data.isValid) throw new Error("Sprawdź hasła na prawidłowość");
 
-                if (user) user.setIsPasswordExist(true);
+                // if (user) user.setIsPasswordExist(true);
 
                 resolve(1);
                 
@@ -85,7 +85,7 @@ export default function SetPasswordMenu({ isMenuActive, setIsMenuActive }: SetPa
                         <SettingsInput value={confirmPassword} setValue={setConfirmPassword} type="password" />
                     </div>
                 </div>
-                <Button isLoading={isLoading} onClick={handleSubmit}>
+                <Button disabled={isLoading} onClick={handleSubmit}>
                     Potwierdź zmiany
                 </Button>
             </div>

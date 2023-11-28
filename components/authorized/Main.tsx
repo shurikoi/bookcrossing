@@ -3,11 +3,11 @@
 import { useState } from "react";
 import BookMenu from "./book_menu/BookMenu";
 import PublicationMenu, { messenger } from "./publication_menu/PublicationMenu";
-import AddBookBtn from "../ui/AddBookBtn";
 import FilterBar from "./filter/FilterBar";
 import Publications from "./Publications";
 import { FilterProvider, sort } from "../contexts/FilterProvider";
 import { BookProvider } from "../contexts/BookProvider";
+import AddBookButton from "../ui/buttons/AddBookButton";
 
 export interface bookData {
   id: string;
@@ -50,16 +50,8 @@ export interface publication {
   };
 }
 
-export interface bookQuery {
-  filter: {
-    category: string[];
-    language: string[];
-    state: string[];
-  };
-  sort: sort;
-}
-
-export default function Main() {
+export default function Main({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
+  console.log(searchParams);
   const [isPublicationModalActive, setIsPublicationModalActive] = useState(false);
 
   const [booksCount, setBooksCount] = useState(0);
@@ -75,19 +67,19 @@ export default function Main() {
         Wierzymy, że korzystanie z&nbsp;serwisu może dostarczyć wiele radości i&nbsp;wzbogacić Twoje doświadczenie
         czytelnicze.
       </div>
-      <FilterProvider>
+      <FilterProvider sort={searchParams?.sort == "desc" || searchParams?.sort == "asc" ? searchParams?.sort : "desc"}>
         <BookProvider>
           <FilterBar></FilterBar>
 
           <Publications></Publications>
-          
+
           <PublicationMenu isModalActive={isPublicationModalActive} setIsModalActive={setIsPublicationModalActive} />
 
           <BookMenu />
         </BookProvider>
       </FilterProvider>
 
-      <AddBookBtn onClick={handleAddBookClick} />
+      <AddBookButton onClick={handleAddBookClick} />
     </div>
   );
 }

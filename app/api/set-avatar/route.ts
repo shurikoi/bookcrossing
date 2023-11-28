@@ -10,29 +10,32 @@ import { allowedImageTypes } from "@/lib/variables";
 import resizeImage from "@/lib/resizeImage";
 
 export async function POST(req: Request) {
-    const { avatar }: { avatar: string } = await req.json();
+  const { avatar }: { avatar: string } = await req.json();
 
-    await connection();
+  await connection();
 
-    const session = await getServerSession(authOptions);
-    const user = await users.findOne({ _id: session?.user?.id });
+  const session = await getServerSession(authOptions);
+  const user = await users.findOne({ _id: session?.user?.id });
 
-    const extension = getExtension(avatar, true); // type between / and ;
+  const extension = getExtension(avatar, true);
 
-    if (!session || !user || (extension && !allowedImageTypes.includes(extension.toLowerCase())))
-        return NextResponse.json({}, { status: 404 });
+  if (!session || !user || (extension && !allowedImageTypes.includes(extension.toLowerCase())))
+    return NextResponse.json({}, { status: 404 });
 
-    const randomName = generateRandomString() + "." + extension;
-    const imageBuffer = Buffer.from(avatar.split(",")[1], "base64");
+  const randomName = generateRandomString() + "." + extension;
+  const imageBuffer = Buffer.from(avatar.split(",")[1], "base64");
 
-    const resizedImage = await resizeImage(imageBuffer, 200, 200);
+  const resizedImage = await resizeImage(imageBuffer, 200, 200);
 
-    const path = "/avatars/" + randomName;
+  const path = "/avatars/" + randomName;
 
-    fs.unlinkSync("./public" + user.avatar);
-    fs.writeFile("./public" + path, resizedImage, () => {});
+  try {
+    if (user.avatar != "/avatars/01.png") fs.unlinkSync("./public" + user.avatar);
+  } catch (error) {}
 
-    await users.updateOne({ _id: user.id }, { avatar: path });
+  fs.writeFile("./public" + path, resizedImage, () => {});
 
-    return NextResponse.json({ path }, { status: 200 });
+  await users.updateOne({ _id: user.id }, { avatar: path });
+
+  return NextResponse.json({ path }, { status: 200 });
 }
