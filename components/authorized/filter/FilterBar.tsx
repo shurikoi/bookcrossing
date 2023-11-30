@@ -8,15 +8,17 @@ import { useBook } from "@/components/contexts/BookProvider";
 import bookConjugation from "@/lib/bookConjugation";
 
 export default function FilterBar() {
-  const filter = useFilter();
+  const { query, setChoosenCategories, setChoosenStates, setChoosenLanguages } = useFilter();
 
   const { isBooksLoading, setIsBooksLoading, setBooks, setPage, setHasMore, books, queryBooksCount } = useBook();
 
-  useLayoutEffect(() => {
-    setIsBooksLoading(true);
-  }, [filter.query]);
+  // useLayoutEffect(() => {
+  //   setIsBooksLoading(true);
+  // }, [query]);
 
   function resetFilter() {
+    if (isBooksLoading) return;
+
     const params = new URLSearchParams(window.location.search);
 
     setPage(0);
@@ -28,9 +30,9 @@ export default function FilterBar() {
 
     history.pushState({}, "", sort ? `/?sort=${sort}` : "/");
 
-    filter.setChoosenCategories([]);
-    filter.setChoosenLanguages([]);
-    filter.setChoosenStates([]);
+    setChoosenCategories([]);
+    setChoosenLanguages([]);
+    setChoosenStates([]);
   }
 
   return (
@@ -41,7 +43,7 @@ export default function FilterBar() {
           <div className="w-6 h-6 relative">
             <ContentLoader />
           </div>
-        ) : Object.values(filter.query.filter).every((item) => item.length == 0) ? (
+        ) : Object.values(query.filter).every((item) => item.length == 0) ? (
           "Wszystkie książki"
         ) : (
           <div className="flex gap-10">

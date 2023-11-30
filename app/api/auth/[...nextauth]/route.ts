@@ -52,9 +52,9 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       await connection();
-      console.log(user, token)
+      console.log(user, token);
       const foundUser = await users.findOne({ _id: user ? new ObjectId(user.id) : new ObjectId(token.user?.id) });
-      
+
       if (foundUser) {
         token.user = {
           id: foundUser._id,
@@ -77,7 +77,6 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       try {
         session.user = token.user;
-        console.log(session);
       } catch (error) {}
 
       return session;

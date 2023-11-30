@@ -7,7 +7,7 @@ import PublicationsLoader from "../ui/loaders/skeleton/PublicationsLoader";
 
 interface fetchData {
   publications: publication[];
-  queryBooksCount : number;
+  queryBooksCount: number;
 }
 
 const limit = 20;
@@ -33,53 +33,60 @@ const Publications = memo(() => {
 
   const timerRef = useRef<NodeJS.Timer | null>();
 
-  const [wasDataFetched, setWasDataFetched] = useState(true);
+  const [isDataFetched, setIsDataFetched] = useState(true);
 
   const observerRef = useRef<HTMLDivElement>(null);
 
+  const abortControllerRef = useRef<AbortController>();
+
   useLayoutEffect(() => {
-    if (isBooksLoading) return;
-    setIsBooksLoading(false);
+    if (abortControllerRef.current) abortControllerRef.current.abort("new-fetch");
 
-    if (timerRef.current) clearTimeout(timerRef?.current);
-
-    timerRef.current = setTimeout(() => {
-      setPage(0);
-      setHasMore(true);
-      setBooks([]);
-      setIsBooksLoading(true);
-    }, 500);
+    setPage(0);
+    setHasMore(true);
+    setIsDataFetched(true);
+    setBooks([]);
+    setIsBooksLoading(true);
   }, [query]);
 
   useLayoutEffect(() => {
-    if (wasDataFetched && isBooksLoading && hasMore) getPublications();
+    if (isDataFetched && isBooksLoading && hasMore) getPublications();
 
     async function getPublications() {
-      setWasDataFetched(false);
+      setIsDataFetched(false);
+      setIsBooksLoading(true);
 
-      const response = await fetch("/api/get-publications", {
-        method: "POST",
-        body: JSON.stringify({ limit, page, query }),
-      });
+      if (abortControllerRef.current) abortControllerRef.current.abort("new-fetch");
 
-      const data: fetchData = await response.json();
+      abortControllerRef.current = new AbortController();
 
-      const fetchedBooks: publication[] = data.publications;
+      try {
+        const response = await fetch("/api/get-publications", {
+          method: "POST",
+          body: JSON.stringify({ limit, page, query }),
+          signal: abortControllerRef.current.signal,
+        });
 
-      setWasDataFetched(true);
+        const data: fetchData = await response.json();
+
+        const fetchedBooks: publication[] = data.publications;
+
+        setIsDataFetched(true);
+
+        setPage((prev) => prev + 1);
+
+        if (fetchedBooks.length === 0 || fetchedBooks.length < limit) {
+          setHasMore(false);
+          setPage((prev) => prev - 1);
+        }
+
+        setBooks((books) => [...books, ...fetchedBooks]);
+        setQueryBooksCount(data.queryBooksCount);
+      } catch (error) {}
+
       setIsBooksLoading(false);
-
-      setPage((prev) => prev + 1);
-
-      if (fetchedBooks.length === 0 || fetchedBooks.length < limit) {
-        setHasMore(false);
-        setPage((prev) => prev - 1);
-      }
-
-      setBooks((books) => [...books, ...fetchedBooks]);
-      setQueryBooksCount(data.queryBooksCount);
     }
-  }, [isBooksLoading, hasMore, wasDataFetched, query, timerRef]);
+  }, [hasMore, isDataFetched, timerRef, query, isBooksLoading, page]);
 
   useEffect(() => {
     observer.current = new IntersectionObserver(
@@ -98,7 +105,7 @@ const Publications = memo(() => {
     return () => {
       if (observerRef.current && observer.current) observer.current.disconnect();
     };
-  }, [observerRef, observer, hasMore, isBooksLoading, wasDataFetched]);
+  }, [observerRef, observer, hasMore, isBooksLoading, isDataFetched]);
 
   const memoizedBooks = useMemo(
     () => books && books.map((book, index) => <Book key={index} data={book} handleClick={() => setBookId(book.id!)} />),

@@ -4,7 +4,7 @@ import Main from "./Main";
 export default function StartPage({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: { [key: string]: string | undefined };
 }) {
   return (
     <>

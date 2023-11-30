@@ -8,7 +8,7 @@ export default function Home({
   searchParams,
 }: {
   params: { slug: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: { [key: string]: string | undefined };
 }) {
   const { data: session } = useSession();
 

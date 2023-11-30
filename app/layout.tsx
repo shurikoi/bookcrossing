@@ -4,7 +4,6 @@ import { ScreenProvider } from "@/components/contexts/ScreenProvider";
 import { Toaster } from "react-hot-toast";
 import { getUserSession } from "./api/auth/[...nextauth]/route";
 import SessionProvider from "@/components/contexts/SessionProvider";
-import { signOut } from "next-auth/react";
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await getUserSession();

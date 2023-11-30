@@ -50,7 +50,7 @@ export interface publication {
   };
 }
 
-export default function Main({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
+export default function Main({ searchParams }: { searchParams?: { [key: string]: string | undefined } }) {
   console.log(searchParams);
   const [isPublicationModalActive, setIsPublicationModalActive] = useState(false);
 
@@ -67,7 +67,16 @@ export default function Main({ searchParams }: { searchParams?: { [key: string]:
         Wierzymy, że korzystanie z&nbsp;serwisu może dostarczyć wiele radości i&nbsp;wzbogacić Twoje doświadczenie
         czytelnicze.
       </div>
-      <FilterProvider sort={searchParams?.sort == "desc" || searchParams?.sort == "asc" ? searchParams?.sort : "desc"}>
+      <FilterProvider
+        paramsQuery={{
+          filter: {
+            categories: searchParams?.categories?.split(",") || [],
+            languages: searchParams?.languages?.split(",") || [],
+            states: searchParams?.states?.split(",") || [],
+          },
+          sort: searchParams?.sort == "desc" || searchParams?.sort == "asc" ? searchParams?.sort : "desc",
+        }}
+      >
         <BookProvider>
           <FilterBar></FilterBar>
 

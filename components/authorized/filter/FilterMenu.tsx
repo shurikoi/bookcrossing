@@ -88,9 +88,7 @@ const FilterMenu = memo(() => {
                 className="absolute w-full left-0 top-full bg-white"
             >
                 <div
-                    className={`flex flex-col md:flex-row justify-center gap-20 p-6 bg-white shadow-[0px_5px_5px_1px_rgba(0,0,0,.1)] ${
-                        isBooksLoading ? "opacity-50 pointer-events-none" : ""
-                    }`}
+                    className={`flex flex-col md:flex-row justify-center gap-20 p-6 bg-white shadow-[0px_5px_5px_1px_rgba(0,0,0,.1)]`}
                 >
                     <div className="text-left pl-[30%] md:pl-0 font-inter text-[#3F3A5A] text-[16px] w-full md:w-auto md:px-0">
                         <div className="font-semibold mb-3">Kategoria</div>

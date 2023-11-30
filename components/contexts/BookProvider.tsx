@@ -91,8 +91,6 @@ function BookProvider({ children }: { children: React.ReactNode }) {
       setFetchedBooks((fetchedBooks) => {
         return { ...fetchedBooks, [book?.id]: book };
       });
-    console.log(book)
-
   }, [book]);
 
   return (

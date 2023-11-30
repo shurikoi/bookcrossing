@@ -23,9 +23,9 @@ export async function POST(req: Request) {
 
   const filter: any = {};
 
-  if (query.filter.category.length > 0) filter.category = { $in: query.filter.category };
-  if (query.filter.language.length > 0) filter.language = { $in: query.filter.language };
-  if (query.filter.state.length > 0) filter.state = { $in: query.filter.state };
+  if (query.filter.categories.length > 0) filter.category = { $in: query.filter.categories };
+  if (query.filter.languages.length > 0) filter.language = { $in: query.filter.languages };
+  if (query.filter.states.length > 0) filter.state = { $in: query.filter.states };
 
   await connection();
 

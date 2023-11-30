@@ -1,12 +1,12 @@
-import { Dispatch, SetStateAction, createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
+import { Dispatch, SetStateAction, createContext, useContext, useEffect, useLayoutEffect, useMemo, useState } from "react";
 
 export type sort = "asc" | "desc";
 
 export interface bookQuery {
   filter: {
-    category: string[];
-    language: string[];
-    state: string[];
+    categories: string[];
+    languages: string[];
+    states: string[];
   };
   sort: sort;
 }
@@ -44,9 +44,9 @@ const FilterContext = createContext<FilterContext>({
   choosenSort: "asc",
   query: {
     filter: {
-      category: [],
-      language: [],
-      state: [],
+      categories: [],
+      languages: [],
+      states: [],
     },
     sort: "asc",
   },
@@ -62,22 +62,26 @@ const FilterContext = createContext<FilterContext>({
   getFilters: () => {},
 });
 
-function FilterProvider({ children, sort }: { children: React.ReactNode; sort: sort}) {
-  console.log(sort)
+interface FilterProviderProps {
+  children: React.ReactNode;
+  paramsQuery: bookQuery;
+}
+
+function FilterProvider({ children, paramsQuery }: FilterProviderProps) {
   const [categories, setCategories] = useState<string[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
   const [states, setStates] = useState<string[]>([]);
 
-  const [choosenCategories, setChoosenCategories] = useState<string[]>([]);
-  const [choosenLanguages, setChoosenLanguages] = useState<string[]>([]);
-  const [choosenStates, setChoosenStates] = useState<string[]>([]);
-  const [choosenSort, setChoosenSort] = useState<sort>(sort);
+  const [choosenCategories, setChoosenCategories] = useState<string[]>(paramsQuery.filter.categories);
+  const [choosenLanguages, setChoosenLanguages] = useState<string[]>(paramsQuery.filter.languages);
+  const [choosenStates, setChoosenStates] = useState<string[]>(paramsQuery.filter.states);
+  const [choosenSort, setChoosenSort] = useState<sort>(paramsQuery.sort);
 
   const [query, setQuery] = useState<bookQuery>({
     filter: {
-      category: choosenCategories,
-      language: choosenLanguages,
-      state: choosenStates,
+      categories: choosenCategories,
+      languages: choosenLanguages,
+      states: choosenStates,
     },
     sort: choosenSort,
   });
@@ -93,29 +97,28 @@ function FilterProvider({ children, sort }: { children: React.ReactNode; sort: s
   }
 
   useLayoutEffect(() => {
-    init();
+    // init();
     getFilters();
   }, []);
 
-  function init() {
-    const params = new URLSearchParams(window?.location.search);
-    const sort = params.get("sort");
+  // function init() {
+  //   const params = new URLSearchParams(window?.location.search);
+  //   const sort = params.get("sort");
 
-    if (sort != "desc" && sort != "asc") setChoosenSort("desc");
-    else setChoosenSort(sort);
+  //   if (sort != "desc" && sort != "asc") setChoosenSort("desc");
+  //   else setChoosenSort(sort);
 
-    setChoosenCategories(params.get("categories")?.split(",") || []);
-    setChoosenLanguages(params.get("languages")?.split(",") || []);
-    setChoosenStates(params.get("states")?.split(",") || []);
-  }
+  //   setChoosenCategories(params.get("categories")?.split(",") || []);
+  //   setChoosenLanguages(params.get("languages")?.split(",") || []);
+  //   setChoosenStates(params.get("states")?.split(",") || []);
+  // }
 
-  useLayoutEffect(() => {
-    console.log(choosenSort);
+  useMemo(() => {
     setQuery({
       filter: {
-        category: choosenCategories,
-        language: choosenLanguages,
-        state: choosenStates,
+        categories: choosenCategories,
+        languages: choosenLanguages,
+        states: choosenStates,
       },
       sort: choosenSort,
     });
