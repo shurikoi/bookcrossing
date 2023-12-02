@@ -1,13 +1,13 @@
 import connection from "@/lib/connection";
+import generateRandomString from "@/lib/generateRandomString";
+import getExtension from "@/lib/getExtension";
+import resizeImage from "@/lib/resizeImage";
+import { allowedImageTypes } from "@/lib/variables";
 import users from "@/model/user";
+import fs from "fs";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
-import generateRandomString from "@/lib/generateRandomString";
-import fs from "fs";
-import getExtension from "@/lib/getExtension";
-import { allowedImageTypes } from "@/lib/variables";
-import resizeImage from "@/lib/resizeImage";
 
 export async function POST(req: Request) {
   const { avatar }: { avatar: string } = await req.json();

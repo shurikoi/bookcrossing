@@ -1,8 +1,8 @@
-import { ChangeEvent, memo, useRef, useState } from "react";
-import DropDownMenu from "../../ui/DropDownMenu";
-import { useFilter } from "../../contexts/FilterProvider";
-import ArrowDownIcon from "../../ui/icons/ArrowDownIcon";
 import { useBook } from "@/components/contexts/BookProvider";
+import { ChangeEvent, memo, useRef, useState } from "react";
+import { useFilter } from "../../contexts/FilterProvider";
+import DropDownMenu from "../../ui/DropDownMenu";
+import ArrowDownIcon from "../../ui/icons/ArrowDownIcon";
 
 const FilterMenu = memo(() => {
     const triggerRef = useRef<HTMLDivElement>(null);

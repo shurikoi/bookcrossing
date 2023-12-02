@@ -1,9 +1,9 @@
+import Image from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useUserData } from "../../contexts/UserProvider";
 import ModalMenu from "../../ui/ModalMenu";
 import ProfileIcon from "../../ui/icons/ProfileIcon";
 import ProfilePage from "./ProfilePage";
-import Image from "next/image";
 
 interface SettingsMenuProps {
     isMenuActive: boolean;

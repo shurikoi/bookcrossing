@@ -1,5 +1,5 @@
-import OpenedEye from "../icons/OpenedEyeIcon";
 import ClosedEye from "../icons/ClosedEyeIcon";
+import OpenedEye from "../icons/OpenedEyeIcon";
 
 interface ShowPasswordBtn {
   isPasswordVisible: boolean;

@@ -30,4 +30,5 @@ function useScreen() {
     return screen;
 }
 
-export { useScreen, ScreenProvider };
+export { ScreenProvider, useScreen };
+

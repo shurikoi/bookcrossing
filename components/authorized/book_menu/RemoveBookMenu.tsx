@@ -1,7 +1,7 @@
 import { useBook } from "@/components/contexts/BookProvider";
 import { useFilter } from "@/components/contexts/FilterProvider";
 import ModalMenu from "@/components/ui/ModalMenu";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import toast from "react-hot-toast";
 
 interface RemoveBookMenuProps {

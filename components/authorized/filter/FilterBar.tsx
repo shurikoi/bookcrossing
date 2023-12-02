@@ -1,11 +1,10 @@
-import { Dispatch, SetStateAction, useLayoutEffect } from "react";
-import FilterMenu from "./FilterMenu";
-import ContentLoader from "../../ui/loaders/ContentLoader";
-import ResetIcon from "../../ui/icons/ResetIcon";
-import { useFilter } from "../../contexts/FilterProvider";
-import SortMenu from "./SortMenu";
 import { useBook } from "@/components/contexts/BookProvider";
 import bookConjugation from "@/lib/bookConjugation";
+import { useFilter } from "../../contexts/FilterProvider";
+import ResetIcon from "../../ui/icons/ResetIcon";
+import ContentLoader from "../../ui/loaders/ContentLoader";
+import FilterMenu from "./FilterMenu";
+import SortMenu from "./SortMenu";
 
 export default function FilterBar() {
   const { query, setChoosenCategories, setChoosenStates, setChoosenLanguages } = useFilter();

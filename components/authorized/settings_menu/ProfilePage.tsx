@@ -1,11 +1,11 @@
 import { useUserData } from "@/components/contexts/UserProvider";
 import useImagePicker from "@/components/hooks/useImagePicker";
+import SettingsButton from "@/components/ui/buttons/SettingsButton";
 import { validateLogin } from "@/lib/isUserDataValid";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import ChangePasswordMenu from "./ChangePasswordMenu";
 import SettingsInput from "./SettingsInput";
-import SettingsButton from "@/components/ui/buttons/SettingsButton";
 
 export default function ProfilePage() {
   const { user } = useUserData();

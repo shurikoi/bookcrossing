@@ -1,9 +1,9 @@
 "use client";
 
 import { Dispatch, SetStateAction, memo, useRef } from "react";
+import { useScreen } from "../contexts/ScreenProvider";
 import useClickOutside from "../hooks/useClickOutside";
 import MobileModalMenu from "./MobileModalMenu";
-import { useScreen } from "../contexts/ScreenProvider";
 import CloseButton from "./buttons/CloseButton";
 
 interface ModalMenuProps {

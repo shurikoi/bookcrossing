@@ -1,4 +1,4 @@
-import NextAuth, { DefaultUser } from "next-auth";
+import "next-auth";
 
 declare module "next-auth/jwt" {
   interface JWT {

@@ -1,10 +1,10 @@
 import connection from "@/lib/connection";
 import books from "@/model/book";
 import users from "@/model/user";
+import fs from "fs";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
-import fs from "fs";
 
 export async function POST(req: Request) {
     const { id }: { id: string } = await req.json();

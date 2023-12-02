@@ -1,9 +1,9 @@
 import Image from "next/image";
-import Advantages from "./Advantages";
-import Header from "./Header";
-import GetStarted from "./GetStarted";
-import AuthForm from "./AuthForm";
 import { useState } from "react";
+import Advantages from "./Advantages";
+import AuthForm from "./AuthForm";
+import GetStarted from "./GetStarted";
+import Header from "./Header";
 
 export default function StartPage() {
   const [isFormActive, setIsFormActive] = useState(false)

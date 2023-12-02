@@ -1,9 +1,8 @@
 import { useScreen } from "@/components/contexts/ScreenProvider";
-import PublicationField from "../../PublicationField";
+import LanguageIcon from "../../icons/LanguageIcon";
+import LeafIcon from "../../icons/LeafIcon";
 import ProfileIcon from "../../icons/ProfileIcon";
 import TagIcon from "../../icons/TagIcon";
-import LeafIcon from "../../icons/LeafIcon";
-import LanguageIcon from "../../icons/LanguageIcon";
 
 export default function BookMenuLoader() {
     const { isSmallScreen } = useScreen();

@@ -1,5 +1,4 @@
 "use client";
-import ContentLoader from "@/components/ui/loaders/ContentLoader";
 import { getSession, signIn } from "next-auth/react";
 import { useEffect } from "react";
 // import { useEffect } from "react";

@@ -1,7 +1,7 @@
 import TextSlider from "@/components/ui/TextSlider";
-import GetStartedButton from "../ui/buttons/GetStartedButton";
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
+import GetStartedButton from "../ui/buttons/GetStartedButton";
 
 export default function Header({ setIsFormActive }: { setIsFormActive: Dispatch<SetStateAction<boolean>> }) {
   const heroText: string[] = ["Czytaj", "Odkrywaj", "Doświadczaj", "Opiniuj", "Wymieniaj się", "Przyjaźniaj się"];

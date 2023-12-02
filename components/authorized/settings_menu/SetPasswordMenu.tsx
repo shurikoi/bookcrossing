@@ -1,11 +1,11 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import ModalMenu from "../../ui/ModalMenu";
-import SettingsInput from "./SettingsInput";
-import PasswordIcon from "../../ui/icons/PasswordIcon";
 import { validatePassword } from "@/lib/isUserDataValid";
-import { useUserData } from "../../contexts/UserProvider";
-import Button from "../../ui/buttons/Button";
+import { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
+import { useUserData } from "../../contexts/UserProvider";
+import ModalMenu from "../../ui/ModalMenu";
+import Button from "../../ui/buttons/Button";
+import PasswordIcon from "../../ui/icons/PasswordIcon";
+import SettingsInput from "./SettingsInput";
 
 interface SetPasswordMenuProps {
     isMenuActive: boolean;

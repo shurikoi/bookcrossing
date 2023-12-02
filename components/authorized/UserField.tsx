@@ -1,11 +1,10 @@
 "use client"
 
-import { useRef, useState } from "react";
-import useClickOutside from "../hooks/useClickOutside";
-import SettingsMenu from "./settings_menu/SettingsMenu";
 import Image from "next/image";
+import { useRef, useState } from "react";
 import { useUserData } from "../contexts/UserProvider";
 import UserMenu from "./UserMenu";
+import SettingsMenu from "./settings_menu/SettingsMenu";
 
 export default function UserField() {
   const { user } = useUserData();

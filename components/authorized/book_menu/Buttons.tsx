@@ -1,12 +1,12 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { BookMenuMode } from "./BookMenu";
 import { useBook } from "@/components/contexts/BookProvider";
 import { useUserData } from "@/components/contexts/UserProvider";
-import RemoveBookMenu from "./RemoveBookMenu";
-import ShareButton from "./ShareButton";
-import ReservationButton from "../../ui/buttons/ReservationButton";
+import { Dispatch, SetStateAction, useState } from "react";
 import CancelReservationButton from "../../ui/buttons/CancelReservationButton";
 import ContactButton from "../../ui/buttons/ContactButton";
+import ReservationButton from "../../ui/buttons/ReservationButton";
+import ShareButton from "../../ui/buttons/ShareButton";
+import { BookMenuMode } from "./BookMenu";
+import RemoveBookMenu from "./RemoveBookMenu";
 
 export default function Buttons({ setMode }: { setMode: Dispatch<SetStateAction<BookMenuMode>> }) {
     const [isRemoveBookMenuActive, setIsRemoveBookMenuActive] = useState(false);

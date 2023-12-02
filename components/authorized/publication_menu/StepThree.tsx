@@ -1,19 +1,17 @@
-import { useUserData } from "@/components/contexts/UserProvider";
-import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon";
-import PublicationField from "../../ui/PublicationField";
-import { image, messengers, publicationData } from "./PublicationMenu";
-import TagIcon from "@/components/ui/icons/TagIcon";
-import LanguageIcon from "@/components/ui/icons/LanguageIcon";
-import ProfileIcon from "@/components/ui/icons/ProfileIcon";
-import LeafIcon from "@/components/ui/icons/LeafIcon";
-import Button from "@/components/ui/buttons/Button";
-import { Dispatch, SetStateAction, useState } from "react";
-import ContentLoader from "@/components/ui/loaders/ContentLoader";
-import { useFilter } from "@/components/contexts/FilterProvider";
 import { useBook } from "@/components/contexts/BookProvider";
-import { publication } from "../Main";
-import toast from "react-hot-toast";
+import { useFilter } from "@/components/contexts/FilterProvider";
 import { useScreen } from "@/components/contexts/ScreenProvider";
+import { useUserData } from "@/components/contexts/UserProvider";
+import Button from "@/components/ui/buttons/Button";
+import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon";
+import LanguageIcon from "@/components/ui/icons/LanguageIcon";
+import LeafIcon from "@/components/ui/icons/LeafIcon";
+import ProfileIcon from "@/components/ui/icons/ProfileIcon";
+import TagIcon from "@/components/ui/icons/TagIcon";
+import { Dispatch, SetStateAction, useState } from "react";
+import toast from "react-hot-toast";
+import PublicationField from "../../ui/PublicationField";
+import { image, publicationData } from "./PublicationMenu";
 
 interface StepThreeProps {
   image: image;

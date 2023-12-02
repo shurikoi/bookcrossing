@@ -1,4 +1,5 @@
 import { useBook } from "@/components/contexts/BookProvider";
+import { useScreen } from "@/components/contexts/ScreenProvider";
 import { useUserData } from "@/components/contexts/UserProvider";
 import PublicationField from "@/components/ui/PublicationField";
 import LanguageIcon from "@/components/ui/icons/LanguageIcon";
@@ -6,12 +7,11 @@ import LeafIcon from "@/components/ui/icons/LeafIcon";
 import NotFoundIcon from "@/components/ui/icons/NotFoundIcon";
 import ProfileIcon from "@/components/ui/icons/ProfileIcon";
 import TagIcon from "@/components/ui/icons/TagIcon";
-import Image from "next/image";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { BookMenuMode } from "./BookMenu";
-import { useScreen } from "@/components/contexts/ScreenProvider";
-import Buttons from "./Buttons";
 import BookMenuLoader from "@/components/ui/loaders/skeleton/BookMenuLoader";
+import Image from "next/image";
+import { Dispatch, SetStateAction, useLayoutEffect, useState } from "react";
+import { BookMenuMode } from "./BookMenu";
+import Buttons from "./Buttons";
 
 interface ViewModeProps {
   isModalActive: boolean;
@@ -29,11 +29,9 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
 
   const { isSmallScreen } = useScreen();
 
-  useEffect(() => {
-    if (isModalActive) {
-      setIsImageLoaded(true);
-    }
-  }, [isModalActive]);
+  useLayoutEffect(() => {
+    setIsImageLoaded(true);
+  }, [book]);
 
   return (
     <>
@@ -77,10 +75,7 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                           alt=""
                           className={`object-cover`}
                           priority
-                          onLoad={() => {
-                            setIsImageLoaded(true);
-                          }}
-                          onError={() => {
+                          onError={(e) => {
                             setIsImageLoaded(false);
                           }}
                         />

@@ -1,7 +1,7 @@
 import { MouseEvent, useRef, useState } from "react";
-import ArrowDownIcon from "../../ui/icons/ArrowDownIcon";
+import { useFilter } from "../../contexts/FilterProvider";
 import DropDownMenu from "../../ui/DropDownMenu";
-import { sort, useFilter } from "../../contexts/FilterProvider";
+import ArrowDownIcon from "../../ui/icons/ArrowDownIcon";
 
 export default function SortMenu() {
     const [isMenuActive, setIsMenuActive] = useState(false);

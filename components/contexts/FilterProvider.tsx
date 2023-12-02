@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, createContext, useContext, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, createContext, useContext, useLayoutEffect, useMemo, useState } from "react";
 
 export type sort = "asc" | "desc";
 
@@ -157,4 +157,5 @@ function useFilter() {
   return filter;
 }
 
-export { useFilter, FilterProvider };
+export { FilterProvider, useFilter };
+

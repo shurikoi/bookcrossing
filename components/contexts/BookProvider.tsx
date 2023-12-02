@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
+import { Dispatch, SetStateAction, createContext, useContext, useLayoutEffect, useState } from "react";
 import { bookData, publication } from "../authorized/Main";
 
 interface BookContext {
@@ -64,7 +64,7 @@ function BookProvider({ children }: { children: React.ReactNode }) {
     if (!bookId) params.delete("book");
 
     history.pushState({}, "", params.size > 0 ? `/?${params}` : "/");
-    console.log(fetchedBooks)
+    
     if (!!bookId && !fetchedBooks[bookId]) getBook(bookId);
     else if (fetchedBooks[bookId]) setBook(fetchedBooks[bookId]);
 
@@ -87,7 +87,7 @@ function BookProvider({ children }: { children: React.ReactNode }) {
   }, [bookId]);
 
   useLayoutEffect(() => {
-    if (book && !Object.keys(fetchedBooks).some((fetchedBook) => fetchedBook == bookId))
+    if (book)
       setFetchedBooks((fetchedBooks) => {
         return { ...fetchedBooks, [book?.id]: book };
       });
@@ -126,4 +126,5 @@ function useBook() {
   return book;
 }
 
-export { useBook, BookProvider };
+export { BookProvider, useBook };
+

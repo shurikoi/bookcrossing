@@ -1,18 +1,17 @@
 import { useUserData } from "@/components/contexts/UserProvider";
+import DropDownMenuWithChoose from "@/components/ui/DropDownMenuWithChoose";
 import DropDownMenuWithSearch from "@/components/ui/DropDownMenuWithSearch";
+import Button from "@/components/ui/buttons/Button";
 import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon";
 import LanguageIcon from "@/components/ui/icons/LanguageIcon";
+import LeafIcon from "@/components/ui/icons/LeafIcon";
 import ProfileIcon from "@/components/ui/icons/ProfileIcon";
 import SmallPhotosIcon from "@/components/ui/icons/SmallPhotosIcon";
 import TagIcon from "@/components/ui/icons/TagIcon";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { image, messengers, publicationData } from "./PublicationMenu";
-import PublicationImage from "./PublicationImage";
-import LeafIcon from "@/components/ui/icons/LeafIcon";
-import DropDownMenuWithChoose from "@/components/ui/DropDownMenuWithChoose";
-import Button from "@/components/ui/buttons/Button";
 import isPublicationDataValid, { errors } from "@/lib/isPublicationDataValid";
 import Image from "next/image";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { image, messengers, publicationData } from "./PublicationMenu";
 
 export const categories = [
     "Powieść historyczna",

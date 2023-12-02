@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import BookMenu from "./book_menu/BookMenu";
-import PublicationMenu, { messenger } from "./publication_menu/PublicationMenu";
-import FilterBar from "./filter/FilterBar";
-import Publications from "./Publications";
-import { FilterProvider, sort } from "../contexts/FilterProvider";
 import { BookProvider } from "../contexts/BookProvider";
+import { FilterProvider } from "../contexts/FilterProvider";
 import AddBookButton from "../ui/buttons/AddBookButton";
+import Publications from "./Publications";
+import BookMenu from "./book_menu/BookMenu";
+import FilterBar from "./filter/FilterBar";
+import PublicationMenu, { messenger } from "./publication_menu/PublicationMenu";
 
 export interface bookData {
   id: string;

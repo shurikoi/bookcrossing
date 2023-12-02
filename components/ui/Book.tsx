@@ -1,8 +1,7 @@
-import { useState } from "react";
 import dateConjugation from "@/lib/dateConjugation";
-import { memo } from "react";
-import { publication } from "../authorized/Main";
 import Image from "next/image";
+import { memo, useLayoutEffect, useState } from "react";
+import { publication } from "../authorized/Main";
 
 interface BookProps {
   data: publication;
@@ -12,6 +11,10 @@ interface BookProps {
 const Book = memo(({ data, handleClick }: BookProps) => {
   const [isImageLoaded, setIsImageLoaded] = useState(true);
   const [isMouseOver, setIsMouseOver] = useState(false);
+
+  useLayoutEffect(() => {
+    setIsImageLoaded(true);
+  }, [data]);
 
   return (
     <div className="relative">
@@ -28,12 +31,10 @@ const Book = memo(({ data, handleClick }: BookProps) => {
             src={data.image}
             alt=""
             fill
+            priority
             quality={100}
             className={`object-cover`}
-            onLoad={() => {
-              setIsImageLoaded(true);
-            }}
-            onError={() => {
+            onError={(e) => {
               setIsImageLoaded(false);
             }}
           />

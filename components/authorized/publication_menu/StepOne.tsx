@@ -3,7 +3,7 @@ import Button from "@/components/ui/buttons/Button";
 import PhotosIcon from "@/components/ui/icons/PhotosIcon";
 import getExtension from "@/lib/getExtension";
 import { allowedImageTypes } from "@/lib/variables";
-import { ChangeEvent, Dispatch, DragEvent, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, DragEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 interface StepOneProps {

@@ -1,15 +1,15 @@
-import { NextResponse } from "next/server";
-import fs from "fs";
-import books from "@/model/book";
-import connection from "@/lib/connection";
-import isPublicationDataValid from "@/lib/isPublicationDataValid";
 import { publicationData } from "@/components/authorized/publication_menu/PublicationMenu";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
-import users from "@/model/user";
+import connection from "@/lib/connection";
 import generateRandomString from "@/lib/generateRandomString";
-import resizeImage from "@/lib/resizeImage";
 import getExtension from "@/lib/getExtension";
+import isPublicationDataValid from "@/lib/isPublicationDataValid";
+import resizeImage from "@/lib/resizeImage";
+import books from "@/model/book";
+import users from "@/model/user";
+import fs from "fs";
+import { getServerSession } from "next-auth";
+import { NextResponse } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function POST(req: Request) {
     const body: publicationData = await req.json();

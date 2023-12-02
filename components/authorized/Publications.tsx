@@ -1,9 +1,9 @@
-import Book from "../ui/Book";
-import { memo, useLayoutEffect, useEffect, useRef, useState, useMemo } from "react";
-import { publication } from "./Main";
-import { useFilter } from "../contexts/FilterProvider";
+import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useBook } from "../contexts/BookProvider";
+import { useFilter } from "../contexts/FilterProvider";
+import Book from "../ui/Book";
 import PublicationsLoader from "../ui/loaders/skeleton/PublicationsLoader";
+import { publication } from "./Main";
 
 interface fetchData {
   publications: publication[];

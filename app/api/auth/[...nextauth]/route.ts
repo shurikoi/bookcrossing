@@ -1,17 +1,10 @@
-import clientPromise from "@/lib/clientPromise";
 import connection from "@/lib/connection";
-import generateRandomString from "@/lib/generateRandomString";
-import getExtension from "@/lib/getExtension";
 import hashPassword from "@/lib/hashPassword";
-import resizeImage from "@/lib/resizeImage";
 import users from "@/model/user";
-import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import fs from "fs";
 import { ObjectId } from "mongodb";
 import NextAuth, { NextAuthOptions, getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { signOut } from "next-auth/react";
 
 type credentials = {
   login: string;
@@ -83,7 +76,7 @@ export const authOptions: NextAuthOptions = {
     },
     async signIn({ profile, account, user, email, credentials }) {
       const session = await getUserSession();
-      // console.log(profile, account, user, email, credentials, session);
+      
       if (account?.provider == "google" && profile) {
         const { email, given_name: name, family_name: surname, picture: avatar } = profile;
 
@@ -104,3 +97,4 @@ const AuthHandler = NextAuth(authOptions);
 export const getUserSession = () => getServerSession(authOptions);
 
 export { AuthHandler as GET, AuthHandler as POST };
+

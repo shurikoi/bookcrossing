@@ -1,4 +1,4 @@
-import { Dispatch, RefObject, SetStateAction, memo, useRef } from "react";
+import { Dispatch, RefObject, SetStateAction, memo } from "react";
 import useClickOutside from "../hooks/useClickOutside";
 
 interface DropDownMenuProps extends React.HTMLAttributes<HTMLDivElement> {

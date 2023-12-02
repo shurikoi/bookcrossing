@@ -1,5 +1,5 @@
 import { signOut } from "next-auth/react";
-import { Dispatch, SetStateAction, RefObject } from "react";
+import { Dispatch, RefObject, SetStateAction } from "react";
 import { useUserData } from "../contexts/UserProvider";
 import DropDownMenu from "../ui/DropDownMenu";
 interface UserMenuProps {

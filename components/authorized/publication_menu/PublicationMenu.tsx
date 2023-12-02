@@ -1,14 +1,14 @@
-import ModalMenu from "../../ui/ModalMenu";
+import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon";
 import { Dispatch, SetStateAction, useLayoutEffect, useRef, useState } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import TelegramIcon from "../../ui/icons/TelegramIcon";
-import SnapchatIcon from "../../ui/icons/SnapchatIcon";
-import MessengerIcon from "../../ui/icons/MessengerIcon";
+import ModalMenu from "../../ui/ModalMenu";
 import InstagramIcon from "../../ui/icons/InstagramIcon";
+import MessengerIcon from "../../ui/icons/MessengerIcon";
+import SnapchatIcon from "../../ui/icons/SnapchatIcon";
+import TelegramIcon from "../../ui/icons/TelegramIcon";
 import StepOne from "./StepOne";
-import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
-import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon";
+import StepTwo from "./StepTwo";
 
 export type publicationData = {
   title: string;

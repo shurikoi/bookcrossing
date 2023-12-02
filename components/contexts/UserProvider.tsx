@@ -1,9 +1,9 @@
 "use client";
 
-import { validateLogin, validateUserData } from "@/lib/isUserDataValid";
+import { validateLogin } from "@/lib/isUserDataValid";
 import { Session } from "next-auth";
 import { signOut, useSession } from "next-auth/react";
-import { Dispatch, SetStateAction, createContext, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Dispatch, SetStateAction, createContext, useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const UserContext = createContext<any>(null);
 

@@ -1,7 +1,7 @@
 import Image from "next/image";
-import GetStartedBtn from "../ui/buttons/GetStartedButton";
-import { eUkraine } from "../fonts";
 import { Dispatch, SetStateAction } from "react";
+import { eUkraine } from "../fonts";
+import GetStartedBtn from "../ui/buttons/GetStartedButton";
 
 export default function GetStarted({ setIsFormActive }: { setIsFormActive: Dispatch<SetStateAction<boolean>> }) {
   return (

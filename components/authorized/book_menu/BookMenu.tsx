@@ -1,17 +1,17 @@
-import ModalMenu from "../../ui/ModalMenu";
-import { useEffect, useRef, useState } from "react";
-import { useBook } from "../../contexts/BookProvider";
-import ViewMode from "./ViewMode";
-import EditMode from "./EditMode";
-import { CSSTransition, SwitchTransition } from "react-transition-group";
 import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon";
+import { useLayoutEffect, useRef, useState } from "react";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
+import { useBook } from "../../contexts/BookProvider";
+import ModalMenu from "../../ui/ModalMenu";
+import EditMode from "./EditMode";
+import ViewMode from "./ViewMode";
 
 export type BookMenuMode = "edit" | "view";
 
-export default function BookMenu(props : any) {
+export default function BookMenu() {
   const { setBookId, bookId } = useBook();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setMode("view");
     setIsModalActive(!!bookId);
   }, [bookId]);

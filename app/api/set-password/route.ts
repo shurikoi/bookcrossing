@@ -1,10 +1,10 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
-import users from "@/model/user";
-import { NextResponse } from "next/server";
 import connection from "@/lib/connection";
 import hashPassword from "@/lib/hashPassword";
 import { validatePassword } from "@/lib/isUserDataValid";
+import users from "@/model/user";
+import { getServerSession } from "next-auth";
+import { NextResponse } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 interface body {
     password?: string;
