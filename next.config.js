@@ -4,7 +4,7 @@ const nextConfig = {
         minimumCacheTTL: 60,
         remotePatterns: [
             {
-                protocol: "https",
+                protocol: "http",
                 hostname: "**",
             },
         ],

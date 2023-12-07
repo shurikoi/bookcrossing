@@ -35,6 +35,7 @@ export async function POST(req: Request) {
         body: JSON.stringify({
           path,
           image: body.image,
+          apiKey: process.env.UPLOAD_KEY
         }),
         headers: {
           "Content-Type": "application/json"

@@ -17,10 +17,16 @@ app.get("/images/:folder/:image", (req, res) => {
 
 app.post("/upload", async (req, res) => {
   try {
-    const { path, image } = req.body;
+    const { path, image, apiKey } = req.body;
+
+    if (process.env.UPLOAD_KEY != apiKey) throw new Error()
+    
     const buffer = Buffer.from(image.split(",")[1], "base64");
+
     const resizedImage = await resizeImage(buffer);
+
     fs.writeFileSync("./images" + path, resizedImage);
+    
     res.status(200).send({ ok: true });
   } catch (error) {
     console.log(error);
