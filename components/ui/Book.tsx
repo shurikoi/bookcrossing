@@ -20,7 +20,7 @@ const Book = memo(({ data, handleClick }: BookProps) => {
     <div className="relative">
       <div
         className={`rounded-md overflow-hidden relative w-60 aspect-[3/4] ${
-          isImageLoaded ? "skeleton" : "bg-black"
+          isImageLoaded ? "transparent" : "bg-black"
         } font-inter shadow-[0px_0px_15px_1px_rgba(0,0,0,.5)] hover:scale-[1.04] hover:shadow-[0px_0px_30px_1px_rgba(0,0,0,.5)] cursor-pointer duration-200 will-change-transform flex-shrink-0 ${
           data.isReserved ? "border-[7px] border-purple-400" : ""
         }`}
@@ -30,7 +30,7 @@ const Book = memo(({ data, handleClick }: BookProps) => {
       >
         {isImageLoaded ? (
           <Image
-            src={data.image}
+            src={"/api" + data.image}
             alt=""
             fill
             priority
@@ -73,7 +73,7 @@ const Book = memo(({ data, handleClick }: BookProps) => {
       </div>
       <Image
         title={data.ownerData.name + " " + data.ownerData.surname}
-        src={data.ownerData.avatar}
+        src={"/api" + data.ownerData.avatar}
         width={56}
         height={56}
         quality={100}

@@ -4,7 +4,7 @@ import getExtension from "@/lib/getExtension";
 import resizeImage from "@/lib/resizeImage";
 import { allowedImageTypes } from "@/lib/variables";
 import users from "@/model/user";
-import fs from "fs";
+import fs from "fs/promises";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
@@ -30,12 +30,12 @@ export async function POST(req: Request) {
   const path = "/avatars/" + randomName;
 
   try {
-    if (user.avatar != "/avatars/01.png") fs.unlinkSync("./public" + user.avatar);
+    if (user.avatar != "/api/avatars/01.png") await fs.unlink("./assets" + user.avatar);
   } catch (error) {}
 
-  fs.writeFile("./public" + path, resizedImage, () => {});
+  await fs.writeFile("./assets" + path, resizedImage);
 
   await users.updateOne({ _id: user.id }, { avatar: path });
 
-  return NextResponse.json({ path }, { status: 200 });
+  return NextResponse.json({ path : path }, { status: 200 });
 }

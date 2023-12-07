@@ -61,14 +61,14 @@ export default function StepThree({
 
               if (!response.ok) throw new Error();
 
-              const data = await response.json();
+              const {id, path} = await response.json();
 
               setFetchedBooks((fetchedBooks) => {
                 return {
-                  [data.id]: {
+                  [id]: {
                     ...publicationData,
                     owner: user?.id,
-                    image: e.target?.result,
+                    image: path,
                     ownerData: {
                       avatar: user?.avatar,
                       name: user?.name,
@@ -83,11 +83,11 @@ export default function StepThree({
                 setBooks((books) => {
                   return [
                     {
-                      id: data.id,
+                      id,
                       title: publicationData?.title || "",
                       author: publicationData?.author || "",
                       date: publicationData?.date || new Date(),
-                      image: e.target?.result as string,
+                      image: path as string,
                       isReserved: false,
                       ownerData: {
                         avatar: user?.avatar || "",
@@ -156,7 +156,7 @@ export default function StepThree({
           <div className="relative aspect-[3/4]">
             <img src={publicationData?.image} alt="book" className="w-full h-full object-cover" />
             <img
-              src={user?.avatar}
+              src={"/api" + user?.avatar}
               className="absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-gray-500"
             ></img>
           </div>

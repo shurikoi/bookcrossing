@@ -1,7 +1,7 @@
 import connection from "@/lib/connection";
 import books from "@/model/book";
 import users from "@/model/user";
-import fs from "fs";
+import fs from "fs/promises";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
         const { image } = await books.findOneAndDelete({ _id: id });
 
         try {
-            fs.unlinkSync("./public" + image);
+            await fs.unlink("./assets" + image);
         } catch (error) {}
     } else return NextResponse.json({}, { status: 404 });
 

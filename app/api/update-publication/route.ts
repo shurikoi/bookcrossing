@@ -3,7 +3,7 @@ import generateRandomString from "@/lib/generateRandomString";
 import getExtension from "@/lib/getExtension";
 import resizeImage from "@/lib/resizeImage";
 import books from "@/model/book";
-import fs from "fs";
+import fs from "fs/promises";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
@@ -28,15 +28,25 @@ export async function POST(req: Request) {
 
       const resizedImage = await resizeImage(imageBuffer);
 
-      fs.writeFile("./public" + randomName, resizedImage, () => {});
+      await fs.writeFile("./assets" + randomName, resizedImage);
 
       await books.findOneAndUpdate(
         { _id: id },
-        { title, author, description, category, state, language, messenger, messengerDescription, image: randomName }
+        {
+          title,
+          author,
+          description,
+          category,
+          state,
+          language,
+          messenger,
+          messengerDescription,
+          image: randomName,
+        }
       );
 
       try {
-        fs.unlinkSync("./public" + book.image);
+        await fs.unlink("./assets" + book.image);
       } catch (error) {}
     } else {
       await books.findOneAndUpdate(

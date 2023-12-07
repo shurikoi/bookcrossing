@@ -71,7 +71,7 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                         <Image
                           quality={100}
                           fill
-                          src={book.image}
+                          src={"/api" + book.image}
                           alt=""
                           priority
                           className={`object-cover`}
@@ -94,7 +94,7 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                     width={64}
                     alt=""
                     title={book.ownerData.name + " " + book.ownerData.surname}
-                    src={book?.ownerData.avatar}
+                    src={"/api" + book?.ownerData.avatar}
                     className={`absolute bottom-0 w-16 h-16 left-1/2 translate-y-1/2 -translate-x-1/2 rounded-full bg-gray-500 cursor-pointer duration-200 ${
                       isImageHovered ? "opacity-0" : "opacity-100"
                     }`}

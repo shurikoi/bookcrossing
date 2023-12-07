@@ -8,7 +8,7 @@ const user = new Schema(
     login: String,
     group: String,
     email: String,
-    avatar: { type: String, default: "/avatars/01.png" },
+    avatar: { type: String, default: "/api/avatars/01.png" },
     points: { type: Number, default: 1 },
     contact: { Telegram: String, Snapchat: String, Messenger: String, Instagram: String },
   },

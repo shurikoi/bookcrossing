@@ -41,7 +41,7 @@ export default function SettingsMenu({ isMenuActive, setIsMenuActive }: Settings
                             height={96}
                             width={96}
                             alt=""
-                            src={user?.avatar || ""}
+                            src={"/api" + user?.avatar || ""}
                             className={`border-2 border-[#61C558] p-1 md:p-0 md:border-0 w-24 h-24 md:w-16 md:h-16 rounded-full`}
                         ></Image>
                         <div>

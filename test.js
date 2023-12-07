@@ -7,7 +7,7 @@ const user = new mongoose.Schema(
         password: String,
         email: String,
         provider: { type: String, default: "credentials" },
-        avatar: { type: String, value: "/avatars/01.png" },
+        avatar: { type: String, value: "/api/avatars/01.png" },
         points: { type: Number, default: 1 },
         contact: { Telegram: String, Snapchat: String, Messenger: String, Instagram: String },
         date: Date,

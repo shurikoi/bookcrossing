@@ -102,23 +102,23 @@ export default function PublicationMenu({ isModalActive, setIsModalActive }: Pub
   const nodeRef = useRef<any>(null);
 
   return (
-    <ModalMenu fullMode isModalActive={isModalActive} header={header} setIsModalActive={setIsModalActive}>
-      <SwitchTransition mode="out-in">
-        <CSSTransition
-          key={currentStep}
-          classNames="fade"
-          nodeRef={nodeRef}
-          addEndListener={(done: any) => {
-            if (nodeRef.current) {
-              nodeRef.current.addEventListener("transitionend", done, false);
-            }
-          }}
-        >
+    <SwitchTransition mode="out-in">
+      <CSSTransition
+        key={currentStep}
+        classNames="fade"
+        nodeRef={nodeRef}
+        addEndListener={(done: any) => {
+          if (nodeRef.current) {
+            nodeRef.current.addEventListener("transitionend", done, false);
+          }
+        }}
+      >
+        <ModalMenu fullMode isModalActive={isModalActive} header={header} setIsModalActive={setIsModalActive}>
           <div className="h-full md:h-auto" ref={nodeRef}>
             {steps[currentStep]}
           </div>
-        </CSSTransition>
-      </SwitchTransition>
-    </ModalMenu>
+        </ModalMenu>
+      </CSSTransition>
+    </SwitchTransition>
   );
 }

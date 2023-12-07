@@ -7,14 +7,15 @@ export async function GET(req: Request, context: { params: { book: string | unde
 
   const filePath = path.resolve(".", "assets/books/" + book);
 
-  // let file: Buffer;
-
   try {
     const file = await fs.readFile(filePath);
 
-    return new NextResponse(file);
-  } catch (error) {
-    return new NextResponse(null, {status: 404})
-  }
+    const headers = new Headers(req.headers);
 
+    headers.set("Cache-Control", "max-age=300");
+
+    return new NextResponse(file, { headers });
+  } catch (error) {
+    return new NextResponse(null, { status: 404 });
+  }
 }
