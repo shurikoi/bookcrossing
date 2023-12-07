@@ -41,7 +41,9 @@ const BookContext = createContext<BookContext>({
   setQueryBooksCount: () => {},
 });
 
-function BookProvider({ children }: { children: React.ReactNode }) {
+interface BookProvideProps{ children: React.ReactNode }
+
+function BookProvider({ children }: BookProvideProps) {
   const params = new URLSearchParams(typeof window !== "undefined" ? window?.location.search : "");
 
   const [bookId, setBookId] = useState(params.get("book") || "");

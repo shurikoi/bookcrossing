@@ -68,7 +68,7 @@ export default function StepThree({
                   [data.id]: {
                     ...publicationData,
                     owner: user?.id,
-                    image: data.image,
+                    image: e.target?.result,
                     ownerData: {
                       avatar: user?.avatar,
                       name: user?.name,
@@ -78,16 +78,16 @@ export default function StepThree({
                   ...fetchedBooks,
                 };
               });
-
+              console.log(e.target.result)
               if (choosenSort == "desc")
                 setBooks((books) => {
                   return [
                     {
-                      id: data.id as string,
+                      id: data.id,
                       title: publicationData?.title || "",
                       author: publicationData?.author || "",
                       date: publicationData?.date || new Date(),
-                      image: data.image,
+                      image: e.target?.result as string,
                       isReserved: false,
                       ownerData: {
                         avatar: user?.avatar || "",

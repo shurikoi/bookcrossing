@@ -34,9 +34,9 @@ const Book = memo(({ data, handleClick }: BookProps) => {
             priority
             quality={100}
             className={`object-cover`}
-            onError={(e) => {
-              setIsImageLoaded(false);
-            }}
+            // onError={(e) => {
+            //   setIsImageLoaded(false);
+            // }}
           />
         ) : (
           <div className="absolute text-white left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">Nie ma zdjęcia</div>

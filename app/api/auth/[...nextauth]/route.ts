@@ -45,7 +45,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       await connection();
-      console.log(user, token);
+      
       const foundUser = await users.findOne({ _id: user ? new ObjectId(user.id) : new ObjectId(token.user?.id) });
 
       if (foundUser) {

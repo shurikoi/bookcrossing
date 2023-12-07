@@ -35,7 +35,7 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
 
   return (
     <>
-      <div className="flex flex-col w-full md:min-w-[700px] min-h-[400px] gap-4 md:p-6 h-fit">
+      <div className="flex flex-col w-full md:min-w-[700px] min-h-[400px] gap-4 pb-6 md:p-6 h-fit">
         {isLoading ? (
           <BookMenuLoader></BookMenuLoader>
         ) : book ? (
@@ -73,8 +73,8 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                           fill
                           src={book.image}
                           alt=""
-                          className={`object-cover`}
                           priority
+                          className={`object-cover`}
                           onError={(e) => {
                             setIsImageLoaded(false);
                           }}

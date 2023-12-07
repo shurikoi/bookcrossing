@@ -51,7 +51,6 @@ export interface publication {
 }
 
 export default function Main({ searchParams }: { searchParams?: { [key: string]: string | undefined } }) {
-  console.log(searchParams);
   const [isPublicationModalActive, setIsPublicationModalActive] = useState(false);
 
   const [booksCount, setBooksCount] = useState(0);
