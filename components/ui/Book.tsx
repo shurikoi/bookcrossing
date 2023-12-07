@@ -19,7 +19,9 @@ const Book = memo(({ data, handleClick }: BookProps) => {
   return (
     <div className="relative">
       <div
-        className={`rounded-md overflow-hidden relative w-60 aspect-[3/4] bg-black font-inter shadow-[0px_0px_15px_1px_rgba(0,0,0,.5)] hover:scale-[1.04] hover:shadow-[0px_0px_30px_1px_rgba(0,0,0,.5)] cursor-pointer duration-200 will-change-transform flex-shrink-0 ${
+        className={`rounded-md overflow-hidden relative w-60 aspect-[3/4] ${
+          isImageLoaded ? "skeleton" : "bg-black"
+        } font-inter shadow-[0px_0px_15px_1px_rgba(0,0,0,.5)] hover:scale-[1.04] hover:shadow-[0px_0px_30px_1px_rgba(0,0,0,.5)] cursor-pointer duration-200 will-change-transform flex-shrink-0 ${
           data.isReserved ? "border-[7px] border-purple-400" : ""
         }`}
         onClick={handleClick}
@@ -34,12 +36,14 @@ const Book = memo(({ data, handleClick }: BookProps) => {
             priority
             quality={100}
             className={`object-cover`}
-            // onError={(e) => {
-            //   setIsImageLoaded(false);
-            // }}
+            onError={(e) => {
+              setIsImageLoaded(false);
+            }}
           />
         ) : (
-          <div className="absolute text-white left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">Nie ma zdjęcia</div>
+          <div className="absolute text-white w-full h-full flex items-center justify-center bg-black">
+            Nie ma zdjęcia
+          </div>
         )}
 
         <div
