@@ -30,12 +30,12 @@ export async function POST(req: Request) {
   const path = "/avatars/" + randomName;
 
   try {
-    if (user.avatar != "/api/avatars/01.png") await fs.unlink("./assets" + user.avatar);
+    if (user.avatar != "/api/avatars/01.png") await fs.unlink("./assets" + user.avatar.slice(4));
   } catch (error) {}
 
   await fs.writeFile("./assets" + path, resizedImage);
 
-  await users.updateOne({ _id: user.id }, { avatar: path });
+  await users.updateOne({ _id: user.id }, { avatar: "/api" + path });
 
-  return NextResponse.json({ path : path }, { status: 200 });
+  return NextResponse.json({ path : "/api" + path }, { status: 200 });
 }

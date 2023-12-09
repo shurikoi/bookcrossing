@@ -41,12 +41,12 @@ export async function POST(req: Request) {
           language,
           messenger,
           messengerDescription,
-          image: randomName,
+          image: "/api" + randomName,
         }
       );
 
       try {
-        await fs.unlink("./assets" + book.image);
+        await fs.unlink("./assets" + book.image.slice(4));
       } catch (error) {}
     } else {
       await books.findOneAndUpdate(

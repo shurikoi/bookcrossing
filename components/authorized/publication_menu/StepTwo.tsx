@@ -91,7 +91,7 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
         </div>
         <div className="flex flex-col gap-6 p-4 w-full h-full md:w-[360px]">
           <div className="flex gap-4 items-center">
-            <Image alt="" className="rounded-full w-10 h-10" width={40} height={40} src={"/api" + user?.avatar || ""} />
+            <Image alt="" className="rounded-full w-10 h-10" width={40} height={40} src={user?.avatar || ""} />
             <div className="font-extralight text-base">{user?.name}</div>
           </div>
 

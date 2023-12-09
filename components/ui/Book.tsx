@@ -17,7 +17,7 @@ const Book = memo(({ data, handleClick }: BookProps) => {
   }, [data]);
 
   return (
-    <div className="relative">
+    <div className="relative" key={data.id}>
       <div
         className={`rounded-md overflow-hidden relative w-60 aspect-[3/4] ${
           isImageLoaded ? "transparent" : "bg-black"
@@ -30,7 +30,7 @@ const Book = memo(({ data, handleClick }: BookProps) => {
       >
         {isImageLoaded ? (
           <Image
-            src={"/api" + data.image}
+            src={data.image}
             alt=""
             fill
             priority
@@ -73,7 +73,7 @@ const Book = memo(({ data, handleClick }: BookProps) => {
       </div>
       <Image
         title={data.ownerData.name + " " + data.ownerData.surname}
-        src={"/api" + data.ownerData.avatar}
+        src={data.ownerData.avatar}
         width={56}
         height={56}
         quality={100}
