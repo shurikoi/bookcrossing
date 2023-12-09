@@ -11,8 +11,6 @@ const FilterMenu = memo(() => {
     
     const params = new URLSearchParams(typeof window !== "undefined" ? window?.location.search : "");
     
-    const { isBooksLoading, setIsBooksLoading } = useBook();
-
     const filter = useFilter();
 
     function setCategories(e: ChangeEvent<HTMLInputElement>) {
@@ -106,7 +104,7 @@ const FilterMenu = memo(() => {
                                         id={category}
                                         onChange={setCategories}
                                     />
-                                    <label className="cursor-pointer" htmlFor={category}>
+                                    <label className="w-full overflow-hidden text-ellipsis cursor-pointer" htmlFor={category}>
                                         {category}
                                     </label>
                                 </label>

@@ -61,14 +61,14 @@ export default function StepThree({
 
               if (!response.ok) throw new Error();
 
-              const {id, path} = await response.json();
+              const { id } = await response.json();
 
               setFetchedBooks((fetchedBooks) => {
                 return {
                   [id]: {
                     ...publicationData,
                     owner: user?.id,
-                    image: path,
+                    image: image?.url,
                     ownerData: {
                       avatar: user?.avatar,
                       name: user?.name,
@@ -78,7 +78,7 @@ export default function StepThree({
                   ...fetchedBooks,
                 };
               });
-              console.log(e.target.result)
+
               if (choosenSort == "desc")
                 setBooks((books) => {
                   return [
@@ -87,8 +87,9 @@ export default function StepThree({
                       title: publicationData?.title || "",
                       author: publicationData?.author || "",
                       date: publicationData?.date || new Date(),
-                      image: path as string,
+                      image: image?.url!,
                       isReserved: false,
+                      owner: user?.id || "",
                       ownerData: {
                         avatar: user?.avatar || "",
                         name: user?.name || "",
@@ -121,8 +122,6 @@ export default function StepThree({
               setFile(undefined);
               setCurrentStep(0);
 
-              if (image?.data) URL.revokeObjectURL(image.data);
-
               resolve(1);
             } catch (error) {
               reject();
@@ -139,7 +138,7 @@ export default function StepThree({
         });
       };
 
-      reader.readAsDataURL(file);
+      if (image?.data) reader.readAsDataURL(image?.data);
     }
   }
 

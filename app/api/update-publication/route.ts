@@ -26,9 +26,8 @@ export async function POST(req: Request) {
 
       const imageBuffer = Buffer.from(image.split(",")[1], "base64");
 
-      const resizedImage = await resizeImage(imageBuffer);
-
-      await fs.writeFile("./assets" + randomName, resizedImage);
+      if (imageBuffer.byteLength / 1024 / 1024 > 1) return NextResponse.json("Coś poszło nie tak", { status: 400 });
+      else await fs.writeFile("./assets" + randomName, imageBuffer);
 
       await books.findOneAndUpdate(
         { _id: id },

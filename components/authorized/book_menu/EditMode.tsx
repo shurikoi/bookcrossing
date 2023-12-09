@@ -18,9 +18,10 @@ import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { bookData } from "../Main";
-import { messengers } from "../publication_menu/PublicationMenu";
+import { image, messengers } from "../publication_menu/PublicationMenu";
 import { bookStates, categories, languages } from "../publication_menu/StepTwo";
 import { BookMenuMode } from "./BookMenu";
+import resizeImage from "@/lib/resizeImage";
 
 interface EditModeProps {
   setMode: Dispatch<SetStateAction<BookMenuMode>>;
@@ -41,8 +42,10 @@ export default function EditMode({ setMode }: EditModeProps) {
   const [messenger, setMessenger] = useState(book?.messenger || "");
   const [messengerDescription, setMessengerDescription] = useState(book?.messengerDescription || "");
 
-  const [file, setFile] = useState<File>();
-  const [image, setImage] = useState(book?.image || "");
+  // const [file, setFile] = useState<File>();
+  const [image, setImage] = useState<image>({
+    url: book?.image || "",
+  });
 
   const [errors, setErrors] = useState<errors>();
 
@@ -61,7 +64,7 @@ export default function EditMode({ setMode }: EditModeProps) {
     messenger,
     messengerDescription,
     date: book?.date || new Date(),
-    image,
+    image: image?.url || "",
   };
 
   function openFileMenu() {
@@ -77,8 +80,15 @@ export default function EditMode({ setMode }: EditModeProps) {
       const extension = getExtension(files[0].name);
 
       if (extension && allowedImageTypes.includes(extension.toLowerCase())) {
-        setFile(files[0]);
-        setImage(URL.createObjectURL(files[0]));
+        resizeImage({
+          file: files[0],
+          callback: ({ url, data }) => {
+            setImage({
+              data,
+              url,
+            });
+          },
+        });
       } else {
         toast.error("Wybierz format .png lub .jpeg");
       }
@@ -114,37 +124,35 @@ export default function EditMode({ setMode }: EditModeProps) {
     }
 
     async function updatePublication(data: { [key: string]: string | ArrayBuffer | undefined }) {
-      async function fetchUpdate() {
-        return new Promise(async (resolve, reject) => {
-          try {
-            const response = await fetch("/api/update-publication", {
-              method: "post",
-              body: JSON.stringify(data),
+      const updatePromise = new Promise(async (resolve, reject) => {
+        try {
+          const response = await fetch("/api/update-publication", {
+            method: "post",
+            body: JSON.stringify(data),
+          });
+
+          if (!response.ok) throw new Error();
+
+          setMode("view");
+
+          setBook(newBook);
+
+          if (data.image)
+            setBooks((books) => {
+              const updatedBook = books.find((book) => book.id == bookId);
+
+              if (updatedBook?.image) updatedBook.image = image?.url || "";
+
+              return books;
             });
 
-            if (!response.ok) throw new Error();
+          resolve(1);
+        } catch (error) {
+          reject();
+        }
+      });
 
-            setMode("view");
-
-            setBook(newBook);
-
-            if (data.image)
-              setBooks((books) => {
-                const updatedBook = books.find((book) => book.id == bookId);
-
-                if (updatedBook?.image) updatedBook.image = image;
-
-                return books;
-              });
-
-            resolve(1);
-          } catch (error) {
-            reject();
-          }
-        });
-      }
-
-      toast.promise(fetchUpdate(), {
+      toast.promise(updatePromise, {
         error: "Nie udało się zaktualizować dane",
         loading: "Aktualizujemy dane...",
         success: "Dane zostały zaktualizowane",
@@ -154,19 +162,6 @@ export default function EditMode({ setMode }: EditModeProps) {
     setIsLoading(true);
 
     const reader = new FileReader();
-    if (file) reader.readAsDataURL(file);
-    else
-      await updatePublication({
-        id: book?.id,
-        author,
-        title,
-        description,
-        category,
-        state,
-        language,
-        messenger,
-        messengerDescription,
-      });
 
     reader.onload = async (e) => {
       if (e.target?.result)
@@ -183,6 +178,20 @@ export default function EditMode({ setMode }: EditModeProps) {
           image: e.target.result,
         });
     };
+
+    if (image?.data) reader.readAsDataURL(image.data);
+    else
+      await updatePublication({
+        id: book?.id,
+        author,
+        title,
+        description,
+        category,
+        state,
+        language,
+        messenger,
+        messengerDescription,
+      });
 
     setIsLoading(false);
   }
@@ -203,7 +212,7 @@ export default function EditMode({ setMode }: EditModeProps) {
       </div>
       <div className="flex flex-col md:flex-row h-full">
         <div className="flex w-full md:w-[400px] aspect-[3/4] relative shrink-0">
-          <Image className="object-cover" fill src={image || ""} priority alt="" />
+          <Image className="object-cover" fill src={image?.url || ""} priority alt="" />
           <div
             className="flex items-center justify-center cursor-pointer bg-black/40 gap-2.5 text-white w-full h-full absolute top-0 left-0"
             onClick={openFileMenu}

@@ -43,6 +43,7 @@ export interface publication {
   title: string;
   image: string;
   isReserved?: boolean;
+  owner: string;
   ownerData: {
     avatar: string;
     name: string;
@@ -52,9 +53,6 @@ export interface publication {
 
 export default function Main({ searchParams }: { searchParams?: { [key: string]: string | undefined } }) {
   const [isPublicationModalActive, setIsPublicationModalActive] = useState(false);
-
-  const [booksCount, setBooksCount] = useState(0);
-  const [booksQueryCount, setBooksQueryCount] = useState(0);
 
   function handleAddBookClick() {
     setIsPublicationModalActive(true);
@@ -66,26 +64,14 @@ export default function Main({ searchParams }: { searchParams?: { [key: string]:
         Wierzymy, że korzystanie z&nbsp;serwisu może dostarczyć wiele radości i&nbsp;wzbogacić Twoje doświadczenie
         czytelnicze.
       </div>
-      <FilterProvider
-        paramsQuery={{
-          filter: {
-            categories: searchParams?.categories?.split(",") || [],
-            languages: searchParams?.languages?.split(",") || [],
-            states: searchParams?.states?.split(",") || [],
-          },
-          sort: searchParams?.sort == "desc" || searchParams?.sort == "asc" ? searchParams?.sort : "desc",
-        }}
-      >
-        <BookProvider>
-          <FilterBar></FilterBar>
 
-          <Publications></Publications>
+      <FilterBar></FilterBar>
 
-          <PublicationMenu isModalActive={isPublicationModalActive} setIsModalActive={setIsPublicationModalActive} />
+      <Publications></Publications>
 
-          <BookMenu />
-        </BookProvider>
-      </FilterProvider>
+      <PublicationMenu isModalActive={isPublicationModalActive} setIsModalActive={setIsPublicationModalActive} />
+
+      <BookMenu />
 
       <AddBookButton onClick={handleAddBookClick} />
     </div>

@@ -9,6 +9,7 @@ import TelegramIcon from "../../ui/icons/TelegramIcon";
 import StepOne from "./StepOne";
 import StepThree from "./StepThree";
 import StepTwo from "./StepTwo";
+import resizeImage from "@/lib/resizeImage";
 
 export type publicationData = {
   title: string;
@@ -46,8 +47,8 @@ interface PublicationMenuProps {
 
 export type image =
   | {
-      name: string | undefined;
-      data: string | undefined;
+      url: string;
+      data?: Blob;
     }
   | undefined;
 
@@ -56,19 +57,30 @@ export default function PublicationMenu({ isModalActive, setIsModalActive }: Pub
 
   const [publicationData, setPublicationData] = useState<publicationData>();
 
+  const [isImageLoading, setIsImageLoading] = useState(false);
   const [file, setFile] = useState<File>();
 
   const [image, setImage] = useState<image>();
 
   useLayoutEffect(() => {
     if (file) {
-      setImage({
-        name: file.name,
-        data: URL.createObjectURL(file),
+      setIsImageLoading(true);
+
+      resizeImage({
+        file,
+        callback: ({ url, data }) => {
+          setImage({
+            url,
+            data,
+          });
+
+          setCurrentStep(1);
+
+          setIsImageLoading(false);
+        },
       });
     }
   }, [file]);
-
   const header =
     currentStep > 0 ? (
       <div className="w-full p-3 relative text-center">

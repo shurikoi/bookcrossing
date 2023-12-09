@@ -1,12 +1,19 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Advantages from "./Advantages";
 import AuthForm from "./AuthForm";
 import GetStarted from "./GetStarted";
 import Header from "./Header";
+import { signOut, useSession } from "next-auth/react";
 
 export default function StartPage() {
-  const [isFormActive, setIsFormActive] = useState(false)
+  const [isFormActive, setIsFormActive] = useState(false);
+
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session?.user?.unauthenticated) signOut();
+  }, [session]);
 
   return (
     <>

@@ -49,7 +49,7 @@ export async function POST(req: Request) {
               },
             },
             {
-              $unset: ["points", "_id", "date", "password", "contact"],
+              $unset: ["points", "_id", "date", "password", "contact", "librusId", "login", "group"],
             },
           ],
           as: "ownerData",

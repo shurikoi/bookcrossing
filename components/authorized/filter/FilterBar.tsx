@@ -11,11 +11,7 @@ export default function FilterBar() {
 
   const { isBooksLoading, setIsBooksLoading, setBooks, setPage, setHasMore, books, queryBooksCount } = useBook();
 
-  // useLayoutEffect(() => {
-  //   setIsBooksLoading(true);
-  // }, [query]);
-
-  function resetFilter() {
+  function resetFilters() {
     if (isBooksLoading) return;
 
     const params = new URLSearchParams(window.location.search);
@@ -49,7 +45,7 @@ export default function FilterBar() {
             <div>
               {queryBooksCount} {bookConjugation(queryBooksCount)}
             </div>
-            <div className="text-[#0072DA] font-medium flex gap-2 items-center cursor-pointer" onClick={resetFilter}>
+            <div className="text-[#0072DA] font-medium flex gap-2 items-center cursor-pointer" onClick={resetFilters}>
               <ResetIcon></ResetIcon>
               Resetuj filtry
             </div>

@@ -63,8 +63,6 @@ export const authOptions: NextAuthOptions = {
         };
       }
 
-      // users.findOne({ email: token.email }).then((data) => console.log(data));
-
       return token;
     },
     async session({ session, token }) {

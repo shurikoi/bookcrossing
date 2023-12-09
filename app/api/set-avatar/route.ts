@@ -25,17 +25,16 @@ export async function POST(req: Request) {
   const randomName = generateRandomString() + "." + extension;
   const imageBuffer = Buffer.from(avatar.split(",")[1], "base64");
 
-  const resizedImage = await resizeImage(imageBuffer, 200, 200);
-
   const path = "/avatars/" + randomName;
 
   try {
     if (user.avatar != "/api/avatars/01.png") await fs.unlink("./assets" + user.avatar.slice(4));
   } catch (error) {}
 
-  await fs.writeFile("./assets" + path, resizedImage);
+  if (imageBuffer.byteLength / 1024 / 1024 > 1) return NextResponse.json("Coś poszło nie tak", { status: 400 });
+  else await fs.writeFile("./assets" + path, imageBuffer);
 
   await users.updateOne({ _id: user.id }, { avatar: "/api" + path });
 
-  return NextResponse.json({ path : "/api" + path }, { status: 200 });
+  return NextResponse.json({ path: "/api" + path }, { status: 200 });
 }

@@ -12,7 +12,8 @@ export default function Home({
 }) {
   const { data: session } = useSession();
 
-  if (session) return <AuthorizedStartPage searchParams={searchParams}></AuthorizedStartPage>;
-
+  if (session && !session.user?.unauthenticated) return <AuthorizedStartPage searchParams={searchParams}></AuthorizedStartPage>;
+  
   return <UnauthorizedStartPage></UnauthorizedStartPage>;
+
 }

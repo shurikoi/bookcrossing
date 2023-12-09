@@ -66,7 +66,7 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
       messenger,
       messengerDescription,
       date: new Date(),
-      image: image?.data || "",
+      image: image?.url || "",
     });
   }, [title, author, bookCategory, bookDescription, bookLanguage, bookState, messenger, messengerDescription]);
 
@@ -86,7 +86,7 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
       </div>
       <div className="flex flex-col md:flex-row h-full">
         <div className="flex w-full md:w-[400px] aspect-[3/4] relative shrink-0">
-          <Image fill src={image?.data || ""} className="object-cover" quality={100} alt="" />
+          <Image fill src={image?.url || ""} className="object-cover rounded-bl-lg" quality={100} alt="" />
           {/* <PublicationImage image={image?.data}></PublicationImage> */}
         </div>
         <div className="flex flex-col gap-6 p-4 w-full h-full md:w-[360px]">
