@@ -12,7 +12,7 @@ import { useBook } from "@/components/contexts/BookProvider";
 
 export default function ProfilePage() {
   const { user } = useUserData();
-  const { setBooks, books } = useBook();
+  const { setBooks, setFetchedBooks } = useBook();
 
   const [isChangePasswordMenuActive, setIsChangePasswordMenuActive] = useState(false);
 
@@ -51,13 +51,21 @@ export default function ProfilePage() {
             if (!response.ok) throw new Error();
 
             user?.setAvatar(image.url);
-            
+
             setBooks((books) => {
               const booksToChange = books.filter((book) => book.owner == user?.id);
-              
-              booksToChange.forEach(book => {
-                book.ownerData.avatar = image.url
-              })
+
+              booksToChange.forEach((book) => {
+                book.ownerData.avatar = image.url;
+              });
+
+              setFetchedBooks((fetchedBooks) => {
+                booksToChange.forEach((book) => {
+                  if (fetchedBooks[book.id]) fetchedBooks[book.id].ownerData.avatar = image.url;
+                });
+
+                return fetchedBooks;
+              });
 
               return [...books];
             });
