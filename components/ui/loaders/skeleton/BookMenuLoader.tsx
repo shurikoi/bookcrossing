@@ -31,21 +31,21 @@ export default function BookMenuLoader() {
                             <ProfileIcon />
                             <div className="text-[#4E4E4E]">Autor</div>
                         </div>
-                        <div className={`py-2 px-3 rounded-sm w-full skeleton h-[2rem]`}></div>
+                        <div className={`py-2 px-3 rounded-sm w-full skeleton h-[1.75rem]`}></div>
                     </div>
                     <div className="flex flex-col gap-3 whitespace-nowrap items-center md:items-start">
                         <div className="flex gap-3 items-center">
                             <LeafIcon />
                             <div className="text-[#4E4E4E]">Stan</div>
                         </div>
-                        <div className={`py-2 px-3 rounded-sm w-full skeleton h-[2rem]`}></div>
+                        <div className={`py-2 px-3 rounded-sm w-full skeleton h-[1.75rem]`}></div>
                     </div>
                     <div className="flex flex-col gap-3 whitespace-nowrap items-center md:items-start">
                         <div className="flex gap-3 items-center">
                             <TagIcon />
                             <div className="text-[#4E4E4E]">Kategoria</div>
                         </div>
-                        <div className={`py-2 px-3 rounded-sm w-full skeleton h-[2rem]`}></div>
+                        <div className={`py-2 px-3 rounded-sm w-full skeleton h-[1.75rem]`}></div>
                     </div>
                     <div className="flex flex-col gap-3 whitespace-nowrap items-center md:items-start">
                         <div className="flex gap-3 items-center">

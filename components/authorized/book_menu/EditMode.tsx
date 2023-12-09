@@ -212,7 +212,7 @@ export default function EditMode({ setMode }: EditModeProps) {
       </div>
       <div className="flex flex-col md:flex-row h-full">
         <div className="flex w-full md:w-[400px] aspect-[3/4] relative shrink-0">
-          <Image className="object-cover" fill src={image?.url || ""} priority alt="" />
+          <Image className="object-cover" fill src={image?.url || ""} priority alt="" quality={100} />
           <div
             className="flex items-center justify-center cursor-pointer bg-black/40 gap-2.5 text-white w-full h-full absolute top-0 left-0"
             onClick={openFileMenu}
@@ -224,7 +224,7 @@ export default function EditMode({ setMode }: EditModeProps) {
         </div>
         <div className="flex flex-col gap-6 p-4 w-full md:w-[360px]">
           <div className="flex gap-4 items-center">
-            <img className="w-10 h-10 rounded-full" src={user?.avatar} alt="" />
+            <Image className="rounded-full" src={user?.avatar || ""} width={64} height={64} quality={100} alt="" />
             <div className="font-extralight text-base">{user?.name}</div>
           </div>
 

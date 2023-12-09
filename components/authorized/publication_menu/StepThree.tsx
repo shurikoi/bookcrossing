@@ -12,6 +12,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
 import PublicationField from "../../ui/PublicationField";
 import { image, publicationData } from "./PublicationMenu";
+import Image from "next/image";
 
 interface StepThreeProps {
   image: image;
@@ -35,6 +36,8 @@ export default function StepThree({
   const { user } = useUserData();
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const [isImageHovered, setIsImageHovered] = useState(false);
 
   const { isSmallScreen } = useScreen();
   const { setFetchedBooks } = useBook();
@@ -152,12 +155,30 @@ export default function StepThree({
       </div>
       <div className="flex flex-col md:flex-row w-full md:min-w-[700px] min-h-[400px] gap-10 md:p-6 h-fit">
         <div className="flex flex-col gap-10 shrink-0 md:w-[200px]">
-          <div className="relative aspect-[3/4]">
-            <img src={publicationData?.image} alt="book" className="w-full h-full object-cover" />
-            <img
-              src={"/api" + user?.avatar}
-              className="absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-gray-500"
-            ></img>
+          <div
+            className="relative aspect-[3/4]"
+            onMouseEnter={() => setIsImageHovered(true)}
+            onMouseLeave={() => setIsImageHovered(false)}
+          >
+            <Image
+              quality={100}
+              fill
+              priority
+              src={publicationData?.image || ""}
+              alt="book"
+              className="object-cover"
+            />
+            <Image
+              quality={100}
+              height={64}
+              width={64}
+              alt=""
+              title={user?.name + " " + user?.surname}
+              src={user?.avatar || ""}
+              className={`absolute bottom-0 w-16 h-16 left-1/2 translate-y-1/2 -translate-x-1/2 rounded-full bg-gray-500 cursor-pointer duration-200 ${
+                isImageHovered ? "opacity-0" : "opacity-100"
+              }`}
+            ></Image>
           </div>
           {!isSmallScreen && (
             <Button

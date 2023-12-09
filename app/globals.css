@@ -116,7 +116,7 @@ button:focus-visible {
 
 .fade-enter-active,
 .fade-exit-active {
-  transition: 0.3s;
+  transition: .3s;
 }
 
 .item-enter {
