@@ -101,7 +101,6 @@ const DropDownMenuWithSearch = memo(
           placeholder={placeholder}
           value={value}
           maxLength={55}
-          onBlur={() => setIsMenuActive(false)}
           onFocus={() => setIsMenuActive(true)}
           onKeyDown={handleKeyDown}
           onChange={(e) => {

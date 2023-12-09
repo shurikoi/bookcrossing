@@ -224,14 +224,14 @@ export default function EditMode({ setMode }: EditModeProps) {
         </div>
         <div className="flex flex-col gap-6 p-4 w-full md:w-[360px]">
           <div className="flex gap-4 items-center">
-            <Image className="rounded-full" src={user?.avatar || ""} width={64} height={64} quality={100} alt="" />
+            <Image className="w-14 h-14 rounded-full" src={user?.avatar || ""} width={56} height={56} quality={100} alt="" />
             <div className="font-extralight text-base">{user?.name}</div>
           </div>
 
           <div className="flex flex-col gap-4 text-[20px] font-lato font-normal md:h-[380px] md:overflow-y-auto flex-grow flex-shrink">
-            <div className="flex items-center justify-between px-1">
+            <div className="flex items-center gap-2 px-1">
               <input
-                className={`duration-200 ${
+                className={`duration-200 w-full ${
                   errors?.title ? "text-red-600 placeholder:text-red-600" : "text-black placeholder:text-[#6C6C6C]"
                 }`}
                 placeholder="Tytuł"
@@ -241,9 +241,9 @@ export default function EditMode({ setMode }: EditModeProps) {
               />
               <SmallPhotosIcon></SmallPhotosIcon>
             </div>
-            <div className="flex items-center justify-between px-1">
+            <div className="flex items-center gap-3 px-1">
               <input
-                className={`duration-200 ${
+                className={`duration-200 w-full ${
                   errors?.author ? "text-red-600 placeholder:text-red-600" : "text-black placeholder:text-[#6C6C6C]"
                 }`}
                 placeholder="Autor"
@@ -253,51 +253,51 @@ export default function EditMode({ setMode }: EditModeProps) {
               />
               <ProfileIcon height={24} width={24}></ProfileIcon>
             </div>
-            <div className="flex items-center justify-between px-1">
+            <div className="flex items-center gap-3 px-1">
               <DropDownMenuWithSearch
                 items={categories}
                 startValue={category}
                 setItem={setCategory}
                 placeholder="Kategoria"
-                inputClassName={`duration-200 ${
+                inputClassName={`duration-200 w-full ${
                   errors?.category ? "text-red-600 placeholder:text-red-600" : "text-black placeholder:text-[#6C6C6C]"
                 }`}
                 createNewItem
               ></DropDownMenuWithSearch>
               <TagIcon height={24} width={24}></TagIcon>
             </div>
-            <div className="flex items-center justify-between px-1">
+            <div className="flex items-center gap-3 px-1">
               <DropDownMenuWithSearch
                 items={languages}
                 startValue={language}
                 setItem={setLanguage}
                 placeholder="Język"
-                inputClassName={`duration-200 ${
+                inputClassName={`duration-200 w-full ${
                   errors?.language ? "text-red-600 placeholder:text-red-600" : "text-black placeholder:text-[#6C6C6C]"
                 }`}
                 createNewItem
               ></DropDownMenuWithSearch>
               <LanguageIcon height={24} width={24}></LanguageIcon>
             </div>
-            <div className="flex items-center justify-between px-1">
+            <div className="flex items-center gap-3 px-1">
               <DropDownMenuWithSearch
                 items={bookStates}
                 startValue={state}
                 setItem={setState}
                 placeholder="Stan"
-                inputClassName={`duration-200 ${
+                inputClassName={`duration-200 w-full ${
                   errors?.state ? "text-red-600 placeholder:text-red-600" : "text-black placeholder:text-[#6C6C6C]"
                 }`}
               ></DropDownMenuWithSearch>
               <LeafIcon height={24} width={24}></LeafIcon>
             </div>
-            <div className="flex items-center justify-between px-1">
+            <div className="flex items-center gap-3 px-1">
               <input
                 type="text"
                 placeholder="Kontakt"
                 value={messengerDescription}
                 onChange={(e) => setMessengerDescription(e.target.value.replace(/\s+/g, " "))}
-                className={`duration-200 ${
+                className={`duration-200 w-full ${
                   errors?.messengerDescription
                     ? "text-red-600 placeholder:text-red-600"
                     : "text-black placeholder:text-[#6C6C6C]"

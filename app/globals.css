@@ -63,12 +63,12 @@ button:focus-visible {
 @media (max-width: 768px) {
 
   /* Hide scrollbar for Chrome, Safari and Opera */
-  *::-webkit-scrollbar {
+  *:not(.scrollbar)::-webkit-scrollbar {
     display: none;
   }
 
   /* Hide scrollbar for IE, Edge and Firefox */
-  * {
+  *:not(.scrollbar) {
     -ms-overflow-style: none;
     /* IE and Edge */
     scrollbar-width: none;

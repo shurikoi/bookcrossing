@@ -1,5 +1,5 @@
 import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { useBook } from "../../contexts/BookProvider";
 import ModalMenu from "../../ui/ModalMenu";
@@ -9,16 +9,17 @@ import ViewMode from "./ViewMode";
 export type BookMenuMode = "edit" | "view";
 
 export default function BookMenu() {
-  const { setBookId, bookId } = useBook();
-
-  useLayoutEffect(() => {
+  const { setBookId, bookId, isLoading } = useBook();
+  
+  useEffect(() => {
     setMode("view");
     setIsModalActive(!!bookId);
   }, [bookId]);
 
   const [mode, setMode] = useState<BookMenuMode>("view");
-
+  
   const [isModalActive, setIsModalActive] = useState(false);
+  console.log(isModalActive)
 
   const nodeRef = useRef<HTMLDivElement>(null);
 
@@ -35,6 +36,7 @@ export default function BookMenu() {
     <ModalMenu
       fullMode
       header={editModeHeader}
+      isTouchMoveAllowed={!isLoading}
       isModalActive={isModalActive}
       setIsModalActive={setIsModalActive}
       callback={() => setBookId("")}

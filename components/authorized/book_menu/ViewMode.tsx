@@ -42,8 +42,6 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
         <CSSTransition
           key={isLoading ? "loading" : "view"}
           classNames="fade"
-          in={false}
-          
           addEndListener={(done: any) => {
             if (nodeRef.current) {
               nodeRef.current.addEventListener("transitionend", done, false);

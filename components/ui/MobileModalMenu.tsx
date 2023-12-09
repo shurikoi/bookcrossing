@@ -6,6 +6,7 @@ interface ModalMenuProps extends HTMLAttributes<HTMLDivElement> {
   setIsModalActive: Dispatch<SetStateAction<boolean>>;
   header?: React.ReactNode;
   fullMode?: boolean;
+  isTouchMoveAllowed?: boolean;
   callback?: () => void;
   triggerRef: React.RefObject<HTMLDivElement>;
 }
@@ -16,6 +17,7 @@ const MobileModalMenu = memo(
     isModalActive,
     setIsModalActive,
     header,
+    isTouchMoveAllowed = true,
     fullMode = false,
     triggerRef,
     callback = () => null,
@@ -75,14 +77,16 @@ const MobileModalMenu = memo(
     }
 
     useEffect(() => {
-      triggerRef.current?.addEventListener("touchstart", updateStartPosition);
-      triggerRef.current?.addEventListener("touchmove", updateMenuPosition);
+      if (isTouchMoveAllowed) {
+        triggerRef.current?.addEventListener("touchstart", updateStartPosition);
+        triggerRef.current?.addEventListener("touchmove", updateMenuPosition);
+      }
 
       return () => {
         triggerRef.current?.removeEventListener("touchstart", updateStartPosition);
         triggerRef.current?.removeEventListener("touchmove", updateMenuPosition);
       };
-    }, [startPosition, triggerRef.current]);
+    }, [startPosition, isTouchMoveAllowed]);
 
     useEffect(() => {
       triggerRef.current?.addEventListener("touchend", handleTouchEnd, { passive: true });
@@ -92,14 +96,10 @@ const MobileModalMenu = memo(
       };
     }, [menuYPosition]);
 
-    
-
     useEffect(() => {
       if (isModalActive) {
         setMenuYPosition(0);
         document.body.style.overflow = "hidden";
-      } else {
-        document.body.style.overflow = "auto";
       }
     }, [isModalActive]);
 

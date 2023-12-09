@@ -10,10 +10,13 @@ interface BookProps {
 
 const Book = memo(({ data, handleClick }: BookProps) => {
   const [isImageLoaded, setIsImageLoaded] = useState(true);
+  const [isAvatarLoading, setIsAvatarLoading] = useState(true);
+
   const [isMouseOver, setIsMouseOver] = useState(false);
 
   useLayoutEffect(() => {
     setIsImageLoaded(true);
+    setIsAvatarLoading(true);
   }, [data]);
 
   return (
@@ -78,9 +81,11 @@ const Book = memo(({ data, handleClick }: BookProps) => {
         height={56}
         quality={100}
         alt=""
-        className={`absolute top-0 right-0 -translate-y-1/2 w-14 h-14 translate-x-1/2 rounded-full skeleton duration-300 ${
+        onLoad={() => setIsAvatarLoading(false)}
+        className={`absolute top-0 right-0 -translate-y-1/2 w-14 h-14 translate-x-1/2 rounded-full  duration-300 ${
           isMouseOver ? "opacity-0" : "opacity-100"
-        }`}
+        }
+          ${isAvatarLoading ? "skeleton" : "bg-transparent"}`}
       ></Image>
     </div>
   );
