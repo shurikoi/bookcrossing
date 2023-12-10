@@ -5,9 +5,7 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
     await connection();
 
-    const body: { email: string } = await req.json();
-
-    const { email } = body;
+    const { email }: { email: string } = await req.json();
 
     const { _id: id, name, surname, points, password, avatar } = await users.findOne({ email });
 

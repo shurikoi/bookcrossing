@@ -41,9 +41,9 @@ const BookContext = createContext<BookContext>({
   setQueryBooksCount: () => {},
 });
 
-interface BookProvideProps{ children: React.ReactNode }
+interface BookProviderProps{ children: React.ReactNode }
 
-function BookProvider({ children }: BookProvideProps) {
+function BookProvider({ children }: BookProviderProps) {
   const params = new URLSearchParams(typeof window !== "undefined" ? window?.location.search : "");
 
   const [bookId, setBookId] = useState(params.get("book") || "");
@@ -87,7 +87,7 @@ function BookProvider({ children }: BookProvideProps) {
       setIsLoading(false);
     }
   }, [bookId]);
-
+  
   useLayoutEffect(() => {
     if (book)
       setFetchedBooks((fetchedBooks) => {

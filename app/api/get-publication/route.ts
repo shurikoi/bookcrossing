@@ -27,17 +27,29 @@ export async function POST(req: Request) {
     { shownContact: 0 }
   );
 
-  if (book.reservedBy) {
-    book._doc.isReserved = true;
-    delete book._doc.reservedBy;
-  }
-
   if (!book) return NextResponse.json({}, { status: 404 });
 
   const owner = await users.findOne({ _id: book?.owner }, { _id: 0, avatar: 1, name: 1, surname: 1 });
 
-  book._doc.id = book._doc._id
-  delete book._doc._id
+  book._doc.id = book._id;
+  delete book._doc._id;
 
-  return NextResponse.json({ ...book?._doc, ownerData: owner?._doc });
+  if (book.reservedBy) {
+    const reservatorId = book.reservedBy;
+
+    book._doc.isReserved = true;
+    delete book._doc.reservedBy;
+
+    if (session?.user?.id == book?.owner.toString()) {
+      const reservator = await users.findOne({ _id: reservatorId }, { _id: 0, name: 1, surname: 1 });
+
+      return NextResponse.json({
+        ...book._doc,
+        ownerData: owner,
+        reservatorData: reservator,
+      });
+    }
+  }
+
+  return NextResponse.json({ ...book._doc, ownerData: owner });
 }

@@ -31,18 +31,11 @@ const MobileModalMenu = memo(
       callback();
 
       setIsModalActive(false);
-
-      setTimeout(() => {
-        document.body.style.overflow = "auto";
-      }, 100);
     }
 
     function updateStartPosition(e: TouchEvent) {
       if (scrollRef.current && scrollRef.current.scrollTop > 0) return;
-
       const clientY = e.touches[0].clientY;
-
-      document.body.style.overflow = "hidden";
 
       triggerRef.current?.classList.remove("duration-200");
 
@@ -61,7 +54,9 @@ const MobileModalMenu = memo(
         if (scrollRef.current) scrollRef.current.style.overflow = "hidden";
 
         setMenuYPosition(clientY);
-      } else setMenuYPosition(0);
+      } else {
+        setMenuYPosition(0);
+      }
     }
 
     function handleTouchEnd() {
@@ -77,16 +72,14 @@ const MobileModalMenu = memo(
     }
 
     useEffect(() => {
-      if (isTouchMoveAllowed) {
-        triggerRef.current?.addEventListener("touchstart", updateStartPosition);
-        triggerRef.current?.addEventListener("touchmove", updateMenuPosition);
-      }
+      triggerRef.current?.addEventListener("touchstart", updateStartPosition);
+      triggerRef.current?.addEventListener("touchmove", updateMenuPosition);
 
       return () => {
         triggerRef.current?.removeEventListener("touchstart", updateStartPosition);
         triggerRef.current?.removeEventListener("touchmove", updateMenuPosition);
       };
-    }, [startPosition, isTouchMoveAllowed]);
+    }, [startPosition]);
 
     useEffect(() => {
       triggerRef.current?.addEventListener("touchend", handleTouchEnd, { passive: true });
@@ -99,9 +92,9 @@ const MobileModalMenu = memo(
     useEffect(() => {
       if (isModalActive) {
         setMenuYPosition(0);
-        document.body.style.overflow = "hidden";
+        setStartPosition(0);
       }
-    }, [isModalActive]);
+    }, [isModalActive, children]);
 
     return (
       <>

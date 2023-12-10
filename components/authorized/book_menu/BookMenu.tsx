@@ -19,7 +19,6 @@ export default function BookMenu() {
   const [mode, setMode] = useState<BookMenuMode>("view");
   
   const [isModalActive, setIsModalActive] = useState(false);
-  console.log(isModalActive)
 
   const nodeRef = useRef<HTMLDivElement>(null);
 
@@ -36,7 +35,6 @@ export default function BookMenu() {
     <ModalMenu
       fullMode
       header={editModeHeader}
-      isTouchMoveAllowed={!isLoading}
       isModalActive={isModalActive}
       setIsModalActive={setIsModalActive}
       callback={() => setBookId("")}

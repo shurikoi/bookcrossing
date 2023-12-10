@@ -90,17 +90,21 @@ const FilterMenu = memo(() => {
         >
           <div className="text-left whitespace-nowrap md:pl-0 font-inter text-[#3F3A5A] text-[16px] w-full md:w-auto md:px-0">
             <div className="font-semibold mb-3">Kategoria</div>
-            <div className="max-h-[240px] overflow-y-auto scrollbar">
+            <div className="max-h-[240px] max-w-[320px] overflow-y-auto overflow-x-hidden scrollbar">
               {filter.categories.map((category) => (
-                <label htmlFor={category} key={category} className="flex gap-2 items-center select-none cursor-pointer">
+                <label
+                  htmlFor={category}
+                  key={category}
+                  className="pr-6 flex gap-2 items-center select-none cursor-pointer"
+                >
                   <input
-                    className="border-2 border-[#747474] bg-white w-[15px] h-[15px] rounded-sm appearance-none checked:bg-[#2D50AA] checked:border-[#2D50AA] duration-200 cursor-pointer"
+                    className="border-2 border-[#747474] bg-white w-[15px] h-[15px] rounded-sm appearance-none checked:bg-[#2D50AA] checked:border-[#2D50AA] duration-200 cursor-pointer shrink-0"
                     type="checkbox"
                     checked={filter.choosenCategories?.includes(category)}
                     id={category}
                     onChange={setCategories}
                   />
-                  <label className="w-2/3 overflow-hidden text-ellipsis cursor-pointer" htmlFor={category}>
+                  <label className="cursor-pointer w-full break-words whitespace-break-spaces" htmlFor={category}>
                     {category}
                   </label>
                 </label>
@@ -111,15 +115,19 @@ const FilterMenu = memo(() => {
             <div className="font-semibold mb-3">Języki</div>
             <div className="">
               {filter.languages.map((language) => (
-                <label htmlFor={language} key={language} className="flex gap-2 items-center select-none cursor-pointer">
+                <label
+                  htmlFor={language}
+                  key={language}
+                  className="pr-6 flex gap-2 items-center select-none cursor-pointer"
+                >
                   <input
-                    className="border-2 border-[#747474] bg-white w-[15px] h-[15px] rounded-sm appearance-none checked:bg-[#2D50AA] checked:border-[#2D50AA] duration-200 cursor-pointer"
+                    className="border-2 border-[#747474] bg-white w-[15px] h-[15px] rounded-sm appearance-none checked:bg-[#2D50AA] checked:border-[#2D50AA] duration-200 cursor-pointer shrink-0"
                     type="checkbox"
                     checked={filter.choosenLanguages?.includes(language)}
                     id={language}
                     onChange={setLanguages}
                   />
-                  <label htmlFor={language} className="select-none cursor-pointer">
+                  <label htmlFor={language} className=" w-full break-words whitespace-break-spaces cursor-pointer">
                     {language}
                   </label>
                 </label>
@@ -132,17 +140,17 @@ const FilterMenu = memo(() => {
               {filter.states.map((bookState) => (
                 <label
                   htmlFor={bookState}
-                  className="flex gap-2 items-center select-none cursor-pointer w-full"
+                  className="pr-6 flex gap-2 items-center select-none cursor-pointer w-full"
                   key={bookState}
                 >
                   <input
-                    className="border-2 border-[#747474] bg-white w-[15px] h-[15px] rounded-sm appearance-none checked:bg-[#2D50AA] checked:border-[#2D50AA] duration-200 cursor-pointer"
+                    className="border-2 border-[#747474] bg-white w-[15px] h-[15px] rounded-sm appearance-none checked:bg-[#2D50AA] checked:border-[#2D50AA] duration-200 cursor-pointer shrink-0"
                     type="checkbox"
                     checked={filter.choosenStates?.includes(bookState)}
                     id={bookState}
                     onChange={setStates}
                   />
-                  <label htmlFor={bookState} className="select-none cursor-pointer">
+                  <label htmlFor={bookState} className=" w-full break-words whitespace-break-spaces cursor-pointer">
                     {bookState}
                   </label>
                 </label>

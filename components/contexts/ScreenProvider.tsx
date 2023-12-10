@@ -1,34 +1,33 @@
-"use client"
+"use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-const ScreenContext = createContext<any>(null);
+const ScreenContext = createContext<{ isSmallScreen: boolean }>({ isSmallScreen: false });
 
 function ScreenProvider({ children }: { children: React.ReactNode }) {
-    const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
-    useEffect(() => {
-        checkScreenSize();
+  useEffect(() => {
+    checkScreenSize();
 
-        function checkScreenSize() {
-            setIsSmallScreen(window.innerWidth < 768);
-        }
+    function checkScreenSize() {
+      setIsSmallScreen(window.innerWidth < 768);
+    }
 
-        window.addEventListener("resize", checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
 
-        return () => {
-            window.removeEventListener("resize", checkScreenSize);
-        }
-    }, []);
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
 
-    return <ScreenContext.Provider value={{ isSmallScreen }}>{children}</ScreenContext.Provider>;
+  return <ScreenContext.Provider value={{ isSmallScreen }}>{children}</ScreenContext.Provider>;
 }
 
 function useScreen() {
-    const screen = useContext(ScreenContext);
-    
-    return screen;
+  const screen = useContext(ScreenContext);
+
+  return screen;
 }
 
 export { ScreenProvider, useScreen };
-

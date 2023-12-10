@@ -6,6 +6,7 @@ import EmailIcon from "@/components/ui/icons/EmailIcon";
 import { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
 import { messenger, messengers } from "../publication_menu/PublicationMenu";
+import { useScreen } from "@/components/contexts/ScreenProvider";
 
 interface ReservationMenuProps {
     isMenuActive: boolean;
@@ -24,6 +25,8 @@ export default function ReservationMenu({
     const [addToProfile, setAddToProfile] = useState(true);
 
     const { bookId, setBook, setBooks } = useBook();
+
+  const {isSmallScreen} = useScreen()
 
     function reserveBook() {
         if (contact.trim().length > 0) {
