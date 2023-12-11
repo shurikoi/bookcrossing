@@ -126,7 +126,7 @@ export default function PublicationMenu({ isModalActive, setIsModalActive }: Pub
         }}
       >
         <ModalMenu fullMode isModalActive={isModalActive} header={header} setIsModalActive={setIsModalActive}>
-          <div className="h-full md:h-auto" ref={nodeRef}>
+          <div className="h-full lg:h-auto" ref={nodeRef}>
             {steps[currentStep]}
           </div>
         </ModalMenu>

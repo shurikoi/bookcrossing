@@ -25,7 +25,7 @@ export default function SortMenu() {
     }
 
     return (
-        <div ref={triggerRef} className="relative hidden md:block">
+        <div ref={triggerRef} className="relative hidden 2md:block">
             <div
                 className="flex gap-3 items-center py-3 px-5 rounded-lg cursor-pointer select-none border border-[#A39EBE] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.15)]"
                 onClick={() => setIsMenuActive((prev) => !prev)}
@@ -37,7 +37,7 @@ export default function SortMenu() {
                 triggerRef={triggerRef}
                 isMenuActive={isMenuActive}
                 setIsMenuActive={setIsMenuActive}
-                className="absolute p-3 -bottom-2 right-1/2 translate-x-1/2 md:translate-x-0 md:right-0 w-max translate-y-full bg-white shadow-[0px_0px_49px_0px_rgba(0,0,0,0.25)] rounded-lg"
+                className="absolute p-3 -bottom-2 right-1/2 translate-x-1/2 lg:translate-x-0 lg:right-0 w-max translate-y-full bg-white shadow-[0px_0px_49px_0px_rgba(0,0,0,0.25)] rounded-lg"
             >
                 <div
                     className={`hover:bg-[#F0F1F9] p-2.5 duration-300 rounded-md cursor-pointer ${

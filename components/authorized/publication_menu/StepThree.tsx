@@ -147,14 +147,14 @@ export default function StepThree({
 
   return (
     <div className="flex flex-col">
-      <div className="hidden md:block p-3 relative text-center border-b">
+      <div className="hidden lg:block p-3 relative text-center border-b">
         <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
           <ArrowLeftIcon></ArrowLeftIcon>
         </div>
         <div>Podgląd</div>
       </div>
-      <div className="flex flex-col md:flex-row w-full md:min-w-[700px] min-h-[400px] gap-10 md:p-6 h-fit">
-        <div className="flex flex-col gap-10 shrink-0 md:w-[200px]">
+      <div className="flex flex-col lg:flex-row w-full lg:min-w-[700px] min-h-[400px] gap-10 lg:p-6 h-fit">
+        <div className="flex flex-col gap-10 shrink-0 lg:w-[200px]">
           <div
             className="relative aspect-[3/4]"
             onMouseEnter={() => setIsImageHovered(true)}
@@ -182,7 +182,7 @@ export default function StepThree({
           </div>
           {!isSmallScreen && (
             <Button
-              className={`text-center w-full md:w-auto ${
+              className={`text-center w-full lg:w-auto ${
                 isLoading ? "opacity-50 cursor-default" : "opacity-100 cursor-pointer"
               }`}
               onClick={() => {
@@ -193,9 +193,9 @@ export default function StepThree({
             </Button>
           )}
         </div>
-        <div className="flex flex-col gap-8 items-center text-center md:items-start md:text-left pb-10 px-14 md:p-0">
+        <div className="flex flex-col gap-8 items-center text-center lg:items-start lg:text-left pb-10 px-14 lg:p-0">
           <div className="font-head font-normal text-[20px]">{publicationData?.title}</div>
-          <div className="grid grid-cols-[repeat(2,auto)] grid-rows-2 font-extralight leading-none text-[14px] gap-y-6 gap-x-10 w-fit md:pr-10">
+          <div className="grid grid-cols-[repeat(2,auto)] grid-rows-2 font-extralight leading-none text-[14px] gap-y-6 gap-x-10 w-fit lg:pr-10">
             <PublicationField
               data={publicationData?.author}
               icon={<ProfileIcon />}
@@ -235,12 +235,12 @@ export default function StepThree({
               bg="bg-[#e97c4d7a]"
             ></PublicationField>
           </div>
-          <div className="text-[#474747] font-light font-inter text-[15px] md:w-[500px] max-h-[180px] overflow-y-auto break-all">
+          <div className="text-[#474747] font-light font-inter text-[15px] lg:w-[500px] max-h-[180px] overflow-y-auto break-all">
             {publicationData?.description}
           </div>
           {isSmallScreen && (
             <Button
-              className={`text-center w-full md:w-auto ${
+              className={`text-center w-full lg:w-auto ${
                 isLoading ? "opacity-50 cursor-default" : "opacity-100 cursor-pointer"
               }`}
               onClick={() => {

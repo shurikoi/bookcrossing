@@ -3,13 +3,13 @@ import { eUkraine } from "../fonts"
 
 export default function Advantages() {
     return (
-        <div className="flex flex-col items-center px-[40px] 2md:px-[230px] py-[75px] font-normal text-[20px]">
-            <div className="text-center text-[20px] 2md:text-[24px] font-extralight">
+        <div className="flex flex-col items-center px-[40px] lg:px-[230px] py-[75px] font-normal text-[20px]">
+            <div className="text-center text-[20px] lg:text-[24px] font-extralight">
                 BookCrossing — to społeczność, gdzie wymieniają się
                 książkami nawzajem.
             </div>
-            <div className="inline-grid grid-cols-1 gap-12 mt-[110px] 2md:grid-cols-[auto_auto] 2md:text-left text-center">
-                <div className="max-w-[600px] flex flex-col justify-center gap-4 flex-1 items-center 2md:items-start">
+            <div className="inline-grid grid-cols-1 gap-12 mt-[110px] lg:grid-cols-[auto_auto] lg:text-left text-center">
+                <div className="max-w-[600px] flex flex-col justify-center gap-4 flex-1 items-center lg:items-start">
                     <div>
                         <Image
                             width={60}
@@ -26,7 +26,7 @@ export default function Advantages() {
                     </div>
                 </div>
 
-                <div className="max-w-[600px] flex flex-col gap-4 flex-1 items-center 2md:items-start">
+                <div className="max-w-[600px] flex flex-col gap-4 flex-1 items-center lg:items-start">
                     <div>
                         <Image
                             width={60}
@@ -42,7 +42,7 @@ export default function Advantages() {
                     </div>
                 </div>
 
-                <div className="max-w-[600px] flex flex-col gap-4 flex-1 items-center 2md:items-start">
+                <div className="max-w-[600px] flex flex-col gap-4 flex-1 items-center lg:items-start">
                     <div>
                         <Image
                             width={60}
@@ -60,7 +60,7 @@ export default function Advantages() {
                     </div>
                 </div>
 
-                <div className="max-w-[600px] flex flex-col gap-4 flex-1 items-center 2md:items-start">
+                <div className="max-w-[600px] flex flex-col gap-4 flex-1 items-center lg:items-start">
                     <div>
                         <Image
                             width={60}

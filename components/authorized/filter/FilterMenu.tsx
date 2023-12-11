@@ -83,12 +83,12 @@ const FilterMenu = memo(() => {
         isMenuActive={isMenuActive}
         setIsMenuActive={setIsMenuActive}
         triggerRef={triggerRef}
-        className="absolute w-full left-0 top-full bg-white"
+        className="flex justify-center absolute w-full left-0 top-full bg-white shadow-[0px_5px_5px_1px_rgba(0,0,0,.1)]"
       >
         <div
-          className={`flex flex-col md:flex-row justify-center gap-20 p-4 px-16 bg-white shadow-[0px_5px_5px_1px_rgba(0,0,0,.1)]`}
+          className={`flex flex-col 2md:flex-row 2md:items-start gap-20 p-4 bg-white `}
         >
-          <div className="text-left whitespace-nowrap md:pl-0 font-inter text-[#3F3A5A] text-[16px] w-full md:w-auto md:px-0">
+          <div className="text-left whitespace-nowrap lg:pl-0 font-inter text-[#3F3A5A] text-[16px]  lg:w-auto lg:px-0">
             <div className="font-semibold mb-3">Kategoria</div>
             <div className="max-h-[240px] max-w-[320px] overflow-y-auto overflow-x-hidden scrollbar">
               {filter.categories.map((category) => (
@@ -111,9 +111,9 @@ const FilterMenu = memo(() => {
               ))}
             </div>
           </div>
-          <div className="text-left md:pl-0 font-inter text-[#3F3A5A] text-[16px] w-full md:w-auto md:px-0">
+          <div className="text-left whitespace-nowrap lg:pl-0 font-inter text-[#3F3A5A] text-[16px]  lg:w-auto lg:px-0">
             <div className="font-semibold mb-3">Języki</div>
-            <div className="">
+            <div className="max-h-[240px] max-w-[320px] overflow-y-auto overflow-x-hidden scrollbar">
               {filter.languages.map((language) => (
                 <label
                   htmlFor={language}
@@ -134,9 +134,9 @@ const FilterMenu = memo(() => {
               ))}
             </div>
           </div>
-          <div className="text-left md:pl-0 font-inter text-[#3F3A5A] text-[16px] w-full md:w-auto md:px-0">
+          <div className="text-left whitespace-nowrap lg:pl-0 font-inter text-[#3F3A5A] text-[16px]  lg:w-auto lg:px-0">
             <div className="font-semibold mb-3">Stan</div>
-            <div className="">
+            <div className="max-h-[240px] max-w-[320px] overflow-y-auto overflow-x-hidden scrollbar">
               {filter.states.map((bookState) => (
                 <label
                   htmlFor={bookState}

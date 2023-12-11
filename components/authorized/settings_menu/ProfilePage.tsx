@@ -88,9 +88,9 @@ export default function ProfilePage() {
   }, [image]);
 
   return (
-    <div className="flex flex-col gap-6 items-center md:items-stretch">
-      <div className="font-head text-[18px] whitespace-nowrap hidden md:block">Mój profil</div>
-      <hr className="w-full md:hidden" />
+    <div className="flex flex-col gap-6 items-center lg:items-stretch">
+      <div className="font-head text-[18px] whitespace-nowrap hidden lg:block">Mój profil</div>
+      <hr className="w-full lg:hidden" />
       <div className="flex flex-col gap-1">
         <div className="font-extralight text-[14px]">Preferowany login</div>
         <SettingsInput value={user!.login} setValue={user!.setLogin} validator={validateLogin} />

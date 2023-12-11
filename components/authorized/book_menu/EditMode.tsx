@@ -203,15 +203,15 @@ export default function EditMode({ setMode }: EditModeProps) {
   }, []);
 
   return (
-    <div className="flex flex-col h-full md:h-[610px]">
-      <div className="hidden md:block p-3 relative text-center w-full">
+    <div className="flex flex-col h-full lg:h-[610px]">
+      <div className="hidden lg:block p-3 relative text-center w-full">
         <div className="absolute cursor-pointer w-fit" onClick={() => setMode("view")}>
           <ArrowLeftIcon></ArrowLeftIcon>
         </div>
         <div>Edytowanie</div>
       </div>
-      <div className="flex flex-col md:flex-row h-full">
-        <div className="flex w-full md:w-[400px] aspect-[3/4] relative shrink-0">
+      <div className="flex flex-col lg:flex-row h-full">
+        <div className="flex w-full lg:w-[400px] aspect-[3/4] relative shrink-0">
           <Image className="object-cover" fill src={image?.url || ""} priority alt="" quality={100} />
           <div
             className="flex items-center justify-center cursor-pointer bg-black/40 gap-2.5 text-white w-full h-full absolute top-0 left-0"
@@ -222,13 +222,13 @@ export default function EditMode({ setMode }: EditModeProps) {
             <div>Zmień zdjęcie</div>
           </div>
         </div>
-        <div className="flex flex-col gap-6 p-4 w-full md:w-[360px]">
+        <div className="flex flex-col gap-6 p-4 w-full lg:w-[360px]">
           <div className="flex gap-4 items-center">
             <Image className="w-14 h-14 rounded-full" src={user?.avatar || ""} width={56} height={56} quality={100} alt="" />
             <div className="font-extralight text-base">{user?.name}</div>
           </div>
 
-          <div className="flex flex-col gap-4 text-[20px] font-lato font-normal md:h-[380px] md:overflow-y-auto flex-grow flex-shrink">
+          <div className="flex flex-col gap-4 text-[20px] font-lato font-normal lg:h-[380px] lg:overflow-y-auto flex-grow flex-shrink">
             <div className="flex items-center gap-2 px-1">
               <input
                 className={`duration-200 w-full ${

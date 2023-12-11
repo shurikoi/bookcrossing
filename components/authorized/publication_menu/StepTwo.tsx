@@ -77,25 +77,25 @@ export default function StepTwo({ image, publicationData, setPublicationData, se
   }, []);
 
   return (
-    <div className="flex flex-col h-full md:h-[610px]">
-      <div className="hidden md:block p-3 relative text-center">
+    <div className="flex flex-col h-full lg:h-[610px]">
+      <div className="hidden lg:block p-3 relative text-center">
         <div className="absolute cursor-pointer w-fit" onClick={() => setCurrentStep((step) => step - 1)}>
           <ArrowLeftIcon></ArrowLeftIcon>
         </div>
         <div>2 / 3</div>
       </div>
-      <div className="flex flex-col md:flex-row h-full">
-        <div className="flex w-full md:w-[400px] aspect-[3/4] relative shrink-0">
+      <div className="flex flex-col lg:flex-row h-full">
+        <div className="flex w-full lg:w-[400px] aspect-[3/4] relative shrink-0">
           <Image fill src={image?.url || ""} className="object-cover rounded-bl-lg" quality={100} alt="" />
           {/* <PublicationImage image={image?.data}></PublicationImage> */}
         </div>
-        <div className="flex flex-col gap-6 p-4 w-full h-full md:w-[360px]">
+        <div className="flex flex-col gap-6 p-4 w-full h-full lg:w-[360px]">
           <div className="flex gap-4 items-center">
             <Image alt="" className="rounded-full w-10 h-10" width={40} height={40} src={user?.avatar || ""} />
             <div className="font-extralight text-base">{user?.name}</div>
           </div>
 
-          <div className="flex flex-col gap-4 text-[20px] font-lato font-normal md:h-[380px] md:overflow-y-auto flex-grow flex-shrink">
+          <div className="flex flex-col gap-4 text-[20px] font-lato font-normal lg:h-[380px] lg:overflow-y-auto flex-grow flex-shrink">
             <div className="flex items-center gap-2 px-1">
               <input
                 className={`duration-200 w-full ${

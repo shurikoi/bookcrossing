@@ -29,8 +29,33 @@ export async function POST(req: Request) {
 
   await connection();
 
-  const queryBooksCount = await books.count(filter);
-
+  const queryBooksCount = await books.aggregate([
+    {
+      $match: { ...filter, reservedBy: { $exists: false } },
+    },
+    {
+      $lookup: {
+        from: "users",
+        let: {
+          ownerID: "$owner",
+        },
+        pipeline: [
+          {
+            $match: {
+              $expr: { $eq: ["$_id", "$$ownerID"] },
+            },
+          },
+          {
+            $unset: ["points", "_id", "date", "password", "contact", "librusId", "login", "group"],
+          },
+        ],
+        as: "ownerData",
+      },
+    },
+    { $unwind: "$ownerData" },
+    { $project: { _id: 0, id: "$_id", author: 1, title: 1, date: 1, image: 1, owner: 1, ownerData: 1 } },
+  ]);
+  console.log();
   const publications = await books
     .aggregate([
       {
@@ -116,12 +141,12 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       publications: [...reservedBooks, ...publications],
-      queryBooksCount,
+      queryBooksCount: queryBooksCount.length,
     });
   }
-
+  console.log(publications);
   return NextResponse.json({
     publications,
-    queryBooksCount,
+    queryBooksCount: queryBooksCount.length,
   });
 }
