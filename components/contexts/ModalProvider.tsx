@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useScreen } from "./ScreenProvider";
 
 interface ModalProvideProps {
@@ -20,35 +20,35 @@ const ModalContext = createContext<ModalContext>({
 });
 
 function ModalProvider({ children }: ModalProvideProps) {
-  const [activeModals, setActiveModals] = useState<HTMLDivElement[]>([]);
+  const activeModals = useRef<HTMLDivElement[]>([]);
 
   const { isSmallScreen } = useScreen();
   function addModalToActive(modalElement: HTMLDivElement) {
-    setActiveModals((activeModals) => [...new Set([...activeModals, modalElement])]);
+    if (!activeModals.current.includes(modalElement)) activeModals.current.push(modalElement);
+
+    handleModalState();
   }
 
   function removeModalFromActive(modalElement: HTMLDivElement) {
-    setActiveModals((modals) => {
-      const modalIndex = modals.indexOf(modalElement);
+    const modalIndex = activeModals.current.indexOf(modalElement);
 
-      if (modalIndex >= 0) modals.splice(modalIndex, 1);
+    if (modalIndex >= 0) activeModals.current.splice(modalIndex, 1);
 
-      return [...modals];
-    });
+    handleModalState();
   }
 
-  useEffect(() => {
+  function handleModalState() {
     if (!isSmallScreen) return;
 
-    if (activeModals.length > 0) document.body.style.overflow = "hidden";
+    if (activeModals.current.length > 0) document.body.style.overflow = "hidden";
     else
       setTimeout(() => {
         document.body.style.overflow = "auto";
       }, 100);
-  }, [activeModals]);
+  }
 
   return (
-    <ModalContext.Provider value={{ addModalToActive, removeModalFromActive, activeModals }}>
+    <ModalContext.Provider value={{ addModalToActive, removeModalFromActive, activeModals: activeModals.current }}>
       {children}
     </ModalContext.Provider>
   );

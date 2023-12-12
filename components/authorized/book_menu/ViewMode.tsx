@@ -37,51 +37,6 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
     setIsImageLoaded(true);
   }, [book]);
 
-  const UserInfo = useMemo(() => {
-    return (
-      !isSmallScreen &&
-      book &&
-      book.owner != user?.id && (
-        <Palette src={book.image} format="hslArray" quality={50}>
-          {({ data }) => (
-            <div
-              className="absolute -top-6 -right-6 px-12 py-6 rounded-bl-[100%] bg-transparent rounded-tr-[7px] duration-200"
-              style={
-                data && {
-                  backgroundColor: `hsl(${(data[0][0] + " " + data[0][1] + "% " + data[0][2] + "%")})`,
-                }
-              }
-            >
-              <div className="flex flex-col items-center translate-x-6 -translate-y-2 gap-1">
-                {console.log(data, data && data[0]) as ReactNode}
-                <Image
-                  quality={100}
-                  height={64}
-                  width={64}
-                  alt=""
-                  title={book.ownerData.name + " " + book.ownerData.surname}
-                  src={book?.ownerData.avatar}
-                  className={`w-16 h-16 rounded-full cursor-pointer`}
-                  ref={colorRef}
-                ></Image>
-                <div
-                  className="text-transparent duration-200"
-                  style={
-                    data && {
-                      color: `hsl(${(Number(data[0][0] +  20) + " " + Number(data[0][1] +  40) + "% " + data[0][2] + "%")})`,
-                    }
-                  }
-                >
-                  {book.ownerData.name}
-                </div>
-              </div>
-            </div>
-          )}
-        </Palette>
-      )
-    );
-  }, [book, isSmallScreen]);
-
   const nodeRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -113,7 +68,23 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                   ></ReservationInfo>
                 )}
                 <div className="relative flex flex-col lg:flex-row gap-6">
-                  {UserInfo}
+                  {!isSmallScreen && book && book.owner != user?.id && (
+                    <div className="absolute -top-6 -right-6 px-12 py-6 rounded-bl-[100%] bg-[#AAB6F5] rounded-tr-[7px] duration-200">
+                      <div className="flex flex-col items-center translate-x-6 -translate-y-2 gap-1">
+                        <Image
+                          quality={100}
+                          height={64}
+                          width={64}
+                          alt=""
+                          title={book.ownerData.name + " " + book.ownerData.surname}
+                          src={book?.ownerData.avatar}
+                          className={`w-16 h-16 rounded-full cursor-pointer`}
+                          ref={colorRef}
+                        ></Image>
+                        <div className="font-head font-light duration-200 text-[#18559F]">{book.ownerData.name}</div>
+                      </div>
+                    </div>
+                  )}
                   <div className="flex flex-col lg:gap-6 shrink-0 lg:w-[220px]">
                     <div className="relative shrink-0">
                       <div className="w-full aspect-[3/4]">
