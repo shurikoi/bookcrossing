@@ -77,12 +77,12 @@ const Book = memo(({ data, handleClick }: BookProps) => {
       <Image
         title={data.ownerData.name + " " + data.ownerData.surname}
         src={data.ownerData.avatar}
-        width={56}
-        height={56}
+        width={96}
+        height={96}
         quality={100}
         alt=""
         onLoad={() => setIsAvatarLoading(false)}
-        className={`absolute top-0 right-0 -translate-y-1/2 w-14 h-14 translate-x-1/2 rounded-full  duration-300 ${
+        className={`absolute top-0 right-0 -translate-y-1/2 w-14 h-14 translate-x-1/2 rounded-full object-cover duration-300 ${
           isMouseOver ? "opacity-0" : "opacity-100"
         }
           ${isAvatarLoading ? "skeleton" : "bg-transparent"}`}

@@ -1,51 +1,52 @@
-import { RefObject, useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function useImagePicker(ref: RefObject<HTMLInputElement>, callback?: (e: any) => void) {
-    const [file, setFile] = useState<File>()
+export default function useImagePicker(callback?: (e: any) => void) {
+  const [file, setFile] = useState<File>();
 
-    useEffect(() => {
-        const div = document.createElement("div");
+  function pickImage() {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/png, image/jpeg";
+    input.click();
 
-        div.className = "preventedClick z-50 opacity-0 fixed top-0 left-0 w-screen h-screen";
+    const div = document.createElement("div");
 
-        function handleChange(e: any) {
-            setTimeout(() => {
-                div.remove();
-            }, 1000);
+    div.className = "preventedClick z-50 opacity-0 fixed top-0 left-0 w-screen h-screen";
 
-            setFile(e.target.files[0])
+    function handleChange(e: any) {
+      setTimeout(() => {
+        div.remove();
+      }, 1000);
 
-            if (callback) callback(e);
-        }
+      setFile(e.target.files[0]);
 
-        function handleClick(e: any) {
-            if (window.innerWidth >= 768) {
-                window.addEventListener("focus", handleFocus);
+      if (callback) callback(e);
+    }
 
-                document.body.appendChild(div);
-            }
-        }
+    function handleClick(e: any) {
+      if (window.innerWidth >= 768) {
+        window.addEventListener("focus", handleFocus);
 
-        function handleFocus(e: any) {
-            setTimeout(() => {
-                div.remove();
-            }, 1000);
+        document.body.appendChild(div);
+      }
+    }
 
-            window.removeEventListener("focus", handleFocus);
-        }
+    function handleFocus(e: any) {
+      setTimeout(() => {
+        div.remove();
+      }, 1000);
 
-        if (ref.current) {
-            ref.current.addEventListener("change", handleChange);
-            ref.current.addEventListener("click", handleClick);
-        }
+      window.removeEventListener("focus", handleFocus);
+    }
 
-        return () => {
-            if (ref.current) {
-                ref.current.removeEventListener("change", handleChange);
-                ref.current.removeEventListener("click", handleClick);
-            }
-        };
-    }, [ref, ref.current]);
+    input.addEventListener("change", handleChange);
+    input.addEventListener("click", handleClick);
 
-    return file
+    return () => {
+      input.removeEventListener("change", handleChange);
+      input.removeEventListener("click", handleClick);
+    };
+  }
+
+  return { file, setFile, pickImage };
 }

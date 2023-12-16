@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, memo, useEffect, useRef } from "react";
+import { Dispatch, SetStateAction, memo, useEffect, useLayoutEffect, useRef } from "react";
 import { useScreen } from "../contexts/ScreenProvider";
 import useClickOutside from "../hooks/useClickOutside";
 import MobileModalMenu from "./MobileModalMenu";
@@ -41,11 +41,15 @@ const ModalMenu = memo(
       callback();
     });
 
-    useEffect(() => {
+    useLayoutEffect(() => {
       if (!triggerRef || !triggerRef.current) return;
 
       if (isModalActive) addModalToActive(triggerRef.current);
       else removeModalFromActive(triggerRef.current);
+
+      return () => {
+        if (triggerRef.current) removeModalFromActive(triggerRef.current);
+      }
     }, [isModalActive, triggerRef, children]);
 
     return (

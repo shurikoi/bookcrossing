@@ -34,10 +34,6 @@ export default function StepOne({ setFile, setCurrentStep }: StepOneProps) {
     };
   }, []);
 
-  function openFileMenu() {
-    if (fileRef.current) fileRef.current.click();
-  }
-
   function handleSubmit(files: FileList) {
     if (files[0]) {
       const extension = getExtension(files[0].name);
@@ -46,8 +42,8 @@ export default function StepOne({ setFile, setCurrentStep }: StepOneProps) {
       else toast.error("Wybierz format .png lub .jpeg");
     }
   }
-
-  useImagePicker(fileRef, (e) => {
+  
+  const {file, pickImage } = useImagePicker((e) => {
     e.preventDefault();
 
     const files = e.target.files;
@@ -75,8 +71,7 @@ export default function StepOne({ setFile, setCurrentStep }: StepOneProps) {
       <PhotosIcon></PhotosIcon>
       <div className="flex flex-col items-center gap-6">
         <div className="select-none font-extralight text-[14px]">Przeciągnij zdjęcie tutaj</div>
-        <Button onClick={openFileMenu}>Albo wybierz ręcznie</Button>
-        <input ref={fileRef} type="file" accept="image/png, image/jpeg" hidden />
+        <Button onClick={pickImage}>Albo wybierz ręcznie</Button>
       </div>
     </div>
   );

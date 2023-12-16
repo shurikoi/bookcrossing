@@ -1,6 +1,5 @@
 interface resizeImageProps {
   file: File;
-  aspectRatio?: number;
   width?: number;
   height?: number;
   callback?: ({ url, data }: callbackProps) => any;
@@ -10,6 +9,8 @@ interface callbackProps {
   url: string;
   data: Blob;
 }
+
+const MIN_HEIGHT = 120;
 
 export default function resizeImage({ file, width = 700, height, callback }: resizeImageProps) {
   let url: string | undefined;
@@ -23,8 +24,14 @@ export default function resizeImage({ file, width = 700, height, callback }: res
   HTMLImage.onload = (e) => {
     const scale = width / HTMLImage.width;
 
-    HTMLCanvas.width = width;
-    HTMLCanvas.height = HTMLImage.height * scale;
+    if (HTMLImage.height * scale < MIN_HEIGHT) {
+      HTMLCanvas.width = width * MIN_HEIGHT / (HTMLImage.height * scale);
+      HTMLCanvas.height = height ?? HTMLImage.height * scale * MIN_HEIGHT / (HTMLImage.height * scale);
+    }
+    else{
+      HTMLCanvas.width = width;
+      HTMLCanvas.height = height ?? HTMLImage.height * scale;
+    }
 
     ctx?.drawImage(HTMLImage, 0, 0, HTMLCanvas.width, HTMLCanvas.height);
 
@@ -36,7 +43,7 @@ export default function resizeImage({ file, width = 700, height, callback }: res
           if (callback) callback({ url, data: blob });
         }
       },
-      "image/jpeg",
+      file.type,
       100
     );
   };

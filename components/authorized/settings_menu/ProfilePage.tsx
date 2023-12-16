@@ -9,6 +9,8 @@ import SettingsInput from "./SettingsInput";
 import resizeImage from "@/lib/resizeImage";
 import { image } from "../publication_menu/PublicationMenu";
 import { useBook } from "@/components/contexts/BookProvider";
+import ModalMenu from "@/components/ui/ModalMenu";
+import ImagePreview from "@/components/ui/ImagePreview";
 
 export default function ProfilePage() {
   const { user } = useUserData();
@@ -17,24 +19,27 @@ export default function ProfilePage() {
   const [isChangePasswordMenuActive, setIsChangePasswordMenuActive] = useState(false);
 
   const [image, setImage] = useState<image>();
+  const [previewImage, setPreviewImage] = useState<string>("");
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [isPreviewActive, setIsPreviewActive] = useState(false);
 
-  useImagePicker(inputRef, (e) => {
-    const file = e.target.files[0];
+  // useEffect(() => {
+  //   if (!isPreviewActive) setPreviewImage("");
+  // }, [isPreviewActive]);
 
+  const { file, pickImage } = useImagePicker();
+
+  useEffect(() => {
     if (file)
       resizeImage({
         file: file,
-        width: 192,
+        width: 384,
         callback: ({ url, data }) => {
-          setImage({
-            url,
-            data,
-          });
+          setPreviewImage(url);
+          setIsPreviewActive(true);
         },
       });
-  });
+  }, [file]);
 
   useEffect(() => {
     if (image) {
@@ -97,8 +102,7 @@ export default function ProfilePage() {
       </div>
       <hr className="w-full" />
       <div>
-        <input hidden type="file" accept="image/png, image/jpeg" ref={inputRef} />
-        <SettingsButton onClick={() => inputRef.current?.click()}>Zmień zdjęcie profilowe</SettingsButton>
+        <SettingsButton onClick={pickImage}>Zmień zdjęcie profilowe</SettingsButton>
       </div>
       <hr className="w-full" />
       <div className="flex flex-col gap-1">
@@ -106,6 +110,12 @@ export default function ProfilePage() {
         <SettingsButton onClick={() => setIsChangePasswordMenuActive(true)}>Zmień hasło</SettingsButton>
       </div>
       <ChangePasswordMenu isMenuActive={isChangePasswordMenuActive} setIsMenuActive={setIsChangePasswordMenuActive} />
+      <ImagePreview
+        isMenuActive={isPreviewActive}
+        setIsMenuActive={setIsPreviewActive}
+        image={previewImage}
+        setImage={setImage}
+      ></ImagePreview>
     </div>
   );
 }

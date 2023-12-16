@@ -69,16 +69,16 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                 )}
                 <div className="relative flex flex-col lg:flex-row gap-6">
                   {!isSmallScreen && book && book.owner != user?.id && (
-                    <div className="absolute -top-6 -right-6 px-12 py-6 rounded-bl-[100%] bg-[#AAB6F5] rounded-tr-[7px] duration-200">
-                      <div className="flex flex-col items-center translate-x-6 -translate-y-2 gap-1">
+                    <div className="absolute -top-6 -right-6 pr-6 pl-16 py-6 rounded-bl-[100%] bg-[#AAB6F5] rounded-tr-[7px] duration-200">
+                      <div className="flex flex-col items-center ranslate-x-6 -translate-y-2 gap-1">
                         <Image
                           quality={100}
-                          height={64}
-                          width={64}
+                          height={96}
+                          width={96}
                           alt=""
                           title={book.ownerData.name + " " + book.ownerData.surname}
                           src={book?.ownerData.avatar}
-                          className={`w-16 h-16 rounded-full cursor-pointer`}
+                          className={`w-16 h-16 rounded-full cursor-pointer object-cover t`}
                           ref={colorRef}
                         ></Image>
                         <div className="font-head font-light duration-200 text-[#18559F]">{book.ownerData.name}</div>
@@ -165,14 +165,14 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                         <div className="flex gap-2.5 w-full py-3 justify-center border border-dashed border-spacing-4 border-[#9CABFF]">
                           <Image
                             quality={100}
-                            height={64}
-                            width={64}
+                            height={96}
+                            width={96}
                             alt=""
                             title={book.ownerData.name + " " + book.ownerData.surname}
                             src={book?.ownerData.avatar}
                             className={`w-14 h-14 rounded-full cursor-pointer duration-200`}
                           ></Image>
-                          <div className="flex flex-col justify-center text-left font-head">
+                          <div className="flex flex-col justify-center text-left object-cover font-head">
                             <div className="text-[#9CABFF] font-extralight text-xs">Właściciel</div>
                             <div className="text-[#18559F] font-light text-base">{book.ownerData.name}</div>
                           </div>

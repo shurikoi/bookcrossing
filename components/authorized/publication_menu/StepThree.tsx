@@ -170,12 +170,12 @@ export default function StepThree({
             />
             <Image
               quality={100}
-              height={64}
-              width={64}
+              height={96}
+              width={96}
               alt=""
               title={user?.name + " " + user?.surname}
               src={user?.avatar || ""}
-              className={`absolute bottom-0 w-16 h-16 left-1/2 translate-y-1/2 -translate-x-1/2 rounded-full bg-gray-500 cursor-pointer duration-200 ${
+              className={`absolute bottom-0 w-16 h-16 left-1/2 translate-y-1/2 object-cover -translate-x-1/2 rounded-full bg-gray-500 cursor-pointer duration-200 ${
                 isImageHovered ? "opacity-0" : "opacity-100"
               }`}
             ></Image>

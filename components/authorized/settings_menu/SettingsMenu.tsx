@@ -42,7 +42,7 @@ export default function SettingsMenu({ isMenuActive, setIsMenuActive }: Settings
               width={96}
               alt=""
               src={user?.avatar || ""}
-              className={`border-2 border-[#61C558] p-1 lg:p-0 lg:border-0 w-24 h-24 lg:w-16 lg:h-16 rounded-full`}
+              className={`border-2 border-[#61C558] p-1 lg:p-0 lg:border-0 w-24 h-24 lg:w-16 lg:h-16 rounded-full object-cover`}
             ></Image>
             <div>
               <div className="font-normal">

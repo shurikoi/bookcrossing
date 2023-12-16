@@ -34,6 +34,8 @@ const MobileModalMenu = memo(
     }
 
     function updateStartPosition(e: TouchEvent) {
+      e.stopPropagation();
+
       if (scrollRef.current && scrollRef.current.scrollTop > 0) return;
       const clientY = e.touches[0].clientY;
 
@@ -43,13 +45,14 @@ const MobileModalMenu = memo(
     }
 
     function updateMenuPosition(e: TouchEvent) {
+      e.stopPropagation();
+
       if ((scrollRef.current && scrollRef.current.scrollTop > 0) || startPosition == 0) return;
 
       const clientY = e.touches[0].clientY - startPosition;
 
       if (clientY > 0 && e.cancelable) {
         e.preventDefault();
-        e.stopPropagation();
 
         if (scrollRef.current) scrollRef.current.style.overflow = "hidden";
 

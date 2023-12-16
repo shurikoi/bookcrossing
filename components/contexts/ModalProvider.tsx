@@ -24,7 +24,7 @@ function ModalProvider({ children }: ModalProvideProps) {
 
   const { isSmallScreen } = useScreen();
   function addModalToActive(modalElement: HTMLDivElement) {
-    if (!activeModals.current.includes(modalElement)) activeModals.current.push(modalElement);
+    activeModals.current.push(modalElement);
 
     handleModalState();
   }
