@@ -14,7 +14,6 @@ export default function BookMenuLoader() {
                     <div className="relative w-full aspect-[3/4]">
                         <div className="w-full h-full skeleton"></div>
                     </div>
-                    <div className="skeleton absolute bottom-0 w-16 h-16 left-1/2 translate-y-1/2 -translate-x-1/2 rounded-full bg-gray-500 cursor-pointer shadow-[0px_0px_15px_1px_rgba(0,0,0,.2)]"></div>
                 </div>
                 {!isSmallScreen && (
                     <div className="flex flex-col gap-2.5 w-full">

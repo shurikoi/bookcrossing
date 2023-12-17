@@ -43,6 +43,7 @@ export interface publication {
   title: string;
   image: string;
   isReserved?: boolean;
+  expires? : Date
   owner: string;
   ownerData: {
     avatar: string;

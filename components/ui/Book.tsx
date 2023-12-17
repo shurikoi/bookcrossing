@@ -2,6 +2,7 @@ import dateConjugation from "@/lib/dateConjugation";
 import Image from "next/image";
 import { memo, useLayoutEffect, useState } from "react";
 import { publication } from "../authorized/Main";
+import ClockIcon from "./icons/ClockIcon";
 
 interface BookProps {
   data: publication;
@@ -10,6 +11,7 @@ interface BookProps {
 
 const Book = memo(({ data, handleClick }: BookProps) => {
   const [isImageLoaded, setIsImageLoaded] = useState(true);
+  const [isAvatarLoaded, setIsAvatarLoaded] = useState(true);
   const [isAvatarLoading, setIsAvatarLoading] = useState(true);
 
   const [isMouseOver, setIsMouseOver] = useState(false);
@@ -74,19 +76,39 @@ const Book = memo(({ data, handleClick }: BookProps) => {
           </div>
         </div>
       </div>
-      <Image
-        title={data.ownerData.name + " " + data.ownerData.surname}
-        src={data.ownerData.avatar}
-        width={96}
-        height={96}
-        quality={100}
-        alt=""
-        onLoad={() => setIsAvatarLoading(false)}
-        className={`absolute top-0 right-0 -translate-y-1/2 w-14 h-14 translate-x-1/2 rounded-full object-cover duration-300 ${
-          isMouseOver ? "opacity-0" : "opacity-100"
-        }
+      <div className="flex gap-3 flex-col items-center absolute -top-7 right-0 translate-x-1/2 ">
+        {isAvatarLoaded && (
+          <Image
+            title={data.ownerData.name + " " + data.ownerData.surname}
+            src={data.ownerData.avatar}
+            width={96}
+            height={96}
+            quality={100}
+            alt=""
+            onLoad={() => setIsAvatarLoading(false)}
+            onError={() => setIsAvatarLoaded(false)}
+            className={`w-14 h-14 rounded-full object-cover shadow-[0px_0px_15px_1px_rgba(0,0,0,.2)] ${
+              isMouseOver ? "opacity-0" : "opacity-100"
+            }
           ${isAvatarLoading ? "skeleton" : "bg-transparent"}`}
-      ></Image>
+          ></Image>
+        )}
+        {!isAvatarLoaded && (
+          <div className={`bg-[#a0a0a3] w-14 h-14 rounded-full ${isMouseOver ? "opacity-0" : "opacity-100"}`}></div>
+        )}
+        {data.expires && (
+          <div
+            className={`flex items-center justify-center relative bg-white w-12 h-12 rounded-full shadow-[0px_0px_15px_1px_rgba(0,0,0,.2)] select-none ${
+              isMouseOver ? "opacity-0" : "opacity-100"
+            }`}
+          >
+            {Math.round((new Date(data.expires).getTime() - new Date().getTime()) / 1000 / 60 / 60 / 24)}
+            <div className="absolute top-0 right-0">
+              <ClockIcon></ClockIcon>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 });

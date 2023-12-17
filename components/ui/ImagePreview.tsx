@@ -5,7 +5,7 @@ import { image } from "../authorized/publication_menu/PublicationMenu";
 import ModalMenu from "./ModalMenu";
 
 interface ImagePreviewProps {
-  image: string;
+  image: image;
   setImage: Dispatch<SetStateAction<image>>;
   handleCancel?: () => void;
   handleSubmit?: () => void;
@@ -238,8 +238,10 @@ export default function ImagePreview({
   }
 
   function handleClick() {
+    if (!image?.data) return;
+
     cutImage({
-      image,
+      image: image.data,
       startX: visibleZonePosition.left,
       startY: visibleZonePosition.top,
       endX: visibleZonePosition.left + size,
@@ -276,7 +278,7 @@ export default function ImagePreview({
           >
             <div className="overflow-hidden w-full h-full rounded-full absolute bg-white/10" draggable={false}>
               <img
-                src={image}
+                src={image?.url || ""}
                 alt=""
                 className="object-cover max-w-none max-h-none absolute"
                 draggable={false}
@@ -312,7 +314,7 @@ export default function ImagePreview({
               ref={brRef}
             ></div>
           </div>
-          <img src={image} alt="" className="max-h-none max-w-none" draggable={false} />
+          <img src={image?.url || ""} alt="" className="max-h-none max-w-none" draggable={false} />
         </div>
         <div className="flex gap-2 p-4 justify-center">
           <Button onClick={handleClick}>Potwierdź</Button>

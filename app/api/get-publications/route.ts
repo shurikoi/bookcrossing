@@ -128,6 +128,7 @@ export async function POST(req: Request) {
             _id: 0,
             id: "$_id",
             author: 1,
+            expires: 1,
             title: 1,
             date: 1,
             image: 1,

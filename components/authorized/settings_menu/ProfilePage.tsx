@@ -19,7 +19,7 @@ export default function ProfilePage() {
   const [isChangePasswordMenuActive, setIsChangePasswordMenuActive] = useState(false);
 
   const [image, setImage] = useState<image>();
-  const [previewImage, setPreviewImage] = useState<string>("");
+  const [previewImage, setPreviewImage] = useState<image>();
 
   const [isPreviewActive, setIsPreviewActive] = useState(false);
 
@@ -35,7 +35,7 @@ export default function ProfilePage() {
         file: file,
         width: 384,
         callback: ({ url, data }) => {
-          setPreviewImage(url);
+          setPreviewImage({ url, data });
           setIsPreviewActive(true);
         },
       });

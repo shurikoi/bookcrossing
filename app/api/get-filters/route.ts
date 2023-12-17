@@ -12,5 +12,7 @@ export async function POST(req: Request) {
   const languages = await books.find({ reservedBy: { $exists: false } }).distinct("language");
   const states = await books.find({ reservedBy: { $exists: false } }).distinct("state");
 
+  
+
   return NextResponse.json({ categories, languages, states });
 }

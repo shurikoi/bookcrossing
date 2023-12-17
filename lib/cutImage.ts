@@ -1,5 +1,5 @@
 interface resizeImageProps {
-  image: File | string;
+  image: Blob | string;
   startX: number;
   startY: number;
   endX: number;

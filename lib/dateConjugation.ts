@@ -1,6 +1,6 @@
 export default function dateConjugation(date: Date) {
-  const time = new Date(date).getTime() / 1000; // czas w sekundach
-  const currentTime = new Date().getTime() / 1000; // czas w sekundach
+  const time = new Date(date).getTime() / 1000;
+  const currentTime = new Date().getTime() / 1000;
   const timeDifference = currentTime - time;
 
   const day = 86400;

@@ -1,4 +1,6 @@
+import { allowedImageTypes } from "@/lib/variables";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function useImagePicker(callback?: (e: any) => void) {
   const [file, setFile] = useState<File>();
@@ -17,14 +19,18 @@ export default function useImagePicker(callback?: (e: any) => void) {
       setTimeout(() => {
         div.remove();
       }, 1000);
+      
+      const inputFile = e.target.files[0];
+      
+      if (inputFile?.type.startsWith("image") && allowedImageTypes.includes(inputFile.type.split("/")[1])) {
+        setFile(inputFile);
 
-      setFile(e.target.files[0]);
-
-      if (callback) callback(e);
+        if (callback) callback(e);
+      } else toast.error("Wybierz plik .png lub .jpg");
     }
 
     function handleClick(e: any) {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth > 1024) {
         window.addEventListener("focus", handleFocus);
 
         document.body.appendChild(div);

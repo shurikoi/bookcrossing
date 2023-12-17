@@ -41,8 +41,9 @@ export default function CancelReservationButton({
                     const reservedBook = books.find((book) => book.id == bookId);
 
                     if (reservedBook) {
-                        reservedBook.isReserved = false;
-
+                        delete reservedBook.isReserved;
+                        delete reservedBook.expires;
+                        
                         books.sort((a, b) => {
                             if (choosenSort == "desc") return Number(new Date(b.date)) - Number(new Date(a.date));
 

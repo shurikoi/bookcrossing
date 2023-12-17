@@ -15,6 +15,7 @@ const book = new Schema(
         state: String,
         date: Date,
         reservedBy: ObjectId,
+        expires : Date,
         shownContact: Number
     },
     { versionKey: false }

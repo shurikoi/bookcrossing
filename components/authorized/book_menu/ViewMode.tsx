@@ -12,9 +12,8 @@ import Image from "next/image";
 import { Dispatch, ReactNode, SetStateAction, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { BookMenuMode } from "./BookMenu";
 import Buttons from "./Buttons";
-import { CSSTransition, SwitchTransition, TransitionGroup } from "react-transition-group";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import ReservationInfo from "./ReservationInfo";
-import { Palette, useColor, usePalette } from "color-thief-react";
 
 interface ViewModeProps {
   isModalActive: boolean;
@@ -27,11 +26,9 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
 
   const { book, isLoading } = useBook();
 
-  const [isImageLoaded, setIsImageLoaded] = useState(true);
-
-  const colorRef = useRef<HTMLImageElement>(null);
-
   const { isSmallScreen } = useScreen();
+
+  const [isImageLoaded, setIsImageLoaded] = useState(true);
 
   useLayoutEffect(() => {
     setIsImageLoaded(true);
@@ -79,7 +76,6 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                           title={book.ownerData.name + " " + book.ownerData.surname}
                           src={book?.ownerData.avatar}
                           className={`w-16 h-16 rounded-full cursor-pointer object-cover t`}
-                          ref={colorRef}
                         ></Image>
                         <div className="font-head font-light duration-200 text-[#18559F]">{book.ownerData.name}</div>
                       </div>

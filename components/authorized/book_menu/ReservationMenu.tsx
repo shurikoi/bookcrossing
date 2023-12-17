@@ -58,6 +58,7 @@ export default function ReservationMenu({
 
                         if (reservedBook) {
                             reservedBook.isReserved = true;
+                            reservedBook.expires = new Date(Date.now() + 3 * 1000 * 60 * 60 * 24)
 
                             return books.sort((a, b) => {
                                 return Number(!!b.isReserved) - Number(!!a.isReserved);

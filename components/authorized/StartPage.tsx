@@ -17,7 +17,7 @@ export default function StartPage({ searchParams }: { searchParams?: { [key: str
     >
       <BookProvider>
         <Header />
-        <Main searchParams={searchParams}></Main>{" "}
+        <Main searchParams={searchParams}></Main>
       </BookProvider>
     </FilterProvider>
   );

@@ -14,8 +14,11 @@ export async function POST(req: Request) {
     const user = await users.findOne({ _id: session?.user?.id });
 
     if (!session || !user) return NextResponse.json({}, { status: 404 });
-    
-    await books.updateOne({ _id: id, reservedBy: user._id }, { $unset: { reservedBy: "", reservatorContact: "" } });
+
+    await books.updateOne(
+      { _id: id, reservedBy: user._id },
+      { $unset: { reservedBy: "", reservatorContact: "", expires: "" } }
+    );
   } catch (error) {
     return NextResponse.json(error, { status: 400 });
   }
