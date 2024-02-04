@@ -2,6 +2,7 @@ interface resizeImageProps {
   file: File;
   width?: number;
   height?: number;
+  resizeIfSmall? : boolean
   callback?: ({ url, data }: callbackProps) => any;
 }
 
@@ -12,7 +13,7 @@ interface callbackProps {
 
 const MIN_HEIGHT = 120;
 
-export default function resizeImage({ file, width = 700, height, callback }: resizeImageProps) {
+export default function resizeImage({ file, width = 700, resizeIfSmall = false, height, callback }: resizeImageProps) {
   let url: string | undefined;
 
   const HTMLImage = new Image();
@@ -24,7 +25,7 @@ export default function resizeImage({ file, width = 700, height, callback }: res
   HTMLImage.onload = (e) => {
     const scale = width / HTMLImage.width;
 
-    if (HTMLImage.height * scale < MIN_HEIGHT) {
+    if (resizeIfSmall && HTMLImage.height * scale < MIN_HEIGHT) {
       HTMLCanvas.width = width * MIN_HEIGHT / (HTMLImage.height * scale);
       HTMLCanvas.height = height ?? HTMLImage.height * scale * MIN_HEIGHT / (HTMLImage.height * scale);
     }

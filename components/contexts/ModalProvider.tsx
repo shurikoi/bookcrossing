@@ -22,6 +22,8 @@ const ModalContext = createContext<ModalContext>({
 function ModalProvider({ children }: ModalProvideProps) {
   const activeModals = useRef<HTMLDivElement[]>([]);
 
+  const bodyTimeout = useRef<NodeJS.Timer | null>(null);
+
   const { isSmallScreen } = useScreen();
   function addModalToActive(modalElement: HTMLDivElement) {
     activeModals.current.push(modalElement);
@@ -40,9 +42,11 @@ function ModalProvider({ children }: ModalProvideProps) {
   function handleModalState() {
     if (!isSmallScreen) return;
 
+    if (bodyTimeout.current) clearTimeout(bodyTimeout.current);
+
     if (activeModals.current.length > 0) document.body.style.overflow = "hidden";
     else
-      setTimeout(() => {
+      bodyTimeout.current = setTimeout(() => {
         document.body.style.overflow = "auto";
       }, 100);
   }

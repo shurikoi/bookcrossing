@@ -10,7 +10,9 @@ import resizeImage from "@/lib/resizeImage";
 import { image } from "../publication_menu/PublicationMenu";
 import { useBook } from "@/components/contexts/BookProvider";
 import ModalMenu from "@/components/ui/ModalMenu";
-import ImagePreview from "@/components/ui/ImagePreview";
+import ImagePreview from "@/components/authorized/settings_menu/ImagePreview";
+import { useScreen } from "@/components/contexts/ScreenProvider";
+import MobileImagePreview from "./MobileImagePreview";
 
 export default function ProfilePage() {
   const { user } = useUserData();
@@ -23,6 +25,7 @@ export default function ProfilePage() {
 
   const [isPreviewActive, setIsPreviewActive] = useState(false);
 
+  const { isSmallScreen } = useScreen();
   // useEffect(() => {
   //   if (!isPreviewActive) setPreviewImage("");
   // }, [isPreviewActive]);
@@ -33,7 +36,7 @@ export default function ProfilePage() {
     if (file)
       resizeImage({
         file: file,
-        width: 384,
+        resizeIfSmall: !isSmallScreen,
         callback: ({ url, data }) => {
           setPreviewImage({ url, data });
           setIsPreviewActive(true);
@@ -93,9 +96,9 @@ export default function ProfilePage() {
   }, [image]);
 
   return (
-    <div className="flex flex-col gap-6 items-center lg:items-stretch">
-      <div className="font-head text-[18px] whitespace-nowrap hidden lg:block">Mój profil</div>
-      <hr className="w-full lg:hidden" />
+    <div className="flex flex-col gap-6 items-center 2md:items-stretch">
+      <div className="font-head text-[18px] whitespace-nowrap hidden 2md:block">Mój profil</div>
+      <hr className="w-full 2md:hidden" />
       <div className="flex flex-col gap-1">
         <div className="font-extralight text-[14px]">Preferowany login</div>
         <SettingsInput value={user!.login} setValue={user!.setLogin} validator={validateLogin} />
@@ -110,12 +113,21 @@ export default function ProfilePage() {
         <SettingsButton onClick={() => setIsChangePasswordMenuActive(true)}>Zmień hasło</SettingsButton>
       </div>
       <ChangePasswordMenu isMenuActive={isChangePasswordMenuActive} setIsMenuActive={setIsChangePasswordMenuActive} />
-      <ImagePreview
-        isMenuActive={isPreviewActive}
-        setIsMenuActive={setIsPreviewActive}
-        image={previewImage}
-        setImage={setImage}
-      ></ImagePreview>
+      {isSmallScreen ? (
+        <MobileImagePreview
+          isMenuActive={isPreviewActive}
+          setIsMenuActive={setIsPreviewActive}
+          image={previewImage}
+          setImage={setImage}
+        ></MobileImagePreview>
+      ) : (
+        <ImagePreview
+          isMenuActive={isPreviewActive}
+          setIsMenuActive={setIsPreviewActive}
+          image={previewImage}
+          setImage={setImage}
+        ></ImagePreview>
+      )}
     </div>
   );
 }

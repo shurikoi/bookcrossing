@@ -50,7 +50,7 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
           nodeRef={nodeRef}
         >
           <div
-            className="flex flex-col w-full lg:min-w-[900px] min-h-[400px] gap-4 pb-6 lg:p-6 h-fit"
+            className="flex flex-col w-full 2md:min-w-[900px] min-h-[400px] gap-4 pb-6 2md:p-6 h-fit"
             key={book?.id}
             ref={nodeRef}
           >
@@ -64,7 +64,7 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                     surname={book.reservatorData.surname}
                   ></ReservationInfo>
                 )}
-                <div className="relative flex flex-col lg:flex-row gap-6">
+                <div className="relative flex flex-col 2md:flex-row gap-6">
                   {!isSmallScreen && book && book.owner != user?.id && (
                     <div className="absolute -top-6 -right-6 pr-6 pl-16 py-6 rounded-bl-[100%] bg-[#AAB6F5] rounded-tr-[7px] duration-200">
                       <div className="flex flex-col items-center ranslate-x-6 -translate-y-2 gap-1">
@@ -81,7 +81,7 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                       </div>
                     </div>
                   )}
-                  <div className="flex flex-col lg:gap-6 shrink-0 lg:w-[220px]">
+                  <div className="flex flex-col 2md:gap-6 shrink-0 2md:w-[220px]">
                     <div className="relative shrink-0">
                       <div className="w-full aspect-[3/4]">
                         {isImageLoaded ? (
@@ -119,9 +119,9 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                       )
                     )}
                   </div>
-                  <div className="flex flex-col gap-8 items-center text-center lg:items-start lg:text-left px-6 lg:p-0">
+                  <div className="flex flex-col gap-8 items-center text-center 2md:items-start 2md:text-left px-6 2md:p-0">
                     <div className="font-head font-normal text-[20px]">{book.title}</div>
-                    <div className="w-full grid grid-cols-[repeat(2,1fr)] grid-rows-2 font-extralight leading-none text-[14px] gap-y-6 gap-x-10 lg:gap-x-10 lg:pr-10">
+                    <div className="w-full grid grid-cols-[repeat(2,1fr)] grid-rows-2 font-extralight leading-none text-[14px] gap-y-6 gap-x-10 2md:gap-x-10 2md:pr-10">
                       <PublicationField
                         data={book.author}
                         icon={<ProfileIcon />}
@@ -151,8 +151,7 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                       ></PublicationField>
                     </div>
                     <div
-                      className="text-[#474747] font-light font-inter text-[15px] lg:w-[500px] max-h-[180px] overflow-y-auto break-all
-                                "
+                      className="text-[#474747] font-light font-inter text-[15px] 2md:w-[500px] max-h-[180px] overflow-y-auto break-all"
                     >
                       {book.description}
                     </div>
@@ -166,7 +165,7 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                             alt=""
                             title={book.ownerData.name + " " + book.ownerData.surname}
                             src={book?.ownerData.avatar}
-                            className={`w-14 h-14 rounded-full cursor-pointer duration-200`}
+                            className={`w-14 h-14 rounded-full cursor-pointer duration-200 object-cover`}
                           ></Image>
                           <div className="flex flex-col justify-center text-left object-cover font-head">
                             <div className="text-[#9CABFF] font-extralight text-xs">Właściciel</div>
@@ -181,7 +180,7 @@ export default function ViewMode({ isModalActive, setIsModalActive, setMode }: V
                 </div>
               </>
             ) : (
-              <div className="flex flex-col items-center justify-center lg:justify-start flex-1 lg:h-auto w-full gap-6">
+              <div className="flex flex-col items-center justify-center 2md:justify-start flex-1 2md:h-auto w-full gap-6">
                 <div className="text-2xl">Takiej książki nie ma</div>
                 <div className="w-3/4">
                   <NotFoundIcon></NotFoundIcon>

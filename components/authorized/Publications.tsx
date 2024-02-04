@@ -40,8 +40,6 @@ const Publications = memo(() => {
   const abortControllerRef = useRef<AbortController>();
 
   useLayoutEffect(() => {
-    if (abortControllerRef.current) abortControllerRef.current.abort("new-fetch");
-
     setPage(0);
     setHasMore(true);
     setIsDataFetched(true);
@@ -81,6 +79,7 @@ const Publications = memo(() => {
         }
 
         setBooks((books) => [...books, ...fetchedBooks]);
+
         setQueryBooksCount(data.queryBooksCount);
       } catch (error) {}
 

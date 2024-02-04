@@ -12,6 +12,8 @@ export default function TextSlider({ text, duration = 1000, height = 36 }: textS
   const [selectedText, setSelectedText] = useState(0);
   const [isEnd, setIsEnd] = useState(false);
 
+  
+
   useLayoutEffect(() => {
     let interval = setInterval(
       () => {

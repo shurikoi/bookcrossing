@@ -6,7 +6,7 @@ interface ModalMenuProps extends HTMLAttributes<HTMLDivElement> {
   setIsModalActive: Dispatch<SetStateAction<boolean>>;
   header?: React.ReactNode;
   fullMode?: boolean;
-  isTouchMoveAllowed?: boolean;
+  disabled: boolean;
   callback?: () => void;
   triggerRef: React.RefObject<HTMLDivElement>;
 }
@@ -17,7 +17,7 @@ const MobileModalMenu = memo(
     isModalActive,
     setIsModalActive,
     header,
-    isTouchMoveAllowed = true,
+    disabled,
     fullMode = false,
     triggerRef,
     callback = () => null,
@@ -34,8 +34,12 @@ const MobileModalMenu = memo(
     }
 
     function updateStartPosition(e: TouchEvent) {
-      e.stopPropagation();
+      if (disabled) {
+        e.preventDefault()
+        e.stopPropagation()
 
+        return;
+      }
       if (scrollRef.current && scrollRef.current.scrollTop > 0) return;
       const clientY = e.touches[0].clientY;
 
@@ -45,13 +49,18 @@ const MobileModalMenu = memo(
     }
 
     function updateMenuPosition(e: TouchEvent) {
-      e.stopPropagation();
+      if (disabled) {
+        e.preventDefault()
+        e.stopPropagation()
 
+        return;
+      }
       if ((scrollRef.current && scrollRef.current.scrollTop > 0) || startPosition == 0) return;
 
       const clientY = e.touches[0].clientY - startPosition;
 
       if (clientY > 0 && e.cancelable) {
+        e.stopPropagation();
         e.preventDefault();
 
         if (scrollRef.current) scrollRef.current.style.overflow = "hidden";
@@ -75,6 +84,8 @@ const MobileModalMenu = memo(
     }
 
     useEffect(() => {
+      // if (disabled) return;
+
       triggerRef.current?.addEventListener("touchstart", updateStartPosition);
       triggerRef.current?.addEventListener("touchmove", updateMenuPosition);
 
@@ -82,7 +93,7 @@ const MobileModalMenu = memo(
         triggerRef.current?.removeEventListener("touchstart", updateStartPosition);
         triggerRef.current?.removeEventListener("touchmove", updateMenuPosition);
       };
-    }, [startPosition]);
+    }, [startPosition, disabled]);
 
     useEffect(() => {
       triggerRef.current?.addEventListener("touchend", handleTouchEnd, { passive: true });
@@ -108,7 +119,7 @@ const MobileModalMenu = memo(
         ></div>
 
         <div
-          className={`${isModalActive ? "bottom-0" : "-bottom-full"} ${
+          className={`${isModalActive ? "bottom-0" : "bottom-[-120%]"} ${
             fullMode ? "h-[100dvh]" : "rounded-t-xl"
           } fixed left-0 w-full bg-white duration-200 z-10`}
           ref={triggerRef}
@@ -118,8 +129,8 @@ const MobileModalMenu = memo(
             {fullMode ? (
               <div className="flex items-center justify-center w-full select-none z-10 p-3 h-[3em]">
                 {header && <>{header}</>}
-                <div className="absolute right-3 cursor-pointer p-3" onClick={handleClose}>
-                  X
+                <div className="absolute right-3 cursor-pointer p-3 text-2xl" onClick={handleClose}>
+                  &times;
                 </div>
               </div>
             ) : (

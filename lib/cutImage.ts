@@ -25,7 +25,7 @@ export default function cutImage({ image, startX, startY, endX, endY, callback }
     HTMLCanvas.width = HTMLCanvas.height = 500;
 
     ctx?.drawImage(HTMLImage, startX, startY, endX - startX, endY - startY, 0, 0, HTMLCanvas.width, HTMLCanvas.height);
-
+    console.log(startX, startY, endX, endY, endX - startX, endY - startY)
     HTMLCanvas.toBlob(
       (blob) => {
         if (blob) {

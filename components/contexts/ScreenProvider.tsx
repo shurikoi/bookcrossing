@@ -11,7 +11,7 @@ function ScreenProvider({ children }: { children: React.ReactNode }) {
     checkScreenSize();
 
     function checkScreenSize() {
-      setIsSmallScreen(window.innerWidth < 1024);
+      setIsSmallScreen(window.innerWidth < 960);
     }
 
     window.addEventListener("resize", checkScreenSize);

@@ -61,7 +61,7 @@ export default function Main({ searchParams }: { searchParams?: { [key: string]:
 
   return (
     <div className="flex flex-col items-center pt-10">
-      <div className="text-center font-light text-[18px] lg:text-[23px] max-w-[800px] px-6 box-content">
+      <div className="text-center font-light text-[18px] 2md:text-[23px] max-w-[800px] px-6 box-content">
         Wierzymy, że korzystanie z&nbsp;serwisu może dostarczyć wiele radości i&nbsp;wzbogacić Twoje doświadczenie
         czytelnicze.
       </div>

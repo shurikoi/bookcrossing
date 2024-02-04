@@ -39,17 +39,10 @@ export default function StepOne({ setFile, setCurrentStep }: StepOneProps) {
       const extension = getExtension(files[0].name);
 
       if (extension && allowedImageTypes.includes(extension.toLowerCase())) setFile(files[0]);
-      else toast.error("Wybierz format .png lub .jpeg");
     }
   }
-  
-  const {file, pickImage } = useImagePicker((e) => {
-    e.preventDefault();
 
-    const files = e.target.files;
-
-    handleSubmit(files);
-  });
+  const { file, pickImage } = useImagePicker();
 
   function handleDrop(e: DragEvent) {
     e.preventDefault();
@@ -59,9 +52,13 @@ export default function StepOne({ setFile, setCurrentStep }: StepOneProps) {
     handleSubmit(files);
   }
 
+  useEffect(() => {
+    if (file) setFile(file);
+  }, [file]);
+
   return (
     <div
-      className={`flex flex-col rounded-lg items-center gap-16 justify-center top-0 h-screen absolute lg:h-full lg:relative w-full lg:w-fit lg:px-[110px] lg:py-[72px] duration-200 ${
+      className={`flex flex-col rounded-lg items-center gap-16 justify-center top-0 h-screen absolute 2md:h-full 2md:relative w-full 2md:w-fit 2md:px-[110px] 2md:py-[72px] duration-200 ${
         isWindowHovered ? "bg-[#e4e4e4]" : "bg-white"
       }`}
       onDragOver={(e) => e.preventDefault()}

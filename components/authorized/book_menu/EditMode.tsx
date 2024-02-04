@@ -67,33 +67,7 @@ export default function EditMode({ setMode }: EditModeProps) {
     image: image?.url || "",
   };
 
-  function openFileMenu() {
-    if (fileRef.current) fileRef.current.click();
-  }
-
-  useImagePicker(fileRef, (e) => {
-    e.preventDefault();
-
-    const files = e.target.files;
-
-    if (files[0]) {
-      const extension = getExtension(files[0].name);
-
-      if (extension && allowedImageTypes.includes(extension.toLowerCase())) {
-        resizeImage({
-          file: files[0],
-          callback: ({ url, data }) => {
-            setImage({
-              data,
-              url,
-            });
-          },
-        });
-      } else {
-        toast.error("Wybierz format .png lub .jpeg");
-      }
-    }
-  });
+  const { file, pickImage } = useImagePicker();
 
   function handleSubmit() {
     if (isLoading) return;
@@ -197,38 +171,58 @@ export default function EditMode({ setMode }: EditModeProps) {
   }
 
   useEffect(() => {
+    if (file) {
+      resizeImage({
+        file: file,
+        callback: ({ url, data }) => {
+          setImage({
+            data,
+            url,
+          });
+        },
+      });
+    }
+  }, [file]);
+
+  useEffect(() => {
     const textarea = textareaRef.current;
 
     if (textarea) textarea.style.height = textarea.scrollHeight + "px";
   }, []);
 
   return (
-    <div className="flex flex-col h-full lg:h-[610px]">
-      <div className="hidden lg:block p-3 relative text-center w-full">
+    <div className="flex flex-col h-full 2md:h-[610px]">
+      <div className="hidden 2md:block p-3 relative text-center w-full">
         <div className="absolute cursor-pointer w-fit" onClick={() => setMode("view")}>
           <ArrowLeftIcon></ArrowLeftIcon>
         </div>
         <div>Edytowanie</div>
       </div>
-      <div className="flex flex-col lg:flex-row h-full">
-        <div className="flex w-full lg:w-[400px] aspect-[3/4] relative shrink-0">
+      <div className="flex flex-col 2md:flex-row h-full">
+        <div className="flex w-full 2md:w-[400px] aspect-[3/4] relative shrink-0">
           <Image className="object-cover" fill src={image?.url || ""} priority alt="" quality={100} />
           <div
             className="flex items-center justify-center cursor-pointer bg-black/40 gap-2.5 text-white w-full h-full absolute top-0 left-0"
-            onClick={openFileMenu}
+            onClick={pickImage}
           >
-            <input ref={fileRef} type="file" accept="image/png, image/jpeg" hidden />
             <PencilIcon color="white"></PencilIcon>
             <div>Zmień zdjęcie</div>
           </div>
         </div>
-        <div className="flex flex-col gap-6 p-4 w-full lg:w-[360px]">
+        <div className="flex flex-col gap-6 p-4 w-full 2md:w-[360px]">
           <div className="flex gap-4 items-center">
-            <Image className="w-14 h-14 rounded-full" src={user?.avatar || ""} width={56} height={56} quality={100} alt="" />
+            <Image
+              className="w-14 h-14 rounded-full"
+              src={user?.avatar || ""}
+              width={56}
+              height={56}
+              quality={100}
+              alt=""
+            />
             <div className="font-extralight text-base">{user?.name}</div>
           </div>
 
-          <div className="flex flex-col gap-4 text-[20px] font-lato font-normal lg:h-[380px] lg:overflow-y-auto flex-grow flex-shrink">
+          <div className="flex flex-col gap-4 text-[20px] font-lato font-normal 2md:h-[380px] 2md:overflow-y-auto flex-grow flex-shrink">
             <div className="flex items-center gap-2 px-1">
               <input
                 className={`duration-200 w-full ${

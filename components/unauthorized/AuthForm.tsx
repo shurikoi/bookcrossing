@@ -44,7 +44,7 @@ export default function AuthForm({ isFormActive, setIsFormActive }: AuthFormProp
 
   return (
     <ModalMenu isModalActive={isFormActive} setIsModalActive={setIsFormActive}>
-      <form className="flex items-center flex-col gap-4 w-full lg:max-w-[500px] text-center px-6 py-8 sm:p-10" onKeyDown={handleKeyDown}>
+      <form className="flex items-center flex-col gap-4 w-full 2md:max-w-[500px] text-center px-6 py-8 sm:p-10" onKeyDown={handleKeyDown}>
         <div className="flex gap-3 flex-col items-center">
           <div className="font-medium text-[20px] sm:text-[24px]">Zaloguj się w kilka sekund</div>
           <div className="text-[13px] font-extralight">
@@ -61,7 +61,7 @@ export default function AuthForm({ isFormActive, setIsFormActive }: AuthFormProp
             autoComplete="email"
             name="login"
             placeholder="Login"
-            className="placeholder:font-light relative border-[#61C558] border rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300 w-full lg:w-auto gap-3"
+            className="placeholder:font-light relative border-[#61C558] border rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300 w-full 2md:w-auto gap-3"
             value={login}
             onChange={(e) => {
               setLogin(e.target.value.trim());
@@ -74,7 +74,7 @@ export default function AuthForm({ isFormActive, setIsFormActive }: AuthFormProp
             name="password"
             autoComplete="password"
             placeholder="Hasło"
-            className="placeholder:font-light relative border-[#61C558] border rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300 w-full lg:w-auto gap-3"
+            className="placeholder:font-light relative border-[#61C558] border rounded-lg px-4 py-2.5 text-[15px] flex justify-between duration-300 w-full 2md:w-auto gap-3"
             value={password}
             onChange={(e) => {
               setPassword(e.target.value.trim());
@@ -99,4 +99,4 @@ export default function AuthForm({ isFormActive, setIsFormActive }: AuthFormProp
   );
 }
 
-// flex items-center flex-col gap-8 w-full lg:max-w-[500px] text-center px-6 py-8 sm:px-10 sm:py-14
+// flex items-center flex-col gap-8 w-full 2md:max-w-[500px] text-center px-6 py-8 sm:px-10 sm:py-14

@@ -16,7 +16,7 @@ export default function UserField() {
 
   return (
     <>
-      <div className="flex flex-col-reverse lg:flex-row items-center gap-4 lg:gap-[30px]">
+      <div className="flex flex-col-reverse md:flex-row items-center gap-4 md:gap-[30px]">
         <div className="flex items-center gap-[30px]">
           <div className="flex items-center gap-6 bg-white border-[#DFDFE0] border-[3px] rounded-full px-3 py-1">
             <Image src="/images/image 1359.png" alt="" width={20} height={20}></Image>

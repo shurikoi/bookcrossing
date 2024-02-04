@@ -26,8 +26,6 @@ export default function ReservationMenu({
 
     const { bookId, setBook, setBooks } = useBook();
 
-  const {isSmallScreen} = useScreen()
-
     function reserveBook() {
         if (contact.trim().length > 0) {
             const reservationPromise = new Promise(async (resolve, reject) => {
